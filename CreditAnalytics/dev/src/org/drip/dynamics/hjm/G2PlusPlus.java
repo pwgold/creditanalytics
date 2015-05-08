@@ -40,8 +40,8 @@ public class G2PlusPlus {
 	private double _dblEta = java.lang.Double.NaN;
 	private double _dblRho = java.lang.Double.NaN;
 	private double _dblSigma = java.lang.Double.NaN;
-	private org.drip.sequence.random.UnivariateSequenceGenerator[] _aRSG = null;
 	private org.drip.function.deterministic.R1ToR1 _auIFRInitial = null;
+	private org.drip.sequence.random.UnivariateSequenceGenerator[] _aRSG = null;
 
 	/**
 	 * G2PlusPlus Constructor
@@ -189,7 +189,7 @@ public class G2PlusPlus {
 	 * @param dblSpotDate The Spot Date
 	 * @param dblViewDate The View Date
 	 * @param dblX The X Value
-	 * @param dblViewTimeIncrement The Spot Time Increment
+	 * @param dblSpotTimeIncrement The Spot Time Increment
 	 * 
 	 * @return The X Increment
 	 * 
@@ -200,17 +200,17 @@ public class G2PlusPlus {
 		final double dblSpotDate,
 		final double dblViewDate,
 		final double dblX,
-		final double dblViewTimeIncrement)
+		final double dblSpotTimeIncrement)
 		throws java.lang.Exception
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblSpotDate) ||
 			!org.drip.quant.common.NumberUtil.IsValid (dblViewDate) || dblSpotDate > dblViewDate ||
 				!org.drip.quant.common.NumberUtil.IsValid (dblX) ||
-					!org.drip.quant.common.NumberUtil.IsValid (dblViewTimeIncrement))
+					!org.drip.quant.common.NumberUtil.IsValid (dblSpotTimeIncrement))
 			throw new java.lang.Exception ("G2PlusPlus::deltaX => Invalid Inputs");
 
-		return -1. * _dblA * dblX * dblViewTimeIncrement + _dblSigma * java.lang.Math.sqrt
-			(dblViewTimeIncrement) * _aRSG[0].random();
+		return -1. * _dblA * dblX * dblSpotTimeIncrement + _dblSigma * java.lang.Math.sqrt
+			(dblSpotTimeIncrement) * _aRSG[0].random();
 	}
 
 	/**
@@ -219,7 +219,7 @@ public class G2PlusPlus {
 	 * @param dblSpotDate The Spot Date
 	 * @param dblViewDate The View Date
 	 * @param dblY The Y Value
-	 * @param dblViewTimeIncrement The Spot Time Increment
+	 * @param dblSpotTimeIncrement The Spot Time Increment
 	 * 
 	 * @return The Y Increment
 	 * 
@@ -230,16 +230,16 @@ public class G2PlusPlus {
 		final double dblSpotDate,
 		final double dblViewDate,
 		final double dblY,
-		final double dblViewTimeIncrement)
+		final double dblSpotTimeIncrement)
 		throws java.lang.Exception
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblSpotDate) ||
 			!org.drip.quant.common.NumberUtil.IsValid (dblViewDate) || dblSpotDate > dblViewDate ||
 				!org.drip.quant.common.NumberUtil.IsValid (dblY) ||
-					!org.drip.quant.common.NumberUtil.IsValid (dblViewTimeIncrement))
+					!org.drip.quant.common.NumberUtil.IsValid (dblSpotTimeIncrement))
 			throw new java.lang.Exception ("G2PlusPlus::deltaY => Invalid Inputs");
 
-		return -1. * _dblB * dblY * dblViewTimeIncrement + _dblEta * java.lang.Math.sqrt
-			(dblViewTimeIncrement) * _aRSG[1].random();
+		return -1. * _dblB * dblY * dblSpotTimeIncrement + _dblEta * java.lang.Math.sqrt
+			(dblSpotTimeIncrement) * _aRSG[1].random();
 	}
 }

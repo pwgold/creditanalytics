@@ -46,6 +46,7 @@ public class ShortRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate
 	 * @param lslFunding The Funding Latent State Label
 	 * @param dblInitialDate The Initial Date
 	 * @param dblFinalDate The Final Date
+	 * @param dblTargetPointDate The Target Point Date
 	 * @param dblInitialShortRate The Initial Short Rate
 	 * @param dblRealizedFinalShortRate The Realized Final Short Rate
 	 * @param dblExpectedFinalShortRate The Expected Final Short Rate
@@ -59,6 +60,7 @@ public class ShortRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate
 		final org.drip.state.identifier.FundingLabel lslFunding,
 		final double dblInitialDate,
 		final double dblFinalDate,
+		final double dblTargetPointDate,
 		final double dblInitialShortRate,
 		final double dblRealizedFinalShortRate,
 		final double dblExpectedFinalShortRate,
@@ -86,8 +88,8 @@ public class ShortRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate
 			return null;
 
 		try {
-			return new ShortRateUpdate (lslFunding, dblInitialDate, dblFinalDate, lrSnapshot, lrIncrement,
-				dblExpectedFinalShortRate, dblFinalShortRateVariance);
+			return new ShortRateUpdate (lslFunding, dblInitialDate, dblFinalDate, dblTargetPointDate,
+				lrSnapshot, lrIncrement, dblExpectedFinalShortRate, dblFinalShortRateVariance);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -99,13 +101,14 @@ public class ShortRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate
 		final org.drip.state.identifier.FundingLabel lslFunding,
 		final double dblInitialDate,
 		final double dblFinalDate,
+		final double dblViewDate,
 		final org.drip.dynamics.evolution.LSQMPointRecord lrSnapshot,
 		final org.drip.dynamics.evolution.LSQMPointRecord lrIncrement,
 		final double dblExpectedFinalShortRate,
 		final double dblFinalShortRateVariance)
 		throws java.lang.Exception
 	{
-		super (dblInitialDate, dblFinalDate, lrSnapshot, lrIncrement);
+		super (dblInitialDate, dblFinalDate, dblViewDate, lrSnapshot, lrIncrement);
 
 		if (null == (_lslFunding = lslFunding) || !org.drip.quant.common.NumberUtil.IsValid
 			(_dblExpectedFinalShortRate = dblExpectedFinalShortRate) ||

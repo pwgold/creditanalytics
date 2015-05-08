@@ -406,18 +406,18 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 	@Override public org.drip.dynamics.evolution.LSQMPointUpdate evolve (
 		final double dblSpotDate,
 		final double dblViewDate,
-		final double dblViewTimeIncrement,
+		final double dblSpotTimeIncrement,
 		final org.drip.dynamics.evolution.LSQMPointUpdate lsqmPrev)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblSpotDate) ||
 			!org.drip.quant.common.NumberUtil.IsValid (dblViewDate) || dblSpotDate > dblViewDate ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblViewTimeIncrement) || null == lsqmPrev ||
+				!org.drip.quant.common.NumberUtil.IsValid (dblSpotTimeIncrement) || null == lsqmPrev ||
 					!(lsqmPrev instanceof org.drip.dynamics.hjm.ShortForwardRateUpdate))
 			return null;
 
 		org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg = _mfv.msg();
 
-		double dblViewTimeIncrementSQRT = java.lang.Math.sqrt (dblViewTimeIncrement);
+		double dblViewTimeIncrementSQRT = java.lang.Math.sqrt (dblSpotTimeIncrement);
 
 		double[] adblMultivariateRandom = pfsg.random();
 
@@ -441,9 +441,9 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 			double dblShortRateIncrement = 0.;
 			double dblShiftedLIBORForwardRateIncrement = 0.;
 			double dblInstantaneousForwardRateIncrement = 0.;
-			double dblPriceIncrement = dblInitialShortRate * dblViewTimeIncrement;
+			double dblPriceIncrement = dblInitialShortRate * dblSpotTimeIncrement;
 			double dblCompoundedShortRateIncrement = (dblInitialCompoundedShortRate - dblInitialShortRate) *
-				dblViewTimeIncrement;
+				dblSpotTimeIncrement;
 
 			for (int i = 0; i < iNumFactor; ++i) {
 				double dblViewDateFactorVolatility = _mfv.weightedFactorPointVolatility (i, dblViewDate,
@@ -472,12 +472,12 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 
 				double dblScaledMultivariateRandom = dblViewTimeIncrementSQRT * adblMultivariateRandom[i];
 				dblInstantaneousForwardRateIncrement += dblViewTargetVolatilityIntegral *
-					dblViewTargetFactorVolatility * dblViewTimeIncrement + dblViewTargetFactorVolatility *
+					dblViewTargetFactorVolatility * dblSpotTimeIncrement + dblViewTargetFactorVolatility *
 						dblScaledMultivariateRandom;
 				dblShortRateIncrement += dblSpotViewVolatilityIntegral * dblViewDateFactorVolatility *
-					dblViewTimeIncrement + dblViewDateFactorVolatility * dblScaledMultivariateRandom;
+					dblSpotTimeIncrement + dblViewDateFactorVolatility * dblScaledMultivariateRandom;
 				dblCompoundedShortRateIncrement += 0.5 * dblViewTargetVolatilityIntegral *
-					dblViewTargetVolatilityIntegral * dblViewTimeIncrement + dblViewTargetVolatilityIntegral
+					dblViewTargetVolatilityIntegral * dblSpotTimeIncrement + dblViewTargetVolatilityIntegral
 						* dblScaledMultivariateRandom;
 				dblShiftedLIBORForwardRateIncrement += dblViewTargetVolatilityIntegral *
 					(dblSpotTargetVolatilityIntegral + dblScaledMultivariateRandom);
@@ -490,15 +490,16 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 				dblViewDate))) * dblShiftedLIBORForwardRateIncrement;
 
 			return org.drip.dynamics.hjm.ShortForwardRateUpdate.Create (_lslFunding, _lslForward,
-				dblViewDate, dblTargetDate, qmInitial.instantaneousForwardRate() +
-					dblInstantaneousForwardRateIncrement, dblInstantaneousForwardRateIncrement,
-						dblInitialLIBORForwardRate + dblLIBORForwardRateIncrement,
-							dblLIBORForwardRateIncrement, qmInitial.shiftedLIBORForwardRate() +
-								dblShiftedLIBORForwardRateIncrement, dblShiftedLIBORForwardRateIncrement,
-									dblInitialShortRate + dblShortRateIncrement, dblShortRateIncrement,
-										dblInitialCompoundedShortRate + dblCompoundedShortRateIncrement,
-											dblCompoundedShortRateIncrement, dblInitialPrice +
-												dblPriceIncrement, dblPriceIncrement);
+				dblSpotDate, dblSpotDate + dblSpotTimeIncrement, dblTargetDate,
+					qmInitial.instantaneousForwardRate() + dblInstantaneousForwardRateIncrement,
+						dblInstantaneousForwardRateIncrement, dblInitialLIBORForwardRate +
+							dblLIBORForwardRateIncrement, dblLIBORForwardRateIncrement,
+								qmInitial.shiftedLIBORForwardRate() + dblShiftedLIBORForwardRateIncrement,
+									dblShiftedLIBORForwardRateIncrement, dblInitialShortRate +
+										dblShortRateIncrement, dblShortRateIncrement,
+											dblInitialCompoundedShortRate + dblCompoundedShortRateIncrement,
+												dblCompoundedShortRateIncrement, dblInitialPrice +
+													dblPriceIncrement, dblPriceIncrement);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}

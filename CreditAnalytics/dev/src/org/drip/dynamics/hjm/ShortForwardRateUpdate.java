@@ -46,6 +46,7 @@ public class ShortForwardRateUpdate extends org.drip.dynamics.evolution.LSQMPoin
 	 * @param lslForward The Forward Latent State Label
 	 * @param dblInitialDate The Initial Date
 	 * @param dblFinalDate The Final Date
+	 * @param dblTargetPointDate The Target Point Date
 	 * @param dblInstantaneousForwardRate The Instantaneous Forward Rate
 	 * @param dblInstantaneousForwardRateIncrement The Instantaneous Forward Rate Increment
 	 * @param dblLIBORForwardRate The LIBOR Forward Rate
@@ -67,6 +68,7 @@ public class ShortForwardRateUpdate extends org.drip.dynamics.evolution.LSQMPoin
 		final org.drip.state.identifier.ForwardLabel lslForward,
 		final double dblInitialDate,
 		final double dblFinalDate,
+		final double dblTargetPointDate,
 		final double dblInstantaneousForwardRate,
 		final double dblInstantaneousForwardRateIncrement,
 		final double dblLIBORForwardRate,
@@ -80,7 +82,8 @@ public class ShortForwardRateUpdate extends org.drip.dynamics.evolution.LSQMPoin
 		final double dblPrice,
 		final double dblPriceIncrement)
 	{
-		org.drip.dynamics.evolution.LSQMPointRecord lrSnapshot = new org.drip.dynamics.evolution.LSQMPointRecord();
+		org.drip.dynamics.evolution.LSQMPointRecord lrSnapshot = new
+			org.drip.dynamics.evolution.LSQMPointRecord();
 
 		if (!lrSnapshot.setQM (lslFunding,
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE, dblShortRate))
@@ -109,7 +112,8 @@ public class ShortForwardRateUpdate extends org.drip.dynamics.evolution.LSQMPoin
 				dblInstantaneousForwardRate))
 			return null;
 
-		org.drip.dynamics.evolution.LSQMPointRecord lrIncrement = new org.drip.dynamics.evolution.LSQMPointRecord();
+		org.drip.dynamics.evolution.LSQMPointRecord lrIncrement = new
+			org.drip.dynamics.evolution.LSQMPointRecord();
 
 		if (!lrIncrement.setQM (lslFunding,
 			org.drip.analytics.definition.LatentStateStatic.DISCOUNT_QM_ZERO_RATE, dblShortRateIncrement))
@@ -141,7 +145,7 @@ public class ShortForwardRateUpdate extends org.drip.dynamics.evolution.LSQMPoin
 
 		try {
 			return new ShortForwardRateUpdate (lslFunding, lslForward, dblInitialDate, dblFinalDate,
-				lrSnapshot, lrIncrement);
+				dblTargetPointDate, lrSnapshot, lrIncrement);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -154,11 +158,12 @@ public class ShortForwardRateUpdate extends org.drip.dynamics.evolution.LSQMPoin
 		final org.drip.state.identifier.ForwardLabel lslForward,
 		final double dblInitialDate,
 		final double dblFinalDate,
+		final double dblViewDate,
 		final org.drip.dynamics.evolution.LSQMPointRecord lrSnapshot,
 		final org.drip.dynamics.evolution.LSQMPointRecord lrIncrement)
 		throws java.lang.Exception
 	{
-		super (dblInitialDate, dblFinalDate, lrSnapshot, lrIncrement);
+		super (dblInitialDate, dblFinalDate, dblViewDate, lrSnapshot, lrIncrement);
 
 		if (null == (_lslFunding = lslFunding) || null == (_lslForward = lslForward))
 			throw new java.lang.Exception ("ShortForwardRateUpdate ctr: Invalid Inputs");

@@ -149,8 +149,11 @@ public class ForwardRateEvolution {
 		double dblRho = 0.1;
 		double dblForwardRate = 0.04;
 		double dblVolatilityOfVolatility = 0.59;
+		String strViewTenor = "3M";
 		double[] adblBeta = {0.00, 0.50, 1.00};
 		double[] adblForwardRateVolatility = {0.03, 0.26, 0.51};
+
+		double dblViewDate = dtSpot.addTenor (strViewTenor).julian();
 
 		StochasticVolatilityStateEvolver seSABR1 = SABREvolver (
 			adblBeta[0],
@@ -174,6 +177,7 @@ public class ForwardRateEvolution {
 			ForwardLabel.Create ("USD", "6M"),
 			dtSpot.julian(),
 			dtSpot.julian(),
+			dblViewDate,
 			dblForwardRate,
 			0.,
 			adblForwardRateVolatility[0],
@@ -184,6 +188,7 @@ public class ForwardRateEvolution {
 			ForwardLabel.Create ("USD", "6M"),
 			dtSpot.julian(),
 			dtSpot.julian(),
+			dblViewDate,
 			dblForwardRate,
 			0.,
 			adblForwardRateVolatility[1],
@@ -194,6 +199,7 @@ public class ForwardRateEvolution {
 			ForwardLabel.Create ("USD", "6M"),
 			dtSpot.julian(),
 			dtSpot.julian(),
+			dblViewDate,
 			dblForwardRate,
 			0.,
 			adblForwardRateVolatility[2],
@@ -205,7 +211,7 @@ public class ForwardRateEvolution {
 			seSABR2,
 			seSABR3,
 			dtSpot.julian(),
-			dtSpot.addTenor ("3M").julian(),
+			dblViewDate,
 			lsqmInitial1,
 			lsqmInitial2,
 			lsqmInitial3

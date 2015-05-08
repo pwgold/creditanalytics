@@ -41,7 +41,7 @@ public interface PointStateEvolver {
 	 * 
 	 * @param dblSpotDate The Spot Date
 	 * @param dblViewDate The View Date
-	 * @param dblViewTimeIncrement The View Time Increment
+	 * @param dblSpotTimeIncrement The Spot Time Increment
 	 * @param lsqmPrev The Previous LSQM Point Update
 	 * 
 	 * @return The LSQM Point Update
@@ -50,7 +50,7 @@ public interface PointStateEvolver {
 	public abstract org.drip.dynamics.evolution.LSQMPointUpdate evolve (
 		final double dblSpotDate,
 		final double dblViewDate,
-		final double dblViewTimeIncrement,
+		final double dblSpotTimeIncrement,
 		final org.drip.dynamics.evolution.LSQMPointUpdate lsqmPrev
 	);
 }

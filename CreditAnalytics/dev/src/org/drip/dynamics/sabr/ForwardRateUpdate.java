@@ -44,6 +44,7 @@ public class ForwardRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpda
 	 * @param lslForward The Forward Rate Latent State Label
 	 * @param dblInitialDate The Initial Date
 	 * @param dblFinalDate The Final Date
+	 * @param dblTargetPointDate The Target Point Date
 	 * @param dblForwardRate The Forward Rate
 	 * @param dblForwardRateIncrement The Forward Rate Increment
 	 * @param dblForwardRateVolatility The Forward Volatility 
@@ -56,6 +57,7 @@ public class ForwardRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpda
 		final org.drip.state.identifier.ForwardLabel lslForward,
 		final double dblInitialDate,
 		final double dblFinalDate,
+		final double dblTargetPointDate,
 		final double dblForwardRate,
 		final double dblForwardRateIncrement,
 		final double dblForwardRateVolatility,
@@ -87,7 +89,8 @@ public class ForwardRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpda
 			return null;
 
 		try {
-			return new ForwardRateUpdate (lslForward, dblInitialDate, dblFinalDate, lrSnapshot, lrIncrement);
+			return new ForwardRateUpdate (lslForward, dblInitialDate, dblFinalDate, dblTargetPointDate,
+				lrSnapshot, lrIncrement);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -99,11 +102,12 @@ public class ForwardRateUpdate extends org.drip.dynamics.evolution.LSQMPointUpda
 		final org.drip.state.identifier.ForwardLabel lslForward,
 		final double dblInitialDate,
 		final double dblFinalDate,
+		final double dblViewDate,
 		final org.drip.dynamics.evolution.LSQMPointRecord lrSnapshot,
 		final org.drip.dynamics.evolution.LSQMPointRecord lrIncrement)
 		throws java.lang.Exception
 	{
-		super (dblInitialDate, dblFinalDate, lrSnapshot, lrIncrement);
+		super (dblInitialDate, dblFinalDate, dblViewDate, lrSnapshot, lrIncrement);
 
 		if (null == (_lslForward = lslForward))
 			throw new java.lang.Exception ("ForwardRateUpdate ctr: Invalid Inputs");

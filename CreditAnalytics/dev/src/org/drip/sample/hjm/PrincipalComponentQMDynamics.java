@@ -161,6 +161,7 @@ public class PrincipalComponentQMDynamics {
 			ForwardLabel.Create (strCurrency, strTenor),
 			dtStart.julian(),
 			dtStart.julian(),
+			dtStart.addTenor (strViewTenor).julian(),
 			dblInitialForwardRate,
 			0.,
 			dblInitialForwardRate,

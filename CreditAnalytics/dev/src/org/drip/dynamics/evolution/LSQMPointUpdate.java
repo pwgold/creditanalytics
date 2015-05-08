@@ -36,16 +36,18 @@ package org.drip.dynamics.evolution;
  */
 
 public class LSQMPointUpdate {
-	private double _dblFinalDate = java.lang.Double.NaN;
-	private double _dblInitialDate = java.lang.Double.NaN;
+	private double _dblViewDate = java.lang.Double.NaN;
+	private double _dblEvolutionStartDate = java.lang.Double.NaN;
+	private double _dblEvolutionFinishDate = java.lang.Double.NaN;
 	private org.drip.dynamics.evolution.LSQMPointRecord _lprSnapshot = null;
 	private org.drip.dynamics.evolution.LSQMPointRecord _lprIncrement = null;
 
 	/**
 	 * LSQMPointUpdate Constructor
 	 * 
-	 * @param dblInitialDate The Initial Date
-	 * @param dblFinalDate The Final Date
+	 * @param dblEvolutionStartDate The Evolution Start Date
+	 * @param dblEvolutionFinishDate The Evolution Finish Date
+	 * @param dblViewDate The View Date
 	 * @param lprSnapshot The LSQM Point Record Snapshot
 	 * @param lprIncrement The LSQM Point Record Update
 	 * 
@@ -53,40 +55,54 @@ public class LSQMPointUpdate {
 	 */
 
 	public LSQMPointUpdate (
-		final double dblInitialDate,
-		final double dblFinalDate,
+		final double dblEvolutionStartDate,
+		final double dblEvolutionFinishDate,
+		final double dblViewDate,
 		final org.drip.dynamics.evolution.LSQMPointRecord lprSnapshot,
 		final org.drip.dynamics.evolution.LSQMPointRecord lprIncrement)
 		throws java.lang.Exception
 	{
 		if (null == (_lprSnapshot = lprSnapshot) || !org.drip.quant.common.NumberUtil.IsValid
-			(_dblInitialDate = dblInitialDate) || !org.drip.quant.common.NumberUtil.IsValid (_dblFinalDate =
-				dblFinalDate) || _dblFinalDate < _dblInitialDate)
+			(_dblEvolutionStartDate = dblEvolutionStartDate) || !org.drip.quant.common.NumberUtil.IsValid
+				(_dblEvolutionFinishDate = dblEvolutionFinishDate) || _dblEvolutionFinishDate <
+					_dblEvolutionStartDate || !org.drip.quant.common.NumberUtil.IsValid (_dblViewDate =
+						dblViewDate) || _dblViewDate < _dblEvolutionStartDate)
 			throw new java.lang.Exception ("LSQMPointUpdate ctr: Invalid Inputs");
 
 		_lprIncrement = lprIncrement;
 	}
 
 	/**
-	 * Retrieve the Initial Date
+	 * Retrieve the Evolution Start Date
 	 * 
-	 * @return The Initial Date
+	 * @return The Evolution Start Date
 	 */
 
-	public double initialDate()
+	public double evolutionStartDate()
 	{
-		return _dblInitialDate;
+		return _dblEvolutionStartDate;
 	}
 
 	/**
-	 * Retrieve the Final Date
+	 * Retrieve the Evolution Finish Date
 	 * 
-	 * @return The Final Date
+	 * @return The Evolution Finish Date
 	 */
 
-	public double finalDate()
+	public double evolutionFinishDate()
 	{
-		return _dblFinalDate;
+		return _dblEvolutionFinishDate;
+	}
+
+	/**
+	 * Retrieve the View Date
+	 * 
+	 * @return The View Date
+	 */
+
+	public double viewDate()
+	{
+		return _dblViewDate;
 	}
 
 	/**

@@ -41,7 +41,7 @@ public interface CurveStateEvolver {
 	 * 
 	 * @param dblSpotDate The Spot Date
 	 * @param dblViewDate The View Date
-	 * @param dblViewTimeIncrement The Evolution Increment
+	 * @param dblSpotTimeIncrement The Spot Evolution Increment
 	 * @param lsqmPrev The Previous LSQM Curve Update
 	 * 
 	 * @return The LSQM Curve Update
@@ -50,7 +50,29 @@ public interface CurveStateEvolver {
 	public abstract org.drip.dynamics.evolution.LSQMCurveUpdate evolve (
 		final double dblSpotDate,
 		final double dblViewDate,
-		final double dblViewTimeIncrement,
+		final double dblSpotTimeIncrement,
 		final org.drip.dynamics.evolution.LSQMCurveUpdate lsqmPrev
+	);
+
+	/**
+	 * Simulate the Principal Metric from the Start to the End Date
+	 * 
+	 * @param dblEvolutionStartDate The Evolution Start Date
+	 * @param dblEvolutionFinishDate The Evolution Finish Date
+	 * @param dblEvolutionIncrement The Evolution Increment
+	 * @param dblViewDate The View Date
+	 * @param lsqmStart The Starting State Metrics
+	 * @param iNumSimulation Number of Simulations
+	 * 
+	 * @return The Array of the Evolved Tenor LIBOR's
+	 */
+
+	public abstract double[][] simulatePrincipalMetric (
+		final double dblEvolutionStartDate,
+		final double dblEvolutionFinishDate,
+		final double dblEvolutionIncrement,
+		final double dblViewDate,
+		final org.drip.dynamics.evolution.LSQMCurveUpdate lsqmStart,
+		final int iNumSimulation
 	);
 }

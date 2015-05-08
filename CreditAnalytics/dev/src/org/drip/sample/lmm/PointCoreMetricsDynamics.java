@@ -144,8 +144,8 @@ public class PointCoreMetricsDynamics {
 		throws Exception
 	{
 		System.out.println (
-			"\t| [" + new JulianDate (bgmRunSnap.initialDate()) +
-			" -> " + new JulianDate (bgmRunSnap.finalDate()) +
+			"\t| [" + new JulianDate (bgmRunSnap.evolutionStartDate()) +
+			" -> " + new JulianDate (bgmRunSnap.evolutionFinishDate()) +
 			"]  => " + FormatUtil.FormatDouble (bgmRunSnap.libor(), 1, 2, 100.) +
 			"% | " + FormatUtil.FormatDouble (bgmRunSnap.liborIncrement(), 2, 0, 10000.) +
 			" | " + FormatUtil.FormatDouble (bgmRunSnap.continuousForwardRate(), 1, 2, 100.) +

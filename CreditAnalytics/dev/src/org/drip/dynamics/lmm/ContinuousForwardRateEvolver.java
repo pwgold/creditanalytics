@@ -150,12 +150,12 @@ public class ContinuousForwardRateEvolver implements org.drip.dynamics.evolution
 	@Override public org.drip.dynamics.lmm.ContinuousForwardRateUpdate evolve (
 		final double dblSpotDate,
 		final double dblViewDate,
-		final double dblViewTimeIncrement,
+		final double dblSpotTimeIncrement,
 		final org.drip.dynamics.evolution.LSQMPointUpdate lsqmPrev)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblSpotDate) ||
 			!org.drip.quant.common.NumberUtil.IsValid (dblViewDate) || dblSpotDate > dblViewDate ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblViewTimeIncrement) || (null != lsqmPrev &&
+				!org.drip.quant.common.NumberUtil.IsValid (dblSpotTimeIncrement) || (null != lsqmPrev &&
 					!(lsqmPrev instanceof org.drip.dynamics.lmm.ContinuousForwardRateUpdate)))
 			return null;
 
@@ -169,13 +169,13 @@ public class ContinuousForwardRateEvolver implements org.drip.dynamics.evolution
 		try {
 			double dblDiscountFactorPrev = bgmPrev.discountFactor();
 
-			double dblSpotRateIncrement = dblDContinuousForwardDXInitialPrev * dblViewTimeIncrement +
-				volatilityRandomDotDerivative (dblSpotDate, dblViewDate, dblViewTimeIncrement, false);
+			double dblSpotRateIncrement = dblDContinuousForwardDXInitialPrev * dblSpotTimeIncrement +
+				volatilityRandomDotDerivative (dblSpotDate, dblViewDate, dblSpotTimeIncrement, false);
 
 			double dblContinuousForwardIncrement = (dblDContinuousForwardDXTerminalPrev + 0.5 *
 				_mfv.pointVolatilityModulusDerivative (dblSpotDate, dblViewDate, 1, true)) *
-					dblViewTimeIncrement + volatilityRandomDotDerivative (dblSpotDate, dblViewDate,
-						dblViewTimeIncrement, true);
+					dblSpotTimeIncrement + volatilityRandomDotDerivative (dblSpotDate, dblViewDate,
+						dblSpotTimeIncrement, true);
 
 			double dblContinuousForwardRate = bgmPrev.continuousForwardRate() +
 				dblContinuousForwardIncrement;
@@ -183,14 +183,14 @@ public class ContinuousForwardRateEvolver implements org.drip.dynamics.evolution
 			double dblSpotRate = bgmPrev.spotRate() + dblSpotRateIncrement;
 
 			double dblDiscountFactorIncrement = dblDiscountFactorPrev * ((dblSpotRate -
-				dblContinuousForwardRate) * dblViewTimeIncrement - volatilityRandomDotProduct (dblSpotDate,
-					dblViewDate, dblViewTimeIncrement));
+				dblContinuousForwardRate) * dblSpotTimeIncrement - volatilityRandomDotProduct (dblSpotDate,
+					dblViewDate, dblSpotTimeIncrement));
 
-			return org.drip.dynamics.lmm.ContinuousForwardRateUpdate.Create (_lslFunding, _lslForward, dblViewDate, dblViewDate
-				+ dblViewTimeIncrement, dblContinuousForwardRate, dblContinuousForwardIncrement, dblSpotRate,
-					dblSpotRateIncrement, dblDiscountFactorPrev + dblDiscountFactorIncrement,
-						dblDiscountFactorIncrement, dblDContinuousForwardDXInitialPrev,
-							dblDContinuousForwardDXTerminalPrev);
+			return org.drip.dynamics.lmm.ContinuousForwardRateUpdate.Create (_lslFunding, _lslForward,
+				dblSpotDate, dblSpotDate + dblSpotTimeIncrement, dblViewDate, dblContinuousForwardRate,
+					dblContinuousForwardIncrement, dblSpotRate, dblSpotRateIncrement, dblDiscountFactorPrev +
+						dblDiscountFactorIncrement, dblDiscountFactorIncrement,
+							dblDContinuousForwardDXInitialPrev, dblDContinuousForwardDXTerminalPrev);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}

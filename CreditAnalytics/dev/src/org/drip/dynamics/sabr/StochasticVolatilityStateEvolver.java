@@ -238,7 +238,7 @@ public class StochasticVolatilityStateEvolver implements org.drip.dynamics.evolu
 	@Override public org.drip.dynamics.evolution.LSQMPointUpdate evolve (
 		final double dblSpotDate,
 		final double dblViewDate,
-		final double dblViewTimeIncrement,
+		final double dblSpotTimeIncrement,
 		final org.drip.dynamics.evolution.LSQMPointUpdate lsqmPrev)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblSpotDate) ||
@@ -255,7 +255,7 @@ public class StochasticVolatilityStateEvolver implements org.drip.dynamics.evolu
 
 			double dblForwardRateVolatility = fruPrev.forwardRateVolatility();
 
-			double dblTimeIncrementSQRT = java.lang.Math.sqrt (dblViewTimeIncrement);
+			double dblTimeIncrementSQRT = java.lang.Math.sqrt (dblSpotTimeIncrement);
 
 			double dblForwardRateZ = _usgForwardRate.random();
 
@@ -266,8 +266,8 @@ public class StochasticVolatilityStateEvolver implements org.drip.dynamics.evolu
 				* dblTimeIncrementSQRT * (_dblRho * dblForwardRateZ + _dblIdiosyncraticRho *
 					_usgForwardRateVolatilityIdiosyncratic.random());
 
-			return org.drip.dynamics.sabr.ForwardRateUpdate.Create (_lslForward, dblViewDate, dblViewDate +
-				dblViewTimeIncrement * 365.25, dblForwardRate + dblForwardRateIncrement,
+			return org.drip.dynamics.sabr.ForwardRateUpdate.Create (_lslForward, dblSpotDate, dblSpotDate +
+				dblSpotTimeIncrement * 365.25, dblViewDate, dblForwardRate + dblForwardRateIncrement,
 					dblForwardRateIncrement, dblForwardRateVolatility + dblForwardRateVolatilityIncrement,
 						dblForwardRateVolatilityIncrement);
 		} catch (java.lang.Exception e) {

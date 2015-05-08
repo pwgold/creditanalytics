@@ -70,13 +70,13 @@ public class LognormalLIBORPointEvolver implements org.drip.dynamics.evolution.P
 
 	private double continuousForwardRateIncrement (
 		final double dblViewDate,
-		final double dblViewTimeIncrement,
+		final double dblSpotTimeIncrement,
 		final double[] adblMultivariateRandom)
 		throws java.lang.Exception
 	{
 		final int iNumFactor = adblMultivariateRandom.length;
 
-		final double dblViewTimeIncrementSQRT = java.lang.Math.sqrt (dblViewTimeIncrement);
+		final double dblSpotTimeIncrementSQRT = java.lang.Math.sqrt (dblSpotTimeIncrement);
 
 		org.drip.function.deterministic.R1ToR1 continuousForwardRateR1ToR1 = new
 			org.drip.function.deterministic.R1ToR1 (null) {
@@ -99,7 +99,7 @@ public class LognormalLIBORPointEvolver implements org.drip.dynamics.evolution.P
 				}
 
 				return (_fc.forward (dblDate) + 0.5 * dblForwardPointVolatilityModulus) *
-					dblViewTimeIncrement + dblPointVolatilityMultifactorRandom * dblViewTimeIncrementSQRT;
+					dblSpotTimeIncrement + dblPointVolatilityMultifactorRandom * dblSpotTimeIncrementSQRT;
 			}
 		};
 
@@ -109,13 +109,13 @@ public class LognormalLIBORPointEvolver implements org.drip.dynamics.evolution.P
 	private double spotRateIncrement (
 		final double dblSpotDate,
 		final double dblViewDate,
-		final double dblViewTimeIncrement,
+		final double dblSpotTimeIncrement,
 		final double[] adblMultivariateRandom)
 		throws java.lang.Exception
 	{
 		final int iNumFactor = adblMultivariateRandom.length;
 
-		final double dblViewTimeIncrementSQRT = java.lang.Math.sqrt (dblViewTimeIncrement);
+		final double dblSpotTimeIncrementSQRT = java.lang.Math.sqrt (dblSpotTimeIncrement);
 
 		org.drip.function.deterministic.R1ToR1 spotRateR1ToR1 = new org.drip.function.deterministic.R1ToR1
 			(null) {
@@ -133,8 +133,8 @@ public class LognormalLIBORPointEvolver implements org.drip.dynamics.evolution.P
 							adblMultivariateRandom[i];
 				}
 
-				return _fc.forward (dblDate) * dblViewTimeIncrement + dblPointVolatilityMultifactorRandom *
-					dblViewTimeIncrementSQRT;
+				return _fc.forward (dblDate) * dblSpotTimeIncrement + dblPointVolatilityMultifactorRandom *
+					dblSpotTimeIncrementSQRT;
 			}
 		};
 
@@ -224,16 +224,16 @@ public class LognormalLIBORPointEvolver implements org.drip.dynamics.evolution.P
 	@Override public org.drip.dynamics.lmm.BGMPointUpdate evolve (
 		final double dblSpotDate,
 		final double dblViewDate,
-		final double dblViewTimeIncrement,
+		final double dblSpotTimeIncrement,
 		final org.drip.dynamics.evolution.LSQMPointUpdate lsqmPrev)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblSpotDate) ||
 			!org.drip.quant.common.NumberUtil.IsValid (dblViewDate) || dblSpotDate > dblViewDate ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblViewTimeIncrement) || (null != lsqmPrev &&
+				!org.drip.quant.common.NumberUtil.IsValid (dblSpotTimeIncrement) || (null != lsqmPrev &&
 					!(lsqmPrev instanceof org.drip.dynamics.lmm.BGMPointUpdate)))
 			return null;
 
-		double dblViewTimeIncrementSQRT = java.lang.Math.sqrt (dblViewTimeIncrement);
+		double dblSpotTimeIncrementSQRT = java.lang.Math.sqrt (dblSpotTimeIncrement);
 
 		double[] adblMultivariateRandom = _llv.msg().random();
 
@@ -286,37 +286,37 @@ public class LognormalLIBORPointEvolver implements org.drip.dynamics.evolution.P
 				dblCrossVolatilityDotProduct += adblLognormalFactorPointVolatility[i] *
 					adblContinuousForwardVolatility[i];
 				dblLIBORVolatilityMultiFactorRandom += adblLognormalFactorPointVolatility[i] *
-					adblMultivariateRandom[i] * dblViewTimeIncrementSQRT;
+					adblMultivariateRandom[i] * dblSpotTimeIncrementSQRT;
 				dblContinuousForwardVolatilityModulus += adblContinuousForwardVolatility[i] *
 					adblContinuousForwardVolatility[i];
 				dblForwardVolatilityMultiFactorRandom += adblContinuousForwardVolatility[i] *
-					adblMultivariateRandom[i] * dblViewTimeIncrementSQRT;
+					adblMultivariateRandom[i] * dblSpotTimeIncrementSQRT;
 			}
 
 			double dblDCF = org.drip.analytics.support.AnalyticsHelper.TenorToYearFraction (strTenor);
 
 			double dblLIBORDCF = dblDCF * dblLIBOR;
 
-			double dblLIBORIncrement = dblViewTimeIncrement * (forwardDerivative (dblForwardDate) + dblLIBOR
+			double dblLIBORIncrement = dblSpotTimeIncrement * (forwardDerivative (dblForwardDate) + dblLIBOR
 				* dblCrossVolatilityDotProduct + (dblLognormalPointVolatilityModulus * dblLIBOR * dblLIBORDCF
 					/ (1. + dblLIBORDCF))) + dblLIBOR * dblLIBORVolatilityMultiFactorRandom;
 
 			double dblContinuousForwardRateIncrement = continuousForwardRateIncrement (dblViewDate,
-				dblViewTimeIncrement, adblMultivariateRandom);
+				dblSpotTimeIncrement, adblMultivariateRandom);
 
-			double dblSpotRateIncrement = spotRateIncrement (dblSpotDate, dblViewDate, dblViewTimeIncrement,
+			double dblSpotRateIncrement = spotRateIncrement (dblSpotDate, dblViewDate, dblSpotTimeIncrement,
 				adblMultivariateRandom);
 
 			double dblEvolvedContinuousForwardRate = dblContinuouslyCompoundedForwardRate +
 				dblContinuousForwardRateIncrement;
 			double dblDiscountFactorIncrement = dblDiscountFactor * (dblSpotRate -
-				dblContinuouslyCompoundedForwardRate) * dblViewTimeIncrement -
+				dblContinuouslyCompoundedForwardRate) * dblSpotTimeIncrement -
 					dblForwardVolatilityMultiFactorRandom;
 
-			return org.drip.dynamics.lmm.BGMPointUpdate.Create (_lslFunding, _lslForward, dblViewDate,
-				dblViewDate + dblViewTimeIncrement * 365.25, dblLIBOR + dblLIBORIncrement, dblLIBORIncrement,
-					dblEvolvedContinuousForwardRate, dblContinuousForwardRateIncrement, dblSpotRate +
-						dblSpotRateIncrement, dblSpotRateIncrement, dblDiscountFactor +
+			return org.drip.dynamics.lmm.BGMPointUpdate.Create (_lslFunding, _lslForward, dblSpotDate,
+				dblSpotDate + dblSpotTimeIncrement * 365.25, dblViewDate, dblLIBOR + dblLIBORIncrement,
+					dblLIBORIncrement, dblEvolvedContinuousForwardRate, dblContinuousForwardRateIncrement,
+						dblSpotRate + dblSpotRateIncrement, dblSpotRateIncrement, dblDiscountFactor +
 							dblDiscountFactorIncrement, dblDiscountFactorIncrement, java.lang.Math.exp
 								(dblEvolvedContinuousForwardRate) - 1., (java.lang.Math.exp (dblDCF *
 									dblEvolvedContinuousForwardRate) - 1.) / dblDCF, java.lang.Math.sqrt

@@ -207,19 +207,19 @@ public class SingleFactorStateEvolver implements org.drip.dynamics.evolution.Poi
 	@Override public org.drip.dynamics.evolution.LSQMPointUpdate evolve (
 		final double dblSpotDate,
 		final double dblViewDate,
-		final double dblViewTimeIncrement,
+		final double dblSpotTimeIncrement,
 		final org.drip.dynamics.evolution.LSQMPointUpdate lsqmPrev)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblSpotDate) ||
 			!org.drip.quant.common.NumberUtil.IsValid (dblViewDate) || dblViewDate < dblSpotDate ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblViewTimeIncrement) || null == lsqmPrev ||
+				!org.drip.quant.common.NumberUtil.IsValid (dblSpotTimeIncrement) || null == lsqmPrev ||
 					!(lsqmPrev instanceof org.drip.dynamics.hullwhite.ShortRateUpdate))
 			return null;
 
-		double dblDate = dblViewDate;
+		double dblDate = dblSpotDate;
 		double dblTimeIncrement = 1. / 365.25;
 		double dblInitialShortRate = java.lang.Double.NaN;
-		double dblFinalDate = dblViewDate + dblViewTimeIncrement;
+		double dblFinalDate = dblSpotDate + dblSpotTimeIncrement;
 
 		try {
 			dblInitialShortRate = ((org.drip.dynamics.hullwhite.ShortRateUpdate)
@@ -244,15 +244,15 @@ public class SingleFactorStateEvolver implements org.drip.dynamics.evolution.Poi
 			++dblDate;
 		}
 
-		double dblADF = java.lang.Math.exp (-1. * _dblA * dblViewTimeIncrement);
+		double dblADF = java.lang.Math.exp (-1. * _dblA * dblSpotTimeIncrement);
 
 		double dblB = (1. - dblADF) / _dblA;
 
 		try {
-			return org.drip.dynamics.hullwhite.ShortRateUpdate.Create (_lslFunding, dblViewDate,
-				dblFinalDate, dblInitialShortRate, dblShortRate, dblInitialShortRate * dblADF + alpha
-					(dblSpotDate, dblFinalDate) - alpha (dblSpotDate, dblViewDate) * dblADF, 0.5 * _dblSigma
-						* _dblSigma * (1. - dblADF * dblADF) / _dblA, java.lang.Math.exp (dblB *
+			return org.drip.dynamics.hullwhite.ShortRateUpdate.Create (_lslFunding, dblSpotDate,
+				dblFinalDate, dblViewDate, dblInitialShortRate, dblShortRate, dblInitialShortRate * dblADF +
+					alpha (dblSpotDate, dblFinalDate) - alpha (dblSpotDate, dblViewDate) * dblADF, 0.5 *
+						_dblSigma * _dblSigma * (1. - dblADF * dblADF) / _dblA, java.lang.Math.exp (dblB *
 							_auIFRInitial.evaluate (dblViewDate) - 0.25 * _dblSigma * _dblSigma * (1. -
 								java.lang.Math.exp (-2. * _dblA * (dblViewDate - dblSpotDate) / 365.25)) *
 									dblB * dblB / _dblA));

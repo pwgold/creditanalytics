@@ -140,17 +140,17 @@ public class LognormalLIBORVolatility extends org.drip.dynamics.hjm.MultiFactorV
 	 * Compute the Volatility of the Continuously Compounded Forward Rate Up to the Target Date
 	 * 
 	 * @param dblTargetDate The Target Date
-	 * @param fre The Forward Rate Estimator Instance
+	 * @param fc The Forward Curve Instance
 	 * 
 	 * @return The Volatility of the Continuously Compounded Forward Rate Up to the Target Date
 	 */
 
 	public double[] continuousForwardVolatility (
 		final double dblTargetDate,
-		final org.drip.analytics.rates.ForwardRateEstimator fre)
+		final org.drip.analytics.rates.ForwardCurve fc)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblTargetDate) || dblTargetDate <= _dblSpotDate ||
-			null == fre)
+			null == fc)
 			return null;
 
 		org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg = msg();
@@ -183,13 +183,77 @@ public class LognormalLIBORVolatility extends org.drip.dynamics.hjm.MultiFactorV
 					(strTenor).julian()) > dblTargetDate)
 					bLoop = false;
 
-				double dblLIBORTenorDCF = fre.forward (dblEndDate) * dblTenorDCF;
+				double dblLIBORTenorDCF = fc.forward (dblEndDate) * dblTenorDCF;
 
 				double dblLIBORLognormalVolatilityScaler = dblLIBORTenorDCF / (1. + dblLIBORTenorDCF);
 
 				for (int i = 0; i < iNumFactor; ++i)
 					adblContinuousForwardVolatility[i] += dblLIBORLognormalVolatilityScaler *
 						adblFactorPointVolatility[i];
+			} catch (java.lang.Exception e) {
+				e.printStackTrace();
+
+				return null;
+			}
+		}
+
+		return adblContinuousForwardVolatility;
+	}
+
+	/**
+	 * Compute the Volatility of the Continuously Compounded Forward Rate Up to the Target Date
+	 * 
+	 * @param dblTargetDate The Target Date
+	 * @param dc The Discount Curve Instance
+	 * 
+	 * @return The Volatility of the Continuously Compounded Forward Rate Up to the Target Date
+	 */
+
+	public double[] continuousForwardVolatility (
+		final double dblTargetDate,
+		final org.drip.analytics.rates.DiscountCurve dc)
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (dblTargetDate) || dblTargetDate <= _dblSpotDate ||
+			null == dc)
+			return null;
+
+		org.drip.sequence.random.PrincipalFactorSequenceGenerator pfsg = msg();
+
+		int iNumFactor = pfsg.numFactor();
+
+		boolean bLoop = true;
+		double dblStartDate = _dblSpotDate;
+		double dblTenorDCF = java.lang.Double.NaN;
+		double[] adblContinuousForwardVolatility = new double[iNumFactor];
+
+		java.lang.String strTenor = _lslForward.tenor();
+
+		try {
+			dblTenorDCF = org.drip.analytics.support.AnalyticsHelper.TenorToYearFraction (strTenor);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+
+			return null;
+		}
+
+		for (int i = 0; i < iNumFactor; ++i)
+			adblContinuousForwardVolatility[i] = 0.;
+
+		double[] adblFactorPointVolatility = factorPointVolatility (_dblSpotDate, dblStartDate);
+
+		while (bLoop) {
+			try {
+				double dblLIBORTenorDCF = dc.libor (dblStartDate, strTenor) * dblTenorDCF;
+
+				double dblLIBORLognormalVolatilityScaler = dblLIBORTenorDCF / (1. + dblLIBORTenorDCF);
+
+				for (int i = 0; i < iNumFactor; ++i)
+					adblContinuousForwardVolatility[i] += dblLIBORLognormalVolatilityScaler *
+						adblFactorPointVolatility[i];
+
+				if ((dblStartDate = new org.drip.analytics.date.JulianDate (dblStartDate).addTenor
+					(strTenor).julian()) > dblTargetDate)
+					bLoop = false;
 			} catch (java.lang.Exception e) {
 				e.printStackTrace();
 

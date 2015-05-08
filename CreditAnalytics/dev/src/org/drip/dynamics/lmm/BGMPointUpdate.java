@@ -48,6 +48,7 @@ public class BGMPointUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate 
 	 * @param lslForward The Forward Latent State Label
 	 * @param dblInitialDate The Initial Date
 	 * @param dblFinalDate The Final Date
+	 * @param dblTargetPointDate The Target Point Date
 	 * @param dblLIBOR The LIBOR Rate
 	 * @param dblLIBORIncrement The LIBOR Rate Increment
 	 * @param dblContinuousForwardRate The Continuously Compounded Forward Rate
@@ -69,6 +70,7 @@ public class BGMPointUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate 
 		final org.drip.state.identifier.ForwardLabel lslForward,
 		final double dblInitialDate,
 		final double dblFinalDate,
+		final double dblTargetPointDate,
 		final double dblLIBOR,
 		final double dblLIBORIncrement,
 		final double dblContinuousForwardRate,
@@ -134,8 +136,9 @@ public class BGMPointUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate 
 			return null;
 
 		try {
-			return new BGMPointUpdate (lslFunding, lslForward, dblInitialDate, dblFinalDate, lrSnapshot,
-				lrIncrement, dblLognormalLIBORVolatility, dblContinuouslyCompoundedForwardVolatility);
+			return new BGMPointUpdate (lslFunding, lslForward, dblInitialDate, dblFinalDate,
+				dblTargetPointDate, lrSnapshot, lrIncrement, dblLognormalLIBORVolatility,
+					dblContinuouslyCompoundedForwardVolatility);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -148,13 +151,14 @@ public class BGMPointUpdate extends org.drip.dynamics.evolution.LSQMPointUpdate 
 		final org.drip.state.identifier.ForwardLabel lslForward,
 		final double dblInitialDate,
 		final double dblFinalDate,
+		final double dblViewDate,
 		final org.drip.dynamics.evolution.LSQMPointRecord lrSnapshot,
 		final org.drip.dynamics.evolution.LSQMPointRecord lrIncrement,
 		final double dblLognormalLIBORVolatility,
 		final double dblContinuouslyCompoundedForwardVolatility)
 		throws java.lang.Exception
 	{
-		super (dblInitialDate, dblFinalDate, lrSnapshot, lrIncrement);
+		super (dblInitialDate, dblFinalDate, dblViewDate, lrSnapshot, lrIncrement);
 
 		if (null == (_lslFunding = lslFunding) || null == (_lslForward = lslForward) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_dblLognormalLIBORVolatility =

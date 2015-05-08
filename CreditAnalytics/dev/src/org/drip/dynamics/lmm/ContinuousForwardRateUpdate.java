@@ -48,6 +48,7 @@ public class ContinuousForwardRateUpdate extends org.drip.dynamics.evolution.LSQ
 	 * @param lslForward The Forward Latent State Label
 	 * @param dblInitialDate The Initial Date
 	 * @param dblFinalDate The Final Date
+	 * @param dblTargetPointDate The Target Point Date
 	 * @param dblContinuousForwardRate The Continuously Compounded Forward Rate
 	 * @param dblContinuousForwardRateIncrement The Continuously Compounded Forward Rate Increment
 	 * @param dblSpotRate The Spot Rate
@@ -65,6 +66,7 @@ public class ContinuousForwardRateUpdate extends org.drip.dynamics.evolution.LSQ
 		final org.drip.state.identifier.ForwardLabel lslForward,
 		final double dblInitialDate,
 		final double dblFinalDate,
+		final double dblTargetPointDate,
 		final double dblContinuousForwardRate,
 		final double dblContinuousForwardRateIncrement,
 		final double dblSpotRate,
@@ -106,8 +108,9 @@ public class ContinuousForwardRateUpdate extends org.drip.dynamics.evolution.LSQ
 			return null;
 
 		try {
-			return new ContinuousForwardRateUpdate (lslFunding, lslForward, dblInitialDate, dblFinalDate, lrSnapshot,
-				lrIncrement, dblDContinuousForwardDXInitial, dblDContinuousForwardDXTerminal);
+			return new ContinuousForwardRateUpdate (lslFunding, lslForward, dblInitialDate, dblFinalDate,
+				dblTargetPointDate, lrSnapshot, lrIncrement, dblDContinuousForwardDXInitial,
+					dblDContinuousForwardDXTerminal);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -120,13 +123,14 @@ public class ContinuousForwardRateUpdate extends org.drip.dynamics.evolution.LSQ
 		final org.drip.state.identifier.ForwardLabel lslForward,
 		final double dblInitialDate,
 		final double dblFinalDate,
+		final double dblViewDate,
 		final org.drip.dynamics.evolution.LSQMPointRecord lrSnapshot,
 		final org.drip.dynamics.evolution.LSQMPointRecord lrIncrement,
 		final double dblDContinuousForwardDXInitial,
 		final double dblDContinuousForwardDXTerminal)
 		throws java.lang.Exception
 	{
-		super (dblInitialDate, dblFinalDate, lrSnapshot, lrIncrement);
+		super (dblInitialDate, dblFinalDate, dblViewDate, lrSnapshot, lrIncrement);
 
 		if (null == (_lslFunding = lslFunding) || null == (_lslForward = lslForward) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_dblDContinuousForwardDXTerminal =

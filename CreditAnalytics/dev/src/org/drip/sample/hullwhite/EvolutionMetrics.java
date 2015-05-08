@@ -65,8 +65,8 @@ public class EvolutionMetrics {
 		final ShortRateUpdate hwem)
 		throws Exception
 	{
-		System.out.println ("\t| [" + new JulianDate (hwem.initialDate()) + " -> " +
-			new JulianDate (hwem.finalDate()) + "] => " +
+		System.out.println ("\t| [" + new JulianDate (hwem.evolutionStartDate()) + " -> " +
+			new JulianDate (hwem.evolutionFinishDate()) + "] => " +
 			FormatUtil.FormatDouble (hwem.initialShortRate(), 1, 2, 100.) + "% | " +
 			FormatUtil.FormatDouble (hwem.realizedFinalShortRate(), 1, 2, 100.) + "% | " +
 			FormatUtil.FormatDouble (hwem.expectedFinalShortRate(), 1, 2, 100.) + "% | " +
@@ -134,6 +134,7 @@ public class EvolutionMetrics {
 			FundingLabel.Standard (strCurrency),
 			dblInitialDate,
 			dblInitialDate,
+			dblFinalDate,
 			dblStartingShortRate,
 			dblStartingShortRate,
 			dblStartingShortRate,
