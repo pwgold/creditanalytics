@@ -101,7 +101,7 @@ public abstract class NormedR1ToR1 extends org.drip.spaces.function.NormedR1Inpu
 		double dblNorm = 0.;
 		int iNumSample = adblInstance.length;
 
-		int iPNorm = _runsOutput.pNorm();
+		int iPNorm = output().pNorm();
 
 		for (int i = 0; i < iNumSample; ++i)
 			dblNorm += java.lang.Math.pow (java.lang.Math.abs (_funcR1ToR1.evaluate (adblInstance[i])),

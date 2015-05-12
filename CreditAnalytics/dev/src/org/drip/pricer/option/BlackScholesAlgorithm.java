@@ -359,13 +359,61 @@ public class BlackScholesAlgorithm implements org.drip.pricer.option.FokkerPlanc
 	 * @throws java.lang.Exception Thrown if the Constant Black Scholes Volatility cannot be implied
 	 */
 
-	public double implyBlackScholesVolatility (
+	public double implyVolatilityFromCallPrice (
 		final double dblStrike,
 		final double dbTimeToExpiry,
 		final double dblRiskFreeRate,
 		final double dblUnderlier,
 		final boolean bIsForward,
 		final double dblCallPrice)
+		throws java.lang.Exception
+	{
+		org.drip.function.deterministic.R1ToR1 au = new org.drip.function.deterministic.R1ToR1 (null) {
+			@Override public double evaluate (
+				final double dblSpotVolatility)
+				throws java.lang.Exception
+			{
+				if (!compute (dblStrike, dbTimeToExpiry, dblRiskFreeRate, dblUnderlier, bIsForward,
+					java.lang.Math.abs (dblSpotVolatility), true))
+					throw new java.lang.Exception
+						("BlackScholesAlgorithm::implyVolatilityFromCallPrice => Cannot compute Measure");
+
+				return callPrice() - dblCallPrice;
+			}
+		};
+
+		org.drip.function.solver1D.FixedPointFinderOutput fpop = new
+			org.drip.function.solver1D.FixedPointFinderBrent (0., au, true).findRoot();
+
+		if (null == fpop || !fpop.containsRoot())
+			throw new java.lang.Exception
+				("BlackScholesAlgorithm::implyVolatilityFromCallPrice => Cannot compute Measure");
+
+		return java.lang.Math.abs (fpop.getRoot());
+	}
+
+	/**
+	 * Imply the Constant Black Scholes Volatility From the Put Price
+	 * 
+	 * @param dblStrike Strike
+	 * @param dbTimeToExpiry Time To Expiry
+	 * @param dblRiskFreeRate Risk Free Rate
+	 * @param dblUnderlier The Underlier
+	 * @param bIsForward TRUE => The Underlier represents the Forward, FALSE => it represents Spot
+	 * @param dblPutPrice The Put Price
+	 * 
+	 * @return The Implied Constant Black Scholes Volatility
+	 * 
+	 * @throws java.lang.Exception Thrown if the Constant Black Scholes Volatility cannot be implied
+	 */
+
+	public double implyVolatilityFromPutPrice (
+		final double dblStrike,
+		final double dbTimeToExpiry,
+		final double dblRiskFreeRate,
+		final double dblUnderlier,
+		final boolean bIsForward,
+		final double dblPutPrice)
 		throws java.lang.Exception
 	{
 		org.drip.function.deterministic.R1ToR1 au = new org.drip.function.deterministic.R1ToR1
@@ -378,9 +426,9 @@ public class BlackScholesAlgorithm implements org.drip.pricer.option.FokkerPlanc
 				if (!compute (dblStrike, dbTimeToExpiry, dblRiskFreeRate, dblUnderlier, bIsForward,
 					java.lang.Math.abs (dblSpotVolatility), true))
 					throw new java.lang.Exception
-						("BlackScholesAlgorithm::implyBlackScholesVolatility => Cannot compute Measure");
+						("BlackScholesAlgorithm::implyVolatilityFromPutPrice => Cannot compute Measure");
 
-				return callPrice() - dblCallPrice;
+				return putPrice() - dblPutPrice;
 			}
 		};
 
@@ -389,7 +437,7 @@ public class BlackScholesAlgorithm implements org.drip.pricer.option.FokkerPlanc
 
 		if (null == fpop || !fpop.containsRoot())
 			throw new java.lang.Exception
-				("BlackScholesAlgorithm::implyVolatility => Cannot compute Measure");
+				("BlackScholesAlgorithm::implyVolatilityFromPutPrice => Cannot compute Measure");
 
 		return java.lang.Math.abs (fpop.getRoot());
 	}

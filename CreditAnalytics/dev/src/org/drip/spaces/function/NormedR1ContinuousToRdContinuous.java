@@ -72,7 +72,7 @@ public class NormedR1ContinuousToRdContinuous extends org.drip.spaces.function.N
 
 		final org.drip.function.deterministic.R1ToRd funcR1ToRd = function();
 
-		final int iPNorm = ((org.drip.spaces.metric.RealMultidimensionalNormedSpace) output()).pNorm();
+		final int iPNorm = output().pNorm();
 
 		org.drip.function.deterministic.R1ToRd funcR1ToRdPointNorm = new
 			org.drip.function.deterministic.R1ToRd (null) {

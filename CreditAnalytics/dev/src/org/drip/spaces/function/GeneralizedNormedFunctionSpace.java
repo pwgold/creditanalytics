@@ -40,7 +40,7 @@ package org.drip.spaces.function;
  * @author Lakshmi Krishnamurthy
  */
 
-public interface GeneralizedNormedFunctionSpace {
+public abstract class GeneralizedNormedFunctionSpace {
 
 	/**
 	 * Retrieve the Input Metric Vector Space
@@ -87,6 +87,29 @@ public interface GeneralizedNormedFunctionSpace {
 		throws java.lang.Exception;
 
 	/**
+	 * Retrieve the Sample Covering Number
+	 * 
+	 * @param gvvi The Validated Vector Space Instance
+	 * @param dblCover The Cover
+	 * 
+	 * @return The Sample Covering Number
+	 * 
+	 * @throws java.lang.Exception Thrown if the Sample Covering Number cannot be computed
+	 */
+
+	public double sampleCoveringNumber (
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final double dblCover)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)
+			throw new java.lang.Exception
+				("GeneralizedNormedFunctionSpace::sampleCoveringNumber => Invalid Inputs");
+
+		return sampleMetricNorm (gvvi) / java.lang.Math.pow (dblCover, output().pNorm());
+	}
+
+	/**
 	 * Retrieve the Population ESS (Essential Spectrum)
 	 * 
 	 * @return The Population ESS (Essential Spectrum)
@@ -107,4 +130,25 @@ public interface GeneralizedNormedFunctionSpace {
 
 	public abstract double populationMetricNorm()
 		throws java.lang.Exception;
+
+	/**
+	 * Retrieve the Population Covering Number
+	 * 
+	 * @param dblCover The Cover
+	 * 
+	 * @return The Population Covering Number
+	 * 
+	 * @throws java.lang.Exception Thrown if the Population Covering Number cannot be computed
+	 */
+
+	public double populationCoveringNumber (
+		final double dblCover)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)
+			throw new java.lang.Exception
+				("GeneralizedNormedFunctionSpace::populationCoveringNumber => Invalid Inputs");
+
+		return populationMetricNorm()/ java.lang.Math.pow (dblCover, output().pNorm());
+	}
 }

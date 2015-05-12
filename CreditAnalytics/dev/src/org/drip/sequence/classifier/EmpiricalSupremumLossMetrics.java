@@ -103,14 +103,14 @@ public class EmpiricalSupremumLossMetrics extends org.drip.sequence.functional.E
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-		org.drip.function.classifier.AbstractBinaryClassifier supClassifier = _funcELS.supremumClassifier
+		org.drip.classifier.functionclass.AbstractBinaryClassifier supClassifier = _funcELS.supremumClassifier
 			(adblVariate);
 
 		if (null == supClassifier)
 			throw new java.lang.Exception
 				("EmpiricalSupremumLossMetrics::lugosiVarianceBound => Cannot Find Supremum Classifier");
 
-		org.drip.function.classifier.ClassAsymptoticSampleBound casb =
+		org.drip.classifier.functionclass.ConcentrationExpectedLossAsymptote casb =
 			_funcELS.classifierClass().asymptote();
 
 		if (null == casb)

@@ -1,5 +1,5 @@
 
-package org.drip.function.classifier;
+package org.drip.classifier.functionclass;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,18 +29,17 @@ package org.drip.function.classifier;
  */
 
 /**
- * FunctionClass implements the Class that holds the Set of Classifier Functions. Class-Specific Bounds and
- *  other Parameters are also maintained.
+ * GeneralizedClassifierFunctionClass implements the Class that holds the Space of Classifier Functions.
+ *  Class-Specific Asymptotic Sample, Covering Bounds and other Parameters are also maintained.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class FunctionClass {
-	private org.drip.function.classifier.ClassAsymptoticSampleBound _asymptote = null;
-	private org.drip.function.classifier.AbstractBinaryClassifier[] _aClassifier = null;
+public abstract class GeneralizedClassifierFunctionClass extends org.drip.spaces.functionclass.R1ToR1Class {
+	private org.drip.classifier.functionclass.ConcentrationExpectedLossAsymptote _asymptote = null;
 
 	/**
-	 * FunctionClass Constructor
+	 * GeneralizedClassifierFunctionClass Constructor
 	 * 
 	 * @param aClassifier Array of Classifiers belonging to the Function Class
 	 * @param asymptote Asymptotic Bounds Behavior of the Function Class
@@ -48,13 +47,12 @@ public class FunctionClass {
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public FunctionClass (
-		final org.drip.function.classifier.AbstractBinaryClassifier[] aClassifier,
-		final org.drip.function.classifier.ClassAsymptoticSampleBound asymptote)
+	public GeneralizedClassifierFunctionClass (
+		final org.drip.spaces.function.NormedR1ToR1[] aR1ToR1FunctionSpace,
+		final org.drip.classifier.functionclass.ConcentrationExpectedLossAsymptote asymptote)
 		throws java.lang.Exception
 	{
-		if (null == (_aClassifier = aClassifier) || 0 == _aClassifier.length)
-			throw new java.lang.Exception ("FunctionClass ctr => Invalid Inputs!");
+		super (aR1ToR1FunctionSpace);
 
 		_asymptote = asymptote;
 	}
@@ -65,9 +63,22 @@ public class FunctionClass {
 	 * @return The Array of Classifiers
 	 */
 
-	public org.drip.function.classifier.AbstractBinaryClassifier[] classifiers()
+	public org.drip.classifier.functionclass.AbstractBinaryClassifier[] classifiers()
 	{
-		return _aClassifier;
+		org.drip.function.deterministic.R1ToR1[] aR1ToR1 = functionR1ToR1Set();
+
+		int iNumFunction = aR1ToR1.length;
+		org.drip.classifier.functionclass.AbstractBinaryClassifier[] aABE = new
+			org.drip.classifier.functionclass.AbstractBinaryClassifier[iNumFunction];
+
+		for (int i = 0; i < iNumFunction; ++i) {
+			if (!(aR1ToR1[i] instanceof org.drip.classifier.functionclass.AbstractBinaryClassifier))
+				return null;
+
+			aABE[i] = (org.drip.classifier.functionclass.AbstractBinaryClassifier) aR1ToR1[i];
+		}
+
+		return aABE;
 	}
 
 	/**
@@ -76,7 +87,7 @@ public class FunctionClass {
 	 * @return The Class Asymptotic Bounds Behavior
 	 */
 
-	public org.drip.function.classifier.ClassAsymptoticSampleBound asymptote()
+	public org.drip.classifier.functionclass.ConcentrationExpectedLossAsymptote asymptote()
 	{
 		return _asymptote;
 	}

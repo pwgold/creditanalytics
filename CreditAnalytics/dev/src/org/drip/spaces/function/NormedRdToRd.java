@@ -131,7 +131,7 @@ public abstract class NormedRdToRd extends org.drip.spaces.function.NormedRdInpu
 		double[] adblMetricNorm = new double[iOutputDimension];
 		int iNumSample = aadblInstance.length;
 
-		int iPNorm = _rmnsOutput.pNorm();
+		int iPNorm = output().pNorm();
 
 		for (int i = 0; i < iNumSample; ++i)
 			adblMetricNorm[i] = 0.;
@@ -228,7 +228,7 @@ public abstract class NormedRdToRd extends org.drip.spaces.function.NormedRdInpu
 		int iOutputDimension = adblSampleMetricNorm.length;
 		double dblSampleMetricNorm = 0.;
 
-		int iPNorm = _rmnsOutput.pNorm();
+		int iPNorm = output().pNorm();
 
 		if (0 == iOutputDimension)
 			throw new java.lang.Exception
@@ -279,7 +279,7 @@ public abstract class NormedRdToRd extends org.drip.spaces.function.NormedRdInpu
 		int iOutputDimension = adblPopulationMetricNorm.length;
 		double dblPopulationMetricNorm = 0.;
 
-		int iPNorm = _rmnsOutput.pNorm();
+		int iPNorm = output().pNorm();
 
 		if (0 == iOutputDimension)
 			throw new java.lang.Exception

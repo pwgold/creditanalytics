@@ -1,5 +1,5 @@
 
-package org.drip.function.classifier;
+package org.drip.classifier.functionclass;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

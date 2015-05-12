@@ -75,7 +75,7 @@ public class NormedRdCombinatorialToR1Continuous extends org.drip.spaces.functio
 
 		org.drip.spaces.tensor.CombinatorialRealMultidimensionalIterator crmi = crmb.iterator();
 
-		int iPNorm = ((org.drip.spaces.metric.ContinuousRealUnidimensional) output()).pNorm();
+		int iPNorm = output().pNorm();
 
 		org.drip.function.deterministic.RdToR1 funcRdToR1 = function();
 

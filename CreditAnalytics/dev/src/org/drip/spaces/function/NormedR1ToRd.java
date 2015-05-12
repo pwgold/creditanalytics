@@ -139,7 +139,7 @@ public abstract class NormedR1ToRd extends org.drip.spaces.function.NormedR1Inpu
 		double[] adblMetricNorm = new double[iOutputDimension];
 		int iNumSample = adblInstance.length;
 
-		int iPNorm = ((org.drip.spaces.metric.RealMultidimensionalNormedSpace) output()).pNorm();
+		int iPNorm = output().pNorm();
 
 		for (int i = 0; i < iNumSample; ++i)
 			adblMetricNorm[i] = 0.;
@@ -242,7 +242,7 @@ public abstract class NormedR1ToRd extends org.drip.spaces.function.NormedR1Inpu
 			throw new java.lang.Exception
 				("NormedR1ToRd::sampleMetricNorm => Cannot compute Sample Metric Array");
 
-		int iPNorm = ((org.drip.spaces.metric.RealMultidimensionalNormedSpace) output()).pNorm();
+		int iPNorm = output().pNorm();
 
 		for (int i = 0; i < iOutputDimension; ++i)
 			dblSampleMetricNorm += java.lang.Math.pow (java.lang.Math.abs (adblSampleMetricNorm[i]), iPNorm);
@@ -286,7 +286,7 @@ public abstract class NormedR1ToRd extends org.drip.spaces.function.NormedR1Inpu
 			throw new java.lang.Exception
 				("NormedR1ToRd::populationMetricNorm => Cannot compute Population Metric Array");
 
-		int iPNorm = ((org.drip.spaces.metric.RealMultidimensionalNormedSpace) output()).pNorm();
+		int iPNorm = output().pNorm();
 
 		double dblPopulationMetricNorm = 0.;
 		int iOutputDimension = adblPopulationMetricNorm.length;

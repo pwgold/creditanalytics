@@ -46,7 +46,7 @@ package org.drip.spaces.cover;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ScaleSensitiveCoveringNumber implements org.drip.spaces.cover.CoveringNumberEstimate {
+public class ScaleSensitiveCoveringNumber implements org.drip.spaces.cover.CoveringNumberBounds {
 	private int _iSampleSize = -1;
 	private org.drip.function.deterministic.R1ToR1 _r1r1FatShatter = null;
 

@@ -45,7 +45,7 @@ package org.drip.spaces.cover;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BoundedFunctionCoveringNumber implements org.drip.spaces.cover.CoveringNumberEstimate {
+public class BoundedFunctionCoveringNumber implements org.drip.spaces.cover.CoveringNumberBounds {
 	private double _dblBound = java.lang.Double.NaN;
 	private double _dblSupport = java.lang.Double.NaN;
 	private double _dblVariation = java.lang.Double.NaN;

@@ -72,7 +72,7 @@ public class NormedRdContinuousToRdContinuous extends org.drip.spaces.function.N
 
 		if (null == multiDist) return null;
 
-		final int iPNorm = ((org.drip.spaces.metric.ContinuousRealMultidimensionalBanach) output()).pNorm();
+		final int iPNorm = output().pNorm();
 
 		org.drip.function.deterministic.RdToRd funcRdToRdPointNorm = new
 			org.drip.function.deterministic.RdToRd (null) {

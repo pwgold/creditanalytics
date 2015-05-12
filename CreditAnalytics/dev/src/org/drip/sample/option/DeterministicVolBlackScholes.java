@@ -284,18 +284,32 @@ public class DeterministicVolBlackScholes {
 			false,
 			dc,
 			auSABRLIBORCapVol,
-			new BlackScholesAlgorithm());
+			new BlackScholesAlgorithm()
+		);
 
 		for (Map.Entry<String, Double> me : mapOptionCalc.entrySet())
 			System.out.println ("\t" + me.getKey() + " => " + me.getValue());
 
-		System.out.println ("\n\tImplied Vol:" + FormatUtil.FormatDouble (
-			option.implyVolatility (
-				valParams,
-				dblSpot,
-				false,
-				dc,
-				mapOptionCalc.get ("CallPrice")
-			), 2, 2, 100.) + "%");
+		System.out.println (
+			"\n\tImplied Volatility From Call Price :" + FormatUtil.FormatDouble (
+				option.implyVolatilityFromCallPrice (
+					valParams,
+					dblSpot,
+					false,
+					dc,
+					mapOptionCalc.get ("CallPrice")
+				), 2, 2, 100.) + "%"
+			);
+
+		System.out.println (
+			"\tImplied Volatility From Put Price  :" + FormatUtil.FormatDouble (
+				option.implyVolatilityFromPutPrice (
+					valParams,
+					dblSpot,
+					false,
+					dc,
+					mapOptionCalc.get ("PutPrice")
+				), 2, 2, 100.) + "%"
+			);
 	}
 }

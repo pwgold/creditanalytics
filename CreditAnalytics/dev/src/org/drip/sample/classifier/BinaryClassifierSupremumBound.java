@@ -1,7 +1,6 @@
 
 package org.drip.sample.classifier;
 
-import org.drip.function.classifier.*;
 import org.drip.quant.common.FormatUtil;
 import org.drip.sequence.classifier.*;
 import org.drip.sequence.functional.FlatMultivariateRandom;
@@ -75,18 +74,20 @@ public class BinaryClassifierSupremumBound {
 		final short[] asEmpiricalOutcome)
 		throws Exception
 	{
-		AbstractBinaryClassifier[] aClassifier = null;
+		// AbstractBinaryClassifier[] aClassifier = null;
 
-		return new EmpiricalLossSupremum (
-			new FunctionClass (
+		return null;
+
+		/* return new EmpiricalLossSupremum (
+			new GeneralizedClassifierFunctionClass (
 				aClassifier,
-				new ClassAsymptoticSampleBound (
+				new ExpectedSupremumLossAsymptote (
 					0.01,
 					-1.5
 				)
 			),
 			asEmpiricalOutcome
-		);
+		); */
 	}
 
 	private static final void MartingaleDifferencesRun (

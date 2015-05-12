@@ -40,7 +40,7 @@ package org.drip.spaces.function;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class NormedRdInput implements org.drip.spaces.function.GeneralizedNormedFunctionSpace {
+public abstract class NormedRdInput extends org.drip.spaces.function.GeneralizedNormedFunctionSpace {
 	private org.drip.spaces.metric.RealMultidimensionalNormedSpace _rmnsInput = null;
 
 	protected NormedRdInput (

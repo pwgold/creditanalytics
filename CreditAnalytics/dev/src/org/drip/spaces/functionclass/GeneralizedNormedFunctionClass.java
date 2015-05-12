@@ -1,5 +1,5 @@
 
-package org.drip.spaces.cover;
+package org.drip.spaces.functionclass;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -82,23 +82,25 @@ public abstract class GeneralizedNormedFunctionClass {
 	}
 
 	/**
-	 * Retrieve the Agnostic Covering Number Bounds for the Function Class
+	 * Retrieve the Agnostic Covering Number Upper/Lower Bounds for the Function Class
 	 * 
-	 * @return The Agnostic Covering Number Bounds for the Function Class
+	 * @return The Agnostic Covering Number Upper/Lower Bounds for the Function Class
 	 */
 
-	public abstract org.drip.spaces.cover.CoveringNumberEstimate agnosticCoveringNumber();
+	public abstract org.drip.spaces.cover.CoveringNumberBounds agnosticCoveringNumberBounds();
 
 	/**
-	 * Retrieve the Scale-Sensitive Covering Number Bounds given the Specified Sample for the Function Class
+	 * Retrieve the Scale-Sensitive Covering Number Upper/Lower Bounds given the Specified Sample for the
+	 *  Function Class
 	 * 
 	 * @param gvvi The Validated Instance Vector Sequence
 	 * @param r1r1FatShatter The Cover Fat Shattering Coefficient R^1 -> R^1
 	 * 
-	 * @return The Scale-Sensitive Covering Number Bounds given the Specified Sample for the Function Class
+	 * @return The Scale-Sensitive Covering Number Upper/Lower Bounds given the Specified Sample for the
+	 *  Function Class
 	 */
 
-	public abstract org.drip.spaces.cover.CoveringNumberEstimate scaleSensitiveCoveringNumber (
+	public abstract org.drip.spaces.cover.CoveringNumberBounds scaleSensitiveCoveringBounds (
 		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
 		final org.drip.function.deterministic.R1ToR1 r1r1FatShatter);
 
@@ -112,14 +114,27 @@ public abstract class GeneralizedNormedFunctionClass {
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double coveringNumber (
+	public double coveringNumber (
 		final double dblCover)
-		throws java.lang.Exception;
+		throws java.lang.Exception
+	{
+		int iFunctionSpaceSize = _aGNFS.length;
+
+		double dblCoveringNumber = _aGNFS[0].populationCoveringNumber (dblCover);
+
+		for (int i = 1; i < iFunctionSpaceSize; ++i) {
+			double dblFunctionCoveringNumber = _aGNFS[i].populationCoveringNumber (dblCover);
+
+			if (dblCoveringNumber < dblFunctionCoveringNumber) dblCoveringNumber = dblFunctionCoveringNumber;
+		}
+
+		return dblCoveringNumber;
+	}
 
 	/**
 	 * Estimate for the Scale-Sensitive Covering Number for the specified Cover Size
 	 * 
-	 * @param vru The Validated Real Uni-dimensional Space Type
+	 * @param gvvi The Validated Instance Vector Sequence
 	 * @param dblCover The Size of the Cover
 	 * 
 	 * @return The Scale-Sensitive Covering Number for the specified Cover Size
@@ -127,26 +142,23 @@ public abstract class GeneralizedNormedFunctionClass {
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double uniformCoveringNumber (
-		final org.drip.spaces.instance.ValidatedRealUnidimensional vru,
+	public double uniformCoveringNumber (
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
 		final double dblCover)
-		throws java.lang.Exception;
+		throws java.lang.Exception
+	{
+		int iFunctionSpaceSize = _aGNFS.length;
 
-	/**
-	 * Estimate for the Scale-Sensitive Covering Number for the specified Cover Size
-	 * 
-	 * @param vrm The Validated Real Multidimensional Space Type
-	 * @param dblCover The Size of the Cover
-	 * 
-	 * @return The Scale-Sensitive Covering Number for the specified Cover Size
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
+		double dblCoveringNumber = _aGNFS[0].sampleCoveringNumber (gvvi, dblCover);
 
-	public abstract double uniformCoveringNumber (
-		final org.drip.spaces.instance.ValidatedRealMultidimensional vrm,
-		final double dblCover)
-		throws java.lang.Exception;
+		for (int i = 1; i < iFunctionSpaceSize; ++i) {
+			double dblFunctionCoveringNumber = _aGNFS[i].sampleCoveringNumber (gvvi, dblCover);
+
+			if (dblCoveringNumber < dblFunctionCoveringNumber) dblCoveringNumber = dblFunctionCoveringNumber;
+		}
+
+		return dblCoveringNumber;
+	}
 
 	/**
 	 * Retrieve the Array of Function Spaces in the Class

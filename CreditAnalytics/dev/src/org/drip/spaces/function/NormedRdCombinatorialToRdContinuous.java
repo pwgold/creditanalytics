@@ -81,7 +81,7 @@ public class NormedRdCombinatorialToRdContinuous extends org.drip.spaces.functio
 		int iOutputDimension = -1;
 		double dblNormalizer = 0.;
 
-		int iPNorm = ((org.drip.spaces.metric.ContinuousRealMultidimensionalBanach) output()).pNorm();
+		int iPNorm = output().pNorm();
 
 		while (null != adblVariate) {
 			try {

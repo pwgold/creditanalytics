@@ -113,6 +113,7 @@ public class EuropeanCallPut {
 
 		double dblRiskFreeRate = java.lang.Double.NaN;
 		double dblTTE = (dblMaturity - dblValueDate) / 365.25;
+		double dblImpliedPutVolatility = java.lang.Double.NaN;
 		double dblImpliedCallVolatility = java.lang.Double.NaN;
 		double dblTimeAveragedVolatility = java.lang.Double.NaN;
 
@@ -133,10 +134,16 @@ public class EuropeanCallPut {
 
 		double dblCallPrice = fpg.callPrice();
 
+		double dblPutPrice = fpg.putPrice();
+
 		try {
 			dblImpliedCallVolatility = new
-				org.drip.pricer.option.BlackScholesAlgorithm().implyBlackScholesVolatility (_dblStrike,
+				org.drip.pricer.option.BlackScholesAlgorithm().implyVolatilityFromCallPrice (_dblStrike,
 					dblTTE, dblRiskFreeRate, dblUnderlier, bIsForward, dblCallPrice);
+
+			dblImpliedPutVolatility = new
+				org.drip.pricer.option.BlackScholesAlgorithm().implyVolatilityFromPutPrice (_dblStrike,
+					dblTTE, dblRiskFreeRate, dblUnderlier, bIsForward, dblPutPrice);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 
@@ -181,6 +188,8 @@ public class EuropeanCallPut {
 		mapMeasure.put ("DF", fpg.df());
 
 		mapMeasure.put ("ImpliedCallVolatility", dblImpliedCallVolatility);
+
+		mapMeasure.put ("ImpliedPutVolatility", dblImpliedPutVolatility);
 
 		mapMeasure.put ("PutCharm", fpg.putCharm());
 
@@ -233,7 +242,7 @@ public class EuropeanCallPut {
 	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
-	public double implyVolatility (
+	public double implyVolatilityFromCallPrice (
 		final org.drip.param.valuation.ValuationParams valParams,
 		final double dblUnderlier,
 		final boolean bIsForward,
@@ -242,19 +251,57 @@ public class EuropeanCallPut {
 		throws java.lang.Exception
 	{
 		if (null == valParams || null == dc)
-			throw new java.lang.Exception ("EuropeanCallPut::implyVolatility => Invalid Inputs");
+			throw new java.lang.Exception ("EuropeanCallPut::implyVolatilityFromCallPrice => Invalid Inputs");
 
 		double dblValueDate = valParams.valueDate();
 
 		double dblMaturity = _dtMaturity.julian();
 
 		if (dblValueDate >= dblMaturity)
-			throw new java.lang.Exception ("EuropeanCallPut::implyVolatility => Invalid Inputs");
+			throw new java.lang.Exception ("EuropeanCallPut::implyVolatilityFromCallPrice => Invalid Inputs");
 
 		double dblTTE = (dblMaturity - dblValueDate) / 365.25;
 
-		return new org.drip.pricer.option.BlackScholesAlgorithm().implyBlackScholesVolatility (_dblStrike,
+		return new org.drip.pricer.option.BlackScholesAlgorithm().implyVolatilityFromCallPrice (_dblStrike,
 			dblTTE, dc.zero (dblMaturity), dblUnderlier, bIsForward, dblCallPrice);
+	}
+
+	/**
+	 * Imply the Option Volatility given the Put Price
+	 * 
+	 * @param valParams The Valuation Parameters
+	 * @param dblUnderlier The Underlier
+	 * @param bIsForward TRUE => The Underlier represents the Forward, FALSE => it represents Spot
+	 * @param dc Discount Curve
+	 * @param dblPutPrice The Option Put Price
+	 * 
+	 * @return The Option's Implied Volatility
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 */
+
+	public double implyVolatilityFromPutPrice (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final double dblUnderlier,
+		final boolean bIsForward,
+		final org.drip.analytics.rates.DiscountCurve dc,
+		final double dblPutPrice)
+		throws java.lang.Exception
+	{
+		if (null == valParams || null == dc)
+			throw new java.lang.Exception ("EuropeanCallPut::implyVolatilityFromPutPrice => Invalid Inputs");
+
+		double dblValueDate = valParams.valueDate();
+
+		double dblMaturity = _dtMaturity.julian();
+
+		if (dblValueDate >= dblMaturity)
+			throw new java.lang.Exception ("EuropeanCallPut::implyVolatilityFromPutPrice => Invalid Inputs");
+
+		double dblTTE = (dblMaturity - dblValueDate) / 365.25;
+
+		return new org.drip.pricer.option.BlackScholesAlgorithm().implyVolatilityFromPutPrice (_dblStrike,
+			dblTTE, dc.zero (dblMaturity), dblUnderlier, bIsForward, dblPutPrice);
 	}
 
 	/**

@@ -578,7 +578,7 @@ public class ScenarioMarketSurfaceBuilder {
 						return null;
 
 					aadblImpliedNode[iStrike][iTenor++] = bPriceSurface ? hsva.callPrice() : new
-						org.drip.pricer.option.BlackScholesAlgorithm().implyBlackScholesVolatility
+						org.drip.pricer.option.BlackScholesAlgorithm().implyVolatilityFromCallPrice
 							(dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblUnderlier, false,
 								hsva.callPrice());
 				} catch (java.lang.Exception e) {

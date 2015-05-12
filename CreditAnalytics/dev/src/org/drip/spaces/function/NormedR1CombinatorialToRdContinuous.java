@@ -79,7 +79,7 @@ public class NormedR1CombinatorialToRdContinuous extends org.drip.spaces.functio
 		int iOutputDimension = -1;
 		double dblNormalizer = 0.;
 
-		int iPNorm = ((org.drip.spaces.metric.RealMultidimensionalNormedSpace) output()).pNorm();
+		int iPNorm = output().pNorm();
 
 		for (double dblElement : lsElem) {
 			try {

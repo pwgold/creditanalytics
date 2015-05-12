@@ -52,12 +52,12 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 	}
 
 	private short[] _asEmpiricalOutcome = null;
-	private org.drip.function.classifier.FunctionClass _fcClassifier = null;
+	private org.drip.classifier.functionclass.GeneralizedClassifierFunctionClass _fcClassifier = null;
 
 	private Supremum supremum (
 		final double[] adblVariate)
 	{
-		org.drip.function.classifier.AbstractBinaryClassifier[] aClassifier = _fcClassifier.classifiers();
+		org.drip.classifier.functionclass.AbstractBinaryClassifier[] aClassifier = _fcClassifier.classifiers();
 
 		int iSupremumIndex  = 0;
 		int iNumClassifier = aClassifier.length;
@@ -99,14 +99,14 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 	 */
 
 	public EmpiricalLossSupremum (
-		final org.drip.function.classifier.FunctionClass fcClassifier,
+		final org.drip.classifier.functionclass.GeneralizedClassifierFunctionClass fcClassifier,
 		final short[] asEmpiricalOutcome)
 		throws java.lang.Exception
 	{
 		if (null == (_fcClassifier = fcClassifier) || null == (_asEmpiricalOutcome = asEmpiricalOutcome))
 			throw new java.lang.Exception ("EmpiricalLossSupremum ctr: Invalid Inputs");
 
-		org.drip.function.classifier.AbstractBinaryClassifier[] aClassifier = _fcClassifier.classifiers();
+		org.drip.classifier.functionclass.AbstractBinaryClassifier[] aClassifier = _fcClassifier.classifiers();
 
 		int iNumClassifier = aClassifier.length;
 		int iNumEmpiricalOutcome = _asEmpiricalOutcome.length;
@@ -131,7 +131,7 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 	 * @return The Classifier Function Class
 	 */
 
-	public org.drip.function.classifier.FunctionClass classifierClass()
+	public org.drip.classifier.functionclass.GeneralizedClassifierFunctionClass classifierClass()
 	{
 		return _fcClassifier;
 	}
@@ -155,7 +155,7 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 	 * @return The Supremum Classifier
 	 */
 
-	public org.drip.function.classifier.AbstractBinaryClassifier supremumClassifier (
+	public org.drip.classifier.functionclass.AbstractBinaryClassifier supremumClassifier (
 		final double[] adblVariate)
 	{
 		Supremum sup = supremum (adblVariate);

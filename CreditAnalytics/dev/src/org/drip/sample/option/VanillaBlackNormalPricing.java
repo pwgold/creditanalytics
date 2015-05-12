@@ -283,7 +283,7 @@ public class VanillaBlackNormalPricing {
 		for (Map.Entry<String, Double> me : mapOptionCalc.entrySet())
 			System.out.println ("\t" + me.getKey() + " => " + me.getValue());
 
-		System.out.println ("\n\tImplied Vol:" + FormatUtil.FormatDouble (option.implyVolatility (
+		System.out.println ("\n\tImplied Vol:" + FormatUtil.FormatDouble (option.implyVolatilityFromCallPrice (
 			valParams,
 			dblSpot,
 			false,

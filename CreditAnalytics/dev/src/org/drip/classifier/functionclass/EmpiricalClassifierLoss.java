@@ -1,5 +1,5 @@
 
-package org.drip.function.classifier;
+package org.drip.classifier.functionclass;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -30,44 +30,52 @@ package org.drip.function.classifier;
 
 /**
  * EmpiricalClassifierLoss Function computes the Empirical Loss of a Classification Operation resulting from
- *  the Use of a Classification Function in Conjunction with the corresponding Empirical Outcome.
+ *  the Use of a Classification Function in Conjunction with the corresponding Empirical Realization.
+ *  
+ *  The References are:
+ *  
+ *  1) Lugosi, G. (2002): Pattern Classification and Learning Theory, in: L. Györ, editor,
+ *   Principles of Non-parametric Learning, 5-62, Springer, Wien.
+ * 
+ *  2) Boucheron, S., G. Lugosi, and P. Massart (2003): Concentration Inequalities Using the Entropy Method,
+ *   Annals of Probability, 31, 1583-1614.
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class EmpiricalClassifierLoss extends org.drip.function.deterministic.R1ToR1 {
-	private short _sEmpiricalOutcome = -1;
-	private org.drip.function.classifier.AbstractBinaryClassifier _abe = null;
+	private short _sRealization = -1;
+	private org.drip.classifier.functionclass.AbstractBinaryClassifier _abe = null;
 
 	/**
 	 * EmpiricalClassifierLoss Constructor
 	 * 
 	 * @param abe The Abstract Binary Classifier Instance
-	 * @param sEmpiricalOutcome The Empirical Outcome
+	 * @param sRealization The Empirical Outcome
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public EmpiricalClassifierLoss (
-		final org.drip.function.classifier.AbstractBinaryClassifier abe,
-		final short sEmpiricalOutcome)
+		final org.drip.classifier.functionclass.AbstractBinaryClassifier abe,
+		final short sRealization)
 		throws java.lang.Exception
 	{
 		super (null);
 
-		if (null == (_abe = abe) || 0 > (_sEmpiricalOutcome = sEmpiricalOutcome))
+		if (null == (_abe = abe) || 0 > (_sRealization = sRealization))
 			throw new java.lang.Exception ("EmpiricalClassifierLoss ctr: Invalid Inputs");
 	}
 
 	/**
-	 * Retrieve the Empirical Outcome
+	 * Retrieve the Empirical Realization
 	 * 
-	 * @return The Empirical Outcome
+	 * @return The Empirical Realization
 	 */
 
-	public short empiricalOutcome()
+	public short empiricalRealization()
 	{
-		return _sEmpiricalOutcome;
+		return _sRealization;
 	}
 
 	/**
@@ -76,7 +84,7 @@ public class EmpiricalClassifierLoss extends org.drip.function.deterministic.R1T
 	 * @return The Classifier Function
 	 */
 
-	public org.drip.function.classifier.AbstractBinaryClassifier classifier()
+	public org.drip.classifier.functionclass.AbstractBinaryClassifier classifier()
 	{
 		return _abe;
 	}
@@ -98,7 +106,7 @@ public class EmpiricalClassifierLoss extends org.drip.function.deterministic.R1T
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))
 			throw new java.lang.Exception ("EmpiricalClassifierLoss::loss => Invalid Inputs");
 
-		return _sEmpiricalOutcome == _abe.classify (dblVariate) ? (short) 0 : 1;
+		return _sRealization == _abe.classify (dblVariate) ? (short) 0 : 1;
 	}
 
 	@Override public double evaluate (

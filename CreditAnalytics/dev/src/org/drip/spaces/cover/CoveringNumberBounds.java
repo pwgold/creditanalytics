@@ -29,7 +29,7 @@ package org.drip.spaces.cover;
  */
 
 /**
- * CoveringNumberEstimate implements the estimate Lower/Upper Bounds and/or Absolute Values of the Covering
+ * CoveringNumberBounds implements the estimate Lower/Upper Bounds and/or Absolute Values of the Covering
  * 	Number for the Class Functions. The Main References are:
  * 
  * 	1) Carl, B., and I. Stephani (1990): Entropy, Compactness, and Approximation of Operators, Cambridge
@@ -41,7 +41,7 @@ package org.drip.spaces.cover;
  * @author Lakshmi Krishnamurthy
  */
 
-public interface CoveringNumberEstimate {
+public interface CoveringNumberBounds {
 
 	/**
 	 * Log of the Lower Bound of the Function Covering Number

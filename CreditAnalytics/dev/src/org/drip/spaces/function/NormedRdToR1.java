@@ -103,7 +103,7 @@ public abstract class NormedRdToR1 extends org.drip.spaces.function.NormedRdInpu
 		int iNumSample = aadblInstance.length;
 		double dblNorm = 0.;
 
-		int iPNorm = ((org.drip.spaces.metric.RealUnidimensionalNormedSpace) output()).pNorm();
+		int iPNorm = output().pNorm();
 
 		for (int i = 0; i < iNumSample; ++i)
 			dblNorm += java.lang.Math.pow (java.lang.Math.abs (_funcRdToR1.evaluate (aadblInstance[i])),

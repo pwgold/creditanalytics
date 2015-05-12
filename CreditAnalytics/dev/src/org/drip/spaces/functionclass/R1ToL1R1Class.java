@@ -1,5 +1,5 @@
 
-package org.drip.spaces.cover;
+package org.drip.spaces.functionclass;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -39,7 +39,7 @@ package org.drip.spaces.cover;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1ToL1R1Class extends org.drip.spaces.cover.GeneralizedNormedFunctionClass {
+public class R1ToL1R1Class extends org.drip.spaces.functionclass.R1ToR1Class {
 
 	/**
 	 * Create Bounded R^1 -> Bounded L1 R^1 Function Class for the specified Bounded Function Class
@@ -85,27 +85,14 @@ public class R1ToL1R1Class extends org.drip.spaces.cover.GeneralizedNormedFuncti
 		return null;
 	}
 
-	/**
-	 * R1ToL1R1Class Function Class Constructor
-	 * 
-	 * @param aR1ToR1FunctionSpace Array of the Function Spaces
-	 * 
-	 * @throws java.lang.Exception Thrown if R1ToL1R1Class Instance cannot be created
-	 */
-
-	public R1ToL1R1Class (
+	protected R1ToL1R1Class (
 		final org.drip.spaces.function.NormedR1ToR1[] aR1ToR1FunctionSpace)
 		throws java.lang.Exception
 	{
 		super (aR1ToR1FunctionSpace);
-
-		for (int i = 0; i < aR1ToR1FunctionSpace.length; ++i) {
-			if (null == aR1ToR1FunctionSpace[i] || 1 != aR1ToR1FunctionSpace[i].output().pNorm())
-				throw new java.lang.Exception ("R1ToL1R1Class ctr: Invalid Input Function");
-		}
 	}
 
-	@Override public org.drip.spaces.cover.CoveringNumberEstimate agnosticCoveringNumber()
+	@Override public org.drip.spaces.cover.CoveringNumberBounds agnosticCoveringNumberBounds()
 	{
 		org.drip.spaces.function.GeneralizedNormedFunctionSpace[] aGNFS = functionSpaces();
 
@@ -174,7 +161,7 @@ public class R1ToL1R1Class extends org.drip.spaces.cover.GeneralizedNormedFuncti
 		return null;
 	}
 
-	@Override public org.drip.spaces.cover.CoveringNumberEstimate scaleSensitiveCoveringNumber (
+	@Override public org.drip.spaces.cover.CoveringNumberBounds scaleSensitiveCoveringBounds (
 		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
 		final org.drip.function.deterministic.R1ToR1 r1r1FatShatter)
 	{
@@ -195,28 +182,5 @@ public class R1ToL1R1Class extends org.drip.spaces.cover.GeneralizedNormedFuncti
 		}
 
 		return null;
-	}
-
-	@Override public double coveringNumber (
-		final double dblCover)
-		throws java.lang.Exception
-	{
-		throw new java.lang.Exception ("R1ToR1Class::coveringNumber => Cannot estimate");
-	}
-
-	@Override public double uniformCoveringNumber (
-		final org.drip.spaces.instance.ValidatedRealUnidimensional vru,
-		final double dblCover)
-		throws java.lang.Exception
-	{
-		throw new java.lang.Exception ("R1ToR1Class::uniformCoveringNumber => Cannot estimate");
-	}
-
-	@Override public double uniformCoveringNumber (
-		final org.drip.spaces.instance.ValidatedRealMultidimensional vrm,
-		final double dblCover)
-		throws java.lang.Exception
-	{
-		throw new java.lang.Exception ("R1ToR1Class::uniformCoveringNumber => Cannot estimate");
 	}
 }

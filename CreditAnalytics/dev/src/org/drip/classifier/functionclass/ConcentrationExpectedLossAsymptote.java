@@ -1,5 +1,5 @@
 
-package org.drip.function.classifier;
+package org.drip.classifier.functionclass;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,19 +29,28 @@ package org.drip.function.classifier;
  */
 
 /**
- * ClassAsymptoticSampleBound provides the Asymptotic Sample Behavior of the Empirical Loss of the given
- *  Classifier Class. This is expressed as ~ C * n^a, where n is the Size of the Sample, and 'C' and 'a' are
- *  Constants specific to the Classifier Class.
+ * ConcentrationExpectedLossAsymptote provides the Asymptotic Sample Behavior of the Expected Empirical Loss
+ *  of the given Classifier Class using the Concentration of Measure Inequalities. This is expressed as
+ *  C * n^a, where n is the Size of the Sample, and 'C' and 'a' are Constants specific to the Classifier
+ *  Class.
+ *  
+ *  The References are:
+ *  
+ *  1) Lugosi, G. (2002): Pattern Classification and Learning Theory, in: L. Györ, editor,
+ *   Principles of Non-parametric Learning, 5-62, Springer, Wien.
+ * 
+ *  2) Boucheron, S., G. Lugosi, and P. Massart (2003): Concentration Inequalities Using the Entropy Method,
+ *   Annals of Probability, 31, 1583-1614.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ClassAsymptoticSampleBound {
+public class ConcentrationExpectedLossAsymptote {
 	private double _dblConstant = java.lang.Double.NaN;
 	private double _dblExponent = java.lang.Double.NaN;
 
 	/**
-	 * ClassAsymptoticSampleBound Constructor
+	 * ConcentrationExpectedLossAsymptote Constructor
 	 * 
 	 * @param dblConstant Asymptote Constant
 	 * @param dblExponent Asymptote Exponent
@@ -49,14 +58,14 @@ public class ClassAsymptoticSampleBound {
 	 * @throws java.lang.Exception Thrown if the Constant and/or Exponent is Invalid
 	 */
 
-	public ClassAsymptoticSampleBound (
+	public ConcentrationExpectedLossAsymptote (
 		final double dblConstant,
 		final double dblExponent)
 		throws java.lang.Exception
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (_dblConstant = dblConstant) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_dblExponent = dblExponent))
-			throw new java.lang.Exception ("ClassAsymptoticSampleBound ctr: Invalid Inputs!");
+			throw new java.lang.Exception ("ConcentrationExpectedLossAsymptote ctr: Invalid Inputs!");
 	}
 
 	/**
