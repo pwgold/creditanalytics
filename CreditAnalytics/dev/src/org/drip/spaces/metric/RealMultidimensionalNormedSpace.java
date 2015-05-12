@@ -40,7 +40,8 @@ package org.drip.spaces.metric;
  * @author Lakshmi Krishnamurthy
  */
 
-public interface RealMultidimensionalNormedSpace extends org.drip.spaces.metric.GeneralizedMetricSpace {
+public interface RealMultidimensionalNormedSpace extends org.drip.spaces.metric.GeneralizedMetricVectorSpace,
+	org.drip.spaces.tensor.GeneralizedMultidimensionalVectorSpace {
 
 	/**
 	 * Retrieve the Borel Sigma Multivariate Probability Measure

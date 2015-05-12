@@ -46,25 +46,25 @@ package org.drip.spaces.cover;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ScaleSensitiveCoveringNumber implements org.drip.spaces.cover.CoveringNumber {
+public class ScaleSensitiveCoveringNumber implements org.drip.spaces.cover.CoveringNumberEstimate {
 	private int _iSampleSize = -1;
-	private org.drip.function.deterministic.R1ToR1 _auFatShatter = null;
+	private org.drip.function.deterministic.R1ToR1 _r1r1FatShatter = null;
 
 	/**
 	 * ScaleSensitiveCoveringNumber Constructor
 	 * 
-	 * @param auFatShatter The Cover Fat Shattering Coefficient Function
+	 * @param r1r1FatShatter The Cover Fat Shattering Coefficient Function
 	 * @param iSampleSize Sample Size
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ScaleSensitiveCoveringNumber (
-		final org.drip.function.deterministic.R1ToR1 auFatShatter,
+		final org.drip.function.deterministic.R1ToR1 r1r1FatShatter,
 		final int iSampleSize)
 		throws java.lang.Exception
 	{
-		if (null == (_auFatShatter = auFatShatter) || 0 >= (_iSampleSize = iSampleSize))
+		if (null == (_r1r1FatShatter = r1r1FatShatter) || 0 >= (_iSampleSize = iSampleSize))
 			throw new java.lang.Exception ("ScaleSensitiveCoveringNumber ctr: Invalid Inputs");
 	}
 
@@ -76,7 +76,7 @@ public class ScaleSensitiveCoveringNumber implements org.drip.spaces.cover.Cover
 
 	public org.drip.function.deterministic.R1ToR1 fatShatteringFunction()
 	{
-		return _auFatShatter;
+		return _r1r1FatShatter;
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class ScaleSensitiveCoveringNumber implements org.drip.spaces.cover.Cover
 
 		double dblLog2 = java.lang.Math.log (2.);
 
-		return 2. * _auFatShatter.evaluate (0.25 * dblCover) * java.lang.Math.log (64. * java.lang.Math.E *
+		return 2. * _r1r1FatShatter.evaluate (0.25 * dblCover) * java.lang.Math.log (64. * java.lang.Math.E *
 			java.lang.Math.E / (dblCover * dblLog2)) / dblLog2;
 	}
 
@@ -136,7 +136,7 @@ public class ScaleSensitiveCoveringNumber implements org.drip.spaces.cover.Cover
 
 		double dblLog2 = java.lang.Math.log (2.);
 
-		double dblFatShatteringCoefficient = _auFatShatter.evaluate (0.25 * dblCover);
+		double dblFatShatteringCoefficient = _r1r1FatShatter.evaluate (0.25 * dblCover);
 
 		if (_iSampleSize < 2. * dblFatShatteringCoefficient * java.lang.Math.log (64. * java.lang.Math.E *
 			java.lang.Math.E / (dblCover * dblLog2)) / dblLog2)
@@ -188,6 +188,6 @@ public class ScaleSensitiveCoveringNumber implements org.drip.spaces.cover.Cover
 		final double dblCover)
 		throws java.lang.Exception
 	{
-		return _auFatShatter.evaluate (4. * dblCover) / 32.;
+		return _r1r1FatShatter.evaluate (4. * dblCover) / 32.;
 	}
 }

@@ -29,7 +29,7 @@ package org.drip.spaces.cover;
  */
 
 /**
- * NormedR1ToR1FunctionClass implements the Class F of f : R^1 -> R^1 Normed Function Spaces of all variants.
+ * R1ToL1R1Class implements the Class F of f : R^1 -> L1 R^1 Normed Function Spaces of all Variants.
  * 
  * The Reference we've used is:
  * 
@@ -39,24 +39,22 @@ package org.drip.spaces.cover;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormedR1ToR1FunctionClass extends org.drip.spaces.cover.GeneralizedNormedFunctionClass {
+public class R1ToL1R1Class extends org.drip.spaces.cover.GeneralizedNormedFunctionClass {
 
 	/**
-	 * Create R^1 -> R^1 Function Class for the specified Bound Predictor/Response Function Set
+	 * Create Bounded R^1 -> Bounded L1 R^1 Function Class for the specified Bounded Function Class
 	 * 
-	 * @param aR1ToR1 The R^1 -> R^1 Function Set
+	 * @param aR1ToR1 The Bounded R^1 -> Bounded R^1 Function Set
 	 * @param dblPredictorSupport The Set Predictor Support
 	 * @param dblResponseBound The Set Response Bound
-	 * @param iPNorm The Norm
 	 * 
-	 * @return The R^1 -> R^1 Function Class for the specified Bound Predictor/Response Function Set
+	 * @return The Bounded R^1 -> Bounded R^1 Function Class for the specified Function Set
 	 */
 
-	public static final NormedR1ToR1FunctionClass BoundPredictorBoundResponse (
+	public static final R1ToL1R1Class BoundedPredictorBoundedResponse (
 		final org.drip.function.deterministic.R1ToR1[] aR1ToR1,
 		final double dblPredictorSupport,
-		final double dblResponseBound,
-		final int iPNorm)
+		final double dblResponseBound)
 	{
 		if (null == aR1ToR1) return null;
 
@@ -67,19 +65,19 @@ public class NormedR1ToR1FunctionClass extends org.drip.spaces.cover.Generalized
 		if (0 == iNumFunction) return null;
 
 		try {
-			org.drip.spaces.tensor.ContinuousRealUnidimensionalVector curvInput = new
-				org.drip.spaces.tensor.ContinuousRealUnidimensionalVector (-0.5 * dblPredictorSupport, 0.5 *
-					dblPredictorSupport);
+			org.drip.spaces.metric.ContinuousRealUnidimensional cruInput = new
+				org.drip.spaces.metric.ContinuousRealUnidimensional (-0.5 * dblPredictorSupport, 0.5 *
+					dblPredictorSupport, null, 1);
 
-			org.drip.spaces.tensor.ContinuousRealUnidimensionalVector curvOutput = new
-				org.drip.spaces.tensor.ContinuousRealUnidimensionalVector (-0.5 * dblResponseBound, 0.5 *
-					dblResponseBound);
+			org.drip.spaces.metric.ContinuousRealUnidimensional cruOutput = new
+				org.drip.spaces.metric.ContinuousRealUnidimensional (-0.5 * dblResponseBound, 0.5 *
+					dblResponseBound, null, 1);
 
 			for (int i = 0; i < iNumFunction; ++i)
 				aR1ToR1FunctionSpace[i] = new org.drip.spaces.function.NormedR1ContinuousToR1Continuous
-					(aR1ToR1[i], curvInput, curvOutput, iPNorm);
+					(aR1ToR1[i], cruInput, cruOutput);
 
-			return new NormedR1ToR1FunctionClass (aR1ToR1FunctionSpace);
+			return new R1ToL1R1Class (aR1ToR1FunctionSpace);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -87,14 +85,27 @@ public class NormedR1ToR1FunctionClass extends org.drip.spaces.cover.Generalized
 		return null;
 	}
 
-	private NormedR1ToR1FunctionClass (
+	/**
+	 * R1ToL1R1Class Function Class Constructor
+	 * 
+	 * @param aR1ToR1FunctionSpace Array of the Function Spaces
+	 * 
+	 * @throws java.lang.Exception Thrown if R1ToL1R1Class Instance cannot be created
+	 */
+
+	public R1ToL1R1Class (
 		final org.drip.spaces.function.NormedR1ToR1[] aR1ToR1FunctionSpace)
 		throws java.lang.Exception
 	{
 		super (aR1ToR1FunctionSpace);
+
+		for (int i = 0; i < aR1ToR1FunctionSpace.length; ++i) {
+			if (null == aR1ToR1FunctionSpace[i] || 1 != aR1ToR1FunctionSpace[i].output().pNorm())
+				throw new java.lang.Exception ("R1ToL1R1Class ctr: Invalid Input Function");
+		}
 	}
 
-	@Override public org.drip.spaces.cover.CoveringNumber agnosticCoveringNumber()
+	@Override public org.drip.spaces.cover.CoveringNumberEstimate agnosticCoveringNumber()
 	{
 		org.drip.spaces.function.GeneralizedNormedFunctionSpace[] aGNFS = functionSpaces();
 
@@ -161,5 +172,51 @@ public class NormedR1ToR1FunctionClass extends org.drip.spaces.cover.Generalized
 		}
 
 		return null;
+	}
+
+	@Override public org.drip.spaces.cover.CoveringNumberEstimate scaleSensitiveCoveringNumber (
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final org.drip.function.deterministic.R1ToR1 r1r1FatShatter)
+	{
+		if (null == gvvi || !(gvvi instanceof org.drip.spaces.instance.ValidatedRealUnidimensional) || null
+			== r1r1FatShatter)
+			return null;
+
+		org.drip.spaces.instance.ValidatedRealUnidimensional vru =
+			(org.drip.spaces.instance.ValidatedRealUnidimensional) gvvi;
+
+		double[] adblInstance = vru.instance();
+
+		try {
+			return null == adblInstance ? null : new org.drip.spaces.cover.ScaleSensitiveCoveringNumber
+				(r1r1FatShatter, adblInstance.length);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@Override public double coveringNumber (
+		final double dblCover)
+		throws java.lang.Exception
+	{
+		throw new java.lang.Exception ("R1ToR1Class::coveringNumber => Cannot estimate");
+	}
+
+	@Override public double uniformCoveringNumber (
+		final org.drip.spaces.instance.ValidatedRealUnidimensional vru,
+		final double dblCover)
+		throws java.lang.Exception
+	{
+		throw new java.lang.Exception ("R1ToR1Class::uniformCoveringNumber => Cannot estimate");
+	}
+
+	@Override public double uniformCoveringNumber (
+		final org.drip.spaces.instance.ValidatedRealMultidimensional vrm,
+		final double dblCover)
+		throws java.lang.Exception
+	{
+		throw new java.lang.Exception ("R1ToR1Class::uniformCoveringNumber => Cannot estimate");
 	}
 }

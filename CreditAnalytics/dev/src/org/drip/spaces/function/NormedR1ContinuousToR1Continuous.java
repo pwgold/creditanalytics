@@ -46,31 +46,25 @@ public class NormedR1ContinuousToR1Continuous extends org.drip.spaces.function.N
 	 * NormedR1ContinuousToR1Continuous Function Space Constructor
 	 * 
 	 * @param funcR1ToR1 The R^1 -> R^1 Function
-	 * @param cruvInput The R^1 Input Vector Space (may/may not be Normed)
-	 * @param cruvOutput The R^1 Output Vector Space (may/may not be Normed)
-	 * @param iPNorm The Function-level Norm
+	 * @param cruInput The R^1 Input Metric Vector Space
+	 * @param cruOutput The R^1 Output Metric Vector Space
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NormedR1ContinuousToR1Continuous (
 		final org.drip.function.deterministic.R1ToR1 funcR1ToR1,
-		final org.drip.spaces.tensor.ContinuousRealUnidimensionalVector cruvInput,
-		final org.drip.spaces.tensor.ContinuousRealUnidimensionalVector cruvOutput,
-		final int iPNorm)
+		final org.drip.spaces.metric.ContinuousRealUnidimensional cruInput,
+		final org.drip.spaces.metric.ContinuousRealUnidimensional cruOutput)
 		throws java.lang.Exception
 	{
-		super (cruvInput, cruvOutput, funcR1ToR1, iPNorm);
+		super (cruInput, cruOutput, funcR1ToR1);
 	}
 
 	@Override public double populationMetricNorm()
 		throws java.lang.Exception
 	{
 		org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace guvsInput = input();
-
-		if (!(guvsInput instanceof org.drip.spaces.metric.ContinuousRealUnidimensional))
-			throw new java.lang.Exception
-				("NormedR1ContinuousToR1Continuous::populationMetricNorm => Invalid Input Vector Space");
 
 		org.drip.spaces.metric.ContinuousRealUnidimensional cru =
 			(org.drip.spaces.metric.ContinuousRealUnidimensional) guvsInput;
@@ -83,7 +77,7 @@ public class NormedR1ContinuousToR1Continuous extends org.drip.spaces.function.N
 
 		final org.drip.function.deterministic.R1ToR1 funcR1ToR1 = function();
 
-		final int iPNorm = pNorm();
+		final int iPNorm = output().pNorm();
 
 		org.drip.function.deterministic.R1ToR1 am = new
 			org.drip.function.deterministic.R1ToR1 (null) {

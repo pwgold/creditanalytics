@@ -46,31 +46,25 @@ public class NormedRdContinuousToRdContinuous extends org.drip.spaces.function.N
 	 * NormedRdContinuousToRdContinuous Function Space Constructor
 	 * 
 	 * @param funcRdToRd The RdToRd Function
-	 * @param crmvInput The R^d Input Vector Space (may/may not be Normed)
-	 * @param crmvOutput The R^d Output Vector Space (may/may not be Normed)
-	 * @param iPNorm The Function-level Norm
+	 * @param crmbInput The Continuous R^d Input Metric Vector Space
+	 * @param crmbOutput The Continuous R^d Output Metric Vector Space
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NormedRdContinuousToRdContinuous (
 		final org.drip.function.deterministic.RdToRd funcRdToRd,
-		final org.drip.spaces.tensor.ContinuousRealMultidimensionalVector crmvInput,
-		final org.drip.spaces.tensor.ContinuousRealMultidimensionalVector crmvOutput,
-		final int iPNorm)
+		final org.drip.spaces.metric.ContinuousRealMultidimensionalBanach crmbInput,
+		final org.drip.spaces.metric.ContinuousRealMultidimensionalBanach crmbOutput)
 		throws java.lang.Exception
 	{
-		super (crmvInput, crmvOutput, funcRdToRd, iPNorm);
+		super (crmbInput, crmbOutput, funcRdToRd);
 	}
 
 	@Override public double[] populationRdMetricNorm()
 	{
-		org.drip.spaces.tensor.GeneralizedMultidimensionalVectorSpace gmvsInput = input();
-
-		if (!(gmvsInput instanceof org.drip.spaces.metric.ContinuousRealMultidimensionalBanach)) return null;
-
 		org.drip.spaces.metric.ContinuousRealMultidimensionalBanach crmb =
-			(org.drip.spaces.metric.ContinuousRealMultidimensionalBanach) gmvsInput;
+			(org.drip.spaces.metric.ContinuousRealMultidimensionalBanach) input();
 
 		final org.drip.measure.continuous.MultivariateDistribution multiDist = crmb.borelSigmaMeasure();
 
@@ -78,7 +72,7 @@ public class NormedRdContinuousToRdContinuous extends org.drip.spaces.function.N
 
 		if (null == multiDist) return null;
 
-		final int iPNorm = pNorm();
+		final int iPNorm = ((org.drip.spaces.metric.ContinuousRealMultidimensionalBanach) output()).pNorm();
 
 		org.drip.function.deterministic.RdToRd funcRdToRdPointNorm = new
 			org.drip.function.deterministic.RdToRd (null) {

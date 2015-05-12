@@ -42,18 +42,17 @@ package org.drip.spaces.function;
 
 public abstract class NormedRdToR1 extends org.drip.spaces.function.NormedRdInput {
 	private org.drip.function.deterministic.RdToR1 _funcRdToR1 = null;
-	private org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace _guvsOutput = null;
+	private org.drip.spaces.metric.RealUnidimensionalNormedSpace _runsOutput = null;
 
 	protected NormedRdToR1 (
-		final org.drip.spaces.tensor.GeneralizedMultidimensionalVectorSpace gmvsInput,
-		final org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace guvsOutput,
-		final org.drip.function.deterministic.RdToR1 funcRdToR1,
-		final int iPNorm)
+		final org.drip.spaces.metric.RealMultidimensionalNormedSpace rmnsInput,
+		final org.drip.spaces.metric.RealUnidimensionalNormedSpace runsOutput,
+		final org.drip.function.deterministic.RdToR1 funcRdToR1)
 		throws java.lang.Exception
 	{
-		super (gmvsInput, iPNorm);
+		super (rmnsInput);
 
-		if (null == (_guvsOutput = guvsOutput) || null == (_funcRdToR1 = funcRdToR1))
+		if (null == (_runsOutput = runsOutput) || null == (_funcRdToR1 = funcRdToR1))
 			throw new java.lang.Exception ("NormedRdToR1 ctr: Invalid Inputs");
 	}
 
@@ -69,14 +68,14 @@ public abstract class NormedRdToR1 extends org.drip.spaces.function.NormedRdInpu
 	}
 
 	@Override public double sampleSupremumNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviInstance)
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
 		throws java.lang.Exception
 	{
-		if (null == gvviInstance || !gvviInstance.tensorSpaceType().match (input()))
+		if (null == gvvi || !gvvi.tensorSpaceType().match (input()))
 			throw new java.lang.Exception ("NormedRdToR1::sampleSupremumNorm => Invalid Input");
 
 		double[][] aadblInstance = ((org.drip.spaces.instance.ValidatedRealMultidimensional)
-			gvviInstance).instance();
+			gvvi).instance();
 
 		int iNumSample = aadblInstance.length;
 
@@ -92,19 +91,19 @@ public abstract class NormedRdToR1 extends org.drip.spaces.function.NormedRdInpu
 	}
 
 	@Override public double sampleMetricNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviInstance)
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
 		throws java.lang.Exception
 	{
-		if (null == gvviInstance || !gvviInstance.tensorSpaceType().match (input()))
+		if (null == gvvi || !gvvi.tensorSpaceType().match (input()))
 			throw new java.lang.Exception ("NormedRdToR1::sampleMetricNorm => Invalid Input");
 
 		double[][] aadblInstance = ((org.drip.spaces.instance.ValidatedRealMultidimensional)
-			gvviInstance).instance();
+			gvvi).instance();
 
 		int iNumSample = aadblInstance.length;
 		double dblNorm = 0.;
 
-		int iPNorm = pNorm();
+		int iPNorm = ((org.drip.spaces.metric.RealUnidimensionalNormedSpace) output()).pNorm();
 
 		for (int i = 0; i < iNumSample; ++i)
 			dblNorm += java.lang.Math.pow (java.lang.Math.abs (_funcRdToR1.evaluate (aadblInstance[i])),
@@ -116,17 +115,17 @@ public abstract class NormedRdToR1 extends org.drip.spaces.function.NormedRdInpu
 	@Override public double populationESS()
 		throws java.lang.Exception
 	{
-		org.drip.spaces.tensor.GeneralizedMultidimensionalVectorSpace gmvsInput = input();
+		org.drip.spaces.metric.RealMultidimensionalNormedSpace rmnsInput = input();
 
-		if (!(gmvsInput instanceof org.drip.spaces.metric.ContinuousRealMultidimensionalBanach))
+		if (!(rmnsInput instanceof org.drip.spaces.metric.ContinuousRealMultidimensionalBanach))
 			throw new java.lang.Exception ("NormedRdToR1::populationESS => Incomptabile Input Vector Space");
 
 		return _funcRdToR1.evaluate (((org.drip.spaces.metric.ContinuousRealMultidimensionalBanach)
-			gmvsInput).populationMode());
+			rmnsInput).populationMode());
 	}
 
-	@Override public org.drip.spaces.tensor.GeneralizedVectorSpace output()
+	@Override public org.drip.spaces.metric.RealUnidimensionalNormedSpace output()
 	{
-		return _guvsOutput;
+		return _runsOutput;
 	}
 }

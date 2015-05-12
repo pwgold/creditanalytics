@@ -46,39 +46,33 @@ public class NormedR1ContinuousToRdContinuous extends org.drip.spaces.function.N
 	 * NormedR1ContinuousToRdContinuous Function Space Constructor
 	 * 
 	 * @param funcR1ToRd The R1ToRd Function
-	 * @param cruvInput The R^1 Input Vector Space (may/may not be Normed)
-	 * @param crmvOutput The R^d Output Vector Space (may/may not be Normed)
-	 * @param iPNorm The Function-level Norm
+	 * @param cruInput The R^1 Input Metric Vector Space
+	 * @param crmOutput The R^d Output Metric Vector Space
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NormedR1ContinuousToRdContinuous (
 		final org.drip.function.deterministic.R1ToRd funcR1ToRd,
-		final org.drip.spaces.tensor.ContinuousRealUnidimensionalVector cruvInput,
-		final org.drip.spaces.tensor.ContinuousRealMultidimensionalVector crmvOutput,
-		final int iPNorm)
+		final org.drip.spaces.metric.ContinuousRealUnidimensional cruInput,
+		final org.drip.spaces.metric.ContinuousRealMultidimensionalBanach crmbOutput)
 		throws java.lang.Exception
 	{
-		super (cruvInput, crmvOutput, funcR1ToRd, iPNorm);
+		super (cruInput, crmbOutput, funcR1ToRd);
 	}
 
 	@Override public double[] populationRdMetricNorm()
 	{
-		org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace guvsInput = input();
-
-		if (!(guvsInput instanceof org.drip.spaces.metric.ContinuousRealUnidimensional)) return null;
-
-		org.drip.spaces.metric.ContinuousRealUnidimensional cru =
-			(org.drip.spaces.metric.ContinuousRealUnidimensional) guvsInput;
+		org.drip.spaces.metric.CombinatorialRealUnidimensional cru =
+			(org.drip.spaces.metric.CombinatorialRealUnidimensional) input();
 
 		final org.drip.measure.continuous.UnivariateDistribution uniDist = cru.borelSigmaMeasure();
 
-		final org.drip.function.deterministic.R1ToRd funcR1ToRd = function();
-
 		if (null == uniDist) return null;
 
-		final int iPNorm = pNorm();
+		final org.drip.function.deterministic.R1ToRd funcR1ToRd = function();
+
+		final int iPNorm = ((org.drip.spaces.metric.RealMultidimensionalNormedSpace) output()).pNorm();
 
 		org.drip.function.deterministic.R1ToRd funcR1ToRdPointNorm = new
 			org.drip.function.deterministic.R1ToRd (null) {

@@ -46,34 +46,26 @@ public class NormedR1CombinatorialToR1Continuous extends org.drip.spaces.functio
 	 * NormedR1CombinatorialToR1Continuous Function Space Constructor
 	 * 
 	 * @param funcR1ToR1 The R1ToR1 Function
-	 * @param cruvInput The Combinatorial R^1 Input Vector Space (may/may not be Normed)
-	 * @param cruvOutput The Continuous R^1 Output Vector Space (may/may not be Normed)
-	 * @param iPNorm The Function-level Norm
+	 * @param cruInput The Combinatorial R^1 Input Metric Vector Space
+	 * @param cruOutput The Continuous R^1 Output Metric Vector Space
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NormedR1CombinatorialToR1Continuous (
 		final org.drip.function.deterministic.R1ToR1 funcR1ToR1,
-		final org.drip.spaces.tensor.CombinatorialRealUnidimensionalVector cruvInput,
-		final org.drip.spaces.tensor.ContinuousRealUnidimensionalVector cruvOutput,
-		final int iPNorm)
+		final org.drip.spaces.metric.CombinatorialRealUnidimensional cruInput,
+		final org.drip.spaces.metric.ContinuousRealUnidimensional cruOutput)
 		throws java.lang.Exception
 	{
-		super (cruvInput, cruvOutput, funcR1ToR1, iPNorm);
+		super (cruInput, cruOutput, funcR1ToR1);
 	}
 
 	@Override public double populationMetricNorm()
 		throws java.lang.Exception
 	{
-		org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace guvsInput = input();
-
-		if (!(guvsInput instanceof org.drip.spaces.metric.CombinatorialRealUnidimensional))
-			throw new java.lang.Exception
-				("NormedR1CombinatorialToR1Continuous::populationMetricNorm => Incomptabile Input Vector Space");
-
 		org.drip.spaces.metric.CombinatorialRealUnidimensional cru =
-			(org.drip.spaces.metric.CombinatorialRealUnidimensional) guvsInput;
+			(org.drip.spaces.metric.CombinatorialRealUnidimensional) input();
 
 		org.drip.measure.continuous.UnivariateDistribution uniDist = cru.borelSigmaMeasure();
 
@@ -88,7 +80,7 @@ public class NormedR1CombinatorialToR1Continuous extends org.drip.spaces.functio
 		double dblPopulationMetricNorm  = 0.;
 		double dblNormalizer = 0.;
 
-		int iPNorm = pNorm();
+		int iPNorm = output().pNorm();
 
 		for (double dblElement : lsElem) {
 			double dblProbabilityDensity = uniDist.density (dblElement);

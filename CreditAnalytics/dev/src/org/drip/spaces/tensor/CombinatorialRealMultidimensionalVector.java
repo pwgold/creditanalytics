@@ -36,7 +36,7 @@ package org.drip.spaces.tensor;
  */
 
 public class CombinatorialRealMultidimensionalVector extends
-	org.drip.spaces.tensor.GeneralizedMultidimensionalVectorSpace {
+	org.drip.spaces.tensor.AggregatedMultidimensionalVectorSpace {
 
 	/**
 	 * CombinatorialRealMultidimensionalVector Constructor

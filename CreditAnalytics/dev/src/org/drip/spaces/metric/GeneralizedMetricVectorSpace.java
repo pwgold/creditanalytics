@@ -29,12 +29,12 @@ package org.drip.spaces.metric;
  */
 
 /**
- * GeneralizedMetricSpace exposes the basic Properties of the General Normed Metric Space.
+ * GeneralizedMetricVectorSpace exposes the basic Properties of the General Normed Metric Vector Space.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface GeneralizedMetricSpace {
+public interface GeneralizedMetricVectorSpace extends org.drip.spaces.tensor.GeneralizedVectorSpace {
 
 	/**
 	 * Retrieve the P-Norm Index of the Metric Space

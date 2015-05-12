@@ -40,22 +40,19 @@ package org.drip.spaces.function;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class NormedR1Input extends org.drip.spaces.function.GeneralizedNormedFunctionSpace {
-	private org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace _guvsInput = null;
+public abstract class NormedR1Input implements org.drip.spaces.function.GeneralizedNormedFunctionSpace {
+	private org.drip.spaces.metric.RealUnidimensionalNormedSpace _runsInput = null;
 
 	protected NormedR1Input (
-		final org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace guvsInput,
-		final int iPNorm)
+		final org.drip.spaces.metric.RealUnidimensionalNormedSpace runsInput)
 		throws java.lang.Exception
 	{
-		super (iPNorm);
-
-		if (null == (_guvsInput = guvsInput))
+		if (null == (_runsInput = runsInput))
 			throw new java.lang.Exception ("NormedR1Input ctr: Invalid Inputs");
 	}
 
-	@Override public org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace input()
+	@Override public org.drip.spaces.metric.RealUnidimensionalNormedSpace input()
 	{
-		return _guvsInput;
+		return _runsInput;
 	}
 }

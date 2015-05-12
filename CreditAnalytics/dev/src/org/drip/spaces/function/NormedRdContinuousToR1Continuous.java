@@ -45,35 +45,27 @@ public class NormedRdContinuousToR1Continuous extends org.drip.spaces.function.N
 	/**
 	 * NormedRdContinuousToR1Continuous Function Space Constructor
 	 * 
-	 * @param am The Multivariate Function
-	 * @param crmvInput The R^d Input Vector Space (may/may not be Normed)
-	 * @param cruvOutput The R^1 Output Vector Space (may/may not be Normed)
-	 * @param iPNorm The Function-level Norm
+	 * @param funcRdToR1 The R^d -> R^1 Function
+	 * @param crmbInput The Continuous R^d Input Metric Vector Space
+	 * @param cruOutput The Continuous R^1 Output Metric Vector Space
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NormedRdContinuousToR1Continuous (
-		final org.drip.function.deterministic.RdToR1 am,
-		final org.drip.spaces.tensor.ContinuousRealMultidimensionalVector crmvInput,
-		final org.drip.spaces.tensor.ContinuousRealUnidimensionalVector cruvOutput,
-		final int iPNorm)
+		final org.drip.function.deterministic.RdToR1 funcRdToR1,
+		final org.drip.spaces.metric.ContinuousRealMultidimensionalBanach crmbInput,
+		final org.drip.spaces.metric.ContinuousRealUnidimensional cruOutput)
 		throws java.lang.Exception
 	{
-		super (crmvInput, cruvOutput, am, iPNorm);
+		super (crmbInput, cruOutput, funcRdToR1);
 	}
 
 	@Override public double populationMetricNorm()
 		throws java.lang.Exception
 	{
-		org.drip.spaces.tensor.GeneralizedMultidimensionalVectorSpace gmvsInput = input();
-
-		if (!(gmvsInput instanceof org.drip.spaces.metric.ContinuousRealMultidimensionalBanach))
-			throw new java.lang.Exception
-				("NormedRdContinuousToR1Continuous::populationMetricNorm => Invalid Input Vector Space");
-
 		org.drip.spaces.metric.ContinuousRealMultidimensionalBanach crmb =
-			(org.drip.spaces.metric.ContinuousRealMultidimensionalBanach) gmvsInput;
+			(org.drip.spaces.metric.ContinuousRealMultidimensionalBanach) input();
 
 		final org.drip.measure.continuous.MultivariateDistribution multiDist = crmb.borelSigmaMeasure();
 
@@ -81,9 +73,9 @@ public class NormedRdContinuousToR1Continuous extends org.drip.spaces.function.N
 			throw new java.lang.Exception
 				("NormedRdContinuousToR1Continuous::populationMetricNorm => Measure not specified");
 
-		final org.drip.function.deterministic.RdToR1 amBase = function();
+		final org.drip.function.deterministic.RdToR1 funcRdToR1 = function();
 
-		final int iPNorm = pNorm();
+		final int iPNorm = ((org.drip.spaces.metric.ContinuousRealUnidimensional) output()).pNorm();
 
 		org.drip.function.deterministic.RdToR1 am = new
 			org.drip.function.deterministic.RdToR1 (null) {
@@ -91,7 +83,7 @@ public class NormedRdContinuousToR1Continuous extends org.drip.spaces.function.N
 				final double[] adblX)
 				throws java.lang.Exception
 			{
-				return java.lang.Math.pow (java.lang.Math.abs (amBase.evaluate (adblX)), iPNorm) *
+				return java.lang.Math.pow (java.lang.Math.abs (funcRdToR1.evaluate (adblX)), iPNorm) *
 					multiDist.density (adblX);
 			}
 		};

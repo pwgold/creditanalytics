@@ -29,15 +29,19 @@ package org.drip.spaces.cover;
  */
 
 /**
- * CoveringNumber implements the Lower/Upper Bounds for the Derived Class Functions. The Main Reference is:
+ * CoveringNumberEstimate implements the estimate Lower/Upper Bounds and/or Absolute Values of the Covering
+ * 	Number for the Class Functions. The Main References are:
  * 
- * 	- P. L. Bartlett, S. R. Kulkarni, and S. E. Posner (1997): Covering Numbers for Real-valued Function
+ * 	1) Carl, B., and I. Stephani (1990): Entropy, Compactness, and Approximation of Operators, Cambridge
+ * 		University Press, Cambridge UK.
+ * 
+ * 	2) Bartlett, P. L., S. R. Kulkarni, and S. E. Posner (1997): Covering Numbers for Real-valued Function
  * 		Classes, IEEE Transactions on Information Theory 43 (5) 1721-1724.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface CoveringNumber {
+public interface CoveringNumberEstimate {
 
 	/**
 	 * Log of the Lower Bound of the Function Covering Number

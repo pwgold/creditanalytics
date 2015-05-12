@@ -45,35 +45,27 @@ public class NormedRdCombinatorialToR1Continuous extends org.drip.spaces.functio
 	/**
 	 * NormedRdCombinatorialToR1Continuous Function Space Constructor
 	 * 
-	 * @param am The Multivariate Function
-	 * @param crmvInput The Combinatorial R^d Input Vector Space (may/may not be Normed)
-	 * @param cruvOutput The Continuous R^1 Output Vector Space (may/may not be Normed)
-	 * @param iPNorm The Function-level Norm
+	 * @param funcRdToR1 The R^d -> R^1 Function
+	 * @param crmbInput The Combinatorial R^d Input Metric Vector Space
+	 * @param cruOutput The Continuous R^1 Output Metric Vector Space
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NormedRdCombinatorialToR1Continuous (
-		final org.drip.function.deterministic.RdToR1 am,
-		final org.drip.spaces.tensor.CombinatorialRealMultidimensionalVector crmvInput,
-		final org.drip.spaces.tensor.ContinuousRealUnidimensionalVector cruvOutput,
-		final int iPNorm)
+		final org.drip.function.deterministic.RdToR1 funcRdToR1,
+		final org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach crmbInput,
+		final org.drip.spaces.metric.ContinuousRealUnidimensional cruOutput)
 		throws java.lang.Exception
 	{
-		super (crmvInput, cruvOutput, am, iPNorm);
+		super (crmbInput, cruOutput, funcRdToR1);
 	}
 
 	@Override public double populationMetricNorm()
 		throws java.lang.Exception
 	{
-		org.drip.spaces.tensor.GeneralizedMultidimensionalVectorSpace gmvsInput = input();
-
-		if (!(gmvsInput instanceof org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach))
-			throw new java.lang.Exception
-				("NormedRdCombinatorialToR1Continuous::populationMetricNorm => Incomptabile Input Vector Space");
-
 		org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach crmb =
-			(org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach) gmvsInput;
+			(org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach) input();
 
 		org.drip.measure.continuous.MultivariateDistribution multiDist = crmb.borelSigmaMeasure();
 
@@ -83,14 +75,14 @@ public class NormedRdCombinatorialToR1Continuous extends org.drip.spaces.functio
 
 		org.drip.spaces.tensor.CombinatorialRealMultidimensionalIterator crmi = crmb.iterator();
 
-		org.drip.function.deterministic.RdToR1 am = function();
+		int iPNorm = ((org.drip.spaces.metric.ContinuousRealUnidimensional) output()).pNorm();
+
+		org.drip.function.deterministic.RdToR1 funcRdToR1 = function();
 
 		double[] adblVariate = crmi.cursorVariates();
 
 		double dblPopulationMetricNorm  = 0.;
 		double dblNormalizer = 0.;
-
-		int iPNorm = pNorm();
 
 		while (null != adblVariate) {
 			double dblProbabilityDensity = multiDist.density (adblVariate);
@@ -98,7 +90,7 @@ public class NormedRdCombinatorialToR1Continuous extends org.drip.spaces.functio
 			dblNormalizer += dblProbabilityDensity;
 
 			dblPopulationMetricNorm += dblProbabilityDensity * java.lang.Math.pow (java.lang.Math.abs
-				(am.evaluate (adblVariate)), iPNorm);
+				(funcRdToR1.evaluate (adblVariate)), iPNorm);
 
 			adblVariate = crmi.nextVariates();
 		}

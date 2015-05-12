@@ -40,48 +40,28 @@ package org.drip.spaces.function;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class GeneralizedNormedFunctionSpace {
-	private int _iPNorm = -1;
-
-	protected GeneralizedNormedFunctionSpace (
-		final int iPNorm)
-		throws java.lang.Exception
-	{
-		if (0 > (_iPNorm = iPNorm))
-			throw new java.lang.Exception ("GeneralizedNormedFunctionSpace ctr: Invalid Inputs");
-	}
+public interface GeneralizedNormedFunctionSpace {
 
 	/**
-	 * Retrieve the Input Vector Space
+	 * Retrieve the Input Metric Vector Space
 	 * 
-	 * @return The Input Vector Space
+	 * @return The Input Metric Vector Space
 	 */
 
-	public abstract org.drip.spaces.tensor.GeneralizedVectorSpace input();
+	public abstract org.drip.spaces.metric.GeneralizedMetricVectorSpace input();
 
 	/**
-	 * Retrieve the Output Vector Space
+	 * Retrieve the Output Metric Vector Space
 	 * 
-	 * @return The Output Vector Space
+	 * @return The Output Metric Vector Space
 	 */
 
-	public abstract org.drip.spaces.tensor.GeneralizedVectorSpace output();
-
-	/**
-	 * Retrieve the P-Norm Index
-	 * 
-	 * @return The P-Norm Index
-	 */
-
-	public int pNorm()
-	{
-		return _iPNorm;
-	}
+	public abstract org.drip.spaces.metric.GeneralizedMetricVectorSpace output();
 
 	/**
 	 * Retrieve the Sample Supremum Norm
 	 * 
-	 * @param gvviInstance The Validated Vector Space Instance
+	 * @param gvvi The Validated Vector Space Instance
 	 * 
 	 * @return The Sample Supremum Norm
 	 * 
@@ -89,13 +69,13 @@ public abstract class GeneralizedNormedFunctionSpace {
 	 */
 
 	public abstract double sampleSupremumNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviInstance)
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
 		throws java.lang.Exception;
 
 	/**
 	 * Retrieve the Sample Metric Norm
 	 * 
-	 * @param gvviInstance The Validated Vector Space Instance
+	 * @param gvvi The Validated Vector Space Instance
 	 * 
 	 * @return The Sample Metric Norm
 	 * 
@@ -103,7 +83,7 @@ public abstract class GeneralizedNormedFunctionSpace {
 	 */
 
 	public abstract double sampleMetricNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviInstance)
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
 		throws java.lang.Exception;
 
 	/**

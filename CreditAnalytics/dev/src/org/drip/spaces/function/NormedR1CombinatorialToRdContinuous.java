@@ -46,31 +46,25 @@ public class NormedR1CombinatorialToRdContinuous extends org.drip.spaces.functio
 	 * NormedR1CombinatorialToRdContinuous Function Space Constructor
 	 * 
 	 * @param funcR1ToRd The R1ToRd Function
-	 * @param cruvInput The Combinatorial R^1 Input Vector Space (may/may not be Normed)
-	 * @param crmvOutput The Continuous R^d Output Vector Space (may/may not be Normed)
-	 * @param iPNorm The Function-level Norm
+	 * @param cruInput The Combinatorial R^1 Input Metric Vector Space
+	 * @param crmbOutput The Continuous R^d Output Metric Vector Space
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NormedR1CombinatorialToRdContinuous (
 		final org.drip.function.deterministic.R1ToRd funcR1ToRd,
-		final org.drip.spaces.tensor.CombinatorialRealUnidimensionalVector cruvInput,
-		final org.drip.spaces.tensor.ContinuousRealMultidimensionalVector crmvOutput,
-		final int iPNorm)
+		final org.drip.spaces.metric.CombinatorialRealUnidimensional cruInput,
+		final org.drip.spaces.metric.ContinuousRealMultidimensionalBanach crmbOutput)
 		throws java.lang.Exception
 	{
-		super (cruvInput, crmvOutput, funcR1ToRd, iPNorm);
+		super (cruInput, crmbOutput, funcR1ToRd);
 	}
 
 	@Override public double[] populationRdMetricNorm()
 	{
-		org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace guvsInput = input();
-
-		if (!(guvsInput instanceof org.drip.spaces.metric.CombinatorialRealUnidimensional)) return null;
-
 		org.drip.spaces.metric.CombinatorialRealUnidimensional cru =
-			(org.drip.spaces.metric.CombinatorialRealUnidimensional) guvsInput;
+			(org.drip.spaces.metric.CombinatorialRealUnidimensional) input();
 
 		org.drip.measure.continuous.UnivariateDistribution uniDist = cru.borelSigmaMeasure();
 
@@ -85,7 +79,7 @@ public class NormedR1CombinatorialToRdContinuous extends org.drip.spaces.functio
 		int iOutputDimension = -1;
 		double dblNormalizer = 0.;
 
-		int iPNorm = pNorm();
+		int iPNorm = ((org.drip.spaces.metric.RealMultidimensionalNormedSpace) output()).pNorm();
 
 		for (double dblElement : lsElem) {
 			try {

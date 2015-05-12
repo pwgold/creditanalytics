@@ -45,7 +45,7 @@ package org.drip.spaces.cover;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BoundedFunctionCoveringNumber implements org.drip.spaces.cover.CoveringNumber {
+public class BoundedFunctionCoveringNumber implements org.drip.spaces.cover.CoveringNumberEstimate {
 	private double _dblBound = java.lang.Double.NaN;
 	private double _dblSupport = java.lang.Double.NaN;
 	private double _dblVariation = java.lang.Double.NaN;
@@ -116,11 +116,10 @@ public class BoundedFunctionCoveringNumber implements org.drip.spaces.cover.Cove
 			throw new java.lang.Exception ("BoundedFunctionCoveringNumber::logLowerBound => Invalid Inputs");
 
 		double dblVariationCoverScale = dblCover / (_dblSupport * _dblVariation);
+		double dblVariationLogLowerBound = 1. / (54. * dblVariationCoverScale);
 
 		if (1. < 12. * dblVariationCoverScale)
 			throw new java.lang.Exception ("BoundedFunctionCoveringNumber::logLowerBound => Invalid Inputs");
-
-		double dblVariationLogLowerBound = 1. / (54. * dblVariationCoverScale);
 
 		return !org.drip.quant.common.NumberUtil.IsValid (_dblBound) ? dblVariationLogLowerBound : 1. +
 			dblVariationLogLowerBound * java.lang.Math.log (2.) + java.lang.Math.log (_dblSupport * _dblBound

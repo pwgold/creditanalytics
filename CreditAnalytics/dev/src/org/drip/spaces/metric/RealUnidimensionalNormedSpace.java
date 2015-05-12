@@ -40,7 +40,8 @@ package org.drip.spaces.metric;
  * @author Lakshmi Krishnamurthy
  */
 
-public interface RealUnidimensionalNormedSpace extends org.drip.spaces.metric.GeneralizedMetricSpace {
+public interface RealUnidimensionalNormedSpace extends org.drip.spaces.metric.GeneralizedMetricVectorSpace,
+	org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace {
 
 	/**
 	 * Retrieve the Borel Sigma Univariate Probability Measure

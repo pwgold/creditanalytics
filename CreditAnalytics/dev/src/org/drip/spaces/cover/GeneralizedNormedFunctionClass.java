@@ -42,6 +42,27 @@ package org.drip.spaces.cover;
 public abstract class GeneralizedNormedFunctionClass {
 	private org.drip.spaces.function.GeneralizedNormedFunctionSpace[] _aGNFS = null;
 
+	/**
+	 * Compute the Dyadic Entropy Number from the nth Entropy Number
+	 * 
+	 * @param dblLogNEntropyNumber Log of the nth Entropy Number
+	 * 
+	 * @return The Dyadic Entropy Number
+	 * 
+	 * @throws java.lang.Exception Thrown if the Dyadic Entropy Number cannot be calculated
+	 */
+
+	public static final double DyadicEntropyNumber (
+		final double dblLogNEntropyNumber)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (dblLogNEntropyNumber))
+			throw new java.lang.Exception
+				("GeneralizedNormedFunctionClass::DyadicEntropyNumber => Invalid Inputs");
+
+		return 1. + (dblLogNEntropyNumber / java.lang.Math.log (2.));
+	}
+
 	protected GeneralizedNormedFunctionClass (
 		final org.drip.spaces.function.GeneralizedNormedFunctionSpace[] aGNFS)
 		throws java.lang.Exception
@@ -59,6 +80,73 @@ public abstract class GeneralizedNormedFunctionClass {
 				throw new java.lang.Exception ("GeneralizedNormedFunctionClass ctr: Invalid Inputs");
 		}
 	}
+
+	/**
+	 * Retrieve the Agnostic Covering Number Bounds for the Function Class
+	 * 
+	 * @return The Agnostic Covering Number Bounds for the Function Class
+	 */
+
+	public abstract org.drip.spaces.cover.CoveringNumberEstimate agnosticCoveringNumber();
+
+	/**
+	 * Retrieve the Scale-Sensitive Covering Number Bounds given the Specified Sample for the Function Class
+	 * 
+	 * @param gvvi The Validated Instance Vector Sequence
+	 * @param r1r1FatShatter The Cover Fat Shattering Coefficient R^1 -> R^1
+	 * 
+	 * @return The Scale-Sensitive Covering Number Bounds given the Specified Sample for the Function Class
+	 */
+
+	public abstract org.drip.spaces.cover.CoveringNumberEstimate scaleSensitiveCoveringNumber (
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final org.drip.function.deterministic.R1ToR1 r1r1FatShatter);
+
+	/**
+	 * Estimate for the Function Class Covering Number
+	 * 
+	 * @param dblCover The Size of the Cover
+	 * 
+	 * @return Function Class Covering Number Estimate
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public abstract double coveringNumber (
+		final double dblCover)
+		throws java.lang.Exception;
+
+	/**
+	 * Estimate for the Scale-Sensitive Covering Number for the specified Cover Size
+	 * 
+	 * @param vru The Validated Real Uni-dimensional Space Type
+	 * @param dblCover The Size of the Cover
+	 * 
+	 * @return The Scale-Sensitive Covering Number for the specified Cover Size
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public abstract double uniformCoveringNumber (
+		final org.drip.spaces.instance.ValidatedRealUnidimensional vru,
+		final double dblCover)
+		throws java.lang.Exception;
+
+	/**
+	 * Estimate for the Scale-Sensitive Covering Number for the specified Cover Size
+	 * 
+	 * @param vrm The Validated Real Multidimensional Space Type
+	 * @param dblCover The Size of the Cover
+	 * 
+	 * @return The Scale-Sensitive Covering Number for the specified Cover Size
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public abstract double uniformCoveringNumber (
+		final org.drip.spaces.instance.ValidatedRealMultidimensional vrm,
+		final double dblCover)
+		throws java.lang.Exception;
 
 	/**
 	 * Retrieve the Array of Function Spaces in the Class
@@ -91,17 +179,6 @@ public abstract class GeneralizedNormedFunctionClass {
 	public org.drip.spaces.tensor.GeneralizedVectorSpace output()
 	{
 		return _aGNFS[0].output();
-	}
-
-	/**
-	 * Retrieve the P-Norm Index
-	 * 
-	 * @return The P-Norm Index
-	 */
-
-	public int pNorm()
-	{
-		return _aGNFS[0].pNorm();
 	}
 
 	/**
@@ -141,7 +218,7 @@ public abstract class GeneralizedNormedFunctionClass {
 	/**
 	 * Compute the Operator Sample Norm
 	 * 
-	 * @param gvviInstance The Validated Vector Space Instance
+	 * @param gvvi The Validated Vector Space Instance
 	 * 
 	 * @return The Operator Sample Norm
 	 * 
@@ -149,12 +226,12 @@ public abstract class GeneralizedNormedFunctionClass {
 	 */
 
 	public double operatorSampleNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviInstance)
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
 		throws java.lang.Exception
 	{
 		int iNumFunction = _aGNFS.length;
 
-		double dblOperatorSampleNorm = _aGNFS[0].sampleMetricNorm (gvviInstance);
+		double dblOperatorSampleNorm = _aGNFS[0].sampleMetricNorm (gvvi);
 
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblOperatorSampleNorm))
 			throw new java.lang.Exception
@@ -162,7 +239,7 @@ public abstract class GeneralizedNormedFunctionClass {
 					+ "#" + 0);
 
 		for (int i = 1; i < iNumFunction; ++i) {
-			double dblSampleNorm = _aGNFS[i].populationMetricNorm();
+			double dblSampleNorm = _aGNFS[i].sampleMetricNorm (gvvi);
 
 			if (!org.drip.quant.common.NumberUtil.IsValid (dblSampleNorm))
 				throw new java.lang.Exception
@@ -174,12 +251,4 @@ public abstract class GeneralizedNormedFunctionClass {
 
 		return dblOperatorSampleNorm;
 	}
-
-	/**
-	 * Retrieve the Agnostic Covering Number for the Function Class
-	 * 
-	 * @return The Agnostic Covering Number for the Function Class
-	 */
-
-	public abstract org.drip.spaces.cover.CoveringNumber agnosticCoveringNumber();
 }

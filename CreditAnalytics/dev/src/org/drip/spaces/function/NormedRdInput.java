@@ -40,22 +40,19 @@ package org.drip.spaces.function;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class NormedRdInput extends org.drip.spaces.function.GeneralizedNormedFunctionSpace {
-	private org.drip.spaces.tensor.GeneralizedMultidimensionalVectorSpace _gmvsInput = null;
+public abstract class NormedRdInput implements org.drip.spaces.function.GeneralizedNormedFunctionSpace {
+	private org.drip.spaces.metric.RealMultidimensionalNormedSpace _rmnsInput = null;
 
 	protected NormedRdInput (
-		final org.drip.spaces.tensor.GeneralizedMultidimensionalVectorSpace gmvsInput,
-		final int iPNorm)
+		final org.drip.spaces.metric.RealMultidimensionalNormedSpace rmnsInput)
 		throws java.lang.Exception
 	{
-		super (iPNorm);
-
-		if (null == (_gmvsInput = gmvsInput))
+		if (null == (_rmnsInput = rmnsInput))
 			throw new java.lang.Exception ("NormedRdInput ctr: Invalid Inputs");
 	}
 
-	@Override public org.drip.spaces.tensor.GeneralizedMultidimensionalVectorSpace input()
+	@Override public org.drip.spaces.metric.RealMultidimensionalNormedSpace input()
 	{
-		return _gmvsInput;
+		return _rmnsInput;
 	}
 }

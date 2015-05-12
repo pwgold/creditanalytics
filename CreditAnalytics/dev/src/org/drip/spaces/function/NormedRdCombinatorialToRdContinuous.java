@@ -46,32 +46,25 @@ public class NormedRdCombinatorialToRdContinuous extends org.drip.spaces.functio
 	 * NormedRdCombinatorialToRdContinuous Function Space Constructor
 	 * 
 	 * @param funcRdToRd The RdToRd Function
-	 * @param crmvInput The Combinatorial R^d Input Vector Space (may/may not be Normed)
-	 * @param crmvOutput The Continuous R^d Output Vector Space (may/may not be Normed)
-	 * @param iPNorm The Function-level Norm
+	 * @param crmbInput The Combinatorial R^d Input Metric Vector Space
+	 * @param crmbOutput The Continuous R^d Output Metric Vector Space
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NormedRdCombinatorialToRdContinuous (
 		final org.drip.function.deterministic.RdToRd funcRdToRd,
-		final org.drip.spaces.tensor.CombinatorialRealMultidimensionalVector crmvInput,
-		final org.drip.spaces.tensor.ContinuousRealMultidimensionalVector crmvOutput,
-		final int iPNorm)
+		final org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach crmbInput,
+		final org.drip.spaces.metric.ContinuousRealMultidimensionalBanach crmbOutput)
 		throws java.lang.Exception
 	{
-		super (crmvInput, crmvOutput, funcRdToRd, iPNorm);
+		super (crmbInput, crmbOutput, funcRdToRd);
 	}
 
 	@Override public double[] populationRdMetricNorm()
 	{
-		org.drip.spaces.tensor.GeneralizedMultidimensionalVectorSpace gmvsInput = input();
-
-		if (!(gmvsInput instanceof org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach))
-			return null;
-
 		org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach crmb =
-			(org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach) gmvsInput;
+			(org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach) input();
 
 		org.drip.measure.continuous.MultivariateDistribution multiDist = crmb.borelSigmaMeasure();
 
@@ -88,7 +81,7 @@ public class NormedRdCombinatorialToRdContinuous extends org.drip.spaces.functio
 		int iOutputDimension = -1;
 		double dblNormalizer = 0.;
 
-		int iPNorm = pNorm();
+		int iPNorm = ((org.drip.spaces.metric.ContinuousRealMultidimensionalBanach) output()).pNorm();
 
 		while (null != adblVariate) {
 			try {

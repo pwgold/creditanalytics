@@ -41,7 +41,7 @@ package org.drip.spaces.tensor;
  */
 
 public class ContinuousRealMultidimensionalVector extends
-	org.drip.spaces.tensor.GeneralizedMultidimensionalVectorSpace {
+	org.drip.spaces.tensor.AggregatedMultidimensionalVectorSpace {
 
 	/**
 	 * Construct the Standard R^d ContinuousRealMultidimensionalVector Instance
