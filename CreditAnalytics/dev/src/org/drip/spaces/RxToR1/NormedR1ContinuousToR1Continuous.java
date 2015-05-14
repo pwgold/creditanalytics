@@ -1,5 +1,5 @@
 
-package org.drip.spaces.function;
+package org.drip.spaces.RxToR1;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,8 +29,8 @@ package org.drip.spaces.function;
  */
 
 /**
- * NormedR1ContinuousToR1Continuous implements the f : Validated R^1 Continuous -> Validated R^1 Continuous
- *  Normed Function Spaces.
+ * NormedR1ContinuousToR1Continuous implements the f : Validated Normed R^1 Continuous -> Validated Normed
+ * 	R^1 Continuous Function Spaces.
  * 
  * The Reference we've used is:
  * 
@@ -40,7 +40,7 @@ package org.drip.spaces.function;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormedR1ContinuousToR1Continuous extends org.drip.spaces.function.NormedR1ToR1 {
+public class NormedR1ContinuousToR1Continuous extends org.drip.spaces.RxToR1.NormedR1ToNormedR1 {
 
 	/**
 	 * NormedR1ContinuousToR1Continuous Function Space Constructor
@@ -69,13 +69,13 @@ public class NormedR1ContinuousToR1Continuous extends org.drip.spaces.function.N
 		org.drip.spaces.metric.ContinuousRealUnidimensional cru =
 			(org.drip.spaces.metric.ContinuousRealUnidimensional) guvsInput;
 
+		final org.drip.function.deterministic.R1ToR1 funcR1ToR1 = function();
+
 		final org.drip.measure.continuous.UnivariateDistribution uniDist = cru.borelSigmaMeasure();
 
-		if (null == uniDist)
+		if (null == uniDist || null == funcR1ToR1)
 			throw new java.lang.Exception
-				("NormedR1ContinuousToR1Continuous::populationMetricNorm => Measure not specified");
-
-		final org.drip.function.deterministic.R1ToR1 funcR1ToR1 = function();
+				("NormedR1ContinuousToR1Continuous::populationMetricNorm => Invalid Inputs");
 
 		final int iPNorm = output().pNorm();
 

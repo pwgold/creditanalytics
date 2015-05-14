@@ -1,5 +1,5 @@
 
-package org.drip.spaces.function;
+package org.drip.spaces.RxToR1;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,8 +29,8 @@ package org.drip.spaces.function;
  */
 
 /**
- * NormedRdContinuousToR1Continuous implements the f : Validated R^d Continuous -> Validated R^1 Continuous
- *  Normed Function Spaces.
+ * NormedRdCombinatorialToR1Continuous implements the f : Validated Normed R^d Combinatorial -> Validated
+ * 	Normed R^1 Continuous Function Spaces.
  * 
  * The Reference we've used is:
  * 
@@ -40,21 +40,21 @@ package org.drip.spaces.function;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormedRdContinuousToR1Continuous extends org.drip.spaces.function.NormedRdToR1 {
+public class NormedRdCombinatorialToR1Continuous extends org.drip.spaces.RxToR1.NormedRdToNormedR1 {
 
 	/**
-	 * NormedRdContinuousToR1Continuous Function Space Constructor
+	 * NormedRdCombinatorialToR1Continuous Function Space Constructor
 	 * 
 	 * @param funcRdToR1 The R^d -> R^1 Function
-	 * @param crmbInput The Continuous R^d Input Metric Vector Space
+	 * @param crmbInput The Combinatorial R^d Input Metric Vector Space
 	 * @param cruOutput The Continuous R^1 Output Metric Vector Space
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public NormedRdContinuousToR1Continuous (
+	public NormedRdCombinatorialToR1Continuous (
 		final org.drip.function.deterministic.RdToR1 funcRdToR1,
-		final org.drip.spaces.metric.ContinuousRealMultidimensionalBanach crmbInput,
+		final org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach crmbInput,
 		final org.drip.spaces.metric.ContinuousRealUnidimensional cruOutput)
 		throws java.lang.Exception
 	{
@@ -64,30 +64,37 @@ public class NormedRdContinuousToR1Continuous extends org.drip.spaces.function.N
 	@Override public double populationMetricNorm()
 		throws java.lang.Exception
 	{
-		org.drip.spaces.metric.ContinuousRealMultidimensionalBanach crmb =
-			(org.drip.spaces.metric.ContinuousRealMultidimensionalBanach) input();
+		org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach crmb =
+			(org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach) input();
 
-		final org.drip.measure.continuous.MultivariateDistribution multiDist = crmb.borelSigmaMeasure();
+		org.drip.measure.continuous.MultivariateDistribution multiDist = crmb.borelSigmaMeasure();
 
-		if (null == multiDist)
+		org.drip.function.deterministic.RdToR1 funcRdToR1 = function();
+
+		if (null == multiDist || null == funcRdToR1)
 			throw new java.lang.Exception
-				("NormedRdContinuousToR1Continuous::populationMetricNorm => Measure not specified");
+				("NormedRdCombinatorialToR1Continuous::populationMetricNorm => No Multivariate Distribution/Function");
 
-		final org.drip.function.deterministic.RdToR1 funcRdToR1 = function();
+		org.drip.spaces.tensor.CombinatorialRealMultidimensionalIterator crmi = crmb.iterator();
 
-		final int iPNorm = output().pNorm();
+		double[] adblVariate = crmi.cursorVariates();
 
-		org.drip.function.deterministic.RdToR1 am = new
-			org.drip.function.deterministic.RdToR1 (null) {
-			@Override public double evaluate (
-				final double[] adblX)
-				throws java.lang.Exception
-			{
-				return java.lang.Math.pow (java.lang.Math.abs (funcRdToR1.evaluate (adblX)), iPNorm) *
-					multiDist.density (adblX);
-			}
-		};
+		double dblPopulationMetricNorm  = 0.;
+		double dblNormalizer = 0.;
 
-		return java.lang.Math.pow (am.integrate (crmb.leftEdge(), crmb.rightEdge()), 1. / iPNorm);
+		int iPNorm = output().pNorm();
+
+		while (null != adblVariate) {
+			double dblProbabilityDensity = multiDist.density (adblVariate);
+
+			dblNormalizer += dblProbabilityDensity;
+
+			dblPopulationMetricNorm += dblProbabilityDensity * java.lang.Math.pow (java.lang.Math.abs
+				(funcRdToR1.evaluate (adblVariate)), iPNorm);
+
+			adblVariate = crmi.nextVariates();
+		}
+
+		return java.lang.Math.pow (dblPopulationMetricNorm / dblNormalizer, 1. / iPNorm);
 	}
 }

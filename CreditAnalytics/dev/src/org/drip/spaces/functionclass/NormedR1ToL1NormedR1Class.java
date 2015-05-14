@@ -29,7 +29,7 @@ package org.drip.spaces.functionclass;
  */
 
 /**
- * R1ToL1R1Class implements the Class F of f : R^1 -> L1 R^1 Normed Function Spaces of all Variants.
+ * NormedR1ToL1NormedR1Class implements the Class f E F : Normed R^1 -> L1 R^1 Function Spaces.
  * 
  * The Reference we've used is:
  * 
@@ -39,7 +39,7 @@ package org.drip.spaces.functionclass;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1ToL1R1Class extends org.drip.spaces.functionclass.R1ToR1Class {
+public class NormedR1ToL1NormedR1Class extends org.drip.spaces.functionclass.NormedR1ToNormedR1Class {
 
 	/**
 	 * Create Bounded R^1 -> Bounded L1 R^1 Function Class for the specified Bounded Function Class
@@ -51,7 +51,7 @@ public class R1ToL1R1Class extends org.drip.spaces.functionclass.R1ToR1Class {
 	 * @return The Bounded R^1 -> Bounded R^1 Function Class for the specified Function Set
 	 */
 
-	public static final R1ToL1R1Class BoundedPredictorBoundedResponse (
+	public static final NormedR1ToL1NormedR1Class BoundedPredictorBoundedResponse (
 		final org.drip.function.deterministic.R1ToR1[] aR1ToR1,
 		final double dblPredictorSupport,
 		final double dblResponseBound)
@@ -59,8 +59,8 @@ public class R1ToL1R1Class extends org.drip.spaces.functionclass.R1ToR1Class {
 		if (null == aR1ToR1) return null;
 
 		int iNumFunction = aR1ToR1.length;
-		org.drip.spaces.function.NormedR1ToR1[] aR1ToR1FunctionSpace = new
-			org.drip.spaces.function.NormedR1ToR1[iNumFunction];
+		org.drip.spaces.RxToR1.NormedR1ToNormedR1[] aR1ToR1FunctionSpace = new
+			org.drip.spaces.RxToR1.NormedR1ToNormedR1[iNumFunction];
 
 		if (0 == iNumFunction) return null;
 
@@ -74,10 +74,10 @@ public class R1ToL1R1Class extends org.drip.spaces.functionclass.R1ToR1Class {
 					dblResponseBound, null, 1);
 
 			for (int i = 0; i < iNumFunction; ++i)
-				aR1ToR1FunctionSpace[i] = new org.drip.spaces.function.NormedR1ContinuousToR1Continuous
+				aR1ToR1FunctionSpace[i] = new org.drip.spaces.RxToR1.NormedR1ContinuousToR1Continuous
 					(aR1ToR1[i], cruInput, cruOutput);
 
-			return new R1ToL1R1Class (aR1ToR1FunctionSpace);
+			return new NormedR1ToL1NormedR1Class (aR1ToR1FunctionSpace);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -85,8 +85,8 @@ public class R1ToL1R1Class extends org.drip.spaces.functionclass.R1ToR1Class {
 		return null;
 	}
 
-	protected R1ToL1R1Class (
-		final org.drip.spaces.function.NormedR1ToR1[] aR1ToR1FunctionSpace)
+	protected NormedR1ToL1NormedR1Class (
+		final org.drip.spaces.RxToR1.NormedR1ToNormedR1[] aR1ToR1FunctionSpace)
 		throws java.lang.Exception
 	{
 		super (aR1ToR1FunctionSpace);
@@ -94,31 +94,31 @@ public class R1ToL1R1Class extends org.drip.spaces.functionclass.R1ToR1Class {
 
 	@Override public org.drip.spaces.cover.CoveringNumberBounds agnosticCoveringNumberBounds()
 	{
-		org.drip.spaces.function.GeneralizedNormedFunctionSpace[] aGNFS = functionSpaces();
+		org.drip.spaces.RxToR1.NormedR1ToNormedR1[] aNormedR1ToNormedR1 =
+			(org.drip.spaces.RxToR1.NormedR1ToNormedR1[]) functionSpaces();
 
-		int iNumFunction = aGNFS.length;
+		int iNumFunction = aNormedR1ToNormedR1.length;
 		double dblResponseLowerBound = java.lang.Double.NaN;
 		double dblResponseUpperBound = java.lang.Double.NaN;
 		double dblPredictorLowerBound = java.lang.Double.NaN;
 		double dblPredictorUpperBound = java.lang.Double.NaN;
 
 		for (int i = 0; i < iNumFunction; ++i) {
-			org.drip.spaces.function.NormedR1ToR1 r1Tor1 = (org.drip.spaces.function.NormedR1ToR1) aGNFS[i];
+			org.drip.spaces.RxToR1.NormedR1ToNormedR1 r1Tor1 = aNormedR1ToNormedR1[i];
 
-			org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace guvsOutput =
-				(org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace) r1Tor1.output();
+			org.drip.spaces.metric.RealUnidimensionalNormedSpace runsInput = r1Tor1.input();
 
-			org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace guvsInput = r1Tor1.input();
+			org.drip.spaces.metric.RealUnidimensionalNormedSpace runsOutput = r1Tor1.output();
 
-			if (!guvsInput.isPredictorBounded() || !guvsOutput.isPredictorBounded()) return null;
+			if (!runsInput.isPredictorBounded() || !runsOutput.isPredictorBounded()) return null;
 
-			double dblResponseLeftBound = guvsOutput.leftEdge();
+			double dblResponseLeftBound = runsOutput.leftEdge();
 
-			double dblResponseRightBound = guvsOutput.rightEdge();
+			double dblPredictorLeftBound = runsInput.leftEdge();
 
-			double dblPredictorLeftBound = guvsInput.leftEdge();
+			double dblResponseRightBound = runsOutput.rightEdge();
 
-			double dblPredictorRightBound = guvsInput.rightEdge();
+			double dblPredictorRightBound = runsInput.rightEdge();
 
 			if (!org.drip.quant.common.NumberUtil.IsValid (dblPredictorLowerBound))
 				dblPredictorLowerBound = dblPredictorLeftBound;

@@ -29,7 +29,7 @@ package org.drip.spaces.functionclass;
  */
 
 /**
- * R1ToR1Class implements the Class F of f : R^1 -> R^1 Normed Function Spaces of all Variants.
+ * NormedR1ToNormedR1Class implements the Class F of f : Normed R^1 -> Normed R^1 Function Spaces.
  * 
  * The Reference we've used is:
  * 
@@ -39,7 +39,7 @@ package org.drip.spaces.functionclass;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class R1ToR1Class extends org.drip.spaces.functionclass.GeneralizedNormedFunctionClass {
+public abstract class NormedR1ToNormedR1Class extends org.drip.spaces.functionclass.NormedRxToNormedR1Class {
 
 	/**
 	 * R1ToR1Class Function Class Constructor
@@ -49,15 +49,15 @@ public abstract class R1ToR1Class extends org.drip.spaces.functionclass.Generali
 	 * @throws java.lang.Exception Thrown if R1ToR1Class Instance cannot be created
 	 */
 
-	public R1ToR1Class (
-		final org.drip.spaces.function.NormedR1ToR1[] aR1ToR1FunctionSpace)
+	public NormedR1ToNormedR1Class (
+		final org.drip.spaces.RxToR1.NormedR1ToNormedR1[] aR1ToR1FunctionSpace)
 		throws java.lang.Exception
 	{
 		super (aR1ToR1FunctionSpace);
 
 		for (int i = 0; i < aR1ToR1FunctionSpace.length; ++i) {
-			if (null == aR1ToR1FunctionSpace[i] || 1 != aR1ToR1FunctionSpace[i].output().pNorm())
-				throw new java.lang.Exception ("R1ToR1Class ctr: Invalid Input Function");
+			if (null == aR1ToR1FunctionSpace[i])
+				throw new java.lang.Exception ("NormedR1ToNormedR1Class ctr: Invalid Input Function");
 		}
 	}
 
@@ -69,14 +69,17 @@ public abstract class R1ToR1Class extends org.drip.spaces.functionclass.Generali
 
 	public org.drip.function.deterministic.R1ToR1[] functionR1ToR1Set()
 	{
-		org.drip.spaces.function.GeneralizedNormedFunctionSpace[] aGNFS = functionSpaces();
+		org.drip.spaces.RxToR1.NormedR1ToNormedR1[] aNormedR1ToNormedR1 =
+			(org.drip.spaces.RxToR1.NormedR1ToNormedR1[]) functionSpaces();
 
-		int iNumFunction = aGNFS.length;
+		if (null == aNormedR1ToNormedR1) return null;
+
+		int iNumFunction = aNormedR1ToNormedR1.length;
 		org.drip.function.deterministic.R1ToR1[] aR1ToR1 = new
 			org.drip.function.deterministic.R1ToR1[iNumFunction];
 
 		for (int i = 0; i < iNumFunction; ++i)
-			aR1ToR1[i] = ((org.drip.spaces.function.NormedR1ToR1) aGNFS[i]).function();
+			aR1ToR1[i] = aNormedR1ToNormedR1[i].function();
 
 		return aR1ToR1;
 	}

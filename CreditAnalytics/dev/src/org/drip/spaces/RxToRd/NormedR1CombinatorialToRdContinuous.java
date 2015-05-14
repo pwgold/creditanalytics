@@ -1,5 +1,5 @@
 
-package org.drip.spaces.function;
+package org.drip.spaces.RxToRd;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,8 +29,8 @@ package org.drip.spaces.function;
  */
 
 /**
- * NormedR1CombinatorialToR1Continuous implements the f : Validated R^d Combinatorial -> Validated R^1
- *  Continuous Normed Function Spaces.
+ * NormedRdCombinatorialToRdContinuous implements the f : Validated Normed R^d Combinatorial -> Normed
+ *  Validated R^d Continuous Function Spaces.
  * 
  * The Reference we've used is:
  * 
@@ -40,57 +40,78 @@ package org.drip.spaces.function;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormedR1CombinatorialToR1Continuous extends org.drip.spaces.function.NormedR1ToR1 {
+public class NormedR1CombinatorialToRdContinuous extends org.drip.spaces.RxToRd.NormedR1ToNormedRd {
 
 	/**
-	 * NormedR1CombinatorialToR1Continuous Function Space Constructor
+	 * NormedR1CombinatorialToRdContinuous Function Space Constructor
 	 * 
-	 * @param funcR1ToR1 The R1ToR1 Function
+	 * @param funcR1ToRd The R1ToRd Function
 	 * @param cruInput The Combinatorial R^1 Input Metric Vector Space
-	 * @param cruOutput The Continuous R^1 Output Metric Vector Space
+	 * @param crmbOutput The Continuous R^d Output Metric Vector Space
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public NormedR1CombinatorialToR1Continuous (
-		final org.drip.function.deterministic.R1ToR1 funcR1ToR1,
+	public NormedR1CombinatorialToRdContinuous (
+		final org.drip.function.deterministic.R1ToRd funcR1ToRd,
 		final org.drip.spaces.metric.CombinatorialRealUnidimensional cruInput,
-		final org.drip.spaces.metric.ContinuousRealUnidimensional cruOutput)
+		final org.drip.spaces.metric.ContinuousRealMultidimensionalBanach crmbOutput)
 		throws java.lang.Exception
 	{
-		super (cruInput, cruOutput, funcR1ToR1);
+		super (cruInput, crmbOutput, funcR1ToRd);
 	}
 
-	@Override public double populationMetricNorm()
-		throws java.lang.Exception
+	@Override public double[] populationMetricNorm()
 	{
 		org.drip.spaces.metric.CombinatorialRealUnidimensional cru =
 			(org.drip.spaces.metric.CombinatorialRealUnidimensional) input();
 
 		org.drip.measure.continuous.UnivariateDistribution uniDist = cru.borelSigmaMeasure();
 
-		if (null == uniDist)
-			throw new java.lang.Exception
-				("NormedR1CombinatorialToR1Continuous::populationMetricNorm => No Univariate Distribution");
+		org.drip.function.deterministic.R1ToRd funcR1ToRd = function();
 
-		org.drip.function.deterministic.R1ToR1 funcR1ToR1 = function();
+		if (null == uniDist || null == funcR1ToRd) return null;
 
 		java.util.List<java.lang.Double> lsElem = cru.elementSpace();
 
-		double dblPopulationMetricNorm  = 0.;
+		double dblProbabilityDensity = java.lang.Double.NaN;
+		double[] adblPopulationMetricNorm = null;
+		int iOutputDimension = -1;
 		double dblNormalizer = 0.;
 
 		int iPNorm = output().pNorm();
 
 		for (double dblElement : lsElem) {
-			double dblProbabilityDensity = uniDist.density (dblElement);
+			try {
+				dblProbabilityDensity = uniDist.density (dblElement);
+			} catch (java.lang.Exception e) {
+				e.printStackTrace();
+
+				return null;
+			}
+
+			double[] adblValue = funcR1ToRd.evaluate (dblElement);
+
+			if (null == adblValue || 0 == (iOutputDimension = adblValue.length)) return null;
 
 			dblNormalizer += dblProbabilityDensity;
 
-			dblPopulationMetricNorm += dblProbabilityDensity * java.lang.Math.pow (java.lang.Math.abs
-				(funcR1ToR1.evaluate (dblElement)), iPNorm);
+			if (null == adblPopulationMetricNorm) {
+				adblPopulationMetricNorm = new double[iOutputDimension];
+
+				for (int i = 0; i < iOutputDimension; ++i)
+					adblPopulationMetricNorm[i] = 0;
+			}
+
+			for (int i = 0; i < iOutputDimension; ++i)
+				adblPopulationMetricNorm[i] += dblProbabilityDensity * java.lang.Math.pow (java.lang.Math.abs
+					(adblValue[i]), iPNorm);
 		}
 
-		return java.lang.Math.pow (dblPopulationMetricNorm / dblNormalizer, 1. / iPNorm);
+		for (int i = 0; i < iOutputDimension; ++i)
+			adblPopulationMetricNorm[i] += java.lang.Math.pow (adblPopulationMetricNorm[i] / dblNormalizer,
+				1. / iPNorm);
+
+		return adblPopulationMetricNorm;
 	}
 }

@@ -45,12 +45,18 @@ package org.drip.classifier.functionclass;
  *  The References are:
  *  
  *  1) Alon, N., S. Ben-David, N. Cesa Bianchi, and D. Haussler (1997): Scale-sensitive Dimensions, Uniform
- *  	Convergence, and Learnability, Journal of Association of COmputational Machinery, 44 (4) 615-631.
+ *  	Convergence, and Learnability, Journal of Association of Computational Machinery, 44 (4) 615-631.
  * 
  *  2) Anthony, M., and P. L. Bartlett (1999): Artificial Neural Network Learning - Theoretical Foundations,
  *  	Cambridge University Press, Cambridge, UK.
+ *  
+ *  3) Kearns, M. J., R. E. Schapire, and L. M. Sellie (1994): Towards Efficient Agnostic Learning, Machine
+ *  	Learning, 17 (2) 115-141.
+ *  
+ *  4) Lee, W. S., P. L. Bartlett, and R. C. Williamson (1998): The Importance of Convexity in Learning with
+ *  	Squared Loss, IEEE Transactions on Information Theory, 44 1974-1980.
  * 
- *  3) Vapnik, V. N. (1998): Statistical learning Theory, Wiley, New York.
+ *  5) Vapnik, V. N. (1998): Statistical learning Theory, Wiley, New York.
  *
  * @author Lakshmi Krishnamurthy
  */

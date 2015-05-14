@@ -1,5 +1,5 @@
 
-package org.drip.spaces.function;
+package org.drip.spaces.RxToRd;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -40,7 +40,7 @@ package org.drip.spaces.function;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormedRdContinuousToRdContinuous extends org.drip.spaces.function.NormedRdToRd {
+public class NormedRdContinuousToRdContinuous extends org.drip.spaces.RxToRd.NormedRdToNormedRd {
 
 	/**
 	 * NormedRdContinuousToRdContinuous Function Space Constructor
@@ -61,16 +61,16 @@ public class NormedRdContinuousToRdContinuous extends org.drip.spaces.function.N
 		super (crmbInput, crmbOutput, funcRdToRd);
 	}
 
-	@Override public double[] populationRdMetricNorm()
+	@Override public double[] populationMetricNorm()
 	{
 		org.drip.spaces.metric.ContinuousRealMultidimensionalBanach crmb =
 			(org.drip.spaces.metric.ContinuousRealMultidimensionalBanach) input();
 
 		final org.drip.measure.continuous.MultivariateDistribution multiDist = crmb.borelSigmaMeasure();
 
-		final org.drip.function.deterministic.RdToRd amBase = function();
+		final org.drip.function.deterministic.RdToRd funcRdToRd = function();
 
-		if (null == multiDist) return null;
+		if (null == multiDist || null == funcRdToRd) return null;
 
 		final int iPNorm = output().pNorm();
 
@@ -79,7 +79,7 @@ public class NormedRdContinuousToRdContinuous extends org.drip.spaces.function.N
 			@Override public double[] evaluate (
 				final double[] adblX)
 			{
-				double[] adblNorm = amBase.evaluate (adblX);
+				double[] adblNorm = funcRdToRd.evaluate (adblX);
 
 				if (null == adblNorm) return null;
 

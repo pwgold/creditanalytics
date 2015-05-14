@@ -31,11 +31,27 @@ package org.drip.classifier.functionclass;
 /**
  * GeneralizedClassifierFunctionClass implements the Class that holds the Space of Classifier Functions.
  *  Class-Specific Asymptotic Sample, Covering Bounds and other Parameters are also maintained.
+ *  
+ * The Reference are:
+ *  
+ *  1) Alon, N., S. Ben-David, N. Cesa Bianchi, and D. Haussler (1997): Scale-sensitive Dimensions, Uniform
+ *  	Convergence, and Learnability, Journal of Association of Computational Machinery, 44 (4) 615-631.
+ * 
+ *  2) Anthony, M., and P. L. Bartlett (1999): Artificial Neural Network Learning - Theoretical Foundations,
+ *  	Cambridge University Press, Cambridge, UK.
+ *  
+ *  3) Kearns, M. J., R. E. Schapire, and L. M. Sellie (1994): Towards Efficient Agnostic Learning, Machine
+ *  	Learning, 17 (2) 115-141.
+ *  
+ *  4) Lee, W. S., P. L. Bartlett, and R. C. Williamson (1998): The Importance of Convexity in Learning with
+ *  	Squared Loss, IEEE Transactions on Information Theory, 44 1974-1980.
+ * 
+ *  5) Vapnik, V. N. (1998): Statistical learning Theory, Wiley, New York.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class GeneralizedClassifierFunctionClass extends org.drip.spaces.functionclass.R1ToR1Class {
+public abstract class GeneralizedClassifierFunctionClass extends org.drip.spaces.functionclass.NormedR1ToNormedR1Class {
 	private org.drip.classifier.functionclass.ConcentrationExpectedLossAsymptote _asymptote = null;
 
 	/**
@@ -48,7 +64,7 @@ public abstract class GeneralizedClassifierFunctionClass extends org.drip.spaces
 	 */
 
 	public GeneralizedClassifierFunctionClass (
-		final org.drip.spaces.function.NormedR1ToR1[] aR1ToR1FunctionSpace,
+		final org.drip.spaces.RxToR1.NormedR1ToNormedR1[] aR1ToR1FunctionSpace,
 		final org.drip.classifier.functionclass.ConcentrationExpectedLossAsymptote asymptote)
 		throws java.lang.Exception
 	{

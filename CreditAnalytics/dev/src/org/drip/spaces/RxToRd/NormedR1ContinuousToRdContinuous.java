@@ -1,5 +1,5 @@
 
-package org.drip.spaces.function;
+package org.drip.spaces.RxToRd;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,8 +29,8 @@ package org.drip.spaces.function;
  */
 
 /**
- * NormedRdContinuousToRdContinuous implements the f : Validated R^d Continuous -> Validated R^d Continuous
- *  Normed Function Spaces.
+ * NormedRdContinuousToRdContinuous implements the f : Normed, Validated R^d Continuous -> Normed, Validated
+ *  R^d Continuous Function Spaces.
  * 
  * The Reference we've used is:
  * 
@@ -40,14 +40,14 @@ package org.drip.spaces.function;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormedR1ContinuousToRdContinuous extends org.drip.spaces.function.NormedR1ToRd {
+public class NormedR1ContinuousToRdContinuous extends org.drip.spaces.RxToRd.NormedR1ToNormedRd {
 
 	/**
 	 * NormedR1ContinuousToRdContinuous Function Space Constructor
 	 * 
 	 * @param funcR1ToRd The R1ToRd Function
 	 * @param cruInput The R^1 Input Metric Vector Space
-	 * @param crmOutput The R^d Output Metric Vector Space
+	 * @param crmbOutput The R^d Output Metric Vector Space
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -61,16 +61,16 @@ public class NormedR1ContinuousToRdContinuous extends org.drip.spaces.function.N
 		super (cruInput, crmbOutput, funcR1ToRd);
 	}
 
-	@Override public double[] populationRdMetricNorm()
+	@Override public double[] populationMetricNorm()
 	{
 		org.drip.spaces.metric.CombinatorialRealUnidimensional cru =
 			(org.drip.spaces.metric.CombinatorialRealUnidimensional) input();
 
 		final org.drip.measure.continuous.UnivariateDistribution uniDist = cru.borelSigmaMeasure();
 
-		if (null == uniDist) return null;
-
 		final org.drip.function.deterministic.R1ToRd funcR1ToRd = function();
+
+		if (null == uniDist || null == funcR1ToRd) return null;
 
 		final int iPNorm = output().pNorm();
 

@@ -1,5 +1,5 @@
 
-package org.drip.spaces.function;
+package org.drip.spaces.RxToR1;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,8 +29,8 @@ package org.drip.spaces.function;
  */
 
 /**
- * GeneralizedNormedFunctionSpace is the abstract Class that exposes f : R^d -> R^d along with the Function
- *  Space Level P-Norm.
+ * NormedRxToNormedR1 is the abstract Class that exposes f : Normed R^x (x >= 1) -> Normed R^1 Function
+ *  Space.
  * 
  * The Reference we've used is:
  * 
@@ -40,7 +40,7 @@ package org.drip.spaces.function;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class GeneralizedNormedFunctionSpace {
+public abstract class NormedRxToNormedR1 {
 
 	/**
 	 * Retrieve the Input Metric Vector Space
@@ -56,7 +56,7 @@ public abstract class GeneralizedNormedFunctionSpace {
 	 * @return The Output Metric Vector Space
 	 */
 
-	public abstract org.drip.spaces.metric.GeneralizedMetricVectorSpace output();
+	public abstract org.drip.spaces.metric.RealUnidimensionalNormedSpace output();
 
 	/**
 	 * Retrieve the Sample Supremum Norm
@@ -102,9 +102,8 @@ public abstract class GeneralizedNormedFunctionSpace {
 		final double dblCover)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)
-			throw new java.lang.Exception
-				("GeneralizedNormedFunctionSpace::sampleCoveringNumber => Invalid Inputs");
+		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover)
+			throw new java.lang.Exception ("NormedRxToNormedR1::sampleCoveringNumber => Invalid Inputs");
 
 		return sampleMetricNorm (gvvi) / java.lang.Math.pow (dblCover, output().pNorm());
 	}
@@ -145,9 +144,8 @@ public abstract class GeneralizedNormedFunctionSpace {
 		final double dblCover)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)
-			throw new java.lang.Exception
-				("GeneralizedNormedFunctionSpace::populationCoveringNumber => Invalid Inputs");
+		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover)
+			throw new java.lang.Exception ("NormedRxToNormedR1::populationCoveringNumber => Invalid Inputs");
 
 		return populationMetricNorm()/ java.lang.Math.pow (dblCover, output().pNorm());
 	}
