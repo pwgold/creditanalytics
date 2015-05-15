@@ -1,8 +1,8 @@
 
 package org.drip.sample.classifier;
 
+import org.drip.learning.classifier.*;
 import org.drip.quant.common.FormatUtil;
-import org.drip.sequence.classifier.*;
 import org.drip.sequence.functional.FlatMultivariateRandom;
 import org.drip.sequence.metrics.SingleSequenceAgnosticMetrics;
 import org.drip.sequence.random.*;

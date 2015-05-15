@@ -103,59 +103,126 @@ public abstract class NormedRxToNormedR1Class {
 		final org.drip.function.deterministic.R1ToR1 r1r1FatShatter);
 
 	/**
-	 * Estimate for the Function Class Covering Number
+	 * Estimate for the Function Class Population Covering Number
 	 * 
 	 * @param dblCover The Size of the Cover
 	 * 
-	 * @return Function Class Covering Number Estimate
+	 * @return Function Class Population Covering Number Estimate
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double coveringNumber (
+	public double populationCoveringNumber (
 		final double dblCover)
 		throws java.lang.Exception
 	{
 		int iFunctionSpaceSize = _aNormedRxToNormedR1Space.length;
 
-		double dblCoveringNumber = _aNormedRxToNormedR1Space[0].populationCoveringNumber (dblCover);
+		double dblPopulationCoveringNumber = _aNormedRxToNormedR1Space[0].populationCoveringNumber
+			(dblCover);
 
 		for (int i = 1; i < iFunctionSpaceSize; ++i) {
-			double dblFunctionCoveringNumber = _aNormedRxToNormedR1Space[i].populationCoveringNumber (dblCover);
+			double dblFunctionPopulationCoveringNumber =
+				_aNormedRxToNormedR1Space[i].populationCoveringNumber (dblCover);
 
-			if (dblCoveringNumber < dblFunctionCoveringNumber) dblCoveringNumber = dblFunctionCoveringNumber;
+			if (dblPopulationCoveringNumber < dblFunctionPopulationCoveringNumber)
+				dblPopulationCoveringNumber = dblFunctionPopulationCoveringNumber;
 		}
 
-		return dblCoveringNumber;
+		return dblPopulationCoveringNumber;
 	}
 
 	/**
-	 * Estimate for the Scale-Sensitive Covering Number for the specified Cover Size
+	 * Estimate for the Function Class Population Supremum Covering Number
 	 * 
-	 * @param gvvi The Validated Instance Vector Sequence
 	 * @param dblCover The Size of the Cover
 	 * 
-	 * @return The Scale-Sensitive Covering Number for the specified Cover Size
+	 * @return Function Class Population Supremum Covering Number Estimate
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double uniformCoveringNumber (
+	public double populationSupremumCoveringNumber (
+		final double dblCover)
+		throws java.lang.Exception
+	{
+		int iFunctionSpaceSize = _aNormedRxToNormedR1Space.length;
+
+		double dblPopulationSupremumCoveringNumber = _aNormedRxToNormedR1Space[0].populationCoveringNumber
+			(dblCover);
+
+		for (int i = 1; i < iFunctionSpaceSize; ++i) {
+			double dblFunctionPopulationSupremumCoveringNumber =
+				_aNormedRxToNormedR1Space[i].populationCoveringNumber (dblCover);
+
+			if (dblPopulationSupremumCoveringNumber < dblFunctionPopulationSupremumCoveringNumber)
+				dblPopulationSupremumCoveringNumber = dblFunctionPopulationSupremumCoveringNumber;
+		}
+
+		return dblPopulationSupremumCoveringNumber;
+	}
+
+	/**
+	 * Estimate for the Scale-Sensitive Sample Covering Number for the specified Cover Size
+	 * 
+	 * @param gvvi The Validated Instance Vector Sequence
+	 * @param dblCover The Size of the Cover
+	 * 
+	 * @return The Scale-Sensitive Sample Covering Number for the specified Cover Size
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double sampleCoveringNumber (
 		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
 		final double dblCover)
 		throws java.lang.Exception
 	{
 		int iFunctionSpaceSize = _aNormedRxToNormedR1Space.length;
 
-		double dblCoveringNumber = _aNormedRxToNormedR1Space[0].sampleCoveringNumber (gvvi, dblCover);
+		double dblSampleCoveringNumber = _aNormedRxToNormedR1Space[0].sampleCoveringNumber (gvvi, dblCover);
 
 		for (int i = 1; i < iFunctionSpaceSize; ++i) {
-			double dblFunctionCoveringNumber = _aNormedRxToNormedR1Space[i].sampleCoveringNumber (gvvi, dblCover);
+			double dblFunctionSampleCoveringNumber = _aNormedRxToNormedR1Space[i].sampleCoveringNumber (gvvi,
+				dblCover);
 
-			if (dblCoveringNumber < dblFunctionCoveringNumber) dblCoveringNumber = dblFunctionCoveringNumber;
+			if (dblSampleCoveringNumber < dblFunctionSampleCoveringNumber)
+				dblSampleCoveringNumber = dblFunctionSampleCoveringNumber;
 		}
 
-		return dblCoveringNumber;
+		return dblSampleCoveringNumber;
+	}
+
+	/**
+	 * Estimate for the Scale-Sensitive Sample Supremum Covering Number for the specified Cover Size
+	 * 
+	 * @param gvvi The Validated Instance Vector Sequence
+	 * @param dblCover The Size of the Cover
+	 * 
+	 * @return The Scale-Sensitive Sample Supremum Covering Number for the specified Cover Size
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double sampleSupremumCoveringNumber (
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final double dblCover)
+		throws java.lang.Exception
+	{
+		int iFunctionSpaceSize = _aNormedRxToNormedR1Space.length;
+
+		double dblSampleSupremumCoveringNumber = _aNormedRxToNormedR1Space[0].sampleSupremumCoveringNumber
+			(gvvi, dblCover);
+
+		for (int i = 1; i < iFunctionSpaceSize; ++i) {
+			double dblFunctionSampleSupremumCoveringNumber =
+				_aNormedRxToNormedR1Space[i].sampleSupremumCoveringNumber (gvvi, dblCover);
+
+			if (dblSampleSupremumCoveringNumber < dblFunctionSampleSupremumCoveringNumber)
+				dblSampleSupremumCoveringNumber = dblFunctionSampleSupremumCoveringNumber;
+		}
+
+		return dblSampleSupremumCoveringNumber;
 	}
 
 	/**

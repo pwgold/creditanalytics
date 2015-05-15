@@ -1,5 +1,5 @@
 
-package org.drip.sequence.classifier;
+package org.drip.learning.classifier;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -52,12 +52,12 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 	}
 
 	private short[] _asEmpiricalOutcome = null;
-	private org.drip.classifier.functionclass.GeneralizedClassifierFunctionClass _fcClassifier = null;
+	private org.drip.learning.general.NormedR1ToNormedR1Learner _fcClassifier = null;
 
 	private Supremum supremum (
 		final double[] adblVariate)
 	{
-		org.drip.classifier.functionclass.AbstractBinaryClassifier[] aClassifier = _fcClassifier.classifiers();
+		org.drip.learning.classifier.AbstractBinaryClassifier[] aClassifier = _fcClassifier.classifiers();
 
 		int iSupremumIndex  = 0;
 		int iNumClassifier = aClassifier.length;
@@ -99,14 +99,14 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 	 */
 
 	public EmpiricalLossSupremum (
-		final org.drip.classifier.functionclass.GeneralizedClassifierFunctionClass fcClassifier,
+		final org.drip.learning.general.NormedR1ToNormedR1Learner fcClassifier,
 		final short[] asEmpiricalOutcome)
 		throws java.lang.Exception
 	{
 		if (null == (_fcClassifier = fcClassifier) || null == (_asEmpiricalOutcome = asEmpiricalOutcome))
 			throw new java.lang.Exception ("EmpiricalLossSupremum ctr: Invalid Inputs");
 
-		org.drip.classifier.functionclass.AbstractBinaryClassifier[] aClassifier = _fcClassifier.classifiers();
+		org.drip.learning.classifier.AbstractBinaryClassifier[] aClassifier = _fcClassifier.classifiers();
 
 		int iNumClassifier = aClassifier.length;
 		int iNumEmpiricalOutcome = _asEmpiricalOutcome.length;
@@ -131,7 +131,7 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 	 * @return The Classifier Function Class
 	 */
 
-	public org.drip.classifier.functionclass.GeneralizedClassifierFunctionClass classifierClass()
+	public org.drip.learning.general.NormedR1ToNormedR1Learner classifierClass()
 	{
 		return _fcClassifier;
 	}
@@ -155,7 +155,7 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 	 * @return The Supremum Classifier
 	 */
 
-	public org.drip.classifier.functionclass.AbstractBinaryClassifier supremumClassifier (
+	public org.drip.learning.classifier.AbstractBinaryClassifier supremumClassifier (
 		final double[] adblVariate)
 	{
 		Supremum sup = supremum (adblVariate);

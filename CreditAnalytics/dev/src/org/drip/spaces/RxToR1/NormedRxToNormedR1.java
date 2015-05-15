@@ -105,7 +105,30 @@ public abstract class NormedRxToNormedR1 {
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover)
 			throw new java.lang.Exception ("NormedRxToNormedR1::sampleCoveringNumber => Invalid Inputs");
 
-		return sampleMetricNorm (gvvi) / java.lang.Math.pow (dblCover, output().pNorm());
+		return sampleMetricNorm (gvvi) / dblCover;
+	}
+
+	/**
+	 * Retrieve the Sample Supremum Covering Number
+	 * 
+	 * @param gvvi The Validated Vector Space Instance
+	 * @param dblCover The Cover
+	 * 
+	 * @return The Sample Supremum Covering Number
+	 * 
+	 * @throws java.lang.Exception Thrown if the Sample Covering Number cannot be computed
+	 */
+
+	public double sampleSupremumCoveringNumber (
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final double dblCover)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover)
+			throw new java.lang.Exception
+				("NormedRxToNormedR1::sampleSupremumCoveringNumber => Invalid Inputs");
+
+		return sampleSupremumNorm (gvvi) / dblCover;
 	}
 
 	/**
@@ -147,6 +170,27 @@ public abstract class NormedRxToNormedR1 {
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover)
 			throw new java.lang.Exception ("NormedRxToNormedR1::populationCoveringNumber => Invalid Inputs");
 
-		return populationMetricNorm()/ java.lang.Math.pow (dblCover, output().pNorm());
+		return populationMetricNorm() / dblCover;
+	}
+
+	/**
+	 * Retrieve the Population Supremum Covering Number
+	 * 
+	 * @param dblCover The Cover
+	 * 
+	 * @return The Population Supremum Covering Number
+	 * 
+	 * @throws java.lang.Exception Thrown if the Population Supremum Covering Number cannot be computed
+	 */
+
+	public double populationSupremumCoveringNumber (
+		final double dblCover)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover)
+			throw new java.lang.Exception
+				("NormedRxToNormedR1::populationSupremumCoveringNumber => Invalid Inputs");
+
+		return populationESS() / dblCover;
 	}
 }

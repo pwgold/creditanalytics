@@ -1,5 +1,5 @@
 
-package org.drip.classifier.functionclass;
+package org.drip.learning.general;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,10 +29,10 @@ package org.drip.classifier.functionclass;
  */
 
 /**
- * ConcentrationExpectedLossAsymptote provides the Asymptotic Sample Behavior of the Expected Empirical Loss
- *  of the given Classifier Class using the Concentration of Measure Inequalities. This is expressed as
- *  C * n^a, where n is the Size of the Sample, and 'C' and 'a' are Constants specific to the Classifier
- *  Class.
+ * ConcentrationLossExpectationBound provides the Upper Bound of the Difference between Expected Empirical
+ * 	Loss and the Expected Population Loss of the given Learner Class using the Concentration of Measure
+ *  Inequalities. This is expressed as C * n^a, where n is the Size of the Sample, and 'C' and 'a' are
+ *  Constants specific to the Classifier Class.
  *  
  *  The References are:
  *  
@@ -45,12 +45,12 @@ package org.drip.classifier.functionclass;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ConcentrationExpectedLossAsymptote {
+public class ConcentrationLossExpectationBound {
 	private double _dblConstant = java.lang.Double.NaN;
 	private double _dblExponent = java.lang.Double.NaN;
 
 	/**
-	 * ConcentrationExpectedLossAsymptote Constructor
+	 * ConcentrationLossExpectationBound Constructor
 	 * 
 	 * @param dblConstant Asymptote Constant
 	 * @param dblExponent Asymptote Exponent
@@ -58,14 +58,14 @@ public class ConcentrationExpectedLossAsymptote {
 	 * @throws java.lang.Exception Thrown if the Constant and/or Exponent is Invalid
 	 */
 
-	public ConcentrationExpectedLossAsymptote (
+	public ConcentrationLossExpectationBound (
 		final double dblConstant,
 		final double dblExponent)
 		throws java.lang.Exception
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (_dblConstant = dblConstant) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_dblExponent = dblExponent))
-			throw new java.lang.Exception ("ConcentrationExpectedLossAsymptote ctr: Invalid Inputs!");
+			throw new java.lang.Exception ("ConcentrationLossExpectationBound ctr: Invalid Inputs!");
 	}
 
 	/**
@@ -88,5 +88,28 @@ public class ConcentrationExpectedLossAsymptote {
 	public double exponent()
 	{
 		return _dblExponent;
+	}
+
+	/**
+	 * Compute the Expected Loss Difference Upper Bound the Sample and the Population for the specified Sample
+	 *  Size
+	 * 
+	 * @param iSampleSize The Sample Size
+	 * 
+	 * @return The Expected Loss Difference Upper Bound the Sample and the Population for the specified Sample
+	 *  Size
+	 * 
+	 * @throws java.lang.Exception Thrown if the Expected Loss Difference Upper Bound cannot be computed
+	 */
+
+	public double differenceExpectationUpperBound (
+		final int iSampleSize)
+		throws java.lang.Exception
+	{
+		if (0 >= iSampleSize)
+			throw new java.lang.Exception
+				("ConcentrationLossExpectationBound::differenceExpectationUpperBound => Invalid Inputs");
+
+		return _dblConstant * java.lang.Math.pow (iSampleSize, _dblExponent);
 	}
 }

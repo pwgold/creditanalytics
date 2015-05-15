@@ -1,5 +1,5 @@
 
-package org.drip.sequence.classifier;
+package org.drip.learning.classifier;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -35,7 +35,7 @@ package org.drip.sequence.classifier;
  */
 
 public class EmpiricalSupremumLossMetrics extends org.drip.sequence.functional.EfronSteinMetrics {
-	private org.drip.sequence.classifier.EmpiricalLossSupremum _funcELS = null;
+	private org.drip.learning.classifier.EmpiricalLossSupremum _funcELS = null;
 
 	/**
 	 * EmpiricalSupremumLossMetrics Constructor
@@ -47,7 +47,7 @@ public class EmpiricalSupremumLossMetrics extends org.drip.sequence.functional.E
 	 */
 
 	public EmpiricalSupremumLossMetrics (
-		final org.drip.sequence.classifier.EmpiricalLossSupremum funcELS,
+		final org.drip.learning.classifier.EmpiricalLossSupremum funcELS,
 		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM)
 		throws java.lang.Exception
 	{
@@ -63,7 +63,7 @@ public class EmpiricalSupremumLossMetrics extends org.drip.sequence.functional.E
 	 * @return The Empirical Loss Supremum Function
 	 */
 
-	public org.drip.sequence.classifier.EmpiricalLossSupremum empiricalLossSupremum()
+	public org.drip.learning.classifier.EmpiricalLossSupremum empiricalLossSupremum()
 	{
 		return _funcELS;
 	}
@@ -103,15 +103,15 @@ public class EmpiricalSupremumLossMetrics extends org.drip.sequence.functional.E
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-		org.drip.classifier.functionclass.AbstractBinaryClassifier supClassifier = _funcELS.supremumClassifier
+		org.drip.learning.classifier.AbstractBinaryClassifier supClassifier = _funcELS.supremumClassifier
 			(adblVariate);
 
 		if (null == supClassifier)
 			throw new java.lang.Exception
 				("EmpiricalSupremumLossMetrics::lugosiVarianceBound => Cannot Find Supremum Classifier");
 
-		org.drip.classifier.functionclass.ConcentrationExpectedLossAsymptote casb =
-			_funcELS.classifierClass().asymptote();
+		org.drip.learning.general.ConcentrationLossExpectationBound casb =
+			_funcELS.classifierClass().concentrationLossBoundEvaluator();
 
 		if (null == casb)
 			throw new java.lang.Exception

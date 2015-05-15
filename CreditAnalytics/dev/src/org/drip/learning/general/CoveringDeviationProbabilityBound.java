@@ -1,5 +1,5 @@
 
-package org.drip.classifier.functionclass;
+package org.drip.learning.general;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,17 +29,18 @@ package org.drip.classifier.functionclass;
  */
 
 /**
- * CoveringProbabilisticLossAsymptote provides the Probabilistic Asymptotic Sample Behavior of Empirical Loss
- *  of the given Classifier Class using the Covering Number Generalization Bounds. This is expressed as
+ * CoveringDeviationProbabilityBound provides the Upper Probability Bound that the Deviation of the Empirical
+ *  from the Actual Mean of the given Learner Class exceeds 'epsilon', using the Covering Number
+ *  Generalization Bounds. This is expressed as
  *  
  *  						C1 (n) * N (epsilon, n) * exp (-n.epsilon^b/C2),
  *  
  *  where:
  *  	- n is the Size of the Sample
- *  	- 'epsilon' is the cover
+ *  	- 'epsilon' is the Deviation Empirical Mean from the Population Mean
  *  	- C1 (n) is the sample coefficient function
  *  	- C2 is an exponent scaling constant
- *  	- 'b' an exponent ((i.e., the Cover Exponent) that depends on the setting (i.e.,
+ *  	- 'b' an exponent ((i.e., the Epsilon Exponent) that depends on the setting (i.e.,
  *  		agnostic/classification/regression/convex etc)
  *  
  *  The References are:
@@ -61,31 +62,31 @@ package org.drip.classifier.functionclass;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CoveringProbabilisticLossAsymptote {
-	private double _dblCoverExponent = java.lang.Double.NaN;
+public class CoveringDeviationProbabilityBound {
+	private double _dblEpsilonExponent = java.lang.Double.NaN;
 	private double _dblExponentScaler = java.lang.Double.NaN;
 	private org.drip.function.deterministic.R1ToR1 _funcSampleCoefficient = null;
 
 	/**
-	 * CoveringProbabilisticLossAsymptote Constructor
+	 * CoveringDeviationProbabilityBound Constructor
 	 * 
 	 * @param funcSampleCoefficient The Sample Coefficient Function
-	 * @param dblCoverExponent The Cover Exponent
+	 * @param dblEpsilonExponent The Epsilon Exponent
 	 * @param dblExponentScaler The Exponent Scaler
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CoveringProbabilisticLossAsymptote (
+	public CoveringDeviationProbabilityBound (
 		final org.drip.function.deterministic.R1ToR1 funcSampleCoefficient,
-		final double dblCoverExponent,
+		final double dblEpsilonExponent,
 		final double dblExponentScaler)
 		throws java.lang.Exception
 	{
 		if (null == (_funcSampleCoefficient = funcSampleCoefficient) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblCoverExponent = dblCoverExponent) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_dblEpsilonExponent = dblEpsilonExponent) ||
 				!org.drip.quant.common.NumberUtil.IsValid (_dblExponentScaler = dblExponentScaler))
-			throw new java.lang.Exception ("CoveringProbabilisticLossAsymptote ctr: Invalid Inputs");
+			throw new java.lang.Exception ("CoveringDeviationProbabilityBound ctr: Invalid Inputs");
 	}
 
 	/**
@@ -100,14 +101,14 @@ public class CoveringProbabilisticLossAsymptote {
 	}
 
 	/**
-	 * Retrieve the Exponential Cover Exponent
+	 * Retrieve the Exponential Epsilon Exponent
 	 * 
-	 * @return The Exponential Cover Exponent
+	 * @return The Exponential Epsilon Exponent
 	 */
 
-	public double coverExponent()
+	public double epsilonExponent()
 	{
-		return _dblCoverExponent;
+		return _dblEpsilonExponent;
 	}
 
 	/**
@@ -122,26 +123,28 @@ public class CoveringProbabilisticLossAsymptote {
 	}
 
 	/**
-	 * Compute the Sample Uniform Convergence Bound
+	 * Compute the Upper Bound of the Probability of the Absolute Deviation between the Empirical and the
+	 * 	Population Means
 	 * 
 	 * @param iSampleSize The Sample Size
-	 * @param dblCover The Sample Cover
+	 * @param dblEpsilon The Deviation between Population and Empirical Means
 	 * 
-	 * @return The Sample Uniform Convergence Bound
+	 * @return The Upper Bound of the Probability of the Deviation between the Empirical and the Population
+	 *  Means
 	 * 
-	 * @throws java.lang.Exception Thrown if the Sample Uniform Convergence Bound cannot be computed
+	 * @throws java.lang.Exception Thrown if the Upper Bound of the Probability cannot be computed
 	 */
 
-	public double sampleUniformConvergenceBound (
+	public double deviationProbabilityUpperBound (
 		final int iSampleSize,
-		final double dblCover)
+		final double dblEpsilon)
 		throws java.lang.Exception
 	{
-		if (0 >= iSampleSize || !org.drip.quant.common.NumberUtil.IsValid (dblCover))
+		if (0 >= iSampleSize || !org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) || 0. >= dblEpsilon)
 			throw new java.lang.Exception
-				("CoveringProbabilisticLossAsymptote::sampleUniformConvergenceBound => Invalid Inputs");
+				("CoveringProbabilisticLossAsymptote::deviationProbabilityUpperBound => Invalid Inputs");
 
 		return _funcSampleCoefficient.evaluate (iSampleSize) * java.lang.Math.exp (-1. * iSampleSize *
-			java.lang.Math.pow (dblCover, _dblCoverExponent) / _dblExponentScaler);
+			java.lang.Math.pow (dblEpsilon, _dblEpsilonExponent) / _dblExponentScaler);
 	}
 }

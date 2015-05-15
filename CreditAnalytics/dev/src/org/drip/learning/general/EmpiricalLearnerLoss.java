@@ -1,5 +1,5 @@
 
-package org.drip.classifier.functionclass;
+package org.drip.learning.general;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,8 +29,8 @@ package org.drip.classifier.functionclass;
  */
 
 /**
- * EmpiricalClassifierLoss Function computes the Empirical Loss of a Classification Operation resulting from
- *  the Use of a Classification Function in Conjunction with the corresponding Empirical Realization.
+ * EmpiricalLearnerLoss Function computes the Empirical Loss of a Learning Operation resulting from the Use
+ *  of a Learning Function in Conjunction with the corresponding Empirical Realization.
  *  
  *  The References are:
  *  
@@ -43,28 +43,29 @@ package org.drip.classifier.functionclass;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EmpiricalClassifierLoss extends org.drip.function.deterministic.R1ToR1 {
-	private short _sRealization = -1;
-	private org.drip.classifier.functionclass.AbstractBinaryClassifier _abe = null;
+public class EmpiricalLearnerLoss extends org.drip.function.deterministic.R1ToR1 {
+	private double _dblRealization = java.lang.Double.NaN;
+	private org.drip.function.deterministic.R1ToR1 _learner = null;
 
 	/**
-	 * EmpiricalClassifierLoss Constructor
+	 * EmpiricalLearnerLoss Constructor
 	 * 
-	 * @param abe The Abstract Binary Classifier Instance
-	 * @param sRealization The Empirical Outcome
+	 * @param learner The Learning Function
+	 * @param dblRealization The Empirical Outcome
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public EmpiricalClassifierLoss (
-		final org.drip.classifier.functionclass.AbstractBinaryClassifier abe,
-		final short sRealization)
+	public EmpiricalLearnerLoss (
+		final org.drip.function.deterministic.R1ToR1 learner,
+		final double dblRealization)
 		throws java.lang.Exception
 	{
 		super (null);
 
-		if (null == (_abe = abe) || 0 > (_sRealization = sRealization))
-			throw new java.lang.Exception ("EmpiricalClassifierLoss ctr: Invalid Inputs");
+		if (null == (_learner = learner) || !org.drip.quant.common.NumberUtil.IsValid (_dblRealization =
+			dblRealization))
+			throw new java.lang.Exception ("EmpiricalLearnerLoss ctr: Invalid Inputs");
 	}
 
 	/**
@@ -73,20 +74,20 @@ public class EmpiricalClassifierLoss extends org.drip.function.deterministic.R1T
 	 * @return The Empirical Realization
 	 */
 
-	public short empiricalRealization()
+	public double empiricalRealization()
 	{
-		return _sRealization;
+		return _dblRealization;
 	}
 
 	/**
-	 * Retrieve the Classifier Function
+	 * Retrieve the Learning Function
 	 * 
-	 * @return The Classifier Function
+	 * @return The Learning Function
 	 */
 
-	public org.drip.classifier.functionclass.AbstractBinaryClassifier classifier()
+	public org.drip.function.deterministic.R1ToR1 learner()
 	{
-		return _abe;
+		return _learner;
 	}
 
 	/**
@@ -99,14 +100,11 @@ public class EmpiricalClassifierLoss extends org.drip.function.deterministic.R1T
 	 * @throws java.lang.Exception Thrown if the Loss cannot be computed
 	 */
 
-	public short loss (
+	public double loss (
 		final double dblVariate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblVariate))
-			throw new java.lang.Exception ("EmpiricalClassifierLoss::loss => Invalid Inputs");
-
-		return _sRealization == _abe.classify (dblVariate) ? (short) 0 : 1;
+		return _dblRealization - _learner.evaluate (dblVariate);
 	}
 
 	@Override public double evaluate (

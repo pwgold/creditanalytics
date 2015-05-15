@@ -1,5 +1,5 @@
 
-package org.drip.classifier.functionclass;
+package org.drip.learning.general;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,8 +29,9 @@ package org.drip.classifier.functionclass;
  */
 
 /**
- * GeneralizedClassifierFunctionClass implements the Class that holds the Space of Classifier Functions.
- *  Class-Specific Asymptotic Sample, Covering Bounds and other Parameters are also maintained.
+ * NormedR1ToNormedR1Learner implements the Class that holds the Space of Normed R^1 -> Normed R^1 Learning
+ * 	Functions. Class-Specific Asymptotic Sample, Covering-Number based Upper Probability Bounds and other
+ * 	Parameters are also maintained.
  *  
  * The Reference are:
  *  
@@ -51,60 +52,27 @@ package org.drip.classifier.functionclass;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class GeneralizedClassifierFunctionClass extends org.drip.spaces.functionclass.NormedR1ToNormedR1Class {
-	private org.drip.classifier.functionclass.ConcentrationExpectedLossAsymptote _asymptote = null;
 
-	/**
-	 * GeneralizedClassifierFunctionClass Constructor
-	 * 
-	 * @param aClassifier Array of Classifiers belonging to the Function Class
-	 * @param asymptote Asymptotic Bounds Behavior of the Function Class
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
+public abstract class NormedR1ToNormedR1Loss extends org.drip.spaces.functionclass.NormedR1ToNormedR1Class {
+	private org.drip.learning.general.NormedR1ToNormedR1Learner _learnerClass = null;
 
-	public GeneralizedClassifierFunctionClass (
-		final org.drip.spaces.RxToR1.NormedR1ToNormedR1[] aR1ToR1FunctionSpace,
-		final org.drip.classifier.functionclass.ConcentrationExpectedLossAsymptote asymptote)
+	protected NormedR1ToNormedR1Loss (
+		final org.drip.learning.general.NormedR1ToNormedR1Learner learnerClass)
 		throws java.lang.Exception
 	{
-		super (aR1ToR1FunctionSpace);
+		super ((org.drip.spaces.RxToR1.NormedR1ToNormedR1[]) learnerClass.functionSpaces());
 
-		_asymptote = asymptote;
+		_learnerClass = learnerClass;
 	}
 
 	/**
-	 * Retrieve the Array of Classifiers
+	 * Retrieve the Learner Class Instance
 	 * 
-	 * @return The Array of Classifiers
+	 * @return The Learner Class Instance
 	 */
 
-	public org.drip.classifier.functionclass.AbstractBinaryClassifier[] classifiers()
+	public org.drip.learning.general.NormedR1ToNormedR1Learner learnerClass()
 	{
-		org.drip.function.deterministic.R1ToR1[] aR1ToR1 = functionR1ToR1Set();
-
-		int iNumFunction = aR1ToR1.length;
-		org.drip.classifier.functionclass.AbstractBinaryClassifier[] aABE = new
-			org.drip.classifier.functionclass.AbstractBinaryClassifier[iNumFunction];
-
-		for (int i = 0; i < iNumFunction; ++i) {
-			if (!(aR1ToR1[i] instanceof org.drip.classifier.functionclass.AbstractBinaryClassifier))
-				return null;
-
-			aABE[i] = (org.drip.classifier.functionclass.AbstractBinaryClassifier) aR1ToR1[i];
-		}
-
-		return aABE;
-	}
-
-	/**
-	 * Retrieve the Class Asymptotic Bounds Behavior
-	 * 
-	 * @return The Class Asymptotic Bounds Behavior
-	 */
-
-	public org.drip.classifier.functionclass.ConcentrationExpectedLossAsymptote asymptote()
-	{
-		return _asymptote;
+		return _learnerClass;
 	}
 }
