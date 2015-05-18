@@ -212,4 +212,25 @@ public class ContinuousRealMultidimensionalBanach extends
 
 		return java.lang.Math.pow (am.integrate (leftEdge(), rightEdge()), 1. / _iPNorm);
 	}
+
+	@Override public double borelMeasureSpaceExpectation (
+		final org.drip.function.deterministic.RdToR1 funcRdToR1)
+		throws java.lang.Exception
+	{
+		if (null == _multiDist || null == funcRdToR1)
+			throw new java.lang.Exception
+				("ContinuousRealMultidimensionalBanach::borelMeasureSpaceExpectation => Invalid Inputs");
+
+		org.drip.function.deterministic.RdToR1 am = new
+			org.drip.function.deterministic.RdToR1 (null) {
+			@Override public double evaluate (
+				final double[] adblX)
+				throws java.lang.Exception
+			{
+				return funcRdToR1.evaluate (adblX) * _multiDist.density (adblX);
+			}
+		};
+
+		return am.integrate (leftEdge(), rightEdge());
+	}
 }

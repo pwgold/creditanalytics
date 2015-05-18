@@ -182,4 +182,26 @@ public class CombinatorialRealUnidimensional extends
 
 		return dblNorm / dblNormalizer;
 	}
+
+	@Override public double borelMeasureSpaceExpectation (
+		final org.drip.function.deterministic.R1ToR1 funcR1ToR1)
+		throws java.lang.Exception
+	{
+		if (null == funcR1ToR1 || null == _uniDist)
+			throw new java.lang.Exception
+				("CombinatorialRealUnidimensional::borelMeasureSpaceExpectation => Invalid Inputs");
+
+		double dblBorelMeasureSpaceExpectation = 0.;
+		double dblNormalizer = 0.;
+
+		for (double dblElement : elementSpace()) {
+			double dblElementProbability = _uniDist.density (dblElement);
+
+			dblNormalizer += dblElementProbability;
+
+			dblBorelMeasureSpaceExpectation += funcR1ToR1.evaluate (dblElement) * dblElementProbability;
+		}
+
+		return dblBorelMeasureSpaceExpectation / dblNormalizer;
+	}
 }

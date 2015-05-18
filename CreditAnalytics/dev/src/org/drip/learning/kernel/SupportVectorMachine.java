@@ -1,5 +1,5 @@
 
-package org.drip.kernel.machine;
+package org.drip.learning.kernel;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

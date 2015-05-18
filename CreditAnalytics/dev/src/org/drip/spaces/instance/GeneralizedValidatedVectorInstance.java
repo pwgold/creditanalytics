@@ -49,4 +49,12 @@ public interface GeneralizedValidatedVectorInstance {
 	 */
 
 	public abstract org.drip.spaces.tensor.GeneralizedVectorSpace tensorSpaceType();
+
+	/**
+	 * Retrieve the Sample Size
+	 * 
+	 * @return The Sample Size
+	 */
+
+	public abstract int sampleSize();
 }

@@ -78,4 +78,9 @@ public class ValidatedRealUnidimensional implements
 	{
 		return _adblInstance;
 	}
+
+	@Override public int sampleSize()
+	{
+		return _adblInstance.length;
+	}
 }

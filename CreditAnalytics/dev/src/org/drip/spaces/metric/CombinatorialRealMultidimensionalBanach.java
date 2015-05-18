@@ -185,4 +185,32 @@ public class CombinatorialRealMultidimensionalBanach extends
 
 		return java.lang.Math.pow (dblPopulationMetricNorm / dblNormalizer, 1. / _iPNorm);
 	}
+
+	@Override public double borelMeasureSpaceExpectation (
+		final org.drip.function.deterministic.RdToR1 funcRdToR1)
+		throws java.lang.Exception
+	{
+		if (null == _multiDist || null == funcRdToR1)
+			throw new java.lang.Exception
+				("CombinatorialRealMultidimensionalBanach::borelMeasureSpaceExpectation => Invalid Inputs");
+
+		org.drip.spaces.tensor.CombinatorialRealMultidimensionalIterator crmi = iterator();
+
+		double[] adblVariate = crmi.cursorVariates();
+
+		double dblBorelMeasureSpaceExpectation = 0.;
+		double dblNormalizer = 0.;
+
+		while (null != adblVariate) {
+			double dblProbabilityDensity = _multiDist.density (adblVariate);
+
+			dblNormalizer += dblProbabilityDensity;
+
+			dblBorelMeasureSpaceExpectation += dblProbabilityDensity * funcRdToR1.evaluate (adblVariate);
+
+			adblVariate = crmi.nextVariates();
+		}
+
+		return dblBorelMeasureSpaceExpectation / dblNormalizer;
+	}
 }

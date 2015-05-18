@@ -86,4 +86,18 @@ public interface RealMultidimensionalNormedSpace extends org.drip.spaces.metric.
 	 */
 
 	public abstract double[] populationMode();
+
+	/**
+	 * Compute the Borel Measure Expectation for the specified R^d -> R^1 Function over the full Input Space
+	 * 
+	 * @param funcRdToR1 R^d -> R^1 Function
+	 * 
+	 * @return The Borel Measure Expectation for the specified R^d -> R^1 Function over the full Input Space
+	 * 
+	 * @throws java.lang.Exception Thrown if the Population Mode cannot be calculated
+	 */
+
+	public double borelMeasureSpaceExpectation (
+		final org.drip.function.deterministic.RdToR1 funcRdToR1)
+		throws java.lang.Exception;
 }

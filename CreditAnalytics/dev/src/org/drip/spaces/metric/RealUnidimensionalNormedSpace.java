@@ -75,4 +75,18 @@ public interface RealUnidimensionalNormedSpace extends org.drip.spaces.metric.Ge
 
 	public double populationMode()
 		throws java.lang.Exception;
+
+	/**
+	 * Compute the Borel Measure Expectation for the specified R^1 -> R^1 Function over the full Input Space
+	 * 
+	 * @param funcR1ToR1 R^1 -> R^1 Function
+	 * 
+	 * @return The Borel Measure Expectation for the specified R^1 -> R^1 Function over the full Input Space
+	 * 
+	 * @throws java.lang.Exception Thrown if the Population Mode cannot be calculated
+	 */
+
+	public double borelMeasureSpaceExpectation (
+		final org.drip.function.deterministic.R1ToR1 funcR1ToR1)
+		throws java.lang.Exception;
 }

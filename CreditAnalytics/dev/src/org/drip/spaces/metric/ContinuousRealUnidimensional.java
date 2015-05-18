@@ -185,4 +185,25 @@ public class ContinuousRealUnidimensional extends org.drip.spaces.tensor.Continu
 
 		return au.integrate (leftEdge(), rightEdge());
 	}
+
+	@Override public double borelMeasureSpaceExpectation (
+		final org.drip.function.deterministic.R1ToR1 funcR1ToR1)
+		throws java.lang.Exception
+	{
+		if (null == funcR1ToR1 || null == _uniDist)
+			throw new java.lang.Exception
+				("ContinuousRealUnidimensional::borelMeasureSpaceExpectation => Invalid Inputs");
+
+		org.drip.function.deterministic.R1ToR1 au = new
+			org.drip.function.deterministic.R1ToR1 (null) {
+			@Override public double evaluate (
+				final double dblX)
+				throws java.lang.Exception
+			{
+				return funcR1ToR1.evaluate (dblX) * _uniDist.density (dblX);
+			}
+		};
+
+		return au.integrate (leftEdge(), rightEdge());
+	}
 }

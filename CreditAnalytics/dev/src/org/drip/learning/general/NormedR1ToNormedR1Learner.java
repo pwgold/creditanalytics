@@ -459,4 +459,70 @@ public abstract class NormedR1ToNormedR1Learner extends org.drip.spaces.function
 
 		return fpfo.getRoot();
 	}
+
+	/**
+	 * Compute the Lipschitz Loss Covering Number Instance
+	 * 
+	 * @param dblLipschitzLossSlope The Lipschitz Loss Slope Bound
+	 * @param dblEpsilon The Deviation of the Empirical Mean from the Population Mean
+	 * 
+	 * @return The Lipschitz Loss Covering Number Instance
+	 */
+
+	public org.drip.learning.general.LipschitzLossCoveringNumber lipschitzLossCoveringNumber (
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final double dblLipschitzLossSlope,
+		final double dblEpsilon)
+	{
+		if (null == gvvi || !org.drip.quant.common.NumberUtil.IsValid (dblLipschitzLossSlope) ||
+			!org.drip.quant.common.NumberUtil.IsValid (dblEpsilon))
+			return null;
+
+		double dblLipschitzCover = dblEpsilon / dblLipschitzLossSlope;
+
+		try {
+			return new org.drip.learning.general.LipschitzLossCoveringNumber (sampleSupremumCoveringNumber
+				(gvvi, dblLipschitzCover), sampleCoveringNumber (gvvi, gvvi.sampleSize() *
+					dblLipschitzCover));
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Compute the Approximate Lipschitz Loss Covering Number Instance
+	 * 
+	 * @param dblLipschitzLossSlope The Lipschitz Loss Slope Bound
+	 * @param dblLipschitzLossFloor The Lipschitz Loss Slope Floor
+	 * @param dblEpsilon The Deviation of the Empirical Mean from the Population Mean
+	 * 
+	 * @return The Approximate Lipschitz Loss Covering Number Instance
+	 */
+
+	public org.drip.learning.general.LipschitzLossCoveringNumber lipschitzLossCoveringNumber (
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final double dblLipschitzLossSlope,
+		final double dblLipschitzLossFloor,
+		final double dblEpsilon)
+	{
+		if (null == gvvi || !org.drip.quant.common.NumberUtil.IsValid (dblLipschitzLossSlope) ||
+			!org.drip.quant.common.NumberUtil.IsValid (dblLipschitzLossFloor) ||
+				!org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) || dblEpsilon <=
+					(dblLipschitzLossFloor / dblLipschitzLossSlope))
+			return null;
+
+		double dblLipschitzCover = dblEpsilon / dblLipschitzLossSlope;
+
+		try {
+			return new org.drip.learning.general.LipschitzLossCoveringNumber (sampleSupremumCoveringNumber
+				(gvvi, dblLipschitzCover), sampleCoveringNumber (gvvi, gvvi.sampleSize() *
+					dblLipschitzCover));
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }
