@@ -104,8 +104,8 @@ public class NormedRdContinuousToRdContinuous extends org.drip.spaces.RxToRd.Nor
 			}
 		};
 
-		double[] adblPopulationRdMetricNorm = funcRdToRdPointNorm.integrate (crmb.leftEdge(),
-			crmb.rightEdge());
+		double[] adblPopulationRdMetricNorm = funcRdToRdPointNorm.integrate (crmb.leftDimensionEdge(),
+			crmb.rightDimensionEdge());
 
 		if (null == adblPopulationRdMetricNorm) return null;
 

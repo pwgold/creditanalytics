@@ -110,7 +110,7 @@ public class EmpiricalSupremumLossMetrics extends org.drip.sequence.functional.E
 			throw new java.lang.Exception
 				("EmpiricalSupremumLossMetrics::lugosiVarianceBound => Cannot Find Supremum Classifier");
 
-		org.drip.learning.general.ConcentrationLossExpectationBound casb =
+		org.drip.learning.loss.MeasureConcentrationExpectationBound casb =
 			_funcELS.classifierClass().concentrationLossBoundEvaluator();
 
 		if (null == casb)

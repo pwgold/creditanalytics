@@ -37,22 +37,6 @@ package org.drip.spaces.tensor;
 public interface GeneralizedUnidimensionalVectorSpace extends org.drip.spaces.tensor.GeneralizedVectorSpace {
 
 	/**
-	 * Retrieve the Left Edge
-	 * 
-	 * @return The Left Edge
-	 */
-
-	public abstract double leftEdge();
-
-	/**
-	 * Retrieve the Right Edge
-	 * 
-	 * @return The Right Edge
-	 */
-
-	public abstract double rightEdge();
-
-	/**
 	 * Validate the Input Instance Ordinate
 	 * 
 	 * @param dblInstance The Input Instance Ordinate

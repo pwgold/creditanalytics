@@ -29,8 +29,9 @@ package org.drip.learning.kernel;
  */
 
 /**
- * SymmetricNormedRxToNormedR1 exposes the Kernel that is Normed R^x X Normed R^x -> Normed R^1, that is, a
- * 	Kernel that symmetric in the Input Norms in terms of both the Metric and the Dimensionality.
+ * MercerKernel exposes the Functionality behind the Mercer Kernel, i.e., the Kernel that is Normed R^x X
+ *  Normed R^x -> Supremum R^1, that is, a Kernel that symmetric in the Input Metric Space in terms of both
+ *  the Metric and the Dimensionality.
  *  
  *  The References are:
  *  
@@ -45,12 +46,12 @@ package org.drip.learning.kernel;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class SymmetricNormedRxToNormedR1 {
+public abstract class MercerKernel {
 	private org.drip.spaces.metric.RealUnidimensionalNormedSpace _runsOutput = null;
 	private org.drip.spaces.metric.RealMultidimensionalNormedSpace _rmnsInput = null;
 
 	/**
-	 * SymmetricNormedRxToNormedR1 Constructor
+	 * MercerKernel Constructor
 	 * 
 	 * @param rmnsInput The Symmetric Input R^x Space
 	 * @param runsOutput The Output R^1 Metric Space
@@ -58,13 +59,14 @@ public abstract class SymmetricNormedRxToNormedR1 {
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public SymmetricNormedRxToNormedR1 (
+	public MercerKernel (
 		final org.drip.spaces.metric.RealMultidimensionalNormedSpace rmnsInput,
 		final org.drip.spaces.metric.RealUnidimensionalNormedSpace runsOutput)
 		throws java.lang.Exception
 	{
-		if (null == (_rmnsInput = rmnsInput) || null == (_runsOutput = runsOutput))
-			throw new java.lang.Exception ("SymmetricNormedRxToNormedR1 ctr: Invalid Inputs");
+		if (null == (_rmnsInput = rmnsInput) || 2 != _rmnsInput.pNorm() || null == (_runsOutput = runsOutput)
+			|| 0 != _runsOutput.pNorm())
+			throw new java.lang.Exception ("MercerKernel ctr: Invalid Inputs");
 	}
 
 	/**

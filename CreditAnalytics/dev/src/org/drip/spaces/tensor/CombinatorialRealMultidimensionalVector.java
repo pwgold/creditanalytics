@@ -86,4 +86,60 @@ public class CombinatorialRealMultidimensionalVector extends
 
 		return org.drip.spaces.tensor.CombinatorialRealMultidimensionalIterator.Standard (aCRUV);
 	}
+
+	@Override public double[] leftDimensionEdge()
+	{
+		org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace[] aGUVS = vectorSpaces();
+
+		int iDimension = aGUVS.length;
+		double[] adblLeftEdge = new double[iDimension];
+
+		for (int i = 0; i < iDimension; ++i)
+			adblLeftEdge[i] = ((org.drip.spaces.tensor.ContinuousRealUnidimensionalVector)
+				aGUVS[i]).leftEdge();
+
+		return adblLeftEdge;
+	}
+
+	@Override public double[] rightDimensionEdge()
+	{
+		org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace[] aGUVS = vectorSpaces();
+
+		int iDimension = aGUVS.length;
+		double[] adblRightEdge = new double[iDimension];
+
+		for (int i = 0; i < iDimension; ++i)
+			adblRightEdge[i] = ((org.drip.spaces.tensor.ContinuousRealUnidimensionalVector)
+				aGUVS[i]).rightEdge();
+
+		return adblRightEdge;
+	}
+
+	@Override public double leftEdge()
+	{
+		double[] adblLeftEdge = leftDimensionEdge();
+
+		int iDimension = adblLeftEdge.length;
+		double dblLeftEdge = adblLeftEdge[0];
+
+		for (int i = 1; i < iDimension; ++i) {
+			if (dblLeftEdge > adblLeftEdge[i]) dblLeftEdge = adblLeftEdge[i];
+		}
+
+		return dblLeftEdge;
+	}
+
+	@Override public double rightEdge()
+	{
+		double[] adblRightEdge = rightDimensionEdge();
+
+		int iDimension = adblRightEdge.length;
+		double dblRightEdge = adblRightEdge[0];
+
+		for (int i = 1; i < iDimension; ++i) {
+			if (dblRightEdge < adblRightEdge[i]) dblRightEdge = adblRightEdge[i];
+		}
+
+		return dblRightEdge;
+	}
 }

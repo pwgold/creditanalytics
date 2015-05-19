@@ -1,5 +1,5 @@
 
-package org.drip.learning.general;
+package org.drip.learning.loss;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,7 +29,8 @@ package org.drip.learning.general;
  */
 
 /**
- * LipschitzLossCoveringNumber contains the Upper Bounds of the Covering Numbers induced by Lipschitz
+ * LipschitzCoveringNumberBound contains the Upper Bounds of the Covering Numbers induced by Lipschitz and
+ * 	approximate Lipschitz Loss Function Class.
  *  
  * The Reference are:
  *  
@@ -42,12 +43,12 @@ package org.drip.learning.general;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LipschitzLossCoveringNumber {
+public class LipschitzCoveringNumberBound {
 	private double _dblLpUpperBound = java.lang.Double.NaN;
 	private double _dblSupremumUpperBound = java.lang.Double.NaN;
 
 	/**
-	 * LipschitzLossCoveringNumber Constructor
+	 * LipschitzCoveringNumberBound Constructor
 	 * 
 	 * @param dblSupremumUpperBound Supremum Upper Bound for the Covering Number
 	 * @param dblLpUpperBound The Lp Upper Bound for the Covering Number
@@ -55,14 +56,14 @@ public class LipschitzLossCoveringNumber {
 	 * @throws java.lang.Exception Thrown if the Inputs are invalid
 	 */
 
-	public LipschitzLossCoveringNumber (
+	public LipschitzCoveringNumberBound (
 		final double dblSupremumUpperBound,
 		final double dblLpUpperBound)
 		throws java.lang.Exception
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSupremumUpperBound = dblSupremumUpperBound) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_dblLpUpperBound = dblLpUpperBound))
-			throw new java.lang.Exception ("LipschitzLossCoveringNumber ctr: Invalid Inputs");
+			throw new java.lang.Exception ("LipschitzCoveringNumberBound ctr: Invalid Inputs");
 	}
 
 	/**

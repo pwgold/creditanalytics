@@ -182,7 +182,8 @@ public class ContinuousRealMultidimensionalBanach extends
 			}
 		};
 
-		org.drip.function.deterministic.VariateOutputPair vopMode = am.maxima (leftEdge(), rightEdge());
+		org.drip.function.deterministic.VariateOutputPair vopMode = am.maxima (leftDimensionEdge(),
+			rightDimensionEdge());
 
 		return null == vopMode ? null : vopMode.variates();
 	}
@@ -210,7 +211,7 @@ public class ContinuousRealMultidimensionalBanach extends
 			}
 		};
 
-		return java.lang.Math.pow (am.integrate (leftEdge(), rightEdge()), 1. / _iPNorm);
+		return java.lang.Math.pow (am.integrate (leftDimensionEdge(), rightDimensionEdge()), 1. / _iPNorm);
 	}
 
 	@Override public double borelMeasureSpaceExpectation (
@@ -231,6 +232,6 @@ public class ContinuousRealMultidimensionalBanach extends
 			}
 		};
 
-		return am.integrate (leftEdge(), rightEdge());
+		return am.integrate (leftDimensionEdge(), rightDimensionEdge());
 	}
 }

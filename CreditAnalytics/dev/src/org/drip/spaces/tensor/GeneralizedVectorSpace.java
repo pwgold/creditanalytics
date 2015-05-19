@@ -37,6 +37,22 @@ package org.drip.spaces.tensor;
 public interface GeneralizedVectorSpace {
 
 	/**
+	 * Retrieve the Left Edge
+	 * 
+	 * @return The Left Edge
+	 */
+
+	public abstract double leftEdge();
+
+	/**
+	 * Retrieve the Right Edge
+	 * 
+	 * @return The Right Edge
+	 */
+
+	public abstract double rightEdge();
+
+	/**
 	 * Retrieve the Cardinality of the Vector Space
 	 * 
 	 * @return Cardinality of the Vector Space

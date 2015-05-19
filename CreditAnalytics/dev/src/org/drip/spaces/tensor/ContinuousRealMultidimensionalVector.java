@@ -79,13 +79,7 @@ public class ContinuousRealMultidimensionalVector extends
 		super (aCRUV);
 	}
 
-	/**
-	 * Retrieve the Array of the Variate Left Edges
-	 * 
-	 * @return The Array of the Variate Left Edges
-	 */
-
-	public double[] leftEdge()
+	@Override public double[] leftDimensionEdge()
 	{
 		org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace[] aGUVS = vectorSpaces();
 
@@ -99,13 +93,7 @@ public class ContinuousRealMultidimensionalVector extends
 		return adblLeftEdge;
 	}
 
-	/**
-	 * Retrieve the Array of the Variate Right Edges
-	 * 
-	 * @return The Array of the Variate Right Edges
-	 */
-
-	public double[] rightEdge()
+	@Override public double[] rightDimensionEdge()
 	{
 		org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace[] aGUVS = vectorSpaces();
 
@@ -122,5 +110,33 @@ public class ContinuousRealMultidimensionalVector extends
 	@Override public org.drip.spaces.tensor.Cardinality cardinality()
 	{
 		return org.drip.spaces.tensor.Cardinality.UncountablyInfinite();
+	}
+
+	@Override public double leftEdge()
+	{
+		double[] adblLeftEdge = leftDimensionEdge();
+
+		int iDimension = adblLeftEdge.length;
+		double dblLeftEdge = adblLeftEdge[0];
+
+		for (int i = 1; i < iDimension; ++i) {
+			if (dblLeftEdge > adblLeftEdge[i]) dblLeftEdge = adblLeftEdge[i];
+		}
+
+		return dblLeftEdge;
+	}
+
+	@Override public double rightEdge()
+	{
+		double[] adblRightEdge = rightDimensionEdge();
+
+		int iDimension = adblRightEdge.length;
+		double dblRightEdge = adblRightEdge[0];
+
+		for (int i = 1; i < iDimension; ++i) {
+			if (dblRightEdge < adblRightEdge[i]) dblRightEdge = adblRightEdge[i];
+		}
+
+		return dblRightEdge;
 	}
 }

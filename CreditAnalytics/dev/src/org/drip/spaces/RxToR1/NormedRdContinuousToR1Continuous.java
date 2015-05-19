@@ -88,6 +88,7 @@ public class NormedRdContinuousToR1Continuous extends org.drip.spaces.RxToR1.Nor
 			}
 		};
 
-		return java.lang.Math.pow (am.integrate (crmb.leftEdge(), crmb.rightEdge()), 1. / iPNorm);
+		return java.lang.Math.pow (am.integrate (crmb.leftDimensionEdge(), crmb.rightDimensionEdge()), 1. /
+			iPNorm);
 	}
 }

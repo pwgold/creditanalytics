@@ -1,5 +1,5 @@
 
-package org.drip.learning.general;
+package org.drip.learning.loss;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,8 +29,8 @@ package org.drip.learning.general;
  */
 
 /**
- * CoveringDeviationBoundBuilder constructs the CoveringDeviationProbabilityBound Instances for specific
- * 	Learning Situations.
+ * CoveringNumberBoundBuilder constructs the CoveringNumberProbabilityBound Instances for specific Learning
+ *  Situations.
  *  
  *  The References are:
  *  
@@ -51,7 +51,7 @@ package org.drip.learning.general;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CoveringDeviationBoundBuilder {
+public class CoveringNumberBoundBuilder {
 
 	/**
 	 * Epsilon Exponent for Regression Learning
@@ -72,21 +72,21 @@ public class CoveringDeviationBoundBuilder {
 	public static final double EPSILON_EXPONENT_AGNOSTIC_CONVEX_LEARNING = 1.;
 
 	/**
-	 * Construct the Regression Learning CoveringDeviationProbabilityBound Instance
+	 * Construct the Regression Learning CoveringNumberProbabilityBound Instance
 	 * 
 	 * @param funcSampleCoefficient The Sample Coefficient Function
 	 * @param dblExponentScaler The Exponent Scaler
 	 * 
-	 * @return The Regression Learning CoveringDeviationProbabilityBound Instance
+	 * @return The Regression Learning CoveringNumberProbabilityBound Instance
 	 */
 
-	public static final org.drip.learning.general.CoveringDeviationProbabilityBound
+	public static final org.drip.learning.loss.CoveringNumberProbabilityBound
 		RegressionLearning (
 			final org.drip.function.deterministic.R1ToR1 funcSampleCoefficient,
 			final double dblExponentScaler)
 	{
 		try {
-			return new org.drip.learning.general.CoveringDeviationProbabilityBound (funcSampleCoefficient,
+			return new org.drip.learning.loss.CoveringNumberProbabilityBound (funcSampleCoefficient,
 				EPSILON_EXPONENT_REGRESSION_LEARNING, dblExponentScaler);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -96,21 +96,21 @@ public class CoveringDeviationBoundBuilder {
 	}
 
 	/**
-	 * Construct the Agnostic Learning CoveringDeviationProbabilityBound Instance
+	 * Construct the Agnostic Learning CoveringNumberProbabilityBound Instance
 	 * 
 	 * @param funcSampleCoefficient The Sample Coefficient Function
 	 * @param dblExponentScaler The Exponent Scaler
 	 * 
-	 * @return The Agnostic Learning CoveringDeviationProbabilityBound Instance
+	 * @return The Agnostic Learning CoveringNumberProbabilityBound Instance
 	 */
 
-	public static final org.drip.learning.general.CoveringDeviationProbabilityBound
+	public static final org.drip.learning.loss.CoveringNumberProbabilityBound
 		AgnosticLearning (
 			final org.drip.function.deterministic.R1ToR1 funcSampleCoefficient,
 			final double dblExponentScaler)
 	{
 		try {
-			return new org.drip.learning.general.CoveringDeviationProbabilityBound (funcSampleCoefficient,
+			return new org.drip.learning.loss.CoveringNumberProbabilityBound (funcSampleCoefficient,
 				EPSILON_EXPONENT_AGNOSTIC_LEARNING, dblExponentScaler);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -120,21 +120,21 @@ public class CoveringDeviationBoundBuilder {
 	}
 
 	/**
-	 * Construct the Agnostic Convex Learning CoveringDeviationProbabilityBound Instance
+	 * Construct the Agnostic Convex Learning CoveringNumberProbabilityBound Instance
 	 * 
 	 * @param funcSampleCoefficient The Sample Coefficient Function
 	 * @param dblExponentScaler The Exponent Scaler
 	 * 
-	 * @return The Agnostic Convex Learning CoveringDeviationProbabilityBound Instance
+	 * @return The Agnostic Convex Learning CoveringNumberProbabilityBound Instance
 	 */
 
-	public static final org.drip.learning.general.CoveringDeviationProbabilityBound
+	public static final org.drip.learning.loss.CoveringNumberProbabilityBound
 		AgnosticConvexLearning (
 			final org.drip.function.deterministic.R1ToR1 funcSampleCoefficient,
 			final double dblExponentScaler)
 	{
 		try {
-			return new org.drip.learning.general.CoveringDeviationProbabilityBound (funcSampleCoefficient,
+			return new org.drip.learning.loss.CoveringNumberProbabilityBound (funcSampleCoefficient,
 				EPSILON_EXPONENT_AGNOSTIC_CONVEX_LEARNING, dblExponentScaler);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();

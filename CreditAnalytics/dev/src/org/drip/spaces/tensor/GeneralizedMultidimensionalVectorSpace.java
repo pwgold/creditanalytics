@@ -63,4 +63,20 @@ public interface GeneralizedMultidimensionalVectorSpace extends org.drip.spaces.
 
 	public abstract boolean validateInstance (
 		final double[] adblInstance);
+
+	/**
+	 * Retrieve the Array of the Variate Left Edges
+	 * 
+	 * @return The Array of the Variate Left Edges
+	 */
+
+	public abstract double[] leftDimensionEdge();
+
+	/**
+	 * Retrieve the Array of the Variate Right Edges
+	 * 
+	 * @return The Array of the Variate Right Edges
+	 */
+
+	public abstract double[] rightDimensionEdge();
 }

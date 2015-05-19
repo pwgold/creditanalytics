@@ -65,10 +65,9 @@ public class OperatorEigenComponent {
 		final org.drip.spaces.RxToR1.NormedRdToNormedR1 eigenValueFunctionSpace)
 		throws java.lang.Exception
 	{
-		if (null == (_eigenVectorFunctionSpace = eigenVectorFunctionSpace) || 2 !=
-			_eigenVectorFunctionSpace.output().pNorm() || null == (_eigenValueFunctionSpace =
-				eigenValueFunctionSpace) || 1 != _eigenValueFunctionSpace.output().pNorm())
-				throw new java.lang.Exception ("OperatorEigenComponent ctr: Invalid Inputs");
+		if (null == (_eigenVectorFunctionSpace = eigenVectorFunctionSpace) || null ==
+			(_eigenValueFunctionSpace = eigenValueFunctionSpace))
+			throw new java.lang.Exception ("OperatorEigenComponent ctr: Invalid Inputs");
 	}
 
 	/**

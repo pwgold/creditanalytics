@@ -52,7 +52,7 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 	}
 
 	private short[] _asEmpiricalOutcome = null;
-	private org.drip.learning.general.NormedR1ToNormedR1Learner _fcClassifier = null;
+	private org.drip.learning.lossFamily.NormedR1NormedR1L1 _fcClassifier = null;
 
 	private Supremum supremum (
 		final double[] adblVariate)
@@ -99,7 +99,7 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 	 */
 
 	public EmpiricalLossSupremum (
-		final org.drip.learning.general.NormedR1ToNormedR1Learner fcClassifier,
+		final org.drip.learning.lossFamily.NormedR1NormedR1L1 fcClassifier,
 		final short[] asEmpiricalOutcome)
 		throws java.lang.Exception
 	{
@@ -131,7 +131,7 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 	 * @return The Classifier Function Class
 	 */
 
-	public org.drip.learning.general.NormedR1ToNormedR1Learner classifierClass()
+	public org.drip.learning.lossFamily.NormedR1NormedR1L1 classifierClass()
 	{
 		return _fcClassifier;
 	}
