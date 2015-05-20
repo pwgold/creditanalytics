@@ -139,4 +139,19 @@ public class ContinuousRealMultidimensionalVector extends
 
 		return dblRightEdge;
 	}
+
+	@Override public double hyperVolume()
+	{
+		double[] adblLeftEdge = leftDimensionEdge();
+
+		double dblHyperVolume = 1.;
+		int iDimension = adblLeftEdge.length;
+
+		double[] adblRightEdge = rightDimensionEdge();
+
+		for (int i = 0; i < iDimension; ++i)
+			dblHyperVolume *= (adblRightEdge[i] - adblLeftEdge[i]);
+
+		return dblHyperVolume;
+	}
 }

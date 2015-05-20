@@ -29,8 +29,10 @@ package org.drip.learning.kernel;
  */
 
 /**
- * MercerKernal exposes the Functionality behind the Eigenized Kernel that is Normed R^x X Normed R^x ->
- *  Supremum R^1.
+ * EigenFunction holds the Eigen-vector Function and its corresponding Space of the R^x L2 -> R^x L2 Kernel
+ *  Linear Integral Operator defined by:
+ * 
+ * 		T_k [f(.)] := Integral Over Input Space {k (., y) * f(y) * d[Prob(y)]}
  *  
  *  The References are:
  *  
@@ -45,51 +47,30 @@ package org.drip.learning.kernel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MercerKernel extends org.drip.learning.kernel.SymmetricRxToNormedR1Kernel {
-	private org.drip.learning.kernel.IntegralOperatorEigenContainer _ioeoEigenComp = null;
+public abstract class EigenFunction extends org.drip.spaces.RxToR1.NormedRdToNormedR1 {
+	private double _dblAgnosticUpperBound = java.lang.Double.NaN;
 
-	/**
-	 * MercerKernel Constructor
-	 * 
-	 * @param ioeoEigenComp The Suite of Eigen Components
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public MercerKernel (
-		final org.drip.learning.kernel.IntegralOperatorEigenContainer ioeoEigenComp)
+	protected EigenFunction (
+		final org.drip.spaces.metric.RealMultidimensionalNormedSpace rmnsInput,
+		final org.drip.spaces.metric.RealUnidimensionalNormedSpace runsOutput,
+		final org.drip.function.deterministic.RdToR1 funcRdToR1,
+		final double dblAgnosticUpperBound)
 		throws java.lang.Exception
 	{
-		super (ioeoEigenComp.input(), ioeoEigenComp.output());
+		super (rmnsInput, runsOutput, funcRdToR1);
 
-		_ioeoEigenComp = ioeoEigenComp;
+		if (!org.drip.quant.common.NumberUtil.IsValid (_dblAgnosticUpperBound = dblAgnosticUpperBound))
+			throw new java.lang.Exception ("EigenFunction ctr: Invalid Inputs");
 	}
 
 	/**
-	 * Retrieve the Suite of Eigen Components
+	 * Retrieve the Agnostic Upper Bound of the Eigen-Function
 	 * 
-	 * @return The Suite of Eigen Components
+	 * @return The Agnostic Upper Bound of the Eigen-Function
 	 */
 
-	public org.drip.learning.kernel.IntegralOperatorEigenContainer eigenComponentSuite()
+	public double agnosticUpperBound()
 	{
-		return _ioeoEigenComp;
-	}
-
-	@Override public double evaluate (
-		final double[] adblX,
-		final double[] adblY)
-		throws java.lang.Exception
-	{
-		org.drip.learning.kernel.IntegralOperatorEigenComponent[] aEigenComp =
-			_ioeoEigenComp.eigenComponents();
-
-		double dblValue = 0.;
-		int iNumEigenComp = aEigenComp.length;
-
-		for (int i = 0; i < iNumEigenComp; ++i)
-			dblValue += aEigenComp[i].evaluate (adblX, adblY);
-
-		return dblValue;
+		return _dblAgnosticUpperBound;
 	}
 }

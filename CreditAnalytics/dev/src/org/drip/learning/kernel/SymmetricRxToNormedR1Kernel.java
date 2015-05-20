@@ -29,10 +29,9 @@ package org.drip.learning.kernel;
  */
 
 /**
- * OperatorEigenComponent holds the Eigen-vector Functions/Spaces and the Eigenvalue Functions/Spaces of the
- *  R^x L2 -> R^x L2 Kernel Integral Operator defined by:
- * 
- * 		T_k [f(.)] := Integral Over Input Space {k (., y) * f(y) * d[Prob(y)]}
+ * SymmetricRxToNormedR1Kernel exposes the Functionality behind the Kernel that is Normed R^x X Normed R^x ->
+ *  Supremum R^1, that is, a Kernel that symmetric in the Input Metric Space in terms of both the Metric and
+ *  the Dimensionality.
  *  
  *  The References are:
  *  
@@ -47,48 +46,64 @@ package org.drip.learning.kernel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class OperatorEigenComponent {
-	private org.drip.spaces.RxToR1.NormedRdToNormedR1 _eigenValueFunctionSpace = null;
-	private org.drip.spaces.RxToR1.NormedRdToNormedR1 _eigenVectorFunctionSpace = null;
+public abstract class SymmetricRxToNormedR1Kernel {
+	private org.drip.spaces.metric.RealUnidimensionalNormedSpace _runsOutput = null;
+	private org.drip.spaces.metric.RealMultidimensionalNormedSpace _rmnsInput = null;
 
 	/**
-	 * OperatorEigenComponent Constructor
+	 * SymmetricRxToNormedR1Kernel Constructor
 	 * 
-	 * @param eigenVectorFunctionSpace Normed R^d -> Normed L2 R^1 Eigen-vector Function Space
-	 * @param eigenValueFunctionSpace Normed R^d -> Normed L1 R^1 Eigenvalue Function Space
+	 * @param rmnsInput The Symmetric Input R^x Space
+	 * @param runsOutput The Output R^1 Metric Space
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public OperatorEigenComponent (
-		final org.drip.spaces.RxToR1.NormedRdToNormedR1 eigenVectorFunctionSpace,
-		final org.drip.spaces.RxToR1.NormedRdToNormedR1 eigenValueFunctionSpace)
+	public SymmetricRxToNormedR1Kernel (
+		final org.drip.spaces.metric.RealMultidimensionalNormedSpace rmnsInput,
+		final org.drip.spaces.metric.RealUnidimensionalNormedSpace runsOutput)
 		throws java.lang.Exception
 	{
-		if (null == (_eigenVectorFunctionSpace = eigenVectorFunctionSpace) || null ==
-			(_eigenValueFunctionSpace = eigenValueFunctionSpace))
-			throw new java.lang.Exception ("OperatorEigenComponent ctr: Invalid Inputs");
+		if (null == (_rmnsInput = rmnsInput) || 2 != _rmnsInput.pNorm() || null == (_runsOutput = runsOutput)
+			|| 0 != _runsOutput.pNorm())
+			throw new java.lang.Exception ("SymmetricRxToNormedR1Kernel ctr: Invalid Inputs");
 	}
 
 	/**
-	 * Retrieve the Eigen-Vector Function Space
+	 * Retrieve the Symmetric Input Metric R^x Space
 	 * 
-	 * @return The Eigen-Vector Function Space
+	 * @return The Symmetric Input Metric R^x Space
 	 */
 
-	public org.drip.spaces.RxToR1.NormedRdToNormedR1 eigenVectorFunctionSpace()
+	public org.drip.spaces.metric.RealMultidimensionalNormedSpace input()
 	{
-		return _eigenVectorFunctionSpace;
+		return _rmnsInput;
 	}
 
 	/**
-	 * Retrieve the Eigenvalue Function Space
+	 * Retrieve the Output R^1 Metric Space
 	 * 
-	 * @return The Eigenvalue Function Space
+	 * @return The Output R^1 Metric Space
 	 */
 
-	public org.drip.spaces.RxToR1.NormedRdToNormedR1 eigenValueFunctionSpace()
+	public org.drip.spaces.metric.RealUnidimensionalNormedSpace output()
 	{
-		return _eigenValueFunctionSpace;
+		return _runsOutput;
 	}
+
+	/**
+	 * Compute the Kernel's R^x X R^x -> R^1 Value
+	 * 
+	 * @param adblX Validated Vector Instance X
+	 * @param adblY Validated Vector Instance Y
+	 * 
+	 * @return The Kernel's R^x X R^x -> R^1 Value
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 */
+
+	public abstract double evaluate (
+		final double[] adblX,
+		final double[] adblY)
+		throws java.lang.Exception;
 }

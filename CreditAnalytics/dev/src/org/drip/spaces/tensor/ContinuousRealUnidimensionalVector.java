@@ -129,4 +129,9 @@ public class ContinuousRealUnidimensionalVector implements
 		return leftEdge() != java.lang.Double.NEGATIVE_INFINITY && rightEdge() !=
 			java.lang.Double.POSITIVE_INFINITY;
 	}
+
+	@Override public double hyperVolume()
+	{
+		return _dblRightEdge - _dblLeftEdge;
+	}
 }

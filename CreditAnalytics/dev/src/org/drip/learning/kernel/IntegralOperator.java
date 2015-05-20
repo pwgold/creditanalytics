@@ -29,7 +29,7 @@ package org.drip.learning.kernel;
  */
 
 /**
- * MercerKernelIntegralOperator implements the R^x L2 -> R^x L2 Kernel Integral Operator defined by:
+ * IntegralOperator implements the R^x L2 -> R^x L2 Mercer Kernel Integral Operator defined by:
  * 
  * 		T_k [f(.)] := Integral Over Input Space {k (., y) * f(y) * d[Prob(y)]}
  *  
@@ -46,14 +46,14 @@ package org.drip.learning.kernel;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class MercerKernelIntegralOperator {
+public abstract class IntegralOperator {
+	private org.drip.learning.kernel.SymmetricRxToNormedR1Kernel _kernel = null;
 	private org.drip.function.deterministic.RdToR1 _funcRdToR1 = null;
-	private org.drip.learning.kernel.MercerKernel _kernel = null;
 	private org.drip.spaces.metric.RealUnidimensionalNormedSpace _runsOperatorOutput = null;
 	private org.drip.measure.continuous.MultivariateDistribution _mdInputBorelSigmaMeasure = null;
 
 	/**
-	 * MercerKernelIntegralOperator Constructor
+	 * IntegralOperator Constructor
 	 * 
 	 * @param kernel The Symmetric Mercer Kernel - this should be R^x L2 X R^x L2 -> R^1 L0
 	 * @param funcRdToR1 The R^d -> R^1 Operator Function
@@ -62,21 +62,21 @@ public abstract class MercerKernelIntegralOperator {
 	 * @throws java.lang.Exception Thrown if the Inputs are invalid
 	 */
 
-	public MercerKernelIntegralOperator (
-		final org.drip.learning.kernel.MercerKernel kernel,
+	public IntegralOperator (
+		final org.drip.learning.kernel.SymmetricRxToNormedR1Kernel kernel,
 		final org.drip.function.deterministic.RdToR1 funcRdToR1,
 		final org.drip.spaces.metric.RealUnidimensionalNormedSpace runsOperatorOutput)
 		throws java.lang.Exception
 	{
 		if (null == (_kernel = kernel) || null == (_funcRdToR1 = funcRdToR1) || null == (_runsOperatorOutput
 			= runsOperatorOutput) || 2 != _runsOperatorOutput.pNorm())
-			throw new java.lang.Exception ("MercerKernelIntegralOperator ctr: Invalid Inputs");
+			throw new java.lang.Exception ("IntegralOperator ctr: Invalid Inputs");
 
 		org.drip.spaces.metric.RealMultidimensionalNormedSpace rmnsSymmetricKernelInput = _kernel.input();
 
 		if (2 != rmnsSymmetricKernelInput.pNorm() || null == (_mdInputBorelSigmaMeasure =
 			rmnsSymmetricKernelInput.borelSigmaMeasure()))
-			throw new java.lang.Exception ("MercerKernelIntegralOperator ctr: Invalid Inputs");
+			throw new java.lang.Exception ("IntegralOperator ctr: Invalid Inputs");
 	}
 
 	/**
@@ -85,7 +85,7 @@ public abstract class MercerKernelIntegralOperator {
 	 * @return The Mercer Kernel
 	 */
 
-	public org.drip.learning.kernel.MercerKernel kernel()
+	public org.drip.learning.kernel.SymmetricRxToNormedR1Kernel kernel()
 	{
 		return _kernel;
 	}
@@ -126,7 +126,7 @@ public abstract class MercerKernelIntegralOperator {
 	/**
 	 * Compute the Operator's Kernel Integral across the specified X Variate Instance
 	 * 
-	 * @param gvviX Validated Vector Instance X
+	 * @param adblX Validated Vector Instance X
 	 * 
 	 * @return The Operator's Kernel Integral across the specified X Variate Instance
 	 * 
@@ -134,7 +134,7 @@ public abstract class MercerKernelIntegralOperator {
 	 */
 
 	public double computeOperatorIntegral (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX)
+		final double[] adblX)
 		throws java.lang.Exception
 	{
 		org.drip.function.deterministic.RdToR1 funcRdToR1 = new org.drip.function.deterministic.RdToR1 (null)
@@ -143,8 +143,7 @@ public abstract class MercerKernelIntegralOperator {
 				final double[] adblY)
 				throws java.lang.Exception
 			{
-				return _kernel.evaluate (gvviX, new org.drip.spaces.instance.ValidatedRealMultidimensional
-					(_kernel.input(), new double[][] {adblY})) * _funcRdToR1.evaluate (adblY);
+				return _kernel.evaluate (adblX, adblY) * _funcRdToR1.evaluate (adblY);
 			}
 		};
 
@@ -152,19 +151,20 @@ public abstract class MercerKernelIntegralOperator {
 	}
 
 	/**
-	 * Indicate the Kernel Operator Integral's Positivity across the specified X Variate Instance
+	 * Indicate the Kernel Operator Integral's Positive-definiteness across the specified X Variate Instance
 	 * 
-	 * @param gvviX Validated Vector Instance X
+	 * @param adblX Validated Vector Instance X
 	 * 
-	 * @return TRUE => The Kernel Operator Integral is Positive across the specified X Variate Instance
+	 * @return TRUE => The Kernel Operator Integral is Positive Definite across the specified X Variate
+	 *  Instance
 	 */
 
-	public boolean isPositive (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX)
+	public boolean isPositiveDefinite (
+		final double[] adblX)
 		throws java.lang.Exception
 	{
 		try {
-			return 0 < computeOperatorIntegral (gvviX);
+			return 0 < computeOperatorIntegral (adblX);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -173,10 +173,10 @@ public abstract class MercerKernelIntegralOperator {
 	}
 
 	/**
-	 * Eigenize the Kernel Integral Operator into its Components
+	 * Eigenize the Kernel Integral Operator
 	 * 
-	 * @return The Array of Eigen-Components of the Kernel Integral Operator
+	 * @return The Eigenization Output
 	 */
 
-	public abstract OperatorEigenComponent[] eigenize();
+	public abstract org.drip.learning.kernel.IntegralOperatorEigenContainer eigenize();
 }

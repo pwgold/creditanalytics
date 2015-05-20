@@ -68,20 +68,6 @@ public abstract class MultivariateDistribution {
 		throws java.lang.Exception;
 
 	/**
-	 * Compute the Inverse Cumulative under the Distribution corresponding to the given Variate Array
-	 * 
-	 * @param adblX Variate Array corresponding to which the Inverse Cumulative needs to be computed
-	 * 
-	 * @return The Inverse Cumulative
-	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
-	 */
-
-	public abstract double invCumulative (
-		final double[] adblX)
-		throws java.lang.Exception;
-
-	/**
 	 * Compute the Density under the Distribution at the given Variate Array
 	 * 
 	 * @param adblX Variate Array at which the Density needs to be computed

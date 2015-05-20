@@ -81,4 +81,12 @@ public interface GeneralizedVectorSpace {
 
 	public abstract boolean subset (
 		final org.drip.spaces.tensor.GeneralizedVectorSpace gvsOther);
+
+	/**
+	 * Retrieve the "Hyper" Volume of the Vector Space
+	 * 
+	 * @return The "Hyper" Volume of the Vector Space
+	 */
+
+	public abstract double hyperVolume();
 }

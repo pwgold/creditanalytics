@@ -142,4 +142,18 @@ public class CombinatorialRealMultidimensionalVector extends
 
 		return dblRightEdge;
 	}
+
+	@Override public double hyperVolume()
+	{
+		double dblHyperVolume = 0.;
+
+		org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace[] aGUVS = vectorSpaces();
+
+		int iDimension = vectorSpaces().length;
+
+		for (int i = 0; i < iDimension; ++i)
+			dblHyperVolume += aGUVS[i].hyperVolume();
+
+		return dblHyperVolume;
+	}
 }
