@@ -131,7 +131,12 @@ public class ContinuousRealUnidimensionalVector implements
 	}
 
 	@Override public double hyperVolume()
+		throws java.lang.Exception
 	{
+		if (!isPredictorBounded())
+			throw new java.lang.Exception
+				("ContinuousRealUnidimensionalVector::hyperVolume => Space not Bounded");
+
 		return _dblRightEdge - _dblLeftEdge;
 	}
 }

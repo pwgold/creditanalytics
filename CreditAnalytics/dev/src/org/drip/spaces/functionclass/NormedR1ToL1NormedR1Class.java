@@ -92,7 +92,7 @@ public class NormedR1ToL1NormedR1Class extends org.drip.spaces.functionclass.Nor
 		super (aR1ToR1FunctionSpace);
 	}
 
-	@Override public org.drip.spaces.cover.CoveringNumberBounds agnosticCoveringNumberBounds()
+	@Override public org.drip.spaces.cover.FunctionClassCoveringBounds agnosticCoveringNumberBounds()
 	{
 		org.drip.spaces.RxToR1.NormedR1ToNormedR1[] aNormedR1ToNormedR1 =
 			(org.drip.spaces.RxToR1.NormedR1ToNormedR1[]) functionSpaces();
@@ -152,7 +152,7 @@ public class NormedR1ToL1NormedR1Class extends org.drip.spaces.functionclass.Nor
 		double dblVariation = dblResponseUpperBound - dblResponseLowerBound;
 
 		try {
-			return new org.drip.spaces.cover.BoundedFunctionCoveringNumber (dblPredictorUpperBound -
+			return new org.drip.spaces.cover.BoundedFunctionCoveringBounds (dblPredictorUpperBound -
 				dblPredictorLowerBound, dblVariation, dblVariation);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -161,7 +161,7 @@ public class NormedR1ToL1NormedR1Class extends org.drip.spaces.functionclass.Nor
 		return null;
 	}
 
-	@Override public org.drip.spaces.cover.CoveringNumberBounds scaleSensitiveCoveringBounds (
+	@Override public org.drip.spaces.cover.FunctionClassCoveringBounds scaleSensitiveCoveringBounds (
 		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
 		final org.drip.function.deterministic.R1ToR1 r1r1FatShatter)
 	{
@@ -175,7 +175,7 @@ public class NormedR1ToL1NormedR1Class extends org.drip.spaces.functionclass.Nor
 		double[] adblInstance = vru.instance();
 
 		try {
-			return null == adblInstance ? null : new org.drip.spaces.cover.ScaleSensitiveCoveringNumber
+			return null == adblInstance ? null : new org.drip.spaces.cover.ScaleSensitiveCoveringBounds
 				(r1r1FatShatter, adblInstance.length);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();

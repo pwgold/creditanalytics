@@ -4,7 +4,7 @@ package org.drip.sample.coveringNumber;
 import org.drip.function.deterministic.R1ToR1;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.api.CreditAnalytics;
-import org.drip.spaces.cover.ScaleSensitiveCoveringNumber;
+import org.drip.spaces.cover.ScaleSensitiveCoveringBounds;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -59,7 +59,7 @@ public class ScaleSensitiveFunction {
 			}
 		};
 
-		ScaleSensitiveCoveringNumber sscn = new ScaleSensitiveCoveringNumber (
+		ScaleSensitiveCoveringBounds sscn = new ScaleSensitiveCoveringBounds (
 			auFatShatter,
 			iSampleSize
 		);

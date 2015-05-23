@@ -121,4 +121,15 @@ public abstract class AggregatedMultidimensionalVectorSpace implements
 
 		return true;
 	}
+
+	@Override public boolean isPredictorBounded()
+	{
+		int iDimension = _aGUVS.length;
+
+		for (int i = 0; i < iDimension; ++i) {
+			if (!_aGUVS[i].isPredictorBounded()) return false;
+		}
+
+		return true;
+	}
 }

@@ -1,5 +1,5 @@
 
-package org.drip.spaces.cover;
+package org.drip.learning.svm;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,45 +29,57 @@ package org.drip.spaces.cover;
  */
 
 /**
- * CoveringNumberBounds implements the estimate Lower/Upper Bounds and/or Absolute Values of the Covering
- * 	Number for the Class Functions. The Main References are:
+ * SupportMachine exposes the Basic SVM Functionality for Classification and Regression.
  * 
- * 	1) Carl, B., and I. Stephani (1990): Entropy, Compactness, and Approximation of Operators, Cambridge
- * 		University Press, Cambridge UK.
+ * The References are:
  * 
- * 	2) Bartlett, P. L., S. R. Kulkarni, and S. E. Posner (1997): Covering Numbers for Real-valued Function
- * 		Classes, IEEE Transactions on Information Theory 43 (5) 1721-1724.
+ * 	1) Vapnik, V., and A. Chervonenkis (1974): Theory of Pattern Recognition (in Russian), Nauka, Moscow
+ * 		USSR.
+ * 
+ * 	2) Vapnik, V. (1995): The Nature of Statistical Learning, Springer-Verlag, New York.
+ * 
+ * 	3) Shawe-Taylor, J., P. L. Bartlett, R. C. Williamson, and M. Anthony (1996): A Framework for Structural
+ * 		Risk Minimization, in: Proceedings of the 9th Annual Conference on Computational Learning Theory, ACM
+ * 		New York 68-76.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface CoveringNumberBounds {
+public interface SupportVectorMachine {
 
 	/**
-	 * Log of the Lower Bound of the Function Covering Number
+	 * Retrieve the Input Predictor Metric Vector Space
 	 * 
-	 * @param dblCover The Size of the Cover
+	 * @return The Input Predictor Metric Vector Space
+	 */
+
+	public abstract org.drip.spaces.tensor.GeneralizedMultidimensionalVectorSpace predictorSpace();
+
+	/**
+	 * Classify the Specified Multi-dimensional Point
 	 * 
-	 * @return Log of the Lower Bound of the Function Covering Number
+	 * @param adblX The Multi-dimensional Input Point
+	 * 
+	 * @return +1/-1 Boolean Space Output Equivalents
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double logLowerBound (
-		final double dblCover)
+	public abstract short classify (
+		final double[] adblX)
 		throws java.lang.Exception;
 
 	/**
-	 * Log of the Upper Bound of the Function Covering Number
+	 * Regress on the Specified Multi-dimensional Point
 	 * 
-	 * @param dblCover The Size of the Cover
+	 * @param adblX The Multi-dimensional Input Point
 	 * 
-	 * @return Log of the Upper Bound of the Function Covering Number
+	 * @return The Regression Output
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double logUpperBound (
-		final double dblCover)
+	public abstract double regress (
+		final double[] adblX)
 		throws java.lang.Exception;
 }

@@ -100,30 +100,80 @@ public class IntegralOperatorEigenContainer {
 	}
 
 	/**
-	 * Compute the Array of RKHS Feature Space Bounds on Application of the Diagonal Scaling Operator
+	 * Generate the Diagonally Scaled Normed Vector Space of the RKHS Feature Space Bounds that result due to
+	 *  the Application of the Diagonal Scaling Operator
 	 * 
-	 * @param adblDiagonalScalingOperator The Diagonal Scaling Operator Array
+	 * @param adblDiagonalScalingOperator The Diagonal Scaling Operator
 	 * 
-	 * @return Array of RKHS Feature Space Bounds on Application of the Diagonal Scaling Operator
+	 * @return The Diagonally Scaled Normed Vector Space of the RKHS Feature Space
 	 */
 
-	public double[] diagonalScalingBounds (
-		final double[] adblDiagonalScalingOperator)
+	public org.drip.spaces.metric.CombinatorialRealUnidimensional diagonallyScaledFeatureSpace (
+		final org.drip.learning.kernel.DiagonalScalingOperator dso)
 	{
-		if (null == adblDiagonalScalingOperator) return null;
+		if (null == dso) return null;
+
+		double[] adblDiagonalScalingOperator = dso.multiplier();
 
 		int iDimension = adblDiagonalScalingOperator.length;
-		double[] adblDiagonalScalingBound = new double[iDimension];
 
 		if (iDimension != _aIOEC.length) return null;
 
-		for (int i = 0;i < iDimension; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (adblDiagonalScalingOperator[i])) return null;
+		java.util.List<java.lang.Double> lsElementSpace = new java.util.ArrayList<java.lang.Double>();
 
-			adblDiagonalScalingBound[i] = 0.5 * adblDiagonalScalingOperator[i] *
-				_aIOEC[i].rkhsFeatureParallelepipedLength();
+		for (int i = 0;i < iDimension; ++i)
+			lsElementSpace.add (0.5 * _aIOEC[i].rkhsFeatureParallelepipedLength() /
+				adblDiagonalScalingOperator[i]);
+
+		try {
+			return new org.drip.spaces.metric.CombinatorialRealUnidimensional (lsElementSpace, null, 2);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
 		}
 
-		return adblDiagonalScalingBound;
+		return null;
+	}
+
+	/**
+	 * Generate the Operator Class Covering Number Bounds of the RKHS Feature Space Bounds that result due to
+	 *  the Application of the Diagonal Scaling Operator
+	 * 
+	 * @param adblDiagonalScalingOperator The Diagonal Scaling Operator
+	 * 
+	 * @return The Operator Class Covering Number Bounds of the RKHS Feature Space
+	 */
+
+	public org.drip.spaces.cover.OperatorClassCoveringBounds scaledCoveringNumberBounds (
+		final org.drip.learning.kernel.DiagonalScalingOperator dso)
+	{
+		final org.drip.spaces.metric.CombinatorialRealUnidimensional cruScaled = diagonallyScaledFeatureSpace
+			(dso);
+
+		if (null == cruScaled) return null;
+
+		try {
+			final double dblPopulationMetricNorm = cruScaled.populationMetricNorm();
+
+			org.drip.spaces.cover.OperatorClassCoveringBounds ocnb = new
+				org.drip.spaces.cover.OperatorClassCoveringBounds() {
+				@Override public double lowerBound()
+					throws java.lang.Exception
+				{
+					return dso.lowerBound() * dblPopulationMetricNorm;
+				}
+
+				@Override public double upperBound()
+					throws java.lang.Exception
+				{
+					return dso.upperBound() * dblPopulationMetricNorm;
+				}
+			};
+
+			return ocnb;
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

@@ -29,7 +29,7 @@ package org.drip.spaces.cover;
  */
 
 /**
- * ScaleSensitiveCoveringNumber implements the Lower/Upper Bounds for the General Class of Functions in terms
+ * ScaleSensitiveCoveringBounds implements the Lower/Upper Bounds for the General Class of Functions in terms
  * 	of their scale-sensitive dimensions (i.e., the fat shattering coefficients).
  * 
  * The References are:
@@ -46,12 +46,12 @@ package org.drip.spaces.cover;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ScaleSensitiveCoveringNumber implements org.drip.spaces.cover.CoveringNumberBounds {
+public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.FunctionClassCoveringBounds {
 	private int _iSampleSize = -1;
 	private org.drip.function.deterministic.R1ToR1 _r1r1FatShatter = null;
 
 	/**
-	 * ScaleSensitiveCoveringNumber Constructor
+	 * ScaleSensitiveCoveringBounds Constructor
 	 * 
 	 * @param r1r1FatShatter The Cover Fat Shattering Coefficient Function
 	 * @param iSampleSize Sample Size
@@ -59,13 +59,13 @@ public class ScaleSensitiveCoveringNumber implements org.drip.spaces.cover.Cover
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public ScaleSensitiveCoveringNumber (
+	public ScaleSensitiveCoveringBounds (
 		final org.drip.function.deterministic.R1ToR1 r1r1FatShatter,
 		final int iSampleSize)
 		throws java.lang.Exception
 	{
 		if (null == (_r1r1FatShatter = r1r1FatShatter) || 0 >= (_iSampleSize = iSampleSize))
-			throw new java.lang.Exception ("ScaleSensitiveCoveringNumber ctr: Invalid Inputs");
+			throw new java.lang.Exception ("ScaleSensitiveCoveringBounds ctr: Invalid Inputs");
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class ScaleSensitiveCoveringNumber implements org.drip.spaces.cover.Cover
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)
 			throw new java.lang.Exception
-				("ScaleSensitiveCoveringNumber::sampleSizeLowerBound => Invalid Inputs");
+				("ScaleSensitiveCoveringBounds::sampleSizeLowerBound => Invalid Inputs");
 
 		double dblLog2 = java.lang.Math.log (2.);
 
@@ -132,7 +132,7 @@ public class ScaleSensitiveCoveringNumber implements org.drip.spaces.cover.Cover
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)
 			throw new java.lang.Exception
-				("ScaleSensitiveCoveringNumber::restrictedSubsetCardinality => Invalid Inputs");
+				("ScaleSensitiveCoveringBounds::restrictedSubsetCardinality => Invalid Inputs");
 
 		double dblLog2 = java.lang.Math.log (2.);
 
@@ -141,7 +141,7 @@ public class ScaleSensitiveCoveringNumber implements org.drip.spaces.cover.Cover
 		if (_iSampleSize < 2. * dblFatShatteringCoefficient * java.lang.Math.log (64. * java.lang.Math.E *
 			java.lang.Math.E / (dblCover * dblLog2)) / dblLog2)
 			throw new java.lang.Exception
-				("ScaleSensitiveCoveringNumber::restrictedSubsetCardinality => Invalid Inputs");
+				("ScaleSensitiveCoveringBounds::restrictedSubsetCardinality => Invalid Inputs");
 
 		return 6. * dblFatShatteringCoefficient * java.lang.Math.log (16. / dblCover) * java.lang.Math.log
 			(32. * java.lang.Math.E * _iSampleSize / (dblFatShatteringCoefficient * dblCover)) / dblLog2 +
@@ -172,7 +172,7 @@ public class ScaleSensitiveCoveringNumber implements org.drip.spaces.cover.Cover
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)
 			throw new java.lang.Exception
-				("ScaleSensitiveCoveringNumber::upperProbabilityBoundWeight => Invalid Inputs");
+				("ScaleSensitiveCoveringBounds::upperProbabilityBoundWeight => Invalid Inputs");
 
 		return java.lang.Math.log (4.) - (dblCover * dblCover * _iSampleSize / 128.);
 	}

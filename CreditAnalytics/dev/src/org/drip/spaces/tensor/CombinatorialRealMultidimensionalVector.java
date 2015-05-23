@@ -144,15 +144,21 @@ public class CombinatorialRealMultidimensionalVector extends
 	}
 
 	@Override public double hyperVolume()
+		throws java.lang.Exception
 	{
-		double dblHyperVolume = 0.;
+		if (!isPredictorBounded())
+			throw new java.lang.Exception
+				("CombinatorialRealMultidimensionalVector::hyperVolume => Space not Bounded");
 
-		org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace[] aGUVS = vectorSpaces();
+		double[] adblLeftEdge = leftDimensionEdge();
 
-		int iDimension = vectorSpaces().length;
+		double dblHyperVolume = 1.;
+		int iDimension = adblLeftEdge.length;
+
+		double[] adblRightEdge = rightDimensionEdge();
 
 		for (int i = 0; i < iDimension; ++i)
-			dblHyperVolume += aGUVS[i].hyperVolume();
+			dblHyperVolume *= (adblRightEdge[i] - adblLeftEdge[i]);
 
 		return dblHyperVolume;
 	}

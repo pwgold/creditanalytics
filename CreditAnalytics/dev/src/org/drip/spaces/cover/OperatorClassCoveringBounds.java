@@ -1,5 +1,5 @@
 
-package org.drip.spaces.tensor;
+package org.drip.spaces.cover;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,21 +29,37 @@ package org.drip.spaces.tensor;
  */
 
 /**
- * GeneralizedUnidimensionalVectorSpace exposes the basic Properties of the General R^1 Vector Space.
+ * OperatorClassCoveringBounds implements the estimate Lower/Upper Bounds and/or Absolute Values of the
+ * 	Covering Number for the Operator Class. The Main References are:
+ * 
+ * 	1) Guo, Y., P. L. Bartlett, J. Shawe-Taylor, and R. C. Williamson (1999): Covering Numbers for Support
+ * 		Vector Machines, in: Proceedings of the 12th Annual Conference of Computational Learning Theory, ACM,
+ * 		New York, 267-277.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface GeneralizedUnidimensionalVectorSpace extends org.drip.spaces.tensor.GeneralizedVectorSpace {
+public interface OperatorClassCoveringBounds {
 
 	/**
-	 * Validate the Input Instance Ordinate
+	 * Lower Bound of the Operator Covering Number
 	 * 
-	 * @param dblInstance The Input Instance Ordinate
+	 * @return Lower Bound of the Operator Covering Number
 	 * 
-	 * @return TRUE => Instance Ordinate is a Valid Entry in the Space
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract boolean validateInstance (
-		final double dblInstance);
+	public abstract double lowerBound()
+		throws java.lang.Exception;
+
+	/**
+	 * Upper Bound of the Operator Covering Number
+	 * 
+	 * @return Upper Bound of the Operator Covering Number
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public abstract double upperBound()
+		throws java.lang.Exception;
 }

@@ -141,7 +141,12 @@ public class ContinuousRealMultidimensionalVector extends
 	}
 
 	@Override public double hyperVolume()
+		throws java.lang.Exception
 	{
+		if (!isPredictorBounded())
+			throw new java.lang.Exception
+				("ContinuousRealMultidimensionalVector::hyperVolume => Space not Bounded");
+
 		double[] adblLeftEdge = leftDimensionEdge();
 
 		double dblHyperVolume = 1.;

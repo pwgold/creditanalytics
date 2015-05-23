@@ -154,7 +154,12 @@ public class CombinatorialRealUnidimensionalVector implements
 	}
 
 	@Override public double hyperVolume()
+		throws java.lang.Exception
 	{
-		return _lsElementSpace.size();
+		if (!isPredictorBounded())
+			throw new java.lang.Exception
+				("CombinatorialRealUnidimensionalVector::hyperVolume => Space not Bounded");
+
+		return rightEdge() - leftEdge();
 	}
 }

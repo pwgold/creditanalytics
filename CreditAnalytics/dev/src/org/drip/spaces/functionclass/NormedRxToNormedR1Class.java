@@ -85,7 +85,7 @@ public abstract class NormedRxToNormedR1Class {
 	 * @return The Agnostic Covering Number Upper/Lower Bounds for the Function Class
 	 */
 
-	public abstract org.drip.spaces.cover.CoveringNumberBounds agnosticCoveringNumberBounds();
+	public abstract org.drip.spaces.cover.FunctionClassCoveringBounds agnosticCoveringNumberBounds();
 
 	/**
 	 * Retrieve the Scale-Sensitive Covering Number Upper/Lower Bounds given the Specified Sample for the
@@ -98,7 +98,7 @@ public abstract class NormedRxToNormedR1Class {
 	 *  Function Class
 	 */
 
-	public abstract org.drip.spaces.cover.CoveringNumberBounds scaleSensitiveCoveringBounds (
+	public abstract org.drip.spaces.cover.FunctionClassCoveringBounds scaleSensitiveCoveringBounds (
 		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
 		final org.drip.function.deterministic.R1ToR1 r1r1FatShatter);
 

@@ -83,10 +83,21 @@ public interface GeneralizedVectorSpace {
 		final org.drip.spaces.tensor.GeneralizedVectorSpace gvsOther);
 
 	/**
+	 * Indicate if the Predictor Variate Space is bounded from the Left and the Right
+	 * 
+	 * @return The Predictor Variate Space is bounded from the Left and the Right
+	 */
+
+	public abstract boolean isPredictorBounded();
+
+	/**
 	 * Retrieve the "Hyper" Volume of the Vector Space
 	 * 
 	 * @return The "Hyper" Volume of the Vector Space
+	 * 
+	 * @throws java.lang.Exception Thrown if the Hyper Volume cannot be computed
 	 */
 
-	public abstract double hyperVolume();
+	public abstract double hyperVolume()
+		throws java.lang.Exception;
 }

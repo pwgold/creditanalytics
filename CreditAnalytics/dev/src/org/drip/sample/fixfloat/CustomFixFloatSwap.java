@@ -1,9 +1,11 @@
 
 package org.drip.sample.fixfloat;
 
-import java.util.List;
+import java.util.*;
 
 import org.drip.analytics.date.*;
+import org.drip.analytics.daycount.Convention;
+import org.drip.analytics.daycount.DateAdjustParams;
 import org.drip.analytics.rates.*;
 import org.drip.analytics.support.*;
 import org.drip.function.deterministic1D.QuadraticRationalShapeControl;
@@ -50,12 +52,12 @@ import org.drip.state.inference.*;
  */
 
 /**
- * InAdvanceIMMSwap demonstrates the Construction and Valuation of a In-Advance IMM Swap.
+ * CustomFixFloatSwap demonstrates the Construction and Valuation of a Custom Fix-Float Swap.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class InAdvanceIMMSwap {
+public class CustomFixFloatSwap {
 
 	/*
 	 * Construct the Array of Deposit Instruments from the given set of parameters
@@ -121,6 +123,143 @@ public class InAdvanceIMMSwap {
 	}
 
 	/*
+	 * Construct the Custom Fix-Float Instrument from the given set of parameters
+	 * 
+	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
+	 */
+
+	private static final FixFloatComponent CustomIRS (
+		final JulianDate dtEffective,
+		final String strCurrency,
+		final JulianDate dtMaturity,
+		final String strFixedDayCount,
+		final double dblFixedCoupon,
+		final String strFixedTenor,
+		final String strFloatDayCount,
+		final String strFloaterComposableTenor,
+		final String strFloaterCompositeTenor,
+		final double dblNotional)
+		throws Exception
+	{
+		int iFixedFreq = AnalyticsHelper.TenorToFreq (strFixedTenor);
+
+		UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (
+			iFixedFreq,
+			strFixedDayCount,
+			false,
+			strFixedDayCount,
+			false,
+			strCurrency,
+			false,
+			CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC
+		);
+
+		ComposableFloatingUnitSetting cfusFloating = new ComposableFloatingUnitSetting (
+			strFloaterComposableTenor,
+			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
+			new DateAdjustParams (
+				Convention.DATE_ROLL_FOLLOWING,
+				0,
+				strCurrency
+			),
+			ForwardLabel.Create (
+				strCurrency,
+				strFloaterComposableTenor
+			),
+			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
+			0.
+		);
+
+		ComposableFixedUnitSetting cfusFixed = new ComposableFixedUnitSetting (
+			strFixedTenor,
+			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
+			new DateAdjustParams (
+				Convention.DATE_ROLL_FOLLOWING,
+				0,
+				strCurrency
+			),
+			dblFixedCoupon,
+			0.,
+			strCurrency
+		);
+
+		int iFloaterFreq = AnalyticsHelper.TenorToFreq (strFloaterCompositeTenor);
+
+		CompositePeriodSetting cpsFloating = new CompositePeriodSetting (
+			iFloaterFreq,
+			strFloaterCompositeTenor,
+			strCurrency,
+			null,
+			-1. * dblNotional,
+			null,
+			null,
+			null,
+			null
+		);
+
+		CompositePeriodSetting cpsFixed = new CompositePeriodSetting (
+			iFixedFreq,
+			strFixedTenor,
+			strCurrency,
+			null,
+			1. * dblNotional,
+			null,
+			null,
+			null,
+			null
+		);
+
+		List<Double> lsFixedStreamEdgeDate = CompositePeriodBuilder.BackwardEdgeDates (
+			dtEffective,
+			dtMaturity,
+			strFixedTenor,
+			new DateAdjustParams (
+				Convention.DATE_ROLL_FOLLOWING,
+				0,
+				strCurrency
+			),
+			CompositePeriodBuilder.SHORT_STUB
+		);
+
+		List<Double> lsFloatingStreamEdgeDate = CompositePeriodBuilder.BackwardEdgeDates (
+			dtEffective,
+			dtMaturity,
+			strFloaterCompositeTenor,
+			new DateAdjustParams (
+				Convention.DATE_ROLL_FOLLOWING,
+				0,
+				strCurrency
+			),
+			CompositePeriodBuilder.SHORT_STUB
+		);
+
+		Stream floatingStream = new Stream (
+			CompositePeriodBuilder.FloatingCompositeUnit (
+				lsFloatingStreamEdgeDate,
+				cpsFloating,
+				cfusFloating
+			)
+		);
+
+		Stream fixedStream = new Stream (
+			CompositePeriodBuilder.FixedCompositeUnit (
+				lsFixedStreamEdgeDate,
+				cpsFixed,
+				ucasFixed,
+				cfusFixed
+			)
+		);
+
+		FixFloatComponent irs = new FixFloatComponent (
+			fixedStream,
+			floatingStream,
+			null
+		);
+
+		return irs;
+	}
+
+	/*
 	 * Construct the Array of Swap Instruments from the given set of parameters
 	 * 
 	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
@@ -129,8 +268,7 @@ public class InAdvanceIMMSwap {
 	private static final FixFloatComponent[] SwapInstrumentsFromMaturityTenor (
 		final JulianDate dtEffective,
 		final String strCurrency,
-		final String[] astrMaturityTenor,
-		final boolean bIsIMM)
+		final String[] astrMaturityTenor)
 		throws Exception
 	{
 		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];
@@ -195,27 +333,15 @@ public class InAdvanceIMMSwap {
 		);
 
 		for (int i = 0; i < astrMaturityTenor.length; ++i) {
-			List<Double> lsFixedStreamEdgeDate = !bIsIMM ? CompositePeriodBuilder.RegularEdgeDates (
+			List<Double> lsFixedStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (
 				dtEffective,
-				"6M",
-				astrMaturityTenor[i],
-				null
-			) : CompositePeriodBuilder.IMMEdgeDates (
-				dtEffective,
-				3,
 				"6M",
 				astrMaturityTenor[i],
 				null
 			);
 
-			List<Double> lsFloatingStreamEdgeDate = !bIsIMM ? CompositePeriodBuilder.RegularEdgeDates (
+			List<Double> lsFloatingStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (
 				dtEffective,
-				"6M",
-				astrMaturityTenor[i],
-				null
-			) : CompositePeriodBuilder.IMMEdgeDates (
-				dtEffective,
-				3,
 				"6M",
 				astrMaturityTenor[i],
 				null
@@ -336,17 +462,7 @@ public class InAdvanceIMMSwap {
 			strCurrency,
 			new java.lang.String[] {
 				"4Y", "5Y", "6Y", "7Y", "8Y", "9Y", "10Y", "11Y", "12Y", "15Y", "20Y", "25Y", "30Y", "40Y", "50Y"
-			},
-			false
-		);
-
-		FixFloatComponent[] aSwapInAdvanceIMM = SwapInstrumentsFromMaturityTenor (
-			dtSpot,
-			strCurrency,
-			new java.lang.String[] {
-				"4Y", "5Y", "6Y", "7Y", "8Y", "9Y", "10Y", "11Y", "12Y", "15Y", "20Y", "25Y", "30Y", "40Y", "50Y"
-			},
-			true
+			}
 		);
 
 		double[] adblSwapQuote = new double[] {
@@ -411,74 +527,46 @@ public class InAdvanceIMMSwap {
 
 		CurveSurfaceQuoteSet csqs = MarketParamsBuilder.Create (dc, null, null, null, null, null, null);
 
-		/*
-		 * Cross-Comparison of the In-Advance/Arrears Swap "Rate" metric across the different curve
-		 * 	construction methodologies.
-		 */
+		System.out.println ("\n\t-------------------------------------------------------------------------------\n");
 
-		System.out.println ("\n\t-------------------------------------------------------------------------------");
+		JulianDate dtEffective = dtSpot.addTenor ("1Y");
 
-		System.out.println ("\t     IN-ADVANCE W+W/O IMM SWAP INSTRUMENTS METRIC COMPARISON");
+		JulianDate dtMaturity = dtSpot.addTenor ("11Y");
 
-		System.out.println ("\t-------------------------------------------------------------------------------");
+		String strFixedDayCount = "Act/360";
+		double dblFixedCoupon = 0.01;
+		String strFixedTenor = "6M";
+		String strFloatDayCount = "Act/360";
+		String strFloaterComposableTenor = "6M";
+		String strFloaterCompositeTenor = "6M";
+		double dblNotional = 1.0e6;
 
-		System.out.println ("\t\tL -> R:");
+		FixFloatComponent ffcSwap = CustomIRS (
+			dtEffective,
+			strCurrency,
+			dtMaturity,
+			strFixedDayCount,
+			dblFixedCoupon,
+			strFixedTenor,
+			strFloatDayCount,
+			strFloaterComposableTenor,
+			strFloaterCompositeTenor,
+			dblNotional
+		);
 
-		System.out.println ("\t\t\t - Swap Maturity");
+		Map<String, Double> mapSwap = ffcSwap.value (
+			new ValuationParams (
+				dtSpot,
+				dtSpot,
+				strCurrency
+			),
+			null,
+			csqs,
+			null
+		);
 
-		System.out.println ("\t\t\t - In Advance Calibration Quote");
-
-		System.out.println ("\t\t\t - In Advance Fair Premium");
-
-		System.out.println ("\t\t\t - In Advance Swap Rate");
-
-		System.out.println ("\t\t\t - In Advance IMM Swap Rate");
-
-		System.out.println ("\t\t\t - In Advance IMM Swap Rate Shift");
-
-		System.out.println ("\t-------------------------------------------------------------------------------");
-
-		for (int i = 0; i < aSwapInAdvance.length; ++i) {
-			double dblInAdvanceIMMFairPremium = aSwapInAdvanceIMM[i].measureValue (valParams, null, csqs, null, "FairPremium");
-
-			System.out.println ("\t[" + aSwapInAdvance[i].maturityDate() + "] = " +
-				FormatUtil.FormatDouble (aSwapInAdvance[i].measureValue (valParams, null, csqs, null, "CalibSwapRate"), 1, 4, 100.) + "% | " +
-				FormatUtil.FormatDouble (adblSwapQuote[i], 1, 4, 100.) + "% | " +
-				FormatUtil.FormatDouble (aSwapInAdvance[i].measureValue (valParams, null, csqs, null, "FairPremium"), 1, 4, 100.) + "% | " +
-				FormatUtil.FormatDouble (dblInAdvanceIMMFairPremium, 1, 4, 100.) + "% | " +
-				FormatUtil.FormatDouble (dblInAdvanceIMMFairPremium - adblSwapQuote[i], 1, 0, 10000.)
-			);
-		}
-
-		System.out.println ("\n\t-------------------------------------------------------------------------------");
-
-		System.out.println ("\t     IN-ADVANCE W+W/O IMM SWAP INSTRUMENTS DV01 COMPARISON");
-
-		System.out.println ("\t-------------------------------------------------------------------------------");
-
-		System.out.println ("\t\tL -> R:");
-
-		System.out.println ("\t\t\t - Swap Maturity");
-
-		System.out.println ("\t\t\t - In Advance Swap DV01");
-
-		System.out.println ("\t\t\t - In Advance IMM Swap DV01");
-
-		System.out.println ("\t\t\t - In Advance IMM Swap DV01 Shift");
-
-		System.out.println ("\t-------------------------------------------------------------------------------");
-
-		for (int i = 0; i < aSwapInAdvance.length; ++i) {
-			double dblInAdvanceDV01 = aSwapInAdvance[i].measureValue (valParams, null, csqs, null, "FixedDV01");
-
-			double dblInAdvanceIMMDV01 = aSwapInAdvanceIMM[i].measureValue (valParams, null, csqs, null, "FixedDV01");
-
-			System.out.println ("\t[" + aSwapInAdvance[i].maturityDate() + "] = " +
-				FormatUtil.FormatDouble (dblInAdvanceDV01, 2, 1, 10000.) + " | " +
-				FormatUtil.FormatDouble (dblInAdvanceIMMDV01, 2, 1, 10000.) + " | " +
-				FormatUtil.FormatDouble (dblInAdvanceIMMDV01 - dblInAdvanceDV01, 1, 2, 10000.)
-			);
-		}
+		for (Map.Entry<String, Double> me : mapSwap.entrySet())
+			System.out.println ("\t" + me.getKey() + " => " + FormatUtil.FormatDouble (me.getValue(), 1, 8, 1.) + " |");
 
 		System.out.println ("\t-------------------------------------------------------------------------------");
 	}
