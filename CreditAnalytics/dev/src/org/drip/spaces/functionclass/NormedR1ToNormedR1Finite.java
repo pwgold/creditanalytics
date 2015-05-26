@@ -29,7 +29,8 @@ package org.drip.spaces.functionclass;
  */
 
 /**
- * NormedR1ToNormedR1Class implements the Class F of f : Normed R^1 -> Normed R^1 Function Spaces.
+ * NormedR1ToNormedR1Finite implements the Class F of f : Normed R^1 -> Normed R^1 Spaces of Finite
+ * 	Functions.
  * 
  * The Reference we've used is:
  * 
@@ -39,17 +40,17 @@ package org.drip.spaces.functionclass;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class NormedR1ToNormedR1Class extends org.drip.spaces.functionclass.NormedRxToNormedR1Class {
+public class NormedR1ToNormedR1Finite extends org.drip.spaces.functionclass.NormedRxToNormedR1Finite {
 
 	/**
-	 * R1ToR1Class Function Class Constructor
+	 * NormedR1ToNormedR1Finite Finite Function Class Constructor
 	 * 
 	 * @param aR1ToR1FunctionSpace Array of the Function Spaces
 	 * 
-	 * @throws java.lang.Exception Thrown if R1ToR1Class Instance cannot be created
+	 * @throws java.lang.Exception Thrown if NormedR1ToNormedR1Class Instance cannot be created
 	 */
 
-	public NormedR1ToNormedR1Class (
+	public NormedR1ToNormedR1Finite (
 		final org.drip.spaces.RxToR1.NormedR1ToNormedR1[] aR1ToR1FunctionSpace)
 		throws java.lang.Exception
 	{
@@ -57,14 +58,14 @@ public abstract class NormedR1ToNormedR1Class extends org.drip.spaces.functioncl
 
 		for (int i = 0; i < aR1ToR1FunctionSpace.length; ++i) {
 			if (null == aR1ToR1FunctionSpace[i])
-				throw new java.lang.Exception ("NormedR1ToNormedR1Class ctr: Invalid Input Function");
+				throw new java.lang.Exception ("NormedR1ToNormedR1Finite ctr: Invalid Input Function");
 		}
 	}
 
 	/**
-	 * Retrieve the Class of R^1 -> R^1 Functions
+	 * Retrieve the Finite Class of R^1 -> R^1 Functions
 	 * 
-	 * @return The Class of R^1 -> R^1 Functions
+	 * @return The Finite Class of R^1 -> R^1 Functions
 	 */
 
 	public org.drip.function.deterministic.R1ToR1[] functionR1ToR1Set()

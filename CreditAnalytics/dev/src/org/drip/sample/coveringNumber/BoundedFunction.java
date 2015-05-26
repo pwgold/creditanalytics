@@ -3,7 +3,7 @@ package org.drip.sample.coveringNumber;
 
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.api.CreditAnalytics;
-import org.drip.spaces.cover.BoundedFunctionCoveringBounds;
+import org.drip.spaces.cover.R1L1CoveringBounds;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -47,13 +47,13 @@ public class BoundedFunction {
 	{
 		CreditAnalytics.Init ("");
 
-		BoundedFunctionCoveringBounds bfcnVariation = new BoundedFunctionCoveringBounds (
+		R1L1CoveringBounds bfcnVariation = new R1L1CoveringBounds (
 			1.,
 			1.,
 			Double.NaN
 		);
 
-		BoundedFunctionCoveringBounds bfcnBounded = new BoundedFunctionCoveringBounds (
+		R1L1CoveringBounds bfcnBounded = new R1L1CoveringBounds (
 			1.,
 			1.,
 			1.

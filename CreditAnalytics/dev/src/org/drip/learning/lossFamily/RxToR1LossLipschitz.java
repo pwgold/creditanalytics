@@ -29,7 +29,7 @@ package org.drip.learning.lossFamily;
  */
 
 /**
- * NormedR1NormedR1Lipschitz implements the Learner Class that holds the Space of Normed R^1 -> Normed R^1
+ * RxToR1LossLipschitz implements the Learner Class that holds the Space of Normed R^1 -> Normed R^1
  *  Learning Functions for the Family of Loss Functions that are Lipschitz, i.e.,
  * 
  * 				loss (ep) - loss (ep') <= C * |ep-ep'|
@@ -48,16 +48,16 @@ package org.drip.learning.lossFamily;
  *  4) Lee, W. S., P. L. Bartlett, and R. C. Williamson (1998): The Importance of Convexity in Learning with
  *  	Squared Loss, IEEE Transactions on Information Theory, 44 1974-1980.
  * 
- *  5) Vapnik, V. N. (1998): Statistical learning Theory, Wiley, New York.
+ *  5) Vapnik, V. N. (1998): Statistical Learning Theory, Wiley, New York.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class NormedR1NormedR1Lipschitz extends org.drip.learning.lossFamily.NormedR1NormedR1L1 {
+public abstract class RxToR1LossLipschitz extends org.drip.learning.lossFamily.RxToR1Learner {
 	private double _dblLipschitzSlope = java.lang.Double.NaN;
 
 	/**
-	 * NormedR1NormedR1Lipschitz Constructor
+	 * RxToR1LossLipschitz Constructor
 	 * 
 	 * @param aR1ToR1Learner Array of Candidate Learning Functions belonging to the Function Class
 	 * @param cdpb The Covering Number based Deviation Upper Probability Bound Generator
@@ -67,7 +67,7 @@ public abstract class NormedR1NormedR1Lipschitz extends org.drip.learning.lossFa
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public NormedR1NormedR1Lipschitz (
+	public RxToR1LossLipschitz (
 		final org.drip.spaces.RxToR1.NormedR1ToNormedR1[] aR1ToR1Learner,
 		final org.drip.learning.loss.CoveringNumberProbabilityBound cdpb,
 		final org.drip.learning.loss.MeasureConcentrationExpectationBound cleb,
@@ -77,7 +77,7 @@ public abstract class NormedR1NormedR1Lipschitz extends org.drip.learning.lossFa
 		super (aR1ToR1Learner, cdpb, cleb);
 
 		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLipschitzSlope = dblLipschitzSlope))
-			throw new java.lang.Exception ("NormedR1NormedR1Lipschitz ctr: Invalid Inputs");
+			throw new java.lang.Exception ("RxToR1LossLipschitz ctr: Invalid Inputs");
 	}
 
 	/**
@@ -99,7 +99,7 @@ public abstract class NormedR1NormedR1Lipschitz extends org.drip.learning.lossFa
 	{
 		if (null == gvvi || !org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) || 0. >= dblEpsilon)
 			throw new java.lang.Exception
-				("NormedR1NormedR1Lipschitz::lossSampleCoveringNumber => Invalid Inputs");
+				("RxToR1LossLipschitz::lossSampleCoveringNumber => Invalid Inputs");
 
 		double dblLipschitzCover = dblEpsilon / _dblLipschitzSlope;
 

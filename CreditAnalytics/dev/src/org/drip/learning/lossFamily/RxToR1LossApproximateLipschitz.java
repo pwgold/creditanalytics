@@ -29,14 +29,10 @@ package org.drip.learning.lossFamily;
  */
 
 /**
- * NormedR1NormedR1Lp implements the Learner Class that holds the Space of Normed R^1 -> Normed R^1 Learning
- *  Functions for the Family of Loss Functions that are Polynomial, i.e.,
+ * RxToR1LossApproximateLipschitz implements the Learner Class that holds the Space of Normed R^d -> Normed
+ *  R^1 Learning Functions for the Family of Loss Functions that are "approximately" Lipschitz, i.e.,
  * 
- * 				loss (eta) = (eta ^ p) / p,  for p > 1.
- * 
- * This is Lipschitz, with a Lipschitz Slope of
- * 
- * 				C = (b - a) ^ (p - 1)
+ * 				loss (ep) - loss (ep') <= max (C * |ep-ep'|, C')
  *  
  * The References are:
  *  
@@ -57,56 +53,45 @@ package org.drip.learning.lossFamily;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class NormedR1NormedR1Lp extends org.drip.learning.lossFamily.NormedR1NormedR1L1 {
-	private double _dblLossExponent = java.lang.Double.NaN;
+public abstract class RxToR1LossApproximateLipschitz extends org.drip.learning.lossFamily.RxToR1LossLipschitz
+{
+	private double _dblLipschitzFloor = java.lang.Double.NaN;
 
 	/**
-	 * NormedR1NormedR1Lp Constructor
+	 * RxToR1LossApproximateLipschitz Constructor
 	 * 
 	 * @param aR1ToR1Learner Array of Candidate Learning Functions belonging to the Function Class
 	 * @param cdpb The Covering Number based Deviation Upper Probability Bound Generator
 	 * @param cleb The Concentration of Measure based Loss Expectation Upper Bound Evaluator
-	 * @param dblLossExponent The Loss Exponent
+	 * @param dblLipschitzSlope The Lipschitz Slope Bound
+	 * @param dblLipschitzFloor The Lipschitz Floor Bound
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public NormedR1NormedR1Lp (
+	public RxToR1LossApproximateLipschitz (
 		final org.drip.spaces.RxToR1.NormedR1ToNormedR1[] aR1ToR1Learner,
 		final org.drip.learning.loss.CoveringNumberProbabilityBound cdpb,
 		final org.drip.learning.loss.MeasureConcentrationExpectationBound cleb,
-		final double dblLossExponent)
+		final double dblLipschitzSlope,
+		final double dblLipschitzFloor)
 		throws java.lang.Exception
 	{
-		super (aR1ToR1Learner, cdpb, cleb);
+		super (aR1ToR1Learner, cdpb, cleb, dblLipschitzSlope);
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLossExponent = dblLossExponent) || 1. >
-			_dblLossExponent)
-			throw new java.lang.Exception ("NormedR1NormedR1Lp ctr: Invalid Inputs");
+		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLipschitzFloor = dblLipschitzFloor))
+			throw new java.lang.Exception ("RxToR1LossApproximateLipschitz ctr: Invalid Inputs");
 	}
 
 	/**
-	 * Retrieve the Loss Exponent
+	 * Retrieve the Lipschitz Floor
 	 * 
-	 * @return The Loss Exponent
+	 * @return The Lipschitz Floor
 	 */
 
-	public double lossExponent()
+	public double lipschitzFloor()
 	{
-		return _dblLossExponent;
-	}
-
-	/**
-	 * Retrieve the Lipschitz Slope Bound
-	 * 
-	 * @return The Lipschitz Slope Bound
-	 */
-
-	public double lipschitzSlope()
-	{
-		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsInput = input();
-
-		return java.lang.Math.pow (gmvsInput.rightEdge() - gmvsInput.leftEdge(), _dblLossExponent - 1.);
+		return _dblLipschitzFloor;
 	}
 
 	@Override public double lossSampleCoveringNumber (
@@ -115,15 +100,11 @@ public abstract class NormedR1NormedR1Lp extends org.drip.learning.lossFamily.No
 		final boolean bSupremum)
 		throws java.lang.Exception
 	{
-		if (null == gvvi || !org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) || 0. >= dblEpsilon)
-			throw new java.lang.Exception ("NormedR1NormedR1Lp::lossSampleCoveringNumber => Invalid Inputs");
+		if (!org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) || dblEpsilon <= (_dblLipschitzFloor /
+			lipschitzSlope()))
+			throw new java.lang.Exception
+				("RxToR1LossApproximateLipschitz::lossSampleCoveringNumber => Invalid Inputs");
 
-		double dblLipschitzCover = dblEpsilon / lipschitzSlope();
-
-		org.drip.learning.loss.LipschitzCoveringNumberBound llcn = new
-			org.drip.learning.loss.LipschitzCoveringNumberBound (sampleSupremumCoveringNumber (gvvi,
-				dblLipschitzCover), sampleCoveringNumber (gvvi, gvvi.sampleSize() * dblLipschitzCover));
-
-		return bSupremum ? llcn.supremumUpperBound() : llcn.lpUpperBound();
+		return super.lossSampleCoveringNumber (gvvi, dblEpsilon, bSupremum);
 	}
 }

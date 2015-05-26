@@ -29,66 +29,93 @@ package org.drip.learning.svm;
  */
 
 /**
- * DecisionFunctionSVM implements the Decision Function-Based SVM Functionality for Classification and
- *  Regression.
+ * KernelDecisionFunctionSVM implements the Kernel-based Decision Function-Based SVM Functionality for
+ * 	Classification and Regression.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class DecisionFunctionSVM extends org.drip.function.deterministic.RdToR1 implements
+public abstract class KernelDecisionFunctionSVM extends org.drip.function.deterministic.RdToR1 implements
 	org.drip.learning.svm.SupportVectorMachine {
+	private double[] _adblKernelWeight = null;
 	private double _dblB = java.lang.Double.NaN;
-	private double[] _adblInverseMarginWeight = null;
-	private org.drip.spaces.metric.RealMultidimensionalNormedSpace _rmnsInverseMargin = null;
+	private double[][] _aadblKernelPredictorPivot = null;
+	private org.drip.learning.kernel.SymmetricRxToNormedR1Kernel _kernel = null;
 	private org.drip.spaces.tensor.GeneralizedMultidimensionalVectorSpace _gmvsPredictor = null;
 
 	/**
-	 * DecisionFunctionSVM Constructor
+	 * KernelDecisionFunctionSVM Constructor
 	 * 
 	 * @param gmvsPredictor The R^d Metric Input Predictor Space
-	 * @param rmnsInverseMargin The Inverse Margin Weights R^d L2 Space
-	 * @param adblInverseMarginWeight Array of Inverse Margin Weights
-	 * @param dblB The Offset
+	 * @param kernel The Kernel
+	 * @param adblKernelWeight Array of the Kernel Weights
+	 * @param aadblKernelPredictorPivot Array of the Kernel R^d Predictor Pivot Nodes
+	 * @param dblB The Kernel Offset
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public DecisionFunctionSVM (
+	public KernelDecisionFunctionSVM (
 		final org.drip.spaces.tensor.GeneralizedMultidimensionalVectorSpace gmvsPredictor,
-		final org.drip.spaces.metric.RealMultidimensionalNormedSpace rmnsInverseMargin,
-		final double[] adblInverseMarginWeight,
+		final org.drip.learning.kernel.SymmetricRxToNormedR1Kernel kernel,
+		final double[] adblKernelWeight,
+		final double[][] aadblKernelPredictorPivot,
 		final double dblB)
 		throws java.lang.Exception
 	{
 		super (null);
 
-		if (null == (_adblInverseMarginWeight = adblInverseMarginWeight) || null == (_gmvsPredictor =
-			gmvsPredictor) || _gmvsPredictor.dimension() != _adblInverseMarginWeight.length ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblB = dblB) || null == (_rmnsInverseMargin =
-					rmnsInverseMargin) || 2 != _rmnsInverseMargin.pNorm())
-			throw new java.lang.Exception ("DecisionFunctionSVM ctr: Invalid Inputs");
+		if (null == (_gmvsPredictor = gmvsPredictor) || null == (_kernel = kernel) || null ==
+			(_adblKernelWeight = adblKernelWeight) || null == (_aadblKernelPredictorPivot =
+				aadblKernelPredictorPivot) || !org.drip.quant.common.NumberUtil.IsValid (_dblB = dblB))
+			throw new java.lang.Exception ("KernelDecisionFunctionSVM ctr: Invalid Inputs");
+
+		int iKernelInputDimension = _kernel.input().dimension();
+
+		int iNumPredictorPivot = _adblKernelWeight.length;
+
+		if (0 == iNumPredictorPivot || iNumPredictorPivot != _aadblKernelPredictorPivot.length ||
+			_gmvsPredictor.dimension() != iKernelInputDimension)
+			throw new java.lang.Exception ("KernelDecisionFunctionSVM ctr: Invalid Inputs");
+
+		for (int i = 0; i < iNumPredictorPivot; ++i) {
+			if (null == _aadblKernelPredictorPivot[i] || _aadblKernelPredictorPivot[i].length !=
+				iKernelInputDimension)
+				throw new java.lang.Exception ("KernelDecisionFunctionSVM ctr: Invalid Inputs");
+		}
 	}
 
 	/**
-	 * Retrieve the Inverse Margin Weights Array
+	 * Retrieve the Decision Kernel
 	 * 
-	 * @return The Inverse Margin Weights Array
+	 * @return The Decision Kernel
 	 */
 
-	public double[] inverseMarginWeights()
+	public org.drip.learning.kernel.SymmetricRxToNormedR1Kernel kernel()
 	{
-		return _adblInverseMarginWeight;
+		return _kernel;
 	}
 
 	/**
-	 * Retrieve the Inverse Margin Weight Metric Vector Space
+	 * Retrieve the Decision Kernel Weights
 	 * 
-	 * @return The Inverse Margin Weight Metric Vector Space
+	 * @return The Decision Kernel Weights
 	 */
 
-	public org.drip.spaces.metric.RealMultidimensionalNormedSpace inverseMarginSpace()
+	public double[] kernelWeights()
 	{
-		return _rmnsInverseMargin;
+		return _adblKernelWeight;
+	}
+
+	/**
+	 * Retrieve the Decision Kernel Predictor Pivot Nodes
+	 * 
+	 * @return The Decision Kernel Predictor Pivot Nodes
+	 */
+
+	public double[][] kernelPredictorPivot()
+	{
+		return _aadblKernelPredictorPivot;
 	}
 
 	/**
@@ -106,14 +133,14 @@ public abstract class DecisionFunctionSVM extends org.drip.function.deterministi
 		final double[] adblX)
 		throws java.lang.Exception
 	{
-		if (!_gmvsPredictor.validateInstance (adblX))
-			throw new java.lang.Exception ("DecisionFunctionSVM::evaluate => Invalid Inputs");
+		if (null == adblX || adblX.length != _gmvsPredictor.dimension())
+			throw new java.lang.Exception ("KernelDecisionFunctionSVM::evaluate => Invalid Inputs");
 
 		double dblDotProduct = 0.;
-		int iDimension = adblX.length;
+		int iNumPredictorPivot = _adblKernelWeight.length;
 
-		for (int i = 0; i < iDimension; ++i)
-			dblDotProduct += _adblInverseMarginWeight[i] * adblX[i];
+		for (int i = 0; i < iNumPredictorPivot; ++i)
+			dblDotProduct += _adblKernelWeight[i] * _kernel.evaluate (_aadblKernelPredictorPivot[i], adblX);
 
 		return dblDotProduct + _dblB;
 	}

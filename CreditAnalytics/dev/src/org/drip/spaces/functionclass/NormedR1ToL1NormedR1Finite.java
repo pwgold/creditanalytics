@@ -29,7 +29,8 @@ package org.drip.spaces.functionclass;
  */
 
 /**
- * NormedR1ToL1NormedR1Class implements the Class f E F : Normed R^1 -> L1 R^1 Function Spaces.
+ * NormedR1ToL1NormedR1Finite implements the Class f E F : Normed R^1 -> Normed L1 R^1 Spaces of Finite
+ * 	Functions.
  * 
  * The Reference we've used is:
  * 
@@ -39,10 +40,11 @@ package org.drip.spaces.functionclass;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormedR1ToL1NormedR1Class extends org.drip.spaces.functionclass.NormedR1ToNormedR1Class {
+public class NormedR1ToL1NormedR1Finite extends org.drip.spaces.functionclass.NormedR1ToNormedR1Finite {
 
 	/**
-	 * Create Bounded R^1 -> Bounded L1 R^1 Function Class for the specified Bounded Function Class
+	 * Create Bounded R^1 -> Bounded L1 R^1 Function Class for the specified Bounded Class of Finite
+	 *  Functions
 	 * 
 	 * @param aR1ToR1 The Bounded R^1 -> Bounded R^1 Function Set
 	 * @param dblPredictorSupport The Set Predictor Support
@@ -51,7 +53,7 @@ public class NormedR1ToL1NormedR1Class extends org.drip.spaces.functionclass.Nor
 	 * @return The Bounded R^1 -> Bounded R^1 Function Class for the specified Function Set
 	 */
 
-	public static final NormedR1ToL1NormedR1Class BoundedPredictorBoundedResponse (
+	public static final NormedR1ToL1NormedR1Finite BoundedPredictorBoundedResponse (
 		final org.drip.function.deterministic.R1ToR1[] aR1ToR1,
 		final double dblPredictorSupport,
 		final double dblResponseBound)
@@ -77,7 +79,7 @@ public class NormedR1ToL1NormedR1Class extends org.drip.spaces.functionclass.Nor
 				aR1ToR1FunctionSpace[i] = new org.drip.spaces.RxToR1.NormedR1ContinuousToR1Continuous
 					(aR1ToR1[i], cruInput, cruOutput);
 
-			return new NormedR1ToL1NormedR1Class (aR1ToR1FunctionSpace);
+			return new NormedR1ToL1NormedR1Finite (aR1ToR1FunctionSpace);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -85,7 +87,7 @@ public class NormedR1ToL1NormedR1Class extends org.drip.spaces.functionclass.Nor
 		return null;
 	}
 
-	protected NormedR1ToL1NormedR1Class (
+	protected NormedR1ToL1NormedR1Finite (
 		final org.drip.spaces.RxToR1.NormedR1ToNormedR1[] aR1ToR1FunctionSpace)
 		throws java.lang.Exception
 	{
@@ -152,31 +154,8 @@ public class NormedR1ToL1NormedR1Class extends org.drip.spaces.functionclass.Nor
 		double dblVariation = dblResponseUpperBound - dblResponseLowerBound;
 
 		try {
-			return new org.drip.spaces.cover.BoundedFunctionCoveringBounds (dblPredictorUpperBound -
+			return new org.drip.spaces.cover.R1L1CoveringBounds (dblPredictorUpperBound -
 				dblPredictorLowerBound, dblVariation, dblVariation);
-		} catch (java.lang.Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	@Override public org.drip.spaces.cover.FunctionClassCoveringBounds scaleSensitiveCoveringBounds (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
-		final org.drip.function.deterministic.R1ToR1 r1r1FatShatter)
-	{
-		if (null == gvvi || !(gvvi instanceof org.drip.spaces.instance.ValidatedRealUnidimensional) || null
-			== r1r1FatShatter)
-			return null;
-
-		org.drip.spaces.instance.ValidatedRealUnidimensional vru =
-			(org.drip.spaces.instance.ValidatedRealUnidimensional) gvvi;
-
-		double[] adblInstance = vru.instance();
-
-		try {
-			return null == adblInstance ? null : new org.drip.spaces.cover.ScaleSensitiveCoveringBounds
-				(r1r1FatShatter, adblInstance.length);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}

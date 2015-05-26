@@ -52,12 +52,13 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 	}
 
 	private short[] _asEmpiricalOutcome = null;
-	private org.drip.learning.lossFamily.NormedR1NormedR1L1 _fcClassifier = null;
+	private org.drip.learning.lossFamily.RxToR1Learner _fcClassifier = null;
 
 	private Supremum supremum (
 		final double[] adblVariate)
 	{
-		org.drip.learning.classifier.AbstractBinaryClassifier[] aClassifier = _fcClassifier.classifiers();
+		org.drip.spaces.RxToR1.NormedR1ToNormedR1[] aClassifier =
+			(org.drip.spaces.RxToR1.NormedR1ToNormedR1[]) _fcClassifier.functionSpaces();
 
 		int iSupremumIndex  = 0;
 		int iNumClassifier = aClassifier.length;
@@ -67,11 +68,15 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 		if (null == adblVariate || adblVariate.length != iNumEmpiricalOutcome) return null;
 
 		for (int i = 0 ; i < iNumClassifier; ++i) {
+			org.drip.function.deterministic.R1ToR1 classifierR1ToR1 = aClassifier[i].function();
+
+			if (null == classifierR1ToR1) return null;
+
 			double dblClassifierEmpiricalLoss = 0.;
 
 			for (int j = 0; j < iNumEmpiricalOutcome; ++j) {
 				try {
-					dblClassifierEmpiricalLoss += aClassifier[i].evaluate (adblVariate[j]) -
+					dblClassifierEmpiricalLoss += classifierR1ToR1.evaluate (adblVariate[j]) -
 						_asEmpiricalOutcome[j];
 				} catch (java.lang.Exception e) {
 					e.printStackTrace();
@@ -99,14 +104,15 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 	 */
 
 	public EmpiricalLossSupremum (
-		final org.drip.learning.lossFamily.NormedR1NormedR1L1 fcClassifier,
+		final org.drip.learning.lossFamily.RxToR1Learner fcClassifier,
 		final short[] asEmpiricalOutcome)
 		throws java.lang.Exception
 	{
 		if (null == (_fcClassifier = fcClassifier) || null == (_asEmpiricalOutcome = asEmpiricalOutcome))
 			throw new java.lang.Exception ("EmpiricalLossSupremum ctr: Invalid Inputs");
 
-		org.drip.learning.classifier.AbstractBinaryClassifier[] aClassifier = _fcClassifier.classifiers();
+		org.drip.spaces.RxToR1.NormedR1ToNormedR1[] aClassifier =
+			(org.drip.spaces.RxToR1.NormedR1ToNormedR1[]) _fcClassifier.functionSpaces();
 
 		int iNumClassifier = aClassifier.length;
 		int iNumEmpiricalOutcome = _asEmpiricalOutcome.length;
@@ -131,7 +137,7 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 	 * @return The Classifier Function Class
 	 */
 
-	public org.drip.learning.lossFamily.NormedR1NormedR1L1 classifierClass()
+	public org.drip.learning.lossFamily.RxToR1Learner classifierClass()
 	{
 		return _fcClassifier;
 	}
@@ -155,12 +161,15 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 	 * @return The Supremum Classifier
 	 */
 
-	public org.drip.learning.classifier.AbstractBinaryClassifier supremumClassifier (
+	public org.drip.function.deterministic.R1ToR1 supremumClassifier (
 		final double[] adblVariate)
 	{
 		Supremum sup = supremum (adblVariate);
 
-		return null == sup ? null : _fcClassifier.classifiers()[sup._iIndex];
+		org.drip.spaces.RxToR1.NormedR1ToNormedR1[] aClassifier =
+			(org.drip.spaces.RxToR1.NormedR1ToNormedR1[]) _fcClassifier.functionSpaces();
+
+		return null == sup ? null : aClassifier[sup._iIndex].function();
 	}
 
 	@Override public double evaluate (

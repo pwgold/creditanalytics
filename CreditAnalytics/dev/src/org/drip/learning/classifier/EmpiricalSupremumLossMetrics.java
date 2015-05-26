@@ -103,8 +103,7 @@ public class EmpiricalSupremumLossMetrics extends org.drip.sequence.functional.E
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-		org.drip.learning.classifier.AbstractBinaryClassifier supClassifier = _funcELS.supremumClassifier
-			(adblVariate);
+		org.drip.function.deterministic.R1ToR1 supClassifier = _funcELS.supremumClassifier (adblVariate);
 
 		if (null == supClassifier)
 			throw new java.lang.Exception
