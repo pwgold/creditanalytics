@@ -1,5 +1,5 @@
 
-package org.drip.learning.lossFamily;
+package org.drip.learning.RxToR1;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,7 +29,7 @@ package org.drip.learning.lossFamily;
  */
 
 /**
- * RxToR1LossApproximateLipschitz implements the Learner Class that holds the Space of Normed R^d -> Normed
+ * ApproximateLipschitzLossLearner implements the Learner Class that holds the Space of Normed R^d -> Normed
  *  R^1 Learning Functions for the Family of Loss Functions that are "approximately" Lipschitz, i.e.,
  * 
  * 				loss (ep) - loss (ep') <= max (C * |ep-ep'|, C')
@@ -53,34 +53,31 @@ package org.drip.learning.lossFamily;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class RxToR1LossApproximateLipschitz extends org.drip.learning.lossFamily.RxToR1LossLipschitz
-{
+public class ApproximateLipschitzLossLearner extends org.drip.learning.RxToR1.LipschitzLossLearner {
 	private double _dblLipschitzFloor = java.lang.Double.NaN;
 
 	/**
-	 * RxToR1LossApproximateLipschitz Constructor
+	 * ApproximateLipschitzLossLearner Constructor
 	 * 
-	 * @param aR1ToR1Learner Array of Candidate Learning Functions belonging to the Function Class
+	 * @param funcClassRxToR1 R^x -> R^1 Function Class
 	 * @param cdpb The Covering Number based Deviation Upper Probability Bound Generator
-	 * @param cleb The Concentration of Measure based Loss Expectation Upper Bound Evaluator
 	 * @param dblLipschitzSlope The Lipschitz Slope Bound
 	 * @param dblLipschitzFloor The Lipschitz Floor Bound
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public RxToR1LossApproximateLipschitz (
-		final org.drip.spaces.RxToR1.NormedR1ToNormedR1[] aR1ToR1Learner,
-		final org.drip.learning.loss.CoveringNumberProbabilityBound cdpb,
-		final org.drip.learning.loss.MeasureConcentrationExpectationBound cleb,
+	public ApproximateLipschitzLossLearner (
+		final org.drip.spaces.functionclass.NormedRxToNormedR1Finite funcClassRxToR1,
+		final org.drip.learning.bound.CoveringNumberLossBound cdpb,
 		final double dblLipschitzSlope,
 		final double dblLipschitzFloor)
 		throws java.lang.Exception
 	{
-		super (aR1ToR1Learner, cdpb, cleb, dblLipschitzSlope);
+		super (funcClassRxToR1, cdpb, dblLipschitzSlope);
 
 		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLipschitzFloor = dblLipschitzFloor))
-			throw new java.lang.Exception ("RxToR1LossApproximateLipschitz ctr: Invalid Inputs");
+			throw new java.lang.Exception ("ApproximateLipschitzLossLearner ctr: Invalid Inputs");
 	}
 
 	/**
@@ -103,7 +100,7 @@ public abstract class RxToR1LossApproximateLipschitz extends org.drip.learning.l
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) || dblEpsilon <= (_dblLipschitzFloor /
 			lipschitzSlope()))
 			throw new java.lang.Exception
-				("RxToR1LossApproximateLipschitz::lossSampleCoveringNumber => Invalid Inputs");
+				("ApproximateLipschitzLossLearner::lossSampleCoveringNumber => Invalid Inputs");
 
 		return super.lossSampleCoveringNumber (gvvi, dblEpsilon, bSupremum);
 	}

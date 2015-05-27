@@ -1,5 +1,5 @@
 
-package org.drip.learning.lossFamily;
+package org.drip.learning.RxToR1;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,8 +29,8 @@ package org.drip.learning.lossFamily;
  */
 
 /**
- * RxToR1Learner implements the Learner Class that holds the Space of Normed R^x -> Normed R^1 Learning
- * 	Functions that employ a Custom Empirical Loss. Class-Specific Asymptotic Sample, Covering Number based
+ * GeneralizedLearner implements the Learner Class that holds the Space of Normed R^x -> Normed R^1 Learning
+ * 	Functions along with their Custom Empirical Loss. Class-Specific Asymptotic Sample, Covering Number based
  *  Upper Probability Bounds and other Parameters are also maintained.
  *  
  * The References are:
@@ -52,41 +52,38 @@ package org.drip.learning.lossFamily;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class RxToR1Learner extends org.drip.spaces.functionclass.NormedRxToNormedR1Finite {
-	private org.drip.learning.loss.CoveringNumberProbabilityBound _cdpb = null;
-	private org.drip.learning.loss.MeasureConcentrationExpectationBound _cleb = null;
+public abstract class GeneralizedLearner {
+	private org.drip.learning.bound.CoveringNumberLossBound _funcClassCNLB = null;
+	private org.drip.spaces.functionclass.NormedRxToNormedR1Finite _funcClassRxToR1 = null;
 
 	/**
-	 * RxToR1Learner Constructor
+	 * GeneralizedLearner Constructor
 	 * 
-	 * @param aRxToR1Learner Array of Candidate Learning Functions belonging to the Function Class
-	 * @param cdpb The Covering Number based Deviation Upper Probability Bound Generator
-	 * @param cleb The Concentration of Measure based Loss Expectation Upper Bound Evaluator
+	 * @param funcClassRxToR1 R^x -> R^1 Function Class
+	 * @param funcClassCNLB The Function Class Covering Number based Deviation Upper Probability Bound
+	 * 	Generator
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public RxToR1Learner (
-		final org.drip.spaces.RxToR1.NormedRxToNormedR1[] aRxToR1Learner,
-		final org.drip.learning.loss.CoveringNumberProbabilityBound cdpb,
-		final org.drip.learning.loss.MeasureConcentrationExpectationBound cleb)
+	public GeneralizedLearner (
+		final org.drip.spaces.functionclass.NormedRxToNormedR1Finite funcClassRxToR1,
+		final org.drip.learning.bound.CoveringNumberLossBound funcClassCNLB)
 		throws java.lang.Exception
 	{
-		super (aRxToR1Learner);
-
-		if (null == (_cdpb = cdpb) || null == (_cleb = cleb))
-			throw new java.lang.Exception ("RxToR1Learner ctr: Invalid Inputs");
+		if (null == (_funcClassRxToR1 = funcClassRxToR1) || null == (_funcClassCNLB = funcClassCNLB))
+			throw new java.lang.Exception ("GeneralizedLearner ctr: Invalid Inputs");
 	}
 
 	/**
-	 * Retrieve the Concentration of Measure based Loss Expectation Upper Bound Evaluator Instance
+	 * Retrieve the Underlying Learner Function Class
 	 * 
-	 * @return The Concentration of Measure based Loss Expectation Upper Bound Evaluator Instance
+	 * @return The Underlying Learner Function Class
 	 */
 
-	public org.drip.learning.loss.MeasureConcentrationExpectationBound concentrationLossBoundEvaluator()
+	public org.drip.spaces.functionclass.NormedRxToNormedR1Finite functionClass()
 	{
-		return _cleb;
+		return _funcClassRxToR1;
 	}
 
 	/**
@@ -95,9 +92,9 @@ public abstract class RxToR1Learner extends org.drip.spaces.functionclass.Normed
 	 * @return The Covering Number based Deviation Upper Probability Bound Generator
 	 */
 
-	public org.drip.learning.loss.CoveringNumberProbabilityBound coveringLossBoundEvaluator()
+	public org.drip.learning.bound.CoveringNumberLossBound coveringLossBoundEvaluator()
 	{
-		return _cdpb;
+		return _funcClassCNLB;
 	}
 
 	/**
@@ -116,6 +113,42 @@ public abstract class RxToR1Learner extends org.drip.spaces.functionclass.Normed
 		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
 		final double dblEpsilon,
 		final boolean bSupremum)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Empirical Sample Loss
+	 * 
+	 * @param funcLearnerR1ToR1 The R^1 -> R^1 Learner Function
+	 * @param dblX The Predictor Instance
+	 * @param dblY The Outcome Instance
+	 * 
+	 * @return The Empirical Loss
+	 * 
+	 * @throws java.lang.Exception Thrown if the Empirical Loss cannot be computed
+	 */
+
+	public abstract double empiricalLoss (
+		final org.drip.function.deterministic.R1ToR1 funcLearnerR1ToR1,
+		final double dblX,
+		final double dblY)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Empirical Sample Loss
+	 * 
+	 * @param funcLearnerRdToR1 The R^d -> R^1 Learner Function
+	 * @param adblX The Predictor Instance Array
+	 * @param dblY The Outcome Instance
+	 * 
+	 * @return The Empirical Loss
+	 * 
+	 * @throws java.lang.Exception Thrown if the Empirical Loss cannot be computed
+	 */
+
+	public abstract double empiricalLoss (
+		final org.drip.function.deterministic.RdToR1 funcLearnerRdToR1,
+		final double[] adblX,
+		final double dblY)
 		throws java.lang.Exception;
 
 	/**
@@ -138,8 +171,9 @@ public abstract class RxToR1Learner extends org.drip.spaces.functionclass.Normed
 		final boolean bSupremum)
 		throws java.lang.Exception
 	{
-		return _cdpb.deviationProbabilityUpperBound (iSampleSize, dblEpsilon) * (bSupremum ?
-			populationSupremumCoveringNumber (dblEpsilon) : populationCoveringNumber (dblEpsilon));
+		return _funcClassCNLB.deviationProbabilityUpperBound (iSampleSize, dblEpsilon) * (bSupremum ?
+			_funcClassRxToR1.populationSupremumCoveringNumber (dblEpsilon) :
+				_funcClassRxToR1.populationCoveringNumber (dblEpsilon));
 	}
 
 	/**
@@ -163,7 +197,8 @@ public abstract class RxToR1Learner extends org.drip.spaces.functionclass.Normed
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) ||
 			!org.drip.quant.common.NumberUtil.IsValid (dblDeviationUpperProbabilityBound))
-			throw new java.lang.Exception ("RxToR1Learner::genericCoveringSampleSize => Invalid Inputs");
+			throw new java.lang.Exception
+				("GeneralizedLearner::genericCoveringSampleSize => Invalid Inputs");
 
 		org.drip.function.deterministic.R1ToR1 funcDeviationUpperProbabilityBound = new
 			org.drip.function.deterministic.R1ToR1 (null) {
@@ -181,7 +216,7 @@ public abstract class RxToR1Learner extends org.drip.spaces.functionclass.Normed
 
 		if (null == fpfo || !fpfo.containsRoot())
 			throw new java.lang.Exception
-				("RxToR1Learner::genericCoveringSampleSize => Cannot Estimate Minimal Sample Size");
+				("GeneralizedLearner::genericCoveringSampleSize => Cannot Estimate Minimal Sample Size");
 
 		return fpfo.getRoot();
 	}
@@ -210,8 +245,8 @@ public abstract class RxToR1Learner extends org.drip.spaces.functionclass.Normed
 		final boolean bSupremum)
 		throws java.lang.Exception
 	{
-		return _cdpb.deviationProbabilityUpperBound (iSampleSize, dblEpsilon) * lossSampleCoveringNumber
-			(gvvi, dblEpsilon, bSupremum);
+		return _funcClassCNLB.deviationProbabilityUpperBound (iSampleSize, dblEpsilon) *
+			lossSampleCoveringNumber (gvvi, dblEpsilon, bSupremum);
 	}
 
 	/**
@@ -237,7 +272,8 @@ public abstract class RxToR1Learner extends org.drip.spaces.functionclass.Normed
 	{
 		if (null == gvvi || !org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) ||
 			!org.drip.quant.common.NumberUtil.IsValid (dblDeviationUpperProbabilityBound))
-			throw new java.lang.Exception ("RxToR1Learner::genericCoveringSampleSize => Invalid Inputs");
+			throw new java.lang.Exception
+				("GeneralizedLearner::genericCoveringSampleSize => Invalid Inputs");
 
 		org.drip.function.deterministic.R1ToR1 funcDeviationUpperProbabilityBound = new
 			org.drip.function.deterministic.R1ToR1 (null) {
@@ -255,7 +291,7 @@ public abstract class RxToR1Learner extends org.drip.spaces.functionclass.Normed
 
 		if (null == fpfo || !fpfo.containsRoot())
 			throw new java.lang.Exception
-				("RxToR1Learner::genericCoveringSampleSize => Cannot Estimate Minimal Sample Size");
+				("GeneralizedLearner::genericCoveringSampleSize => Cannot Estimate Minimal Sample Size");
 
 		return fpfo.getRoot();
 	}
@@ -283,7 +319,7 @@ public abstract class RxToR1Learner extends org.drip.spaces.functionclass.Normed
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) || 0. >= dblEpsilon || iSampleSize < (2. /
 			(dblEpsilon * dblEpsilon)))
 			throw new java.lang.Exception
-				("RxToR1Learner::regressorCoveringProbabilityBound => Invalid Inputs");
+				("GeneralizedLearner::regressorCoveringProbabilityBound => Invalid Inputs");
 
 		org.drip.function.deterministic.R1ToR1 funcSampleCoefficient = new
 			org.drip.function.deterministic.R1ToR1 (null) {
@@ -295,10 +331,10 @@ public abstract class RxToR1Learner extends org.drip.spaces.functionclass.Normed
 			}
 		};
 
-		return (new org.drip.learning.loss.CoveringNumberProbabilityBound (funcSampleCoefficient, 2.,
+		return (new org.drip.learning.bound.CoveringNumberLossBound (funcSampleCoefficient, 2.,
 			36.)).deviationProbabilityUpperBound (iSampleSize, dblEpsilon) * (bSupremum ?
-				populationSupremumCoveringNumber (dblEpsilon / 6.) : populationCoveringNumber (dblEpsilon /
-					6.));
+				_funcClassRxToR1.populationSupremumCoveringNumber (dblEpsilon / 6.) :
+					_funcClassRxToR1.populationCoveringNumber (dblEpsilon / 6.));
 	}
 
 	/**
@@ -323,7 +359,8 @@ public abstract class RxToR1Learner extends org.drip.spaces.functionclass.Normed
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) ||
 			!org.drip.quant.common.NumberUtil.IsValid (dblDeviationUpperProbabilityBound))
-			throw new java.lang.Exception ("RxToR1Learner::regressorCoveringSampleSize => Invalid Inputs");
+			throw new java.lang.Exception
+				("GeneralizedLearner::regressorCoveringSampleSize => Invalid Inputs");
 
 		org.drip.function.deterministic.R1ToR1 funcDeviationUpperProbabilityBound = new
 			org.drip.function.deterministic.R1ToR1 (null) {
@@ -341,7 +378,7 @@ public abstract class RxToR1Learner extends org.drip.spaces.functionclass.Normed
 
 		if (null == fpfo || !fpfo.containsRoot())
 			throw new java.lang.Exception
-				("RxToR1Learner::regressorCoveringSampleSize => Cannot Estimate Minimal Sample Size");
+				("GeneralizedLearner::regressorCoveringSampleSize => Cannot Estimate Minimal Sample Size");
 
 		return fpfo.getRoot();
 	}
@@ -373,7 +410,7 @@ public abstract class RxToR1Learner extends org.drip.spaces.functionclass.Normed
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) || 0. >= dblEpsilon || iSampleSize < (2. /
 			(dblEpsilon * dblEpsilon)))
 			throw new java.lang.Exception
-				("RxToR1Learner::regressorCoveringProbabilityBound => Invalid Inputs");
+				("GeneralizedLearner::regressorCoveringProbabilityBound => Invalid Inputs");
 
 		org.drip.function.deterministic.R1ToR1 funcSampleCoefficient = new
 			org.drip.function.deterministic.R1ToR1 (null) {
@@ -385,7 +422,7 @@ public abstract class RxToR1Learner extends org.drip.spaces.functionclass.Normed
 			}
 		};
 
-		return (new org.drip.learning.loss.CoveringNumberProbabilityBound (funcSampleCoefficient, 2.,
+		return (new org.drip.learning.bound.CoveringNumberLossBound (funcSampleCoefficient, 2.,
 			36.)).deviationProbabilityUpperBound (iSampleSize, dblEpsilon) * lossSampleCoveringNumber (gvvi,
 				dblEpsilon / 6., bSupremum);
 	}
@@ -414,7 +451,8 @@ public abstract class RxToR1Learner extends org.drip.spaces.functionclass.Normed
 	{
 		if (null == gvvi || !org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) ||
 			!org.drip.quant.common.NumberUtil.IsValid (dblDeviationUpperProbabilityBound))
-			throw new java.lang.Exception ("RxToR1Learner::regressorCoveringSampleSize => Invalid Inputs");
+			throw new java.lang.Exception
+				("GeneralizedLearner::regressorCoveringSampleSize => Invalid Inputs");
 
 		org.drip.function.deterministic.R1ToR1 funcDeviationUpperProbabilityBound = new
 			org.drip.function.deterministic.R1ToR1 (null) {
@@ -432,7 +470,7 @@ public abstract class RxToR1Learner extends org.drip.spaces.functionclass.Normed
 
 		if (null == fpfo || !fpfo.containsRoot())
 			throw new java.lang.Exception
-				("RxToR1Learner::regressorCoveringSampleSize => Cannot Estimate Minimal Sample Size");
+				("GeneralizedLearner::regressorCoveringSampleSize => Cannot Estimate Minimal Sample Size");
 
 		return fpfo.getRoot();
 	}

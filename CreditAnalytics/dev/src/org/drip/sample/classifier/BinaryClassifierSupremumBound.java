@@ -1,7 +1,7 @@
 
 package org.drip.sample.classifier;
 
-import org.drip.learning.classifier.*;
+import org.drip.learning.RxToR1.*;
 import org.drip.quant.common.FormatUtil;
 import org.drip.sequence.functional.FlatMultivariateRandom;
 import org.drip.sequence.metrics.SingleSequenceAgnosticMetrics;
@@ -45,16 +45,16 @@ import org.drip.service.api.CreditAnalytics;
 
 public class BinaryClassifierSupremumBound {
 
-	private static final short[] EmpiricalOutcome (
+	private static final double[] EmpiricalOutcome (
 		final int iNumOutcome)
 		throws Exception
 	{
-		short[] asEmpiricalOutcome = new short[iNumOutcome];
+		double[] adblEmpiricalOutcome = new double[iNumOutcome];
 
 		for (int i = 0; i < iNumOutcome; ++i)
-			asEmpiricalOutcome[i] = (short) (Math.random() + 0.5);
+			adblEmpiricalOutcome[i] = Math.random() + 0.5;
 
-		return asEmpiricalOutcome;
+		return adblEmpiricalOutcome;
 	}
 
 	private static final SingleSequenceAgnosticMetrics[] IIDDraw (
@@ -71,7 +71,7 @@ public class BinaryClassifierSupremumBound {
 	}
 
 	private static final EmpiricalLossSupremum EmpiricalLossSupremumFunction (
-		final short[] asEmpiricalOutcome)
+		final double[] asEmpiricalOutcome)
 		throws Exception
 	{
 		// AbstractBinaryClassifier[] aClassifier = null;
@@ -92,21 +92,21 @@ public class BinaryClassifierSupremumBound {
 
 	private static final void MartingaleDifferencesRun (
 		final Binary bsg,
-		final short[] asEmpiricalOutcome,
+		final double[] adblEmpiricalOutcome,
 		final int iNumSet)
 		throws Exception
 	{
-		String strDump = "\t| " + FormatUtil.FormatDouble (asEmpiricalOutcome.length, 2, 0, 1.) + " => ";
+		String strDump = "\t| " + FormatUtil.FormatDouble (adblEmpiricalOutcome.length, 2, 0, 1.) + " => ";
 
 		for (int j = 0; j < iNumSet; ++j) {
 			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (
 				bsg,
-				asEmpiricalOutcome.length
+				adblEmpiricalOutcome.length
 			);
 
 			EmpiricalSupremumLossMetrics eslm = new EmpiricalSupremumLossMetrics (
 				EmpiricalLossSupremumFunction (
-					asEmpiricalOutcome
+					adblEmpiricalOutcome
 				),
 				aSSAM
 			);
@@ -121,28 +121,28 @@ public class BinaryClassifierSupremumBound {
 
 	private static final void GhostVariateVarianceRun (
 		final Binary bsg,
-		final short[] asEmpiricalOutcome,
+		final double[] adblEmpiricalOutcome,
 		final int iNumSet)
 		throws Exception
 	{
-		String strDump = "\t| " + FormatUtil.FormatDouble (asEmpiricalOutcome.length, 2, 0, 1.) + " => ";
+		String strDump = "\t| " + FormatUtil.FormatDouble (adblEmpiricalOutcome.length, 2, 0, 1.) + " => ";
 
 		for (int j = 0; j < iNumSet; ++j) {
 			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (
 				bsg,
-				asEmpiricalOutcome.length
+				adblEmpiricalOutcome.length
 			);
 
 			EmpiricalSupremumLossMetrics eslm = new EmpiricalSupremumLossMetrics (
 				EmpiricalLossSupremumFunction (
-					asEmpiricalOutcome
+					adblEmpiricalOutcome
 				),
 				aSSAM
 			);
 
 			SingleSequenceAgnosticMetrics[] aSSAMGhost = IIDDraw (
 				bsg,
-				asEmpiricalOutcome.length
+				adblEmpiricalOutcome.length
 			);
 
 			if (0 != j) strDump += " |";
@@ -155,28 +155,28 @@ public class BinaryClassifierSupremumBound {
 
 	private static final void EfronSteinSteeleRun (
 		final Binary bsg,
-		final short[] asEmpiricalOutcome,
+		final double[] adblEmpiricalOutcome,
 		final int iNumSet)
 		throws Exception
 	{
-		String strDump = "\t| " + FormatUtil.FormatDouble (asEmpiricalOutcome.length, 2, 0, 1.) + " => ";
+		String strDump = "\t| " + FormatUtil.FormatDouble (adblEmpiricalOutcome.length, 2, 0, 1.) + " => ";
 
 		for (int j = 0; j < iNumSet; ++j) {
 			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (
 				bsg,
-				asEmpiricalOutcome.length
+				adblEmpiricalOutcome.length
 			);
 
 			EmpiricalSupremumLossMetrics eslm = new EmpiricalSupremumLossMetrics (
 				EmpiricalLossSupremumFunction (
-					asEmpiricalOutcome
+						adblEmpiricalOutcome
 				),
 				aSSAM
 			);
 
 			SingleSequenceAgnosticMetrics[] aSSAMGhost = IIDDraw (
 				bsg,
-				asEmpiricalOutcome.length
+				adblEmpiricalOutcome.length
 			);
 
 			if (0 != j) strDump += " |";
@@ -189,21 +189,21 @@ public class BinaryClassifierSupremumBound {
 
 	private static final void PivotDifferencesRun (
 		final Binary bsg,
-		final short[] asEmpiricalOutcome,
+		final double[] adblEmpiricalOutcome,
 		final int iNumSet)
 		throws Exception
 	{
-		String strDump = "\t| " + FormatUtil.FormatDouble (asEmpiricalOutcome.length, 2, 0, 1.) + " => ";
+		String strDump = "\t| " + FormatUtil.FormatDouble (adblEmpiricalOutcome.length, 2, 0, 1.) + " => ";
 
 		for (int j = 0; j < iNumSet; ++j) {
 			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (
 				bsg,
-				asEmpiricalOutcome.length
+				adblEmpiricalOutcome.length
 			);
 
 			EmpiricalSupremumLossMetrics eslm = new EmpiricalSupremumLossMetrics (
 				EmpiricalLossSupremumFunction (
-					asEmpiricalOutcome
+					adblEmpiricalOutcome
 				),
 				aSSAM
 			);
@@ -218,21 +218,21 @@ public class BinaryClassifierSupremumBound {
 
 	private static final void LugosiVarianceRun (
 		final Binary bsg,
-		final short[] asEmpiricalOutcome,
+		final double[] adblEmpiricalOutcome,
 		final int iNumSet)
 		throws Exception
 	{
-		String strDump = "\t| " + FormatUtil.FormatDouble (asEmpiricalOutcome.length, 2, 0, 1.) + " => ";
+		String strDump = "\t| " + FormatUtil.FormatDouble (adblEmpiricalOutcome.length, 2, 0, 1.) + " => ";
 
 		for (int j = 0; j < iNumSet; ++j) {
 			SingleSequenceAgnosticMetrics[] aSSAM = IIDDraw (
 				bsg,
-				asEmpiricalOutcome.length
+				adblEmpiricalOutcome.length
 			);
 
 			EmpiricalSupremumLossMetrics eslm = new EmpiricalSupremumLossMetrics (
 				EmpiricalLossSupremumFunction (
-					asEmpiricalOutcome
+					adblEmpiricalOutcome
 				),
 				aSSAM
 			);

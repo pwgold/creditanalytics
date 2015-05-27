@@ -101,7 +101,10 @@ public class SWPM_NEW {
 					aiDay[i],
 					strCurrency
 				),
-				ForwardLabel.Create (strCurrency, "ON")
+				ForwardLabel.Create (
+					strCurrency,
+					"ON"
+				)
 			);
 
 		return aDeposit;
@@ -345,7 +348,7 @@ public class SWPM_NEW {
 
 		ValuationParams valParams = new ValuationParams (dtSpot, dtSpot, strCurrency);
 
-		DiscountCurve dc = ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (
+		DiscountCurve dcOvernight = ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (
 			lcc,
 			aStretchSpec,
 			valParams,
@@ -369,7 +372,7 @@ public class SWPM_NEW {
 		for (int i = 0; i < aDepositComp.length; ++i)
 			System.out.println ("\t[" + aDepositComp[i].effectiveDate() + " => " + aDepositComp[i].maturityDate() + "] = " +
 				FormatUtil.FormatDouble (aDepositComp[i].measureValue (valParams, null,
-					MarketParamsBuilder.Create (dc, null, null, null, null, null, null),
+					MarketParamsBuilder.Create (dcOvernight, null, null, null, null, null, null),
 						null, "Rate"), 1, 6, 1.) + " | " + FormatUtil.FormatDouble (adblDepositQuote[i], 1, 6, 1.));
 
 		/*
@@ -386,10 +389,10 @@ public class SWPM_NEW {
 		for (int i = 0; i < aShortEndOISComp.length; ++i)
 			System.out.println ("\t[" + aShortEndOISComp[i].effectiveDate() + " => " + aShortEndOISComp[i].maturityDate() + "] = " +
 				FormatUtil.FormatDouble (aShortEndOISComp[i].measureValue (valParams, null,
-					MarketParamsBuilder.Create (dc, null, null, null, null, null, null),
+					MarketParamsBuilder.Create (dcOvernight, null, null, null, null, null, null),
 						null, "CalibSwapRate"), 1, 6, 1.) + " | " + FormatUtil.FormatDouble (adblShortEndOISQuote[i], 1, 6, 1.) + " | " +
 							FormatUtil.FormatDouble (aShortEndOISComp[i].measureValue (valParams, null,
-								MarketParamsBuilder.Create (dc, null, null, null, null, null, null),
+								MarketParamsBuilder.Create (dcOvernight, null, null, null, null, null, null),
 									null, "FairPremium"), 1, 6, 1.));
 
 		/*
@@ -406,10 +409,10 @@ public class SWPM_NEW {
 		for (int i = 0; i < aOISFutureComp.length; ++i)
 			System.out.println ("\t[" + aOISFutureComp[i].effectiveDate() + " => " + aOISFutureComp[i].maturityDate() + "] = " +
 				FormatUtil.FormatDouble (aOISFutureComp[i].measureValue (valParams, null,
-					MarketParamsBuilder.Create (dc, null, null, null, null, null, null),
+					MarketParamsBuilder.Create (dcOvernight, null, null, null, null, null, null),
 						null, "SwapRate"), 1, 6, 1.) + " | " + FormatUtil.FormatDouble (adblOISFutureQuote[i], 1, 6, 1.) + " | " +
 							FormatUtil.FormatDouble (aOISFutureComp[i].measureValue (valParams, null,
-								MarketParamsBuilder.Create (dc, null, null, null, null, null, null),
+								MarketParamsBuilder.Create (dcOvernight, null, null, null, null, null, null),
 									null, "FairPremium"), 1, 6, 1.));
 
 		/*
@@ -426,13 +429,13 @@ public class SWPM_NEW {
 		for (int i = 0; i < aLongEndOISComp.length; ++i)
 			System.out.println ("\t[" + aLongEndOISComp[i].effectiveDate() + " => " + aLongEndOISComp[i].maturityDate() + "] = " +
 				FormatUtil.FormatDouble (aLongEndOISComp[i].measureValue (valParams, null,
-					MarketParamsBuilder.Create (dc, null, null, null, null, null, null),
+					MarketParamsBuilder.Create (dcOvernight, null, null, null, null, null, null),
 						null, "CalibSwapRate"), 1, 6, 1.) + " | " + FormatUtil.FormatDouble (adblLongEndOISQuote[i], 1, 6, 1.) + " | " +
 							FormatUtil.FormatDouble (aLongEndOISComp[i].measureValue (valParams, null,
-								MarketParamsBuilder.Create (dc, null, null, null, null, null, null),
+								MarketParamsBuilder.Create (dcOvernight, null, null, null, null, null, null),
 									null, "FairPremium"), 1, 6, 1.));
 
-		return dc;
+		return dcOvernight;
 	}
 
 	public static final ForwardCurve MakeForwardCurve (

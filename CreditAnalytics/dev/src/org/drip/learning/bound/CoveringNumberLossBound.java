@@ -1,5 +1,5 @@
 
-package org.drip.learning.loss;
+package org.drip.learning.bound;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,9 +29,9 @@ package org.drip.learning.loss;
  */
 
 /**
- * CoveringNumberProbabilityBound provides the Upper Probability Bound that the Loss/Deviation of the
- *  Empirical from the Actual Mean of the given Learner Class exceeds 'epsilon', using the Covering Number
- *  Generalization Bounds. This is expressed as
+ * CoveringNumberLossBound provides the Upper Probability Bound that the Loss/Deviation of the Empirical from
+ *  the Actual Mean of the given Learner Class exceeds 'epsilon', using the Covering Number Generalization
+ *  Bounds. This is expressed as
  *  
  *  						C1 (n) * N (epsilon, n) * exp (-n.epsilon^b/C2),
  *  
@@ -62,13 +62,13 @@ package org.drip.learning.loss;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CoveringNumberProbabilityBound {
-	private double _dblEpsilonExponent = java.lang.Double.NaN;
+public class CoveringNumberLossBound {
 	private double _dblExponentScaler = java.lang.Double.NaN;
+	private double _dblEpsilonExponent = java.lang.Double.NaN;
 	private org.drip.function.deterministic.R1ToR1 _funcSampleCoefficient = null;
 
 	/**
-	 * CoveringNumberProbabilityBound Constructor
+	 * CoveringNumberLossBound Constructor
 	 * 
 	 * @param funcSampleCoefficient The Sample Coefficient Function
 	 * @param dblEpsilonExponent The Epsilon Exponent
@@ -77,7 +77,7 @@ public class CoveringNumberProbabilityBound {
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CoveringNumberProbabilityBound (
+	public CoveringNumberLossBound (
 		final org.drip.function.deterministic.R1ToR1 funcSampleCoefficient,
 		final double dblEpsilonExponent,
 		final double dblExponentScaler)
@@ -86,7 +86,7 @@ public class CoveringNumberProbabilityBound {
 		if (null == (_funcSampleCoefficient = funcSampleCoefficient) ||
 			!org.drip.quant.common.NumberUtil.IsValid (_dblEpsilonExponent = dblEpsilonExponent) ||
 				!org.drip.quant.common.NumberUtil.IsValid (_dblExponentScaler = dblExponentScaler))
-			throw new java.lang.Exception ("CoveringNumberProbabilityBound ctr: Invalid Inputs");
+			throw new java.lang.Exception ("CoveringNumberLossBound ctr: Invalid Inputs");
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class CoveringNumberProbabilityBound {
 	{
 		if (0 >= iSampleSize || !org.drip.quant.common.NumberUtil.IsValid (dblEpsilon) || 0. >= dblEpsilon)
 			throw new java.lang.Exception
-				("CoveringNumberProbabilityBound::deviationProbabilityUpperBound => Invalid Inputs");
+				("CoveringNumberLossBound::deviationProbabilityUpperBound => Invalid Inputs");
 
 		return _funcSampleCoefficient.evaluate (iSampleSize) * java.lang.Math.exp (-1. * iSampleSize *
 			java.lang.Math.pow (dblEpsilon, _dblEpsilonExponent) / _dblExponentScaler);

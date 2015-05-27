@@ -4,8 +4,7 @@ package org.drip.sample.fixfloat;
 import java.util.*;
 
 import org.drip.analytics.date.*;
-import org.drip.analytics.daycount.Convention;
-import org.drip.analytics.daycount.DateAdjustParams;
+import org.drip.analytics.daycount.*;
 import org.drip.analytics.rates.*;
 import org.drip.analytics.support.*;
 import org.drip.function.deterministic1D.QuadraticRationalShapeControl;
@@ -68,23 +67,27 @@ public class CustomFixFloatSwap {
 	private static final SingleStreamComponent[] DepositInstrumentsFromMaturityDays (
 		final JulianDate dtEffective,
 		final String strCurrency,
+		final String strFloaterTenor,
 		final int[] aiDay)
 		throws Exception
 	{
 		SingleStreamComponent[] aDeposit = new SingleStreamComponent[aiDay.length];
 
 		ComposableFloatingUnitSetting cfus = new ComposableFloatingUnitSetting (
-			"3M",
+			strFloaterTenor,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
 			null,
-			ForwardLabel.Create (strCurrency, "3M"),
+			ForwardLabel.Create (
+				strCurrency,
+				strFloaterTenor
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
 
 		CompositePeriodSetting cps = new CompositePeriodSetting (
-			4,
-			"3M",
+			AnalyticsHelper.TenorToFreq (strFloaterTenor),
+			strFloaterTenor,
 			strCurrency,
 			null,
 			1.,
@@ -107,7 +110,10 @@ public class CustomFixFloatSwap {
 					CompositePeriodBuilder.FloatingCompositeUnit (
 						CompositePeriodBuilder.EdgePair (
 							dtEffective,
-							dtEffective.addBusDays (aiDay[i], strCurrency)
+							dtEffective.addBusDays (
+								aiDay[i],
+								strCurrency
+							)
 						),
 						cps,
 						cfus
@@ -121,6 +127,96 @@ public class CustomFixFloatSwap {
 
 		return aDeposit;
 	}
+	
+	private static final FixFloatComponent CustomIRS (
+		final JulianDate dtEffective,
+		final String strCurrency,
+		final JulianDate dtMaturity,
+		final String strFixedDayCount,
+		final double dblFixedCoupon,
+		final String strFixedTenor,
+		final String strFloaterComposableTenor,
+		final String strFloaterCompositeTenor,
+		final double dblNotional)
+		throws Exception
+	{
+		List<Double> lsFixedStreamEdgeDate = CompositePeriodBuilder.BackwardEdgeDates (
+			dtEffective,
+			dtMaturity,
+			strFixedTenor,
+			new DateAdjustParams (
+				Convention.DATE_ROLL_FOLLOWING,
+				0,
+				strCurrency
+			),
+			CompositePeriodBuilder.SHORT_STUB
+		);
+
+		List<Double> lsFloatingStreamEdgeDate = CompositePeriodBuilder.BackwardEdgeDates (
+			dtEffective,
+			dtMaturity,
+			strFloaterCompositeTenor,
+			new DateAdjustParams (
+				Convention.DATE_ROLL_FOLLOWING,
+				0,
+				strCurrency
+			),
+			CompositePeriodBuilder.SHORT_STUB
+		);
+
+		return CustomIRS (
+			dtEffective, 
+			strCurrency, 
+			lsFixedStreamEdgeDate,
+			lsFloatingStreamEdgeDate,
+			strFixedDayCount,
+			dblFixedCoupon,
+			strFixedTenor,
+			strFloaterComposableTenor,
+			strFloaterCompositeTenor,
+			dblNotional
+		);		
+	}
+	
+	private static final FixFloatComponent CustomIRS (
+		final JulianDate dtEffective,
+		final String strCurrency,
+		final String strMaturityTenor,
+		final String strFixedDayCount,
+		final double dblFixedCoupon,
+		final String strFixedTenor,
+		final String strFloaterComposableTenor,
+		final String strFloaterCompositeTenor,
+		final double dblNotional)
+		throws Exception
+	{
+		List<Double> lsFixedStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (
+			dtEffective,
+			strFixedTenor,
+			strMaturityTenor,
+			null
+		);
+
+		List<Double> lsFloatingStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (
+			dtEffective,
+			strFloaterComposableTenor,
+			strMaturityTenor,
+			null
+		);
+
+		return CustomIRS(
+			dtEffective, 
+			strCurrency, 
+			lsFixedStreamEdgeDate,
+			lsFloatingStreamEdgeDate,
+			strFixedDayCount,
+			dblFixedCoupon,
+			strFixedTenor,
+			strFloaterComposableTenor,
+			strFloaterCompositeTenor,
+			dblNotional
+		);		
+	}
 
 	/*
 	 * Construct the Custom Fix-Float Instrument from the given set of parameters
@@ -131,11 +227,11 @@ public class CustomFixFloatSwap {
 	private static final FixFloatComponent CustomIRS (
 		final JulianDate dtEffective,
 		final String strCurrency,
-		final JulianDate dtMaturity,
+		List<Double> lsFixedStreamEdgeDate,
+		List<Double> lsFloatingStreamEdgeDate,
 		final String strFixedDayCount,
 		final double dblFixedCoupon,
 		final String strFixedTenor,
-		final String strFloatDayCount,
 		final String strFloaterComposableTenor,
 		final String strFloaterCompositeTenor,
 		final double dblNotional)
@@ -209,30 +305,6 @@ public class CustomFixFloatSwap {
 			null
 		);
 
-		List<Double> lsFixedStreamEdgeDate = CompositePeriodBuilder.BackwardEdgeDates (
-			dtEffective,
-			dtMaturity,
-			strFixedTenor,
-			new DateAdjustParams (
-				Convention.DATE_ROLL_FOLLOWING,
-				0,
-				strCurrency
-			),
-			CompositePeriodBuilder.SHORT_STUB
-		);
-
-		List<Double> lsFloatingStreamEdgeDate = CompositePeriodBuilder.BackwardEdgeDates (
-			dtEffective,
-			dtMaturity,
-			strFloaterCompositeTenor,
-			new DateAdjustParams (
-				Convention.DATE_ROLL_FOLLOWING,
-				0,
-				strCurrency
-			),
-			CompositePeriodBuilder.SHORT_STUB
-		);
-
 		Stream floatingStream = new Stream (
 			CompositePeriodBuilder.FloatingCompositeUnit (
 				lsFloatingStreamEdgeDate,
@@ -268,16 +340,41 @@ public class CustomFixFloatSwap {
 	private static final FixFloatComponent[] SwapInstrumentsFromMaturityTenor (
 		final JulianDate dtEffective,
 		final String strCurrency,
+		final String strFixedDayCount,
+		final double dblFixedCoupon,
+		final String strFixedTenor,
+		final String strFloaterComposableTenor,
+		final String strFloaterCompositeTenor,
 		final String[] astrMaturityTenor)
 		throws Exception
 	{
 		FixFloatComponent[] aIRS = new FixFloatComponent[astrMaturityTenor.length];
 
+		for (int i = 0; i < astrMaturityTenor.length; ++i) {
+			FixFloatComponent irs = CustomIRS(
+					dtEffective, 
+					strCurrency, 
+					astrMaturityTenor[i],
+					strFixedDayCount,
+					dblFixedCoupon,
+					strFixedTenor,
+					strFloaterComposableTenor,
+					strFloaterCompositeTenor,
+					1.
+					);		
+			irs.setPrimaryCode ("IRS." + astrMaturityTenor[i] + "." + strCurrency);
+
+			aIRS[i] = irs;
+		}
+		
+		return aIRS;
+
+		/*
 		UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (
-			2,
-			"Act/360",
+			AnalyticsHelper.TenorToFreq (strFixedTenor),
+			strFixedDayCount,
 			false,
-			"Act/360",
+			strFixedDayCount,
 			false,
 			strCurrency,
 			true,
@@ -285,16 +382,19 @@ public class CustomFixFloatSwap {
 		);
 
 		ComposableFloatingUnitSetting cfusFloating = new ComposableFloatingUnitSetting (
-			"6M",
+			strFloaterComposableTenor,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-			ForwardLabel.Create (strCurrency, "6M"),
+			ForwardLabel.Create (
+				strCurrency,
+				strFloaterComposableTenor
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
 
 		ComposableFixedUnitSetting cfusFixed = new ComposableFixedUnitSetting (
-			"6M",
+			strFixedTenor,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
 			0.,
@@ -303,8 +403,8 @@ public class CustomFixFloatSwap {
 		);
 
 		CompositePeriodSetting cpsFloating = new CompositePeriodSetting (
-			2,
-			"6M",
+			AnalyticsHelper.TenorToFreq (strFloaterCompositeTenor),
+			strFloaterCompositeTenor,
 			strCurrency,
 			null,
 			-1.,
@@ -315,8 +415,8 @@ public class CustomFixFloatSwap {
 		);
 
 		CompositePeriodSetting cpsFixed = new CompositePeriodSetting (
-			2,
-			"6M",
+			AnalyticsHelper.TenorToFreq (strFixedTenor),
+			strFixedTenor,
 			strCurrency,
 			null,
 			1.,
@@ -333,6 +433,7 @@ public class CustomFixFloatSwap {
 		);
 
 		for (int i = 0; i < astrMaturityTenor.length; ++i) {
+		
 			List<Double> lsFixedStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (
 				dtEffective,
 				"6M",
@@ -342,7 +443,7 @@ public class CustomFixFloatSwap {
 
 			List<Double> lsFloatingStreamEdgeDate = CompositePeriodBuilder.RegularEdgeDates (
 				dtEffective,
-				"6M",
+				strFloaterComposableTenor,
 				astrMaturityTenor[i],
 				null
 			);
@@ -369,13 +470,14 @@ public class CustomFixFloatSwap {
 				floatingStream,
 				csp
 			);
-
+			
 			irs.setPrimaryCode ("IRS." + astrMaturityTenor[i] + "." + strCurrency);
 
 			aIRS[i] = irs;
 		}
 
 		return aIRS;
+		*/
 	}
 
 	/*
@@ -405,9 +507,12 @@ public class CustomFixFloatSwap {
 		 * Construct the Array of Deposit Instruments and their Quotes from the given set of parameters
 		 */
 
+		String strFloaterTenor = "3M";
+
 		SingleStreamComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (
 			dtSpot,
 			strCurrency,
+			strFloaterTenor,
 			new int[] {
 				1, 2, 7, 14, 30, 60
 			}
@@ -457,9 +562,20 @@ public class CustomFixFloatSwap {
 		 * Construct the Array of Swap Instruments and their Quotes from the given set of parameters
 		 */
 
+		String strFixedDayCount = "Act/360";
+		double dblFixedCoupon = 0.01;
+		String strFixedTenor = "6M";
+		String strFloaterComposableTenor = "6M";
+		String strFloaterCompositeTenor = "6M";
+
 		FixFloatComponent[] aSwapInAdvance = SwapInstrumentsFromMaturityTenor (
 			dtSpot,
 			strCurrency,
+			strFixedDayCount,
+			dblFixedCoupon,
+			strFixedTenor,
+			strFloaterComposableTenor,
+			strFloaterCompositeTenor,
 			new java.lang.String[] {
 				"4Y", "5Y", "6Y", "7Y", "8Y", "9Y", "10Y", "11Y", "12Y", "15Y", "20Y", "25Y", "30Y", "40Y", "50Y"
 			}
@@ -529,29 +645,27 @@ public class CustomFixFloatSwap {
 
 		System.out.println ("\n\t-------------------------------------------------------------------------------\n");
 
-		JulianDate dtEffective = dtSpot.addTenor ("1Y");
+		JulianDate dtCustomEffective = dtSpot.addTenor ("1Y");
 
-		JulianDate dtMaturity = dtSpot.addTenor ("11Y");
+		JulianDate dtCustomMaturity = dtSpot.addTenor ("11Y");
 
-		String strFixedDayCount = "Act/360";
-		double dblFixedCoupon = 0.01;
-		String strFixedTenor = "6M";
-		String strFloatDayCount = "Act/360";
-		String strFloaterComposableTenor = "6M";
-		String strFloaterCompositeTenor = "6M";
-		double dblNotional = 1.0e6;
+		String strCustomFixedDayCount = "Act/360";
+		double dblCustomFixedCoupon = 0.01;
+		String strCustomFixedTenor = "6M";
+		String strCustomFloaterComposableTenor = "6M";
+		String strCustomFloaterCompositeTenor = "6M";
+		double dblCustomNotional = 1.0e6;
 
 		FixFloatComponent ffcSwap = CustomIRS (
-			dtEffective,
+			dtCustomEffective,
 			strCurrency,
-			dtMaturity,
-			strFixedDayCount,
-			dblFixedCoupon,
-			strFixedTenor,
-			strFloatDayCount,
-			strFloaterComposableTenor,
-			strFloaterCompositeTenor,
-			dblNotional
+			dtCustomMaturity,
+			strCustomFixedDayCount,
+			dblCustomFixedCoupon,
+			strCustomFixedTenor,
+			strCustomFloaterComposableTenor,
+			strCustomFloaterCompositeTenor,
+			dblCustomNotional
 		);
 
 		Map<String, Double> mapSwap = ffcSwap.value (

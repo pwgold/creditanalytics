@@ -1,5 +1,5 @@
 
-package org.drip.learning.classifier;
+package org.drip.learning.RxToR1;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,31 +29,32 @@ package org.drip.learning.classifier;
  */
 
 /**
- * EmpiricalSupremumLossMetrics implements Efron-Stein Metrics for the Empirical Loss Supremum Functions.
+ * EmpiricalSupremumLossMetrics implements Efron-Stein Metrics for the Empirical Loss Supremum R^x -> R^1
+ *  Functions.
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class EmpiricalSupremumLossMetrics extends org.drip.sequence.functional.EfronSteinMetrics {
-	private org.drip.learning.classifier.EmpiricalLossSupremum _funcELS = null;
+	private org.drip.learning.RxToR1.EmpiricalLossSupremum _els = null;
 
 	/**
 	 * EmpiricalSupremumLossMetrics Constructor
 	 * 
-	 * @param funcELS Empirical Loss Supremum Function
+	 * @param els R^x -> R^1 Empirical Loss Supremum Function
 	 * @param aSSAM Array of the Individual Single Sequence Metrics
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public EmpiricalSupremumLossMetrics (
-		final org.drip.learning.classifier.EmpiricalLossSupremum funcELS,
+		final org.drip.learning.RxToR1.EmpiricalLossSupremum els,
 		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM)
 		throws java.lang.Exception
 	{
-		super (funcELS, aSSAM);
+		super (els, aSSAM);
 
-		if (null == (_funcELS = funcELS))
+		if (null == (_els = els))
 			throw new java.lang.Exception ("EmpiricalSupremumLossMetrics ctr: Invalid Inputs");
 	}
 
@@ -63,17 +64,17 @@ public class EmpiricalSupremumLossMetrics extends org.drip.sequence.functional.E
 	 * @return The Empirical Loss Supremum Function
 	 */
 
-	public org.drip.learning.classifier.EmpiricalLossSupremum empiricalLossSupremum()
+	public org.drip.learning.RxToR1.EmpiricalLossSupremum empiricalLossSupremum()
 	{
-		return _funcELS;
+		return _els;
 	}
 
 	/**
-	 * Retrieve the Variate-Sequence Dependent Variance Bound
+	 * Retrieve the Univariate Sequence Dependent Variance Bound
 	 * 
-	 * @param adblVariate The Variate Sequence
+	 * @param adblVariate The univariate Sequence
 	 * 
-	 * @return The Variate-Sequence Dependent Variance Bound
+	 * @return The Univariate Sequence Dependent Variance Bound
 	 * 
 	 * @throws java.lang.Exception Thrown if the Date Dependent Variance Bound cannot be Computed
 	 */
@@ -82,7 +83,24 @@ public class EmpiricalSupremumLossMetrics extends org.drip.sequence.functional.E
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-		return _funcELS.evaluate (adblVariate) / adblVariate.length;
+		return _els.evaluate (adblVariate) / adblVariate.length;
+	}
+
+	/**
+	 * Retrieve the Multivariate Sequence Dependent Variance Bound
+	 * 
+	 * @param aadblVariate The Multivariate Sequence
+	 * 
+	 * @return The Multivariate Sequence Dependent Variance Bound
+	 * 
+	 * @throws java.lang.Exception Thrown if the Date Dependent Variance Bound cannot be Computed
+	 */
+
+	public double dataDependentVarianceBound (
+		final double[][] aadblVariate)
+		throws java.lang.Exception
+	{
+		return _els.evaluate (aadblVariate) / aadblVariate.length;
 	}
 
 	/**
@@ -92,7 +110,7 @@ public class EmpiricalSupremumLossMetrics extends org.drip.sequence.functional.E
 	 * 		G. Lugosi (2002): Pattern Classification and Learning Theory, in: L.Gyorfi, editor, Principles of
 	 * 			Non-parametric Learning, 5-62, Springer, Wien.
 	 * 
-	 * @param adblVariate The Sample Variate Array
+	 * @param adblVariate The Sample Univariate Array
 	 * 
 	 * @return The Lugosi Data-Dependent Variance Bound
 	 * 
@@ -103,14 +121,14 @@ public class EmpiricalSupremumLossMetrics extends org.drip.sequence.functional.E
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-		org.drip.function.deterministic.R1ToR1 supClassifier = _funcELS.supremumClassifier (adblVariate);
+		org.drip.function.deterministic.R1ToR1 supClassifier = _els.supremumR1ToR1 (adblVariate);
 
 		if (null == supClassifier)
 			throw new java.lang.Exception
 				("EmpiricalSupremumLossMetrics::lugosiVarianceBound => Cannot Find Supremum Classifier");
 
-		org.drip.learning.loss.MeasureConcentrationExpectationBound casb =
-			_funcELS.classifierClass().concentrationLossBoundEvaluator();
+		org.drip.learning.bound.MeasureConcentrationExpectationBound casb =
+			_els.learnerClass().concentrationLossBoundEvaluator();
 
 		if (null == casb)
 			throw new java.lang.Exception
@@ -118,5 +136,40 @@ public class EmpiricalSupremumLossMetrics extends org.drip.sequence.functional.E
 
 		return dataDependentVarianceBound (adblVariate) + casb.constant() + java.lang.Math.pow
 			(adblVariate.length, casb.exponent());
+	}
+
+	/**
+	 * Compute the Lugosi Data-Dependent Variance Bound from the Sample and the Classifier Class Asymptotic
+	 * 	Behavior: Source =>
+	 * 
+	 * 		G. Lugosi (2002): Pattern Classification and Learning Theory, in: L.Gyorfi, editor, Principles of
+	 * 			Non-parametric Learning, 5-62, Springer, Wien.
+	 * 
+	 * @param aadblVariate The Sample Multivariate Array
+	 * 
+	 * @return The Lugosi Data-Dependent Variance Bound
+	 * 
+	 * @throws java.lang.Exception Thrown if the Lugosi Data-Dependent Variance Bound cannot be computed
+	 */
+
+	public double lugosiVarianceBound (
+		final double[][] aadblVariate)
+		throws java.lang.Exception
+	{
+		org.drip.function.deterministic.RdToR1 supClassifier = _els.supremumRdToR1 (aadblVariate);
+
+		if (null == supClassifier)
+			throw new java.lang.Exception
+				("EmpiricalSupremumLossMetrics::lugosiVarianceBound => Cannot Find Supremum Classifier");
+
+		org.drip.learning.bound.MeasureConcentrationExpectationBound casb =
+			_els.learnerClass().concentrationLossBoundEvaluator();
+
+		if (null == casb)
+			throw new java.lang.Exception
+				("EmpiricalSupremumLossMetrics::lugosiVarianceBound => Cannot Find Class Asymptote");
+
+		return dataDependentVarianceBound (aadblVariate) + casb.constant() + java.lang.Math.pow
+			(aadblVariate.length, casb.exponent());
 	}
 }
