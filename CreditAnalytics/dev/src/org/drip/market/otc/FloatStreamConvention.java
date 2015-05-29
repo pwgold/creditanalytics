@@ -103,8 +103,8 @@ public class FloatStreamConvention {
 			org.drip.param.period.ComposableFloatingUnitSetting cfus = new
 				org.drip.param.period.ComposableFloatingUnitSetting (bOvernight ? "ON" :
 					_forwardLabel.tenor(), bOvernight ?
-						org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR :
-							org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT,
+						org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT :
+							org.drip.analytics.support.CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 								null, _forwardLabel,
 									org.drip.analytics.support.CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 				dblBasis);

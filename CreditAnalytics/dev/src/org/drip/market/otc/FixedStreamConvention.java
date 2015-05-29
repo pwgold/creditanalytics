@@ -162,7 +162,7 @@ public class FixedStreamConvention {
 			org.drip.param.period.UnitCouponAccrualSetting ucas = new
 				org.drip.param.period.UnitCouponAccrualSetting
 					(org.drip.analytics.support.AnalyticsHelper.TenorToFreq (_strUnitPeriodTenor),
-						_strDayCount, false, _strDayCount, false, _strCurrency, true,
+						_strDayCount, false, _strDayCount, false, _strCurrency, false,
 							org.drip.analytics.support.CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC);
 
 			org.drip.param.period.ComposableFixedUnitSetting cfus = new

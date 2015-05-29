@@ -77,7 +77,7 @@ public class IBOR6MCubicPolyVanilla {
 
 		double[] adblDepositQuote = new double[] {
 			0.003565,	// 1D
-			0.003858,	// 1W
+			/* 0.003858,	// 1W
 			0.003840,	// 2W
 			0.003922,	// 3W
 			0.003869,	// 1M
@@ -85,11 +85,12 @@ public class IBOR6MCubicPolyVanilla {
 			0.003527,	// 3M
 			0.003342,	// 4M
 			0.003225	// 5M
+			*/
 		};
 
 		String[] astrDepositTenor = new String[] {
 			"1D",
-			"1W",
+			/* "1W",
 			"2W",
 			"3W",
 			"1M",
@@ -97,6 +98,7 @@ public class IBOR6MCubicPolyVanilla {
 			"3M",
 			"4M",
 			"5M"
+			*/
 		};
 
 		/*
@@ -215,13 +217,13 @@ public class IBOR6MCubicPolyVanilla {
 			bPrintMetric
 		);
 
-		if (bPrintMetric)
+		/* if (bPrintMetric)
 			IBORCurve.ForwardJack (
 				dtValue,
 				"---- EURIBOR 6M VANILLA CUBIC POLYNOMIAL FORWARD CURVE SENSITIVITY ---",
 				fc,
 				"DerivedParBasisSpread"
-			);
+			); */
 
 		return fc;
 	}

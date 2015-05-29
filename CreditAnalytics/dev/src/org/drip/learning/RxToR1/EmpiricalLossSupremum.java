@@ -54,7 +54,7 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 	private double[] _adblEmpiricalOutcome = null;
 	private org.drip.spaces.RxToR1.NormedR1ToNormedR1[] _aR1ToR1 = null;
 	private org.drip.spaces.RxToR1.NormedRdToNormedR1[] _aRdToR1 = null;
-	private org.drip.learning.RxToR1.L1LossLearner _learnerRxToR1 = null;
+	private org.drip.learning.RxToR1.EmpiricalLearningMetricEstimator _elme = null;
 
 	private Supremum supremum (
 		final double[] adblVariate)
@@ -77,7 +77,7 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 
 			for (int j = 0; j < iNumEmpiricalOutcome; ++j) {
 				try {
-					dblEmpiricalLoss += _learnerRxToR1.empiricalLoss (funcR1ToR1, adblVariate[j],
+					dblEmpiricalLoss += _elme.empiricalLoss (funcR1ToR1, adblVariate[j],
 						_adblEmpiricalOutcome[j]);
 				} catch (java.lang.Exception e) {
 					e.printStackTrace();
@@ -116,7 +116,7 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 
 			for (int j = 0; j < iNumEmpiricalOutcome; ++j) {
 				try {
-					dblEmpiricalLoss += _learnerRxToR1.empiricalLoss (funcRdToR1, aadblVariate[j],
+					dblEmpiricalLoss += _elme.empiricalLoss (funcRdToR1, aadblVariate[j],
 						_adblEmpiricalOutcome[j]);
 				} catch (java.lang.Exception e) {
 					e.printStackTrace();
@@ -135,25 +135,23 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 	}
 
 	/**
-	 * R1ToR1LossSupremum Constructor
+	 * EmpiricalLossSupremum Constructor
 	 * 
-	 * @param learnerRxToR1 The R^x -> R^1 L1 Loss Learner Class
+	 * @param elme The Empirical Learning Metric Estimator Instance
 	 * @param adblEmpiricalOutcome Array of the Empirical Outcomes
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public EmpiricalLossSupremum (
-		final org.drip.learning.RxToR1.L1LossLearner learnerRxToR1,
+		final org.drip.learning.RxToR1.EmpiricalLearningMetricEstimator elme,
 		final double[] adblEmpiricalOutcome)
 		throws java.lang.Exception
 	{
-		if (null == (_learnerRxToR1 = learnerRxToR1) || null == (_adblEmpiricalOutcome =
-			adblEmpiricalOutcome))
+		if (null == (_elme = elme) || null == (_adblEmpiricalOutcome = adblEmpiricalOutcome))
 			throw new java.lang.Exception ("EmpiricalLossSupremum ctr: Invalid Inputs");
 
-		org.drip.spaces.RxToR1.NormedRxToNormedR1[] aRxToR1 =
-			_learnerRxToR1.functionClass().functionSpaces();
+		org.drip.spaces.RxToR1.NormedRxToNormedR1[] aRxToR1 = _elme.functionClass().functionSpaces();
 
 		if (null == aRxToR1) throw new java.lang.Exception ("EmpiricalLossSupremum ctr: Invalid Inputs");
 
@@ -180,14 +178,14 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 	}
 
 	/**
-	 * Retrieve the Learner Class
+	 * Retrieve the Empirical Learning Metric Estimator Instance
 	 * 
-	 * @return The Learner Class
+	 * @return The Empirical Learning Metric Estimator Instance
 	 */
 
-	public org.drip.learning.RxToR1.L1LossLearner learnerClass()
+	public org.drip.learning.RxToR1.EmpiricalLearningMetricEstimator elme()
 	{
-		return _learnerRxToR1;
+		return _elme;
 	}
 
 	/**

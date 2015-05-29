@@ -108,7 +108,8 @@ public class BinaryClassifierSupremumBound {
 				EmpiricalLossSupremumFunction (
 					adblEmpiricalOutcome
 				),
-				aSSAM
+				aSSAM,
+				null
 			);
 
 			if (0 != j) strDump += " |";
@@ -137,7 +138,8 @@ public class BinaryClassifierSupremumBound {
 				EmpiricalLossSupremumFunction (
 					adblEmpiricalOutcome
 				),
-				aSSAM
+				aSSAM,
+				null
 			);
 
 			SingleSequenceAgnosticMetrics[] aSSAMGhost = IIDDraw (
@@ -171,7 +173,8 @@ public class BinaryClassifierSupremumBound {
 				EmpiricalLossSupremumFunction (
 						adblEmpiricalOutcome
 				),
-				aSSAM
+				aSSAM,
+				null
 			);
 
 			SingleSequenceAgnosticMetrics[] aSSAMGhost = IIDDraw (
@@ -205,7 +208,8 @@ public class BinaryClassifierSupremumBound {
 				EmpiricalLossSupremumFunction (
 					adblEmpiricalOutcome
 				),
-				aSSAM
+				aSSAM,
+				null
 			);
 
 			if (0 != j) strDump += " |";
@@ -234,7 +238,8 @@ public class BinaryClassifierSupremumBound {
 				EmpiricalLossSupremumFunction (
 					adblEmpiricalOutcome
 				),
-				aSSAM
+				aSSAM,
+				null
 			);
 
 			SingleSequenceAgnosticMetrics[] aSSAMGhost = IIDDraw (

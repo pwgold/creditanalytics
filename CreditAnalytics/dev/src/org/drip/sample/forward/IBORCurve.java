@@ -76,6 +76,30 @@ public class IBORCurve {
 		);
 	}
 
+	private static final FixFloatComponent OTCIRS (
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String strLocation,
+		final String strMaturityTenor,
+		final String strIndex,
+		final double dblCoupon)
+	{
+		FixedFloatSwapConvention ffConv = IBORFixedFloatContainer.ConventionFromJurisdiction (
+			strCurrency,
+			strLocation,
+			strMaturityTenor,
+			strIndex
+		);
+
+		return ffConv.createFixFloatComponent (
+			dtSpot,
+			strMaturityTenor,
+			dblCoupon,
+			0.,
+			1.
+		);
+	}
+
 	private static final ComponentPair OTCComponentPair (
 		final JulianDate dtSpot,
 		final String strCurrency,
@@ -151,19 +175,38 @@ public class IBORCurve {
 		return aFRA;
 	}
 
-	/*
-	 * Construct an array of fix-float swaps from the fixed reference and the xM floater derived legs.
-	 * 
-	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
-	 */
-
-	private static final FixFloatComponent[] FixFloatSwap (
+	private static final FixFloatComponent[] FixFloatSwap2 (
 		final JulianDate dtEffective,
 		final ForwardLabel fri,
 		final String[] astrMaturityTenor)
 		throws Exception
 	{
 		if (null == astrMaturityTenor || 0 == astrMaturityTenor.length) return null;
+
+		FixFloatComponent[] aFixFloat = new FixFloatComponent[astrMaturityTenor.length];
+
+		for (int i = 0; i < astrMaturityTenor.length; ++i)
+			aFixFloat[i] = OTCIRS (
+				dtEffective,
+				fri.currency(),
+				"ALL",
+				astrMaturityTenor[i],
+				"MAIN",
+				0.
+			);
+
+		return aFixFloat;
+	}
+
+	private static final FixFloatComponent[] FixFloatSwap (
+		final JulianDate dtValue,
+		final ForwardLabel fri,
+		final String[] astrMaturityTenor)
+		throws Exception
+	{
+		if (null == astrMaturityTenor || 0 == astrMaturityTenor.length) return null;
+
+		JulianDate dtEffective = dtValue.addDays (2);
 
 		String strCurrency = fri.currency();
 
@@ -172,13 +215,13 @@ public class IBORCurve {
 		int iTenorInMonths = new Integer (fri.tenor().split ("M")[0]);
 
 		UnitCouponAccrualSetting ucasFixed = new UnitCouponAccrualSetting (
-			2,
+			1,
 			"Act/360",
 			false,
 			"Act/360",
 			false,
 			strCurrency,
-			false,
+			true,
 			CompositePeriodBuilder.ACCRUAL_COMPOUNDING_RULE_GEOMETRIC
 		);
 
@@ -227,7 +270,7 @@ public class IBORCurve {
 			);
 
 			CompositePeriodSetting cpsFixed = new CompositePeriodSetting (
-				2,
+				1,
 				strFixedTenor,
 				strCurrency,
 				null,
@@ -241,7 +284,7 @@ public class IBORCurve {
 			List<Double> lsFixedStreamEdgeDate = CompositePeriodBuilder.BackwardEdgeDates (
 				dtEffective,
 				dtEffective.addTenor (astrMaturityTenor[i]),
-				"6M",
+				"1Y",
 				null,
 				CompositePeriodBuilder.SHORT_STUB
 			);
@@ -447,7 +490,7 @@ public class IBORCurve {
 			adblFRAQuote
 		);
 
-		FixFloatComponent[] aFixFloat = FixFloatSwap (
+		FixFloatComponent[] aFixFloat = FixFloatSwap2 (
 			dtValue,
 			fri,
 			astrFixFloatTenor
@@ -615,8 +658,8 @@ public class IBORCurve {
 
 				for (int i = 0; i < aFixFloat.length; ++i)
 					System.out.println ("\t[" + aFixFloat[i].effectiveDate() + " - " + aFixFloat[i].maturityDate() + "] = " +
-						FormatUtil.FormatDouble (aFixFloat[i].measureValue (valParams, null, mktParams, null, strFixFloatCalibMeasure), 1, 2, 100.) +
-							"% | " + FormatUtil.FormatDouble (adblFixFloatQuote[i], 1, 2, 100.) + "% | " +
+						FormatUtil.FormatDouble (aFixFloat[i].measureValue (valParams, null, mktParams, null, strFixFloatCalibMeasure), 1, 4, 100.) +
+							"% | " + FormatUtil.FormatDouble (adblFixFloatQuote[i], 1, 4, 100.) + "% | " +
 								FormatUtil.FormatDouble (fcDerived.forward (aFixFloat[i].maturityDate()), 1, 4, 100.) + "%");
 			}
 

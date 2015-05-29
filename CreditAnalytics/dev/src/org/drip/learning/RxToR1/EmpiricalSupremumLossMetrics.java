@@ -29,7 +29,7 @@ package org.drip.learning.RxToR1;
  */
 
 /**
- * EmpiricalSupremumLossMetrics implements Efron-Stein Metrics for the Empirical Loss Supremum R^x -> R^1
+ * EmpiricalSupremumLossMetrics computes Efron-Stein Metrics for the Empirical Loss Supremum R^x -> R^1
  *  Functions.
  *
  * @author Lakshmi Krishnamurthy
@@ -37,24 +37,27 @@ package org.drip.learning.RxToR1;
 
 public class EmpiricalSupremumLossMetrics extends org.drip.sequence.functional.EfronSteinMetrics {
 	private org.drip.learning.RxToR1.EmpiricalLossSupremum _els = null;
+	private org.drip.learning.bound.MeasureConcentrationExpectationBound _mceb = null;
 
 	/**
 	 * EmpiricalSupremumLossMetrics Constructor
 	 * 
 	 * @param els R^x -> R^1 Empirical Loss Supremum Function
 	 * @param aSSAM Array of the Individual Single Sequence Metrics
+	 * @param mceb The Concentration-of-Measure Loss Expectation Bound Estimator
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public EmpiricalSupremumLossMetrics (
 		final org.drip.learning.RxToR1.EmpiricalLossSupremum els,
-		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM)
+		final org.drip.sequence.metrics.SingleSequenceAgnosticMetrics[] aSSAM,
+		final org.drip.learning.bound.MeasureConcentrationExpectationBound mceb)
 		throws java.lang.Exception
 	{
 		super (els, aSSAM);
 
-		if (null == (_els = els))
+		if (null == (_els = els) || null == (_mceb = mceb))
 			throw new java.lang.Exception ("EmpiricalSupremumLossMetrics ctr: Invalid Inputs");
 	}
 
@@ -121,21 +124,14 @@ public class EmpiricalSupremumLossMetrics extends org.drip.sequence.functional.E
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-		org.drip.function.deterministic.R1ToR1 supClassifier = _els.supremumR1ToR1 (adblVariate);
+		org.drip.function.deterministic.R1ToR1 supR1ToR1 = _els.supremumR1ToR1 (adblVariate);
 
-		if (null == supClassifier)
+		if (null == supR1ToR1)
 			throw new java.lang.Exception
 				("EmpiricalSupremumLossMetrics::lugosiVarianceBound => Cannot Find Supremum Classifier");
 
-		org.drip.learning.bound.MeasureConcentrationExpectationBound casb =
-			_els.learnerClass().concentrationLossBoundEvaluator();
-
-		if (null == casb)
-			throw new java.lang.Exception
-				("EmpiricalSupremumLossMetrics::lugosiVarianceBound => Cannot Find Class Asymptote");
-
-		return dataDependentVarianceBound (adblVariate) + casb.constant() + java.lang.Math.pow
-			(adblVariate.length, casb.exponent());
+		return dataDependentVarianceBound (adblVariate) + _mceb.constant() + java.lang.Math.pow
+			(adblVariate.length, _mceb.exponent());
 	}
 
 	/**
@@ -156,20 +152,13 @@ public class EmpiricalSupremumLossMetrics extends org.drip.sequence.functional.E
 		final double[][] aadblVariate)
 		throws java.lang.Exception
 	{
-		org.drip.function.deterministic.RdToR1 supClassifier = _els.supremumRdToR1 (aadblVariate);
+		org.drip.function.deterministic.RdToR1 supRdToR1 = _els.supremumRdToR1 (aadblVariate);
 
-		if (null == supClassifier)
+		if (null == supRdToR1)
 			throw new java.lang.Exception
 				("EmpiricalSupremumLossMetrics::lugosiVarianceBound => Cannot Find Supremum Classifier");
 
-		org.drip.learning.bound.MeasureConcentrationExpectationBound casb =
-			_els.learnerClass().concentrationLossBoundEvaluator();
-
-		if (null == casb)
-			throw new java.lang.Exception
-				("EmpiricalSupremumLossMetrics::lugosiVarianceBound => Cannot Find Class Asymptote");
-
-		return dataDependentVarianceBound (aadblVariate) + casb.constant() + java.lang.Math.pow
-			(aadblVariate.length, casb.exponent());
+		return dataDependentVarianceBound (aadblVariate) + _mceb.constant() + java.lang.Math.pow
+			(aadblVariate.length, _mceb.exponent());
 	}
 }

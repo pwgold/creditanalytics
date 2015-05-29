@@ -52,7 +52,8 @@ package org.drip.learning.RxToR1;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class GeneralizedLearner {
+public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.EmpiricalLearningMetricEstimator
+{
 	private org.drip.learning.bound.CoveringNumberLossBound _funcClassCNLB = null;
 	private org.drip.spaces.functionclass.NormedRxToNormedR1Finite _funcClassRxToR1 = null;
 
@@ -75,13 +76,7 @@ public abstract class GeneralizedLearner {
 			throw new java.lang.Exception ("GeneralizedLearner ctr: Invalid Inputs");
 	}
 
-	/**
-	 * Retrieve the Underlying Learner Function Class
-	 * 
-	 * @return The Underlying Learner Function Class
-	 */
-
-	public org.drip.spaces.functionclass.NormedRxToNormedR1Finite functionClass()
+	@Override public org.drip.spaces.functionclass.NormedRxToNormedR1Finite functionClass()
 	{
 		return _funcClassRxToR1;
 	}
@@ -96,60 +91,6 @@ public abstract class GeneralizedLearner {
 	{
 		return _funcClassCNLB;
 	}
-
-	/**
-	 * Retrieve the Loss Class Sample Covering Number - L-Infinity or L-p based Based
-	 * 
-	 * @param gvvi The Validated Instance Vector Sequence
-	 * @param dblEpsilon The Deviation of the Empirical Mean from the Population Mean
-	 * @param bSupremum TRUE => Use the Supremum Metric in place of the Built-in Metric
-	 * 
-	 * @return The Loss Class Sample Covering Number - L-Infinity or L-p based Based
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public abstract double lossSampleCoveringNumber (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
-		final double dblEpsilon,
-		final boolean bSupremum)
-		throws java.lang.Exception;
-
-	/**
-	 * Compute the Empirical Sample Loss
-	 * 
-	 * @param funcLearnerR1ToR1 The R^1 -> R^1 Learner Function
-	 * @param dblX The Predictor Instance
-	 * @param dblY The Outcome Instance
-	 * 
-	 * @return The Empirical Loss
-	 * 
-	 * @throws java.lang.Exception Thrown if the Empirical Loss cannot be computed
-	 */
-
-	public abstract double empiricalLoss (
-		final org.drip.function.deterministic.R1ToR1 funcLearnerR1ToR1,
-		final double dblX,
-		final double dblY)
-		throws java.lang.Exception;
-
-	/**
-	 * Compute the Empirical Sample Loss
-	 * 
-	 * @param funcLearnerRdToR1 The R^d -> R^1 Learner Function
-	 * @param adblX The Predictor Instance Array
-	 * @param dblY The Outcome Instance
-	 * 
-	 * @return The Empirical Loss
-	 * 
-	 * @throws java.lang.Exception Thrown if the Empirical Loss cannot be computed
-	 */
-
-	public abstract double empiricalLoss (
-		final org.drip.function.deterministic.RdToR1 funcLearnerRdToR1,
-		final double[] adblX,
-		final double dblY)
-		throws java.lang.Exception;
 
 	/**
 	 * Compute the Upper Bound of the Probability of the Absolute Deviation of the Empirical Mean from the
