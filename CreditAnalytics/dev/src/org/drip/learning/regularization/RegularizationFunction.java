@@ -51,6 +51,7 @@ package org.drip.learning.regularization;
  */
 
 public class RegularizationFunction {
+	private double _dblLambda = java.lang.Double.NaN;
 	private org.drip.function.deterministic.R1ToR1 _regR1ToR1 = null;
 	private org.drip.function.deterministic.RdToR1 _regRdToR1 = null;
 
@@ -59,16 +60,19 @@ public class RegularizationFunction {
 	 * 
 	 * @param regR1ToR1 R^1 -> R^1 Regularization Function
 	 * @param regRdToR1 R^d -> R^1 Regularization Function
+	 * @param dblLambda The Regularizer Lambda
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RegularizationFunction (
 		final org.drip.function.deterministic.R1ToR1 regR1ToR1,
-		final org.drip.function.deterministic.RdToR1 regRdToR1)
+		final org.drip.function.deterministic.RdToR1 regRdToR1,
+		final double dblLambda)
 		throws java.lang.Exception
 	{
-		if (null == (_regR1ToR1 = regR1ToR1) && null == (_regRdToR1 = regRdToR1))
+		if (null == (_regR1ToR1 = regR1ToR1) && null == (_regRdToR1 = regRdToR1) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_dblLambda = dblLambda))
 			throw new java.lang.Exception ("RegularizationFunction ctr: Invalid Inputs");
 	}
 
@@ -92,5 +96,16 @@ public class RegularizationFunction {
 	public org.drip.function.deterministic.RdToR1 rdTor1()
 	{
 		return _regRdToR1;
+	}
+
+	/**
+	 * Retrieve the Regularization Constant Lambda
+	 * 
+	 * @return The Regularization Constant Lambda
+	 */
+
+	public double lambda()
+	{
+		return _dblLambda;
 	}
 }

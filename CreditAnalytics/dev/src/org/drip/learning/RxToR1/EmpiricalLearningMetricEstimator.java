@@ -62,6 +62,14 @@ public interface EmpiricalLearningMetricEstimator {
 	public abstract org.drip.spaces.functionclass.NormedRxToNormedR1Finite functionClass();
 
 	/**
+	 * Retrieve the Regularizer Function
+	 * 
+	 * @return The Regularizer Function
+	 */
+
+	public abstract org.drip.learning.regularization.RegularizationFunction regularizerFunction();
+
+	/**
 	 * Retrieve the Loss Class Sample Covering Number - L-Infinity or L-p based Based
 	 * 
 	 * @param gvvi The Validated Instance Vector Sequence
@@ -83,8 +91,8 @@ public interface EmpiricalLearningMetricEstimator {
 	 * Compute the Empirical Sample Loss
 	 * 
 	 * @param funcLearnerR1ToR1 The R^1 -> R^1 Learner Function
-	 * @param dblX The Predictor Instance
-	 * @param dblY The Outcome Instance
+	 * @param gvviX The Validated Predictor Instance
+	 * @param gvviY The Validated Response Instance
 	 * 
 	 * @return The Empirical Loss
 	 * 
@@ -93,16 +101,16 @@ public interface EmpiricalLearningMetricEstimator {
 
 	public abstract double empiricalLoss (
 		final org.drip.function.deterministic.R1ToR1 funcLearnerR1ToR1,
-		final double dblX,
-		final double dblY)
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
 		throws java.lang.Exception;
 
 	/**
 	 * Compute the Empirical Sample Loss
 	 * 
 	 * @param funcLearnerRdToR1 The R^d -> R^1 Learner Function
-	 * @param adblX The Predictor Instance Array
-	 * @param dblY The Outcome Instance
+	 * @param gvviX The Validated Predictor Instance
+	 * @param gvviY The Validated Response Instance
 	 * 
 	 * @return The Empirical Loss
 	 * 
@@ -111,43 +119,39 @@ public interface EmpiricalLearningMetricEstimator {
 
 	public abstract double empiricalLoss (
 		final org.drip.function.deterministic.RdToR1 funcLearnerRdToR1,
-		final double[] adblX,
-		final double dblY)
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
 		throws java.lang.Exception;
 
 	/**
 	 * Compute the Structural Sample Loss
 	 * 
 	 * @param funcLearnerR1ToR1 The R^1 -> R^1 Learner Function
-	 * @param dblX The Predictor Instance
-	 * @param dblY The Outcome Instance
+	 * @param gvvi The Validated Predictor Instance
 	 * 
 	 * @return The Structural Loss
 	 * 
 	 * @throws java.lang.Exception Thrown if the Structural Loss cannot be computed
 	 */
 
-	/* public abstract double structuralLoss (
+	public abstract double structuralLoss (
 		final org.drip.function.deterministic.R1ToR1 funcLearnerR1ToR1,
-		final double dblX,
-		final double dblY)
-		throws java.lang.Exception; */
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
+		throws java.lang.Exception;
 
 	/**
 	 * Compute the Structural Sample Loss
 	 * 
 	 * @param funcLearnerRdToR1 The R^d -> R^1 Learner Function
-	 * @param adblX The Predictor Instance Array
-	 * @param dblY The Outcome Instance
+	 * @param gvvi The Validated Predictor Instance
 	 * 
 	 * @return The Structural Loss
 	 * 
 	 * @throws java.lang.Exception Thrown if the Structural Loss cannot be computed
 	 */
 
-	/* public abstract double structuralLoss (
+	public abstract double structuralLoss (
 		final org.drip.function.deterministic.RdToR1 funcLearnerRdToR1,
-		final double[] adblX,
-		final double dblY)
-		throws java.lang.Exception; */
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
+		throws java.lang.Exception;
 }

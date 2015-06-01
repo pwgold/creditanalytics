@@ -61,6 +61,7 @@ public class ApproximateLipschitzLossLearner extends org.drip.learning.RxToR1.Li
 	 * 
 	 * @param funcClassRxToR1 R^x -> R^1 Function Class
 	 * @param cdpb The Covering Number based Deviation Upper Probability Bound Generator
+	 * @param regularizerFunc The Regularizer Function
 	 * @param dblLipschitzSlope The Lipschitz Slope Bound
 	 * @param dblLipschitzFloor The Lipschitz Floor Bound
 	 * 
@@ -70,11 +71,12 @@ public class ApproximateLipschitzLossLearner extends org.drip.learning.RxToR1.Li
 	public ApproximateLipschitzLossLearner (
 		final org.drip.spaces.functionclass.NormedRxToNormedR1Finite funcClassRxToR1,
 		final org.drip.learning.bound.CoveringNumberLossBound cdpb,
+		final org.drip.learning.regularization.RegularizationFunction regularizerFunc,
 		final double dblLipschitzSlope,
 		final double dblLipschitzFloor)
 		throws java.lang.Exception
 	{
-		super (funcClassRxToR1, cdpb, dblLipschitzSlope);
+		super (funcClassRxToR1, cdpb, regularizerFunc, dblLipschitzSlope);
 
 		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLipschitzFloor = dblLipschitzFloor))
 			throw new java.lang.Exception ("ApproximateLipschitzLossLearner ctr: Invalid Inputs");

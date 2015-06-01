@@ -775,7 +775,10 @@ public class FixFloatComponent extends org.drip.product.rates.DualStreamComponen
 
 			if (ffqs.containsPV()) dblPV = ffqs.pv();
 
-			if (ffqs.containsSwapRate()) fsqsReference.setCoupon (ffqs.swapRate());
+			if (ffqs.containsSwapRate())
+				fsqsReference.setCoupon (ffqs.swapRate());
+			else if (ffqs.containsRate())
+				fsqsReference.setCoupon (ffqs.rate());
 
 			if (ffqs.containsDerivedParBasisSpread()) fsqsDerived.setSpread (ffqs.derivedParBasisSpread());
 
@@ -893,7 +896,10 @@ public class FixFloatComponent extends org.drip.product.rates.DualStreamComponen
 
 			if (ffqs.containsPV()) dblPV = ffqs.pv();
 
-			if (ffqs.containsSwapRate()) fsqsReference.setCoupon (ffqs.swapRate());
+			if (ffqs.containsSwapRate())
+				fsqsReference.setCoupon (ffqs.swapRate());
+			else if (ffqs.containsRate())
+				fsqsReference.setCoupon (ffqs.rate());
 
 			if (ffqs.containsDerivedParBasisSpread()) fsqsDerived.setSpread (ffqs.derivedParBasisSpread());
 

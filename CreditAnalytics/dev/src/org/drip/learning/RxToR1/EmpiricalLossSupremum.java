@@ -51,22 +51,19 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 		}
 	}
 
-	private double[] _adblEmpiricalOutcome = null;
 	private org.drip.spaces.RxToR1.NormedR1ToNormedR1[] _aR1ToR1 = null;
 	private org.drip.spaces.RxToR1.NormedRdToNormedR1[] _aRdToR1 = null;
 	private org.drip.learning.RxToR1.EmpiricalLearningMetricEstimator _elme = null;
+	private org.drip.spaces.instance.GeneralizedValidatedVectorInstance _gvviY = null;
 
-	private Supremum supremum (
-		final double[] adblVariate)
+	private Supremum supremumR1 (
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX)
 	{
 		if (null == _aR1ToR1) return null;
 
 		int iSupremumIndex  = 0;
 		int iNumR1ToR1 = _aR1ToR1.length;
 		double dblEmpiricalLossSupremum = 0.;
-		int iNumEmpiricalOutcome = _adblEmpiricalOutcome.length;
-
-		if (null == adblVariate || adblVariate.length != iNumEmpiricalOutcome) return null;
 
 		for (int i = 0 ; i < iNumR1ToR1; ++i) {
 			org.drip.function.deterministic.R1ToR1 funcR1ToR1 = _aR1ToR1[i].function();
@@ -75,15 +72,12 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 
 			double dblEmpiricalLoss = 0.;
 
-			for (int j = 0; j < iNumEmpiricalOutcome; ++j) {
-				try {
-					dblEmpiricalLoss += _elme.empiricalLoss (funcR1ToR1, adblVariate[j],
-						_adblEmpiricalOutcome[j]);
-				} catch (java.lang.Exception e) {
-					e.printStackTrace();
+			try {
+				dblEmpiricalLoss += _elme.empiricalLoss (funcR1ToR1, gvviX, _gvviY);
+			} catch (java.lang.Exception e) {
+				e.printStackTrace();
 
-					return null;
-				}
+				return null;
 			}
 
 			if (dblEmpiricalLoss > dblEmpiricalLossSupremum) {
@@ -92,37 +86,31 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 			}
 		}
 
-		return new Supremum (iSupremumIndex, dblEmpiricalLossSupremum / iNumEmpiricalOutcome);
+		return new Supremum (iSupremumIndex, dblEmpiricalLossSupremum / gvviX.sampleSize());
 	}
 
-	private Supremum supremum (
-		final double[][] aadblVariate)
+	private Supremum supremumRd (
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX)
 	{
 		if (null == _aRdToR1) return null;
 
 		int iSupremumIndex  = 0;
-		int iNumR1ToR1 = _aRdToR1.length;
+		int iNumRdToR1 = _aRdToR1.length;
 		double dblEmpiricalLossSupremum = 0.;
-		int iNumEmpiricalOutcome = _adblEmpiricalOutcome.length;
 
-		if (null == aadblVariate || aadblVariate.length != iNumEmpiricalOutcome) return null;
-
-		for (int i = 0 ; i < iNumR1ToR1; ++i) {
+		for (int i = 0 ; i < iNumRdToR1; ++i) {
 			org.drip.function.deterministic.RdToR1 funcRdToR1 = _aRdToR1[i].function();
 
 			if (null == funcRdToR1) return null;
 
 			double dblEmpiricalLoss = 0.;
 
-			for (int j = 0; j < iNumEmpiricalOutcome; ++j) {
-				try {
-					dblEmpiricalLoss += _elme.empiricalLoss (funcRdToR1, aadblVariate[j],
-						_adblEmpiricalOutcome[j]);
-				} catch (java.lang.Exception e) {
-					e.printStackTrace();
+			try {
+				dblEmpiricalLoss += _elme.empiricalLoss (funcRdToR1, gvviX, _gvviY);
+			} catch (java.lang.Exception e) {
+				e.printStackTrace();
 
-					return null;
-				}
+				return null;
 			}
 
 			if (dblEmpiricalLoss > dblEmpiricalLossSupremum) {
@@ -131,24 +119,24 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 			}
 		}
 
-		return new Supremum (iSupremumIndex, dblEmpiricalLossSupremum / iNumEmpiricalOutcome);
+		return new Supremum (iSupremumIndex, dblEmpiricalLossSupremum / gvviX.sampleSize());
 	}
 
 	/**
 	 * EmpiricalLossSupremum Constructor
 	 * 
 	 * @param elme The Empirical Learning Metric Estimator Instance
-	 * @param adblEmpiricalOutcome Array of the Empirical Outcomes
+	 * @param gvviY The Validated Outcome Instance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public EmpiricalLossSupremum (
 		final org.drip.learning.RxToR1.EmpiricalLearningMetricEstimator elme,
-		final double[] adblEmpiricalOutcome)
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
 		throws java.lang.Exception
 	{
-		if (null == (_elme = elme) || null == (_adblEmpiricalOutcome = adblEmpiricalOutcome))
+		if (null == (_elme = elme) || null == (_gvviY = gvviY))
 			throw new java.lang.Exception ("EmpiricalLossSupremum ctr: Invalid Inputs");
 
 		org.drip.spaces.RxToR1.NormedRxToNormedR1[] aRxToR1 = _elme.functionClass().functionSpaces();
@@ -161,18 +149,9 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 			_aRdToR1 = (org.drip.spaces.RxToR1.NormedRdToNormedR1[]) aRxToR1;
 
 		int iNumRxToR1 = aRxToR1.length;
-		int iNumEmpiricalOutcome = _adblEmpiricalOutcome.length;
-
-		if (0 == iNumEmpiricalOutcome)
-			throw new java.lang.Exception ("EmpiricalLossSupremum ctr: Invalid Inputs");
 
 		for (int i = 0; i < iNumRxToR1; ++i) {
 			if (null == aRxToR1[i])
-				throw new java.lang.Exception ("EmpiricalLossSupremum ctr: Invalid Inputs");
-		}
-
-		for (int i = 0; i < iNumEmpiricalOutcome; ++i) {
-			if (0 > _adblEmpiricalOutcome[i])
 				throw new java.lang.Exception ("EmpiricalLossSupremum ctr: Invalid Inputs");
 		}
 	}
@@ -189,30 +168,37 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 	}
 
 	/**
-	 * Retrieve the Array of Empirical Outcomes
+	 * Retrieve the Validated Outcome Instance
 	 * 
-	 * @return The Array of Empirical Outcomes
+	 * @return The Validated Outcome Instance
 	 */
 
-	public double[] empiricalOutcomes()
+	public org.drip.spaces.instance.GeneralizedValidatedVectorInstance empiricalOutcomes()
 	{
-		return _adblEmpiricalOutcome;
+		return _gvviY;
 	}
 
 	/**
 	 * Retrieve the Supremum R^1 -> R^1 Function Instance for the specified Variate Sequence
 	 * 
-	 * @param adblVariate The Univariate Sequence
+	 * @param adblX The Predictor Instance
 	 * 
 	 * @return The Supremum R^1 -> R^1 Function Instance
 	 */
 
 	public org.drip.function.deterministic.R1ToR1 supremumR1ToR1 (
-		final double[] adblVariate)
+		final double[] adblX)
 	{
-		Supremum sup = supremum (adblVariate);
+		Supremum sup = null;
 
-		if (null == sup) return null;
+		try {
+			sup = supremumR1 (new org.drip.spaces.instance.ValidatedRealUnidimensional
+				(org.drip.spaces.tensor.ContinuousRealUnidimensionalVector.Standard(), adblX));
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+
+			return null;
+		}
 
 		return _aR1ToR1[sup._iIndex].function();
 	}
@@ -220,26 +206,35 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 	/**
 	 * Retrieve the Supremum R^d -> R^1 Function Instance for the specified Variate Sequence
 	 * 
-	 * @param aadblVariate The Multivariate Sequence
+	 * @param aadblX The Predictor Instance
 	 * 
 	 * @return The Supremum R^d -> R^1 Function Instance
 	 */
 
 	public org.drip.function.deterministic.RdToR1 supremumRdToR1 (
-		final double[][] aadblVariate)
+		final double[][] aadblX)
 	{
-		Supremum sup = supremum (aadblVariate);
+		Supremum sup = null;
 
-		if (null == sup) return null;
+		try {
+			sup = supremumRd (new org.drip.spaces.instance.ValidatedRealMultidimensional
+				(org.drip.spaces.tensor.ContinuousRealMultidimensionalVector.Standard (aadblX.length),
+					aadblX));
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+
+			return null;
+		}
 
 		return _aRdToR1[sup._iIndex].function();
 	}
 
 	@Override public double evaluate (
-		final double[] adblVariate)
+		final double[] adblX)
 		throws java.lang.Exception
 	{
-		Supremum sup = supremum (adblVariate);
+		Supremum sup = supremumR1 (new org.drip.spaces.instance.ValidatedRealUnidimensional
+			(org.drip.spaces.tensor.ContinuousRealUnidimensionalVector.Standard(), adblX));
 
 		if (null == sup) throw new java.lang.Exception ("EmpiricalLossSupremum::evaluate => Invalid Inputs");
 
@@ -249,7 +244,7 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 	/**
 	 * Retrieve the Worst-case Loss over the Multivariate Sequence
 	 * 
-	 * @param aadblVariate The Multivariate Array
+	 * @param aadblX The Multivariate Array
 	 * 
 	 * @return The Worst-case Loss over the Multivariate Sequence
 	 * 
@@ -257,10 +252,14 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 	 */
 
 	public double evaluate (
-		final double[][] aadblVariate)
+		final double[][] aadblX)
 		throws java.lang.Exception
 	{
-		Supremum sup = supremum (aadblVariate);
+		if (null == aadblX)
+			throw new java.lang.Exception ("EmpiricalLossSupremum::evaluate => Invalid Inputs");
+
+		Supremum sup = supremumRd (new org.drip.spaces.instance.ValidatedRealMultidimensional
+			(org.drip.spaces.tensor.ContinuousRealMultidimensionalVector.Standard (aadblX.length), aadblX));
 
 		if (null == sup) throw new java.lang.Exception ("EmpiricalLossSupremum::evaluate => Invalid Inputs");
 
@@ -271,6 +270,6 @@ public class EmpiricalLossSupremum extends org.drip.sequence.functional.BoundedM
 		final int iTargetVariateIndex)
 		throws java.lang.Exception
 	{
-		return 1. / (_adblEmpiricalOutcome.length * _adblEmpiricalOutcome.length);
+		return 1. / (_gvviY.sampleSize() * _gvviY.sampleSize());
 	}
 }

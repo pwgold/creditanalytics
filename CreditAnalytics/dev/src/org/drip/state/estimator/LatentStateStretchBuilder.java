@@ -123,8 +123,17 @@ public class LatentStateStretchBuilder {
 		try {
 			for (int i = 0; i < iNumComp; ++i) {
 				if (null == aCalibComp[i] || null == astrCalibMeasure[i] || astrCalibMeasure[i].isEmpty() ||
-					!org.drip.quant.common.NumberUtil.IsValid (adblCalibQuote[i]))
+					!org.drip.quant.common.NumberUtil.IsValid (adblCalibQuote[i])) {
+					System.out.println ("Bail Loc #1: " + i);
+
+					System.out.println ("\tComp: " + aCalibComp[i]);
+
+					System.out.println ("\tMeasure: " + astrCalibMeasure[i]);
+
+					System.out.println ("\t Quote: " + adblCalibQuote[i]);
+
 					return null;
+				}
 
 				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.ForwardLabel>
 					mapForwardLabel = aCalibComp[i].forwardLabel();

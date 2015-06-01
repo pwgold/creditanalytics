@@ -86,16 +86,21 @@ public class RegularizerR1CombinatorialToR1Continuous extends
 		return _dblLambda;
 	}
 
-	@Override public double loss (
+	@Override public double structuralLoss (
+		final org.drip.function.deterministic.R1ToR1 funcR1ToR1,
 		final double[] adblInstance)
 		throws java.lang.Exception
 	{
-		if (null == adblInstance)
+		if (null == funcR1ToR1 || null == adblInstance)
 			throw new java.lang.Exception
-				("RegularizerR1CombinatorialToR1Continuous::loss => Invalid Inputs");
+				("RegularizerR1CombinatorialToR1Continuous::structuralLoss => Invalid Inputs");
 
 		double dblLoss = 0.;
 		int iNumSample = adblInstance.length;
+
+		if (0 == iNumSample)
+			throw new java.lang.Exception
+				("RegularizerR1CombinatorialToR1Continuous::structuralLoss => Invalid Inputs");
 
 		int iPNorm = output().pNorm();
 

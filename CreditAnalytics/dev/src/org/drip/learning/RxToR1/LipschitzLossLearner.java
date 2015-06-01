@@ -61,6 +61,7 @@ public class LipschitzLossLearner extends org.drip.learning.RxToR1.GeneralizedLe
 	 * 
 	 * @param funcClassRxToR1 R^x -> R^1 Function Class
 	 * @param cdpb The Covering Number based Deviation Upper Probability Bound Generator
+	 * @param regularizerFunc The Regularizer Function
 	 * @param dblLipschitzSlope The Lipschitz Slope Bound
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -69,10 +70,11 @@ public class LipschitzLossLearner extends org.drip.learning.RxToR1.GeneralizedLe
 	public LipschitzLossLearner (
 		final org.drip.spaces.functionclass.NormedRxToNormedR1Finite funcClassRxToR1,
 		final org.drip.learning.bound.CoveringNumberLossBound cdpb,
+		final org.drip.learning.regularization.RegularizationFunction regularizerFunc,
 		final double dblLipschitzSlope)
 		throws java.lang.Exception
 	{
-		super (funcClassRxToR1, cdpb);
+		super (funcClassRxToR1, cdpb, regularizerFunc);
 
 		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLipschitzSlope = dblLipschitzSlope))
 			throw new java.lang.Exception ("LipschitzLossLearner ctr: Invalid Inputs");
@@ -113,19 +115,19 @@ public class LipschitzLossLearner extends org.drip.learning.RxToR1.GeneralizedLe
 
 	@Override public double empiricalLoss (
 		final org.drip.function.deterministic.R1ToR1 funcLearnerR1ToR1,
-		final double dblX,
-		final double dblY)
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
 		throws java.lang.Exception
 	{
-		throw new java.lang.Exception ("LipschitzLossLearner::empiricalLoss => No Specific Implementation");
+		throw new java.lang.Exception ("LipschitzLossLearner::empiricalLoss => No Generic Implementation");
 	}
 
 	@Override public double empiricalLoss (
 		final org.drip.function.deterministic.RdToR1 funcLearnerRdToR1,
-		final double[] adblX,
-		final double dblY)
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
 		throws java.lang.Exception
 	{
-		throw new java.lang.Exception ("LipschitzLossLearner::empiricalLoss => No Specific Implementation");
+		throw new java.lang.Exception ("LipschitzLossLearner::empiricalLoss => No Generic Implementation");
 	}
 }

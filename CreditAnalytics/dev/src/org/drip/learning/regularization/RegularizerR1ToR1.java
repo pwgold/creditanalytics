@@ -62,16 +62,18 @@ public interface RegularizerR1ToR1 {
 	public abstract double lambda();
 
 	/**
-	 * Compute the Regularization Sample Loss
+	 * Compute the Regularization Sample Structural Loss
 	 * 
+	 * @param funcR1ToR1 R^1 -> R^1 Function Instance
 	 * @param adblInstance The Sample Instance
 	 * 
-	 * @return The Regularization Sample Loss
+	 * @return The Regularization Sample Structural Loss
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double loss (
+	public abstract double structuralLoss (
+		final org.drip.function.deterministic.R1ToR1 funcR1ToR1,
 		final double[] adblInstance)
 		throws java.lang.Exception;
 }

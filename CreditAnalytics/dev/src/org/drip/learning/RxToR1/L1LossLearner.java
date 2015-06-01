@@ -60,6 +60,7 @@ public class L1LossLearner extends org.drip.learning.RxToR1.GeneralizedLearner {
 	 * 
 	 * @param funcClassRxToR1 R^x -> R^1 Function Class
 	 * @param cdpb The Covering Number based Deviation Upper Probability Bound Generator
+	 * @param regularizerFunc The Regularizer Function
 	 * @param cleb The Concentration of Measure based Loss Expectation Upper Bound Evaluator
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -68,10 +69,11 @@ public class L1LossLearner extends org.drip.learning.RxToR1.GeneralizedLearner {
 	public L1LossLearner (
 		final org.drip.spaces.functionclass.NormedRxToNormedR1Finite funcClassRxToR1,
 		final org.drip.learning.bound.CoveringNumberLossBound cdpb,
+		final org.drip.learning.regularization.RegularizationFunction regularizerFunc,
 		final org.drip.learning.bound.MeasureConcentrationExpectationBound cleb)
 		throws java.lang.Exception
 	{
-		super (funcClassRxToR1, cdpb);
+		super (funcClassRxToR1, cdpb, regularizerFunc);
 
 		if (null == (_cleb = cleb)) throw new java.lang.Exception ("L1LossLearner ctr: Invalid Inputs");
 	}
@@ -101,27 +103,55 @@ public class L1LossLearner extends org.drip.learning.RxToR1.GeneralizedLearner {
 
 	@Override public double empiricalLoss (
 		final org.drip.function.deterministic.R1ToR1 funcLearnerR1ToR1,
-		final double dblX,
-		final double dblY)
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
 		throws java.lang.Exception
 	{
-		if (null == funcLearnerR1ToR1 || !org.drip.quant.common.NumberUtil.IsValid (dblX) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblY))
+		if (null == funcLearnerR1ToR1 || null == gvviX || !(gvviX instanceof
+			org.drip.spaces.instance.ValidatedRealUnidimensional) || null == gvviY || !(gvviY instanceof
+				org.drip.spaces.instance.ValidatedRealUnidimensional))
 			throw new java.lang.Exception ("L1LossLearner::empiricalLoss => Invalid Inputs");
 
-		return java.lang.Math.abs (funcLearnerR1ToR1.evaluate (dblX) - dblY);
+		double[] adblX = ((org.drip.spaces.instance.ValidatedRealUnidimensional) gvviX).instance();
+
+		double[] adblY = ((org.drip.spaces.instance.ValidatedRealUnidimensional) gvviY).instance();
+
+		double dblEmpiricalLoss = 0.;
+		int iNumSample = adblX.length;
+
+		if (iNumSample != adblY.length)
+			throw new java.lang.Exception ("L1LossLearner::empiricalLoss => Invalid Inputs");
+
+		for (int i = 0; i < iNumSample; ++i)
+			dblEmpiricalLoss += java.lang.Math.abs (funcLearnerR1ToR1.evaluate (adblX[i]) - adblY[i]);
+
+		return dblEmpiricalLoss;
 	}
 
 	@Override public double empiricalLoss (
 		final org.drip.function.deterministic.RdToR1 funcLearnerRdToR1,
-		final double[] adblX,
-		final double dblY)
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
 		throws java.lang.Exception
 	{
-		if (null == funcLearnerRdToR1 || null == adblX || 0 == adblX.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblY))
+		if (null == funcLearnerRdToR1 || null == gvviX || !(gvviX instanceof
+			org.drip.spaces.instance.ValidatedRealMultidimensional) || null == gvviY || !(gvviY instanceof
+				org.drip.spaces.instance.ValidatedRealUnidimensional))
 			throw new java.lang.Exception ("L1LossLearner::empiricalLoss => Invalid Inputs");
 
-		return java.lang.Math.abs (funcLearnerRdToR1.evaluate (adblX) - dblY);
+		double[][] aadblX = ((org.drip.spaces.instance.ValidatedRealMultidimensional) gvviX).instance();
+
+		double[] adblY = ((org.drip.spaces.instance.ValidatedRealUnidimensional) gvviY).instance();
+
+		double dblEmpiricalLoss = 0.;
+		int iNumSample = aadblX.length;
+
+		if (iNumSample != adblY.length)
+			throw new java.lang.Exception ("L1LossLearner::empiricalLoss => Invalid Inputs");
+
+		for (int i = 0; i < iNumSample; ++i)
+			dblEmpiricalLoss += java.lang.Math.abs (funcLearnerRdToR1.evaluate (aadblX[i]) - adblY[i]);
+
+		return dblEmpiricalLoss;
 	}
 }

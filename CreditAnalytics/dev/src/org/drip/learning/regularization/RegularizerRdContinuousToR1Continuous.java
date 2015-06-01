@@ -86,23 +86,29 @@ public class RegularizerRdContinuousToR1Continuous extends
 		return _dblLambda;
 	}
 
-	@Override public double loss (
+	@Override public double structuralLoss (
+		final org.drip.function.deterministic.RdToR1 funcRdToR1,
 		final double[][] aadblInstance)
 		throws java.lang.Exception
 	{
-		if (null == aadblInstance)
-			throw new java.lang.Exception ("RegularizerRdContinuousToR1Continuous::loss => Invalid Inputs");
+		if (null == funcRdToR1 || null == aadblInstance)
+			throw new java.lang.Exception
+				("RegularizerRdContinuousToR1Continuous::structuralLoss => Invalid Inputs");
 
 		double dblLoss = 0.;
 		int iNumSample = aadblInstance.length;
 
+		if (0 == iNumSample)
+			throw new java.lang.Exception
+				("RegularizerRdContinuousToR1Continuous::structuralLoss => Invalid Inputs");
+
 		int iPNorm = output().pNorm();
 
-		org.drip.function.deterministic.RdToR1 funcRdToR1 = function();
+		org.drip.function.deterministic.RdToR1 funcRegularizerRdToR1 = function();
 
 		for (int i = 0; i < iNumSample; ++i)
-			dblLoss += java.lang.Math.pow (java.lang.Math.abs (funcRdToR1.evaluate (aadblInstance[i])),
-				iPNorm);
+			dblLoss += java.lang.Math.pow (java.lang.Math.abs (funcRegularizerRdToR1.evaluate
+				(aadblInstance[i]) * funcRdToR1.evaluate (aadblInstance[i])), iPNorm);
 
 		return dblLoss / iPNorm;
 	}

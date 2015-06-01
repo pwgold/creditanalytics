@@ -237,4 +237,50 @@ public class FixFloatQuoteSet extends org.drip.product.calib.ProductQuoteSet {
 
 		return _mapQuote.get ("SwapRate");
 	}
+
+	/**
+	 * Set the Rate
+	 * 
+	 * @param dblRate The Rate
+	 * 
+	 * @return TRUE => The Rate successfully set
+	 */
+
+	public boolean setRate (
+		final double dblRate)
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (dblRate)) return false;
+
+		_mapQuote.put ("Rate", dblRate);
+
+		return true;
+	}
+
+	/**
+	 * Indicate if the Rate Field exists
+	 * 
+	 * @return TRUE => The Rate Field Exists
+	 */
+
+	public boolean containsRate()
+	{
+		return _mapQuote.containsKey ("Rate");
+	}
+
+	/**
+	 * Retrieve the Rate
+	 * 
+	 * @return The Rate
+	 * 
+	 * @throws java.lang.Exception Thrown if the Rate Field does not exist
+	 */
+
+	public double rate()
+		throws java.lang.Exception
+	{
+		if (!containsRate())
+			throw new java.lang.Exception ("FixFloatQuoteSet::rate => Does not contain the Rate");
+
+		return _mapQuote.get ("Rate");
+	}
 }

@@ -56,6 +56,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 {
 	private org.drip.learning.bound.CoveringNumberLossBound _funcClassCNLB = null;
 	private org.drip.spaces.functionclass.NormedRxToNormedR1Finite _funcClassRxToR1 = null;
+	private org.drip.learning.regularization.RegularizationFunction _regularizerFunc = null;
 
 	/**
 	 * GeneralizedLearner Constructor
@@ -63,22 +64,110 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 	 * @param funcClassRxToR1 R^x -> R^1 Function Class
 	 * @param funcClassCNLB The Function Class Covering Number based Deviation Upper Probability Bound
 	 * 	Generator
+	 * @param regularizerFunc The Regularizer Function
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public GeneralizedLearner (
 		final org.drip.spaces.functionclass.NormedRxToNormedR1Finite funcClassRxToR1,
-		final org.drip.learning.bound.CoveringNumberLossBound funcClassCNLB)
+		final org.drip.learning.bound.CoveringNumberLossBound funcClassCNLB,
+		final org.drip.learning.regularization.RegularizationFunction regularizerFunc)
 		throws java.lang.Exception
 	{
-		if (null == (_funcClassRxToR1 = funcClassRxToR1) || null == (_funcClassCNLB = funcClassCNLB))
+		if (null == (_funcClassRxToR1 = funcClassRxToR1) || null == (_funcClassCNLB = funcClassCNLB) || null
+			== (_regularizerFunc = regularizerFunc))
 			throw new java.lang.Exception ("GeneralizedLearner ctr: Invalid Inputs");
 	}
 
 	@Override public org.drip.spaces.functionclass.NormedRxToNormedR1Finite functionClass()
 	{
 		return _funcClassRxToR1;
+	}
+
+	@Override public org.drip.learning.regularization.RegularizationFunction regularizerFunction()
+	{
+		return _regularizerFunc;
+	}
+
+	@Override public double structuralLoss (
+		final org.drip.function.deterministic.R1ToR1 funcLearnerR1ToR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
+		throws java.lang.Exception
+	{
+		if (null == gvvi || !(gvvi instanceof org.drip.spaces.instance.ValidatedRealUnidimensional) &&
+			(_funcClassRxToR1 instanceof org.drip.spaces.functionclass.NormedR1ToNormedR1Finite))
+			throw new java.lang.Exception ("GeneralizedLearner::structuralLoss => Invalid Inputs");
+
+		org.drip.function.deterministic.R1ToR1 funcRegularizerR1ToR1 = _regularizerFunc.r1Tor1();
+
+		if (null == funcRegularizerR1ToR1)
+			throw new java.lang.Exception ("GeneralizedLearner::structuralLoss => Invalid Inputs");
+
+		org.drip.spaces.functionclass.NormedR1ToNormedR1Finite finiteClassR1ToR1 =
+			(org.drip.spaces.functionclass.NormedR1ToNormedR1Finite) _funcClassRxToR1;
+
+		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsInput = finiteClassR1ToR1.input();
+
+		if (gmvsInput instanceof org.drip.spaces.metric.RealUnidimensionalNormedSpace)
+			throw new java.lang.Exception ("GeneralizedLearner::structuralLoss => Invalid Inputs");
+
+		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsOutput = finiteClassR1ToR1.output();
+
+		if (gmvsOutput instanceof org.drip.spaces.metric.ContinuousRealUnidimensional)
+			throw new java.lang.Exception ("GeneralizedLearner::structuralLoss => Invalid Inputs");
+
+		org.drip.learning.regularization.RegularizerR1ToR1 regularizerR1ToR1 =
+			org.drip.learning.regularization.RegularizerBuilder.ToR1Continuous (funcRegularizerR1ToR1,
+				(org.drip.spaces.metric.RealUnidimensionalNormedSpace) gmvsInput,
+					(org.drip.spaces.metric.ContinuousRealUnidimensional) gmvsOutput,
+						_regularizerFunc.lambda());
+
+		if (null == regularizerR1ToR1)
+			throw new java.lang.Exception ("GeneralizedLearner::structuralLoss => Invalid Inputs");
+
+		return regularizerR1ToR1.structuralLoss (funcLearnerR1ToR1,
+			((org.drip.spaces.instance.ValidatedRealUnidimensional) gvvi).instance());
+	}
+
+	@Override public double structuralLoss (
+		final org.drip.function.deterministic.RdToR1 funcLearnerRdToR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
+		throws java.lang.Exception
+	{
+		if (null == gvvi || !(gvvi instanceof org.drip.spaces.instance.ValidatedRealMultidimensional) &&
+			(_funcClassRxToR1 instanceof org.drip.spaces.functionclass.NormedRdToNormedR1Finite))
+			throw new java.lang.Exception ("GeneralizedLearner::structuralLoss => Invalid Inputs");
+
+		org.drip.function.deterministic.RdToR1 funcRegularizerRdToR1 = _regularizerFunc.rdTor1();
+
+		if (null == funcRegularizerRdToR1)
+			throw new java.lang.Exception ("GeneralizedLearner::structuralLoss => Invalid Inputs");
+
+		org.drip.spaces.functionclass.NormedRdToNormedR1Finite finiteClassRdToR1 =
+			(org.drip.spaces.functionclass.NormedRdToNormedR1Finite) _funcClassRxToR1;
+
+		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsInput = finiteClassRdToR1.input();
+
+		if (gmvsInput instanceof org.drip.spaces.metric.RealMultidimensionalNormedSpace)
+			throw new java.lang.Exception ("GeneralizedLearner::structuralLoss => Invalid Inputs");
+
+		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsOutput = finiteClassRdToR1.output();
+
+		if (gmvsOutput instanceof org.drip.spaces.metric.ContinuousRealUnidimensional)
+			throw new java.lang.Exception ("GeneralizedLearner::structuralLoss => Invalid Inputs");
+
+		org.drip.learning.regularization.RegularizerRdToR1 regularizerRdToR1 =
+			org.drip.learning.regularization.RegularizerBuilder.ToRdContinuous (funcRegularizerRdToR1,
+				(org.drip.spaces.metric.RealMultidimensionalNormedSpace) gmvsInput,
+					(org.drip.spaces.metric.ContinuousRealUnidimensional) gmvsOutput,
+						_regularizerFunc.lambda());
+
+		if (null == regularizerRdToR1)
+			throw new java.lang.Exception ("GeneralizedLearner::structuralLoss => Invalid Inputs");
+
+		return regularizerRdToR1.structuralLoss (funcLearnerRdToR1,
+			((org.drip.spaces.instance.ValidatedRealMultidimensional) gvvi).instance());
 	}
 
 	/**

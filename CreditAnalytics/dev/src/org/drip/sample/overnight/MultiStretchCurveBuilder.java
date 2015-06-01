@@ -48,8 +48,9 @@ import org.drip.state.inference.*;
  */
 
 /**
- * CustomOvernightCurveBuilder contains a sample of the construction and usage of the Overnight Curve built
- *  using the Overnight Indexed Swap Product Instruments. The Tenors/Quotes to replicate are taken from:
+ * MultiStretchCurveBuilder contains a sample of the construction and usage of the Overnight Curve built
+ *  using the Overnight Indexed Swap Product Instruments in their distinct stretches. The Tenors/Quotes to
+ *  replicate are taken from:
  * 
  *  - Ametrano, F., and M. Bianchetti (2013): Everything You Always Wanted to Know About Multiple Interest
  *  	Rate Curve Bootstrapping but Were Afraid to Ask,
@@ -58,7 +59,7 @@ import org.drip.state.inference.*;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CustomOvernightCurveBuilder {
+public class MultiStretchCurveBuilder {
 
 	private static final FixFloatComponent OTCOISFixFloat (
 		final JulianDate dtSpot,
@@ -187,6 +188,10 @@ public class CustomOvernightCurveBuilder {
 			0.0004, 0.0004, 0.0004		 // Deposit
 		};
 
+		String[] astrDepositMeasure = new String[] {
+			"Rate", "Rate", "Rate"		 // Deposit
+		};
+
 		/*
 		 * Construct the Deposit Instrument Set Stretch Builder
 		 */
@@ -194,7 +199,7 @@ public class CustomOvernightCurveBuilder {
 		LatentStateStretchSpec depositStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (
 			"DEPOSIT",
 			aDepositComp,
-			"ForwardRate",
+			astrDepositMeasure,
 			adblDepositQuote
 		);
 
@@ -218,6 +223,13 @@ public class CustomOvernightCurveBuilder {
 			adblShortEndOISQuote
 		);
 
+		String[] astrShortEndOISMeasure = new String[] {
+			"SwapRate",    //   1W
+			"SwapRate",    //   2W
+			"SwapRate",    //   3W
+			"SwapRate"     //   1M
+		};
+
 		/*
 		 * Construct the Short End OIS Instrument Set Stretch Builder
 		 */
@@ -225,7 +237,7 @@ public class CustomOvernightCurveBuilder {
 		LatentStateStretchSpec oisShortEndStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (
 			"OIS_SHORT_END",
 			aShortEndOISComp,
-			"SwapRate",
+			astrShortEndOISMeasure,
 			adblShortEndOISQuote
 		);
 
@@ -253,6 +265,14 @@ public class CustomOvernightCurveBuilder {
 			adblOISFutureQuote
 		);
 
+		String[] astrOISFutureMeasure = new String[] {
+			"SwapRate",    //   1M
+			"SwapRate",    //   2M
+			"SwapRate",    //   3M
+			"SwapRate",    //   4M
+			"SwapRate"     //   5M
+		};
+
 		/*
 		 * Construct the OIS Future Instrument Set Stretch Builder
 		 */
@@ -260,7 +280,7 @@ public class CustomOvernightCurveBuilder {
 		LatentStateStretchSpec oisFutureStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (
 			"OIS_FUTURE",
 			aOISFutureComp,
-			"SwapRate",
+			astrOISFutureMeasure,
 			adblOISFutureQuote
 		);
 
@@ -289,11 +309,49 @@ public class CustomOvernightCurveBuilder {
 			0.02038     //  30Y
 		};
 
+		String[] adblLongEndOISMeasure = new String[] {
+			"SwapRate",    //  15M
+			"SwapRate",    //  18M
+			"SwapRate",    //  21M
+			"SwapRate",    //   2Y
+			"SwapRate",    //   3Y
+			"SwapRate",    //   4Y
+			"SwapRate",    //   5Y
+			"SwapRate",    //   6Y
+			"SwapRate",    //   7Y
+			"SwapRate",    //   8Y
+			"SwapRate",    //   9Y
+			"SwapRate",    //  10Y
+			"SwapRate",    //  11Y
+			"SwapRate",    //  12Y
+			"SwapRate",    //  15Y
+			"SwapRate",    //  20Y
+			"SwapRate",    //  25Y
+			"SwapRate"     //  30Y
+		};
+
 		CalibratableFixedIncomeComponent[] aLongEndOISComp = OISFromMaturityTenor (
 			dtSpot,
 			strCurrency,
 			new java.lang.String[] {
-				"15M", "18M", "21M", "2Y", "3Y", "4Y", "5Y", "6Y", "7Y", "8Y", "9Y", "10Y", "11Y", "12Y", "15Y", "20Y", "25Y", "30Y"
+				"15M",
+				"18M",
+				"21M",
+				"2Y",
+				"3Y",
+				"4Y",
+				"5Y",
+				"6Y",
+				"7Y",
+				"8Y",
+				"9Y",
+				"10Y",
+				"11Y",
+				"12Y",
+				"15Y",
+				"20Y",
+				"25Y",
+				"30Y"
 			},
 			adblLongEndOISQuote
 		);
@@ -305,7 +363,7 @@ public class CustomOvernightCurveBuilder {
 		LatentStateStretchSpec oisLongEndStretch = LatentStateStretchBuilder.ForwardFundingStretchSpec (
 			"OIS_LONG_END",
 			aLongEndOISComp,
-			"SwapRate",
+			adblLongEndOISMeasure,
 			adblLongEndOISQuote
 		);
 
@@ -330,7 +388,8 @@ public class CustomOvernightCurveBuilder {
 				new PolynomialFunctionSetParams (4),
 				SegmentInelasticDesignControl.Create (2, 2),
 				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
-				null),
+				null
+			),
 			BoundarySettings.NaturalStandard(),
 			MultiSegmentSequence.CALIBRATE,
 			null,
