@@ -48,9 +48,9 @@ package org.drip.learning.kernel;
 
 public abstract class IntegralOperator {
 	private org.drip.learning.kernel.SymmetricRxToNormedR1Kernel _kernel = null;
-	private org.drip.function.deterministic.RdToR1 _funcRdToR1 = null;
+	private org.drip.function.definition.RdToR1 _funcRdToR1 = null;
 	private org.drip.spaces.metric.RealUnidimensionalNormedSpace _runsOperatorOutput = null;
-	private org.drip.measure.continuous.MultivariateDistribution _mdInputBorelSigmaMeasure = null;
+	private org.drip.measure.continuous.Rd _mdInputBorelSigmaMeasure = null;
 
 	/**
 	 * IntegralOperator Constructor
@@ -64,7 +64,7 @@ public abstract class IntegralOperator {
 
 	public IntegralOperator (
 		final org.drip.learning.kernel.SymmetricRxToNormedR1Kernel kernel,
-		final org.drip.function.deterministic.RdToR1 funcRdToR1,
+		final org.drip.function.definition.RdToR1 funcRdToR1,
 		final org.drip.spaces.metric.RealUnidimensionalNormedSpace runsOperatorOutput)
 		throws java.lang.Exception
 	{
@@ -96,7 +96,7 @@ public abstract class IntegralOperator {
 	 * @return The R^d -> R^1 Kernel Operator Function
 	 */
 
-	public org.drip.function.deterministic.RdToR1 kernelOperatorFunction()
+	public org.drip.function.definition.RdToR1 kernelOperatorFunction()
 	{
 		return _funcRdToR1;
 	}
@@ -107,7 +107,7 @@ public abstract class IntegralOperator {
 	 * @return The Input Space Borel Sigma Measure
 	 */
 
-	public org.drip.measure.continuous.MultivariateDistribution inputSpaceBorelMeasure()
+	public org.drip.measure.continuous.Rd inputSpaceBorelMeasure()
 	{
 		return _mdInputBorelSigmaMeasure;
 	}
@@ -137,7 +137,7 @@ public abstract class IntegralOperator {
 		final double[] adblX)
 		throws java.lang.Exception
 	{
-		org.drip.function.deterministic.RdToR1 funcRdToR1 = new org.drip.function.deterministic.RdToR1 (null)
+		org.drip.function.definition.RdToR1 funcRdToR1 = new org.drip.function.definition.RdToR1 (null)
 		{
 			@Override public double evaluate (
 				final double[] adblY)

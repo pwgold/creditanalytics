@@ -113,7 +113,7 @@ public class LognormalLIBORCurveEvolver implements org.drip.dynamics.evolution.C
 		final double dblTargetPointDate)
 		throws java.lang.Exception
 	{
-		org.drip.function.deterministic.R1ToR1 freR1ToR1 = new org.drip.function.deterministic.R1ToR1 (null)
+		org.drip.function.definition.R1ToR1 freR1ToR1 = new org.drip.function.definition.R1ToR1 (null)
 		{
 			@Override public double evaluate (
 				final double dblDate)
@@ -137,8 +137,8 @@ public class LognormalLIBORCurveEvolver implements org.drip.dynamics.evolution.C
 	{
 		final int iNumFactor = adblMultivariateRandom.length;
 
-		org.drip.function.deterministic.R1ToR1 continuousForwardRateR1ToR1 = new
-			org.drip.function.deterministic.R1ToR1 (null) {
+		org.drip.function.definition.R1ToR1 continuousForwardRateR1ToR1 = new
+			org.drip.function.definition.R1ToR1 (null) {
 			@Override public double evaluate (
 				final double dblDate)
 				throws java.lang.Exception
@@ -176,7 +176,7 @@ public class LognormalLIBORCurveEvolver implements org.drip.dynamics.evolution.C
 	{
 		final int iNumFactor = adblMultivariateRandom.length;
 
-		org.drip.function.deterministic.R1ToR1 spotRateR1ToR1 = new org.drip.function.deterministic.R1ToR1
+		org.drip.function.definition.R1ToR1 spotRateR1ToR1 = new org.drip.function.definition.R1ToR1
 			(null) {
 			@Override public double evaluate (
 				final double dblDate)

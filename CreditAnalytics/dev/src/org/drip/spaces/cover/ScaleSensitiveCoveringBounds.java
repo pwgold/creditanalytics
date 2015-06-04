@@ -48,7 +48,7 @@ package org.drip.spaces.cover;
 
 public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.FunctionClassCoveringBounds {
 	private int _iSampleSize = -1;
-	private org.drip.function.deterministic.R1ToR1 _r1r1FatShatter = null;
+	private org.drip.function.definition.R1ToR1 _r1r1FatShatter = null;
 
 	/**
 	 * ScaleSensitiveCoveringBounds Constructor
@@ -60,7 +60,7 @@ public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.Funct
 	 */
 
 	public ScaleSensitiveCoveringBounds (
-		final org.drip.function.deterministic.R1ToR1 r1r1FatShatter,
+		final org.drip.function.definition.R1ToR1 r1r1FatShatter,
 		final int iSampleSize)
 		throws java.lang.Exception
 	{
@@ -74,7 +74,7 @@ public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.Funct
 	 * @return The Fat Shattering Coefficient Function
 	 */
 
-	public org.drip.function.deterministic.R1ToR1 fatShatteringFunction()
+	public org.drip.function.definition.R1ToR1 fatShatteringFunction()
 	{
 		return _r1r1FatShatter;
 	}

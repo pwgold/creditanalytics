@@ -53,7 +53,7 @@ public class NormedR1CombinatorialToR1Continuous extends org.drip.spaces.RxToR1.
 	 */
 
 	public NormedR1CombinatorialToR1Continuous (
-		final org.drip.function.deterministic.R1ToR1 funcR1ToR1,
+		final org.drip.function.definition.R1ToR1 funcR1ToR1,
 		final org.drip.spaces.metric.CombinatorialRealUnidimensional cruInput,
 		final org.drip.spaces.metric.ContinuousRealUnidimensional cruOutput)
 		throws java.lang.Exception
@@ -67,9 +67,9 @@ public class NormedR1CombinatorialToR1Continuous extends org.drip.spaces.RxToR1.
 		org.drip.spaces.metric.CombinatorialRealUnidimensional cru =
 			(org.drip.spaces.metric.CombinatorialRealUnidimensional) input();
 
-		org.drip.function.deterministic.R1ToR1 funcR1ToR1 = function();
+		org.drip.function.definition.R1ToR1 funcR1ToR1 = function();
 
-		org.drip.measure.continuous.UnivariateDistribution uniDist = cru.borelSigmaMeasure();
+		org.drip.measure.continuous.R1 uniDist = cru.borelSigmaMeasure();
 
 		if (null == uniDist || null == funcR1ToR1)
 			throw new java.lang.Exception

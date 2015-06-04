@@ -9,7 +9,7 @@ import org.drip.analytics.daycount.Convention;
 import org.drip.analytics.output.CompositePeriodCouponMetrics;
 import org.drip.analytics.rates.*;
 import org.drip.analytics.support.*;
-import org.drip.function.deterministic1D.*;
+import org.drip.function.R1ToR1.*;
 import org.drip.market.definition.OvernightIndex;
 import org.drip.market.otc.*;
 import org.drip.param.creator.*;

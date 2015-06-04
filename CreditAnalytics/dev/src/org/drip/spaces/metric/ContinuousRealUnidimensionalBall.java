@@ -57,7 +57,7 @@ public class ContinuousRealUnidimensionalBall extends org.drip.spaces.metric.Con
 	public static final ContinuousRealUnidimensionalBall ClosedUnit (
 		final double dblLeftEdge,
 		final double dblRightEdge,
-		final org.drip.measure.continuous.UnivariateDistribution uniDist,
+		final org.drip.measure.continuous.R1 uniDist,
 		final int iPNorm)
 	{
 		try {
@@ -84,7 +84,7 @@ public class ContinuousRealUnidimensionalBall extends org.drip.spaces.metric.Con
 	public ContinuousRealUnidimensionalBall (
 		final double dblLeftEdge,
 		final double dblRightEdge,
-		final org.drip.measure.continuous.UnivariateDistribution uniDist,
+		final org.drip.measure.continuous.R1 uniDist,
 		final int iPNorm,
 		final double dblNormRadius)
 		throws java.lang.Exception

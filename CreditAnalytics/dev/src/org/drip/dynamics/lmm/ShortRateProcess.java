@@ -45,7 +45,7 @@ package org.drip.dynamics.lmm;
 
 public class ShortRateProcess {
 	private double _dblSpotDate = java.lang.Double.NaN;
-	private org.drip.function.stochastic.R1R1ToR1 _funcR1R1ToR1 = null;
+	private org.drip.quant.stochastic.R1R1ToR1 _funcR1R1ToR1 = null;
 
 	/**
 	 * ShortRateProcess Constructor
@@ -58,7 +58,7 @@ public class ShortRateProcess {
 
 	public ShortRateProcess (
 		final double dblSpotDate,
-		final org.drip.function.stochastic.R1R1ToR1 funcR1R1ToR1)
+		final org.drip.quant.stochastic.R1R1ToR1 funcR1R1ToR1)
 		throws java.lang.Exception
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSpotDate = dblSpotDate) || null == (_funcR1R1ToR1
@@ -83,7 +83,7 @@ public class ShortRateProcess {
 	 * @return The Stochastic Short Rate Function
 	 */
 
-	public org.drip.function.stochastic.R1R1ToR1 stochasticShortRateFunction()
+	public org.drip.quant.stochastic.R1R1ToR1 stochasticShortRateFunction()
 	{
 		return _funcR1R1ToR1;
 	}

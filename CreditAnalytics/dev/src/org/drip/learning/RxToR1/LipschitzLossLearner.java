@@ -114,7 +114,7 @@ public class LipschitzLossLearner extends org.drip.learning.RxToR1.GeneralizedLe
 	}
 
 	@Override public double empiricalLoss (
-		final org.drip.function.deterministic.R1ToR1 funcLearnerR1ToR1,
+		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
 		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
 		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
 		throws java.lang.Exception
@@ -123,11 +123,31 @@ public class LipschitzLossLearner extends org.drip.learning.RxToR1.GeneralizedLe
 	}
 
 	@Override public double empiricalLoss (
-		final org.drip.function.deterministic.RdToR1 funcLearnerRdToR1,
+		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
 		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
 		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
 		throws java.lang.Exception
 	{
 		throw new java.lang.Exception ("LipschitzLossLearner::empiricalLoss => No Generic Implementation");
+	}
+
+	@Override public double empiricalRisk (
+		final org.drip.measure.continuous.R1R1 distR1R1,
+		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		throws java.lang.Exception
+	{
+		throw new java.lang.Exception ("LipschitzLossLearner::empiricalRisk => No Generic Implementation");
+	}
+
+	@Override public double empiricalRisk (
+		final org.drip.measure.continuous.RdR1 distRdR1,
+		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		throws java.lang.Exception
+	{
+		throw new java.lang.Exception ("LipschitzLossLearner::empiricalRisk => No Generic Implementation");
 	}
 }

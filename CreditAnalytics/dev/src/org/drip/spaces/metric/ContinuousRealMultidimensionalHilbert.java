@@ -53,7 +53,7 @@ public class ContinuousRealMultidimensionalHilbert extends
 
 	public static final ContinuousRealMultidimensionalHilbert StandardHilbert (
 		final int iDimension,
-		final org.drip.measure.continuous.MultivariateDistribution multiDist)
+		final org.drip.measure.continuous.Rd multiDist)
 	{
 		try {
 			return 0 >= iDimension ? null : new ContinuousRealMultidimensionalHilbert (new
@@ -76,7 +76,7 @@ public class ContinuousRealMultidimensionalHilbert extends
 
 	public ContinuousRealMultidimensionalHilbert (
 		final org.drip.spaces.tensor.ContinuousRealUnidimensionalVector[] aCRU,
-		final org.drip.measure.continuous.MultivariateDistribution multiDist)
+		final org.drip.measure.continuous.Rd multiDist)
 		throws java.lang.Exception
 	{
 		super (aCRU, multiDist, 2);

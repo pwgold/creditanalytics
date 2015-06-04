@@ -53,7 +53,7 @@ public class NormedRdCombinatorialToRdContinuous extends org.drip.spaces.RxToRd.
 	 */
 
 	public NormedRdCombinatorialToRdContinuous (
-		final org.drip.function.deterministic.RdToRd funcRdToRd,
+		final org.drip.function.definition.RdToRd funcRdToRd,
 		final org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach crmbInput,
 		final org.drip.spaces.metric.ContinuousRealMultidimensionalBanach crmbOutput)
 		throws java.lang.Exception
@@ -66,11 +66,11 @@ public class NormedRdCombinatorialToRdContinuous extends org.drip.spaces.RxToRd.
 		org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach crmb =
 			(org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach) input();
 
-		org.drip.measure.continuous.MultivariateDistribution multiDist = crmb.borelSigmaMeasure();
+		org.drip.measure.continuous.Rd multiDist = crmb.borelSigmaMeasure();
 
 		org.drip.spaces.tensor.CombinatorialRealMultidimensionalIterator crmi = crmb.iterator();
 
-		org.drip.function.deterministic.RdToRd funcRdToRd = function();
+		org.drip.function.definition.RdToRd funcRdToRd = function();
 
 		if (null == multiDist || null == funcRdToRd) return null;
 

@@ -40,7 +40,7 @@ public class G2PlusPlus {
 	private double _dblEta = java.lang.Double.NaN;
 	private double _dblRho = java.lang.Double.NaN;
 	private double _dblSigma = java.lang.Double.NaN;
-	private org.drip.function.deterministic.R1ToR1 _auIFRInitial = null;
+	private org.drip.function.definition.R1ToR1 _auIFRInitial = null;
 	private org.drip.sequence.random.UnivariateSequenceGenerator[] _aRSG = null;
 
 	/**
@@ -64,7 +64,7 @@ public class G2PlusPlus {
 		final double dblB,
 		final org.drip.sequence.random.UnivariateSequenceGenerator[] aRSG,
 		final double dblRho,
-		final org.drip.function.deterministic.R1ToR1 auIFRInitial)
+		final org.drip.function.definition.R1ToR1 auIFRInitial)
 		throws java.lang.Exception
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSigma = dblSigma) ||
@@ -126,7 +126,7 @@ public class G2PlusPlus {
 	 * @return The Initial Instantaneous Forward Rate Term Structure
 	 */
 
-	public org.drip.function.deterministic.R1ToR1 ifrInitialTermStructure()
+	public org.drip.function.definition.R1ToR1 ifrInitialTermStructure()
 	{
 		return _auIFRInitial;
 	}

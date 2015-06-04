@@ -41,14 +41,14 @@ package org.drip.spaces.RxToRd;
  */
 
 public abstract class NormedR1ToNormedRd extends org.drip.spaces.RxToRd.NormedRxToNormedRd {
-	private org.drip.function.deterministic.R1ToRd _funcR1ToRd = null;
+	private org.drip.function.definition.R1ToRd _funcR1ToRd = null;
 	private org.drip.spaces.metric.RealUnidimensionalNormedSpace _runsInput = null;
 	private org.drip.spaces.metric.RealMultidimensionalNormedSpace _rmnsOutput = null;
 
 	protected NormedR1ToNormedRd (
 		final org.drip.spaces.metric.RealUnidimensionalNormedSpace runsInput,
 		final org.drip.spaces.metric.RealMultidimensionalNormedSpace rmnsOutput,
-		final org.drip.function.deterministic.R1ToRd funcR1ToRd)
+		final org.drip.function.definition.R1ToRd funcR1ToRd)
 		throws java.lang.Exception
 	{
 		if (null == (_runsInput = runsInput) || null == (_rmnsOutput = rmnsOutput))
@@ -63,7 +63,7 @@ public abstract class NormedR1ToNormedRd extends org.drip.spaces.RxToRd.NormedRx
 	 * @return The Underlying R1ToR1 Function
 	 */
 
-	public org.drip.function.deterministic.R1ToRd function()
+	public org.drip.function.definition.R1ToRd function()
 	{
 		return _funcR1ToRd;
 	}

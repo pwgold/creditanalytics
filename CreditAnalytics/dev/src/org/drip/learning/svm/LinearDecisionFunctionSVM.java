@@ -35,7 +35,7 @@ package org.drip.learning.svm;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LinearDecisionFunctionSVM extends org.drip.function.deterministic.RdToR1 implements
+public abstract class LinearDecisionFunctionSVM extends org.drip.function.definition.RdToR1 implements
 	org.drip.learning.svm.SupportVectorMachine {
 	private double _dblB = java.lang.Double.NaN;
 	private double[] _adblInverseMarginWeight = null;

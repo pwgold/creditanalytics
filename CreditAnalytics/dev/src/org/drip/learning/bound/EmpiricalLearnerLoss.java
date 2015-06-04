@@ -43,9 +43,9 @@ package org.drip.learning.bound;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EmpiricalLearnerLoss extends org.drip.function.deterministic.R1ToR1 {
+public class EmpiricalLearnerLoss extends org.drip.function.definition.R1ToR1 {
 	private double _dblRealization = java.lang.Double.NaN;
-	private org.drip.function.deterministic.R1ToR1 _learner = null;
+	private org.drip.function.definition.R1ToR1 _learner = null;
 
 	/**
 	 * EmpiricalLearnerLoss Constructor
@@ -57,7 +57,7 @@ public class EmpiricalLearnerLoss extends org.drip.function.deterministic.R1ToR1
 	 */
 
 	public EmpiricalLearnerLoss (
-		final org.drip.function.deterministic.R1ToR1 learner,
+		final org.drip.function.definition.R1ToR1 learner,
 		final double dblRealization)
 		throws java.lang.Exception
 	{
@@ -85,7 +85,7 @@ public class EmpiricalLearnerLoss extends org.drip.function.deterministic.R1ToR1
 	 * @return The Learning Function
 	 */
 
-	public org.drip.function.deterministic.R1ToR1 learner()
+	public org.drip.function.definition.R1ToR1 learner()
 	{
 		return _learner;
 	}

@@ -55,7 +55,7 @@ public class LognormalLIBORPointEvolver implements org.drip.dynamics.evolution.P
 		final double dblViewDate)
 		throws java.lang.Exception
 	{
-		org.drip.function.deterministic.R1ToR1 freR1ToR1 = new org.drip.function.deterministic.R1ToR1 (null)
+		org.drip.function.definition.R1ToR1 freR1ToR1 = new org.drip.function.definition.R1ToR1 (null)
 		{
 			@Override public double evaluate (
 				final double dblDate)
@@ -78,8 +78,8 @@ public class LognormalLIBORPointEvolver implements org.drip.dynamics.evolution.P
 
 		final double dblSpotTimeIncrementSQRT = java.lang.Math.sqrt (dblSpotTimeIncrement);
 
-		org.drip.function.deterministic.R1ToR1 continuousForwardRateR1ToR1 = new
-			org.drip.function.deterministic.R1ToR1 (null) {
+		org.drip.function.definition.R1ToR1 continuousForwardRateR1ToR1 = new
+			org.drip.function.definition.R1ToR1 (null) {
 			@Override public double evaluate (
 				final double dblDate)
 				throws java.lang.Exception
@@ -117,7 +117,7 @@ public class LognormalLIBORPointEvolver implements org.drip.dynamics.evolution.P
 
 		final double dblSpotTimeIncrementSQRT = java.lang.Math.sqrt (dblSpotTimeIncrement);
 
-		org.drip.function.deterministic.R1ToR1 spotRateR1ToR1 = new org.drip.function.deterministic.R1ToR1
+		org.drip.function.definition.R1ToR1 spotRateR1ToR1 = new org.drip.function.definition.R1ToR1
 			(null) {
 			@Override public double evaluate (
 				final double dblDate)

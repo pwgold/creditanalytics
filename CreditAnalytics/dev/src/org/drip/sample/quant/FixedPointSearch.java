@@ -1,8 +1,8 @@
 
 package org.drip.sample.quant;
 
-import org.drip.function.deterministic.R1ToR1;
-import org.drip.function.solver1D.*;
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.solverR1ToR1.*;
 import org.drip.quant.calculus.*;
 import org.drip.quant.common.*;
 

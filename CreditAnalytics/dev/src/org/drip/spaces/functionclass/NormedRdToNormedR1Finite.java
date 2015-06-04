@@ -68,7 +68,7 @@ public class NormedRdToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 	 * @return The Finite Class of R^d -> R^1 Functions
 	 */
 
-	public org.drip.function.deterministic.RdToR1[] functionRdToR1Set()
+	public org.drip.function.definition.RdToR1[] functionRdToR1Set()
 	{
 		org.drip.spaces.RxToR1.NormedRdToNormedR1[] aNormedRdToNormedR1 =
 			(org.drip.spaces.RxToR1.NormedRdToNormedR1[]) functionSpaces();
@@ -76,8 +76,8 @@ public class NormedRdToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 		if (null == aNormedRdToNormedR1) return null;
 
 		int iNumFunction = aNormedRdToNormedR1.length;
-		org.drip.function.deterministic.RdToR1[] aRdToR1 = new
-			org.drip.function.deterministic.RdToR1[iNumFunction];
+		org.drip.function.definition.RdToR1[] aRdToR1 = new
+			org.drip.function.definition.RdToR1[iNumFunction];
 
 		for (int i = 0; i < iNumFunction; ++i)
 			aRdToR1[i] = aNormedRdToNormedR1[i].function();

@@ -34,7 +34,7 @@ package org.drip.measure.discrete;
  * @author Lakshmi Krishnamurthy
  */
 
-public class UnivariatePoisson extends org.drip.measure.continuous.UnivariateDistribution {
+public class UnivariatePoisson extends org.drip.measure.continuous.R1 {
 	private double _dblLambda = java.lang.Double.NaN;
 	private double _dblExponentialLambda = java.lang.Double.NaN;
 

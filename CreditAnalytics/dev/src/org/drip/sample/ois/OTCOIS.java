@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.drip.analytics.date.JulianDate;
 import org.drip.analytics.rates.DiscountCurve;
-import org.drip.function.deterministic1D.QuadraticRationalShapeControl;
+import org.drip.function.R1ToR1.QuadraticRationalShapeControl;
 import org.drip.market.otc.*;
 import org.drip.param.creator.*;
 import org.drip.param.market.CurveSurfaceQuoteSet;

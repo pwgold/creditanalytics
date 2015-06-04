@@ -1,7 +1,7 @@
 
 package org.drip.sample.efronstein;
 
-import org.drip.function.deterministic1D.FlatUnivariate;
+import org.drip.function.R1ToR1.FlatUnivariate;
 import org.drip.quant.common.FormatUtil;
 import org.drip.sequence.custom.KernelDensityEstimationL1;
 import org.drip.sequence.functional.*;

@@ -70,11 +70,11 @@ public class IntegralOperatorEigenComponent {
 			(_dblEigenValue = dblEigenValue))
 			throw new java.lang.Exception ("IntegralOperatorEigenComponent ctr: Invalid Inputs");
 
-		final org.drip.function.deterministic.RdToR1 eigenFuncRdToR1 = _eigenFunction.function();
+		final org.drip.function.definition.RdToR1 eigenFuncRdToR1 = _eigenFunction.function();
 
 		if (null != eigenFuncRdToR1) {
-			org.drip.function.deterministic.RdToR1 rkhsFeatureMapRdToR1 = new
-				org.drip.function.deterministic.RdToR1 (null) {
+			org.drip.function.definition.RdToR1 rkhsFeatureMapRdToR1 = new
+				org.drip.function.definition.RdToR1 (null) {
 				@Override public double evaluate (
 					final double[] adblX)
 					throws java.lang.Exception
@@ -162,7 +162,7 @@ public class IntegralOperatorEigenComponent {
 		final double[] adblY)
 		throws java.lang.Exception
 	{
-		org.drip.function.deterministic.RdToR1 eigenFuncRdToR1 = _eigenFunction.function();
+		org.drip.function.definition.RdToR1 eigenFuncRdToR1 = _eigenFunction.function();
 
 		return eigenFuncRdToR1.evaluate (adblX) * eigenFuncRdToR1.evaluate (adblY) * _dblEigenValue;
 	}

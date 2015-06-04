@@ -52,8 +52,8 @@ package org.drip.learning.regularization;
 
 public class RegularizationFunction {
 	private double _dblLambda = java.lang.Double.NaN;
-	private org.drip.function.deterministic.R1ToR1 _regR1ToR1 = null;
-	private org.drip.function.deterministic.RdToR1 _regRdToR1 = null;
+	private org.drip.function.definition.R1ToR1 _regR1ToR1 = null;
+	private org.drip.function.definition.RdToR1 _regRdToR1 = null;
 
 	/**
 	 * RegularizationFunction Constructor
@@ -66,8 +66,8 @@ public class RegularizationFunction {
 	 */
 
 	public RegularizationFunction (
-		final org.drip.function.deterministic.R1ToR1 regR1ToR1,
-		final org.drip.function.deterministic.RdToR1 regRdToR1,
+		final org.drip.function.definition.R1ToR1 regR1ToR1,
+		final org.drip.function.definition.RdToR1 regRdToR1,
 		final double dblLambda)
 		throws java.lang.Exception
 	{
@@ -82,7 +82,7 @@ public class RegularizationFunction {
 	 * @return The R^1 -> R^1 Regularization Function Instance
 	 */
 
-	public org.drip.function.deterministic.R1ToR1 r1Tor1()
+	public org.drip.function.definition.R1ToR1 r1Tor1()
 	{
 		return _regR1ToR1;
 	}
@@ -93,7 +93,7 @@ public class RegularizationFunction {
 	 * @return The R^d -> R^1 Regularization Function Instance
 	 */
 
-	public org.drip.function.deterministic.RdToR1 rdTor1()
+	public org.drip.function.definition.RdToR1 rdTor1()
 	{
 		return _regRdToR1;
 	}

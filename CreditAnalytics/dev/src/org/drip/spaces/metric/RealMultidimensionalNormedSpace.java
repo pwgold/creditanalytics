@@ -49,7 +49,7 @@ public interface RealMultidimensionalNormedSpace extends org.drip.spaces.metric.
 	 * @return The Borel Sigma Multivariate Probability Measure
 	 */
 
-	public abstract org.drip.measure.continuous.MultivariateDistribution borelSigmaMeasure();
+	public abstract org.drip.measure.continuous.Rd borelSigmaMeasure();
 
 	/**
 	 * Compute the Supremum Norm of the Sample
@@ -98,6 +98,6 @@ public interface RealMultidimensionalNormedSpace extends org.drip.spaces.metric.
 	 */
 
 	public double borelMeasureSpaceExpectation (
-		final org.drip.function.deterministic.RdToR1 funcRdToR1)
+		final org.drip.function.definition.RdToR1 funcRdToR1)
 		throws java.lang.Exception;
 }

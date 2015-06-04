@@ -124,7 +124,7 @@ public class DomesticCollateralizedForeignForward {
 
 		if (dblValueDate > _dblMaturity) return null;
 
-		org.drip.function.deterministic.R1ToR1 auFX = csqs.fxCurve
+		org.drip.function.definition.R1ToR1 auFX = csqs.fxCurve
 			(org.drip.state.identifier.FXLabel.Standard (_cp));
 
 		if (null == auFX) return null;

@@ -90,8 +90,23 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 		return _regularizerFunc;
 	}
 
+	@Override public org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumEmpiricalLoss (
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+	{
+		try {
+			return new org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator
+				(org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator.SUPREMUM_PENALTY_EMPIRICAL_LOSS,
+					this, gvviY, null, null).supremum (gvviX);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
 	@Override public double structuralLoss (
-		final org.drip.function.deterministic.R1ToR1 funcLearnerR1ToR1,
+		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
 		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
 		throws java.lang.Exception
 	{
@@ -99,7 +114,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 			(_funcClassRxToR1 instanceof org.drip.spaces.functionclass.NormedR1ToNormedR1Finite))
 			throw new java.lang.Exception ("GeneralizedLearner::structuralLoss => Invalid Inputs");
 
-		org.drip.function.deterministic.R1ToR1 funcRegularizerR1ToR1 = _regularizerFunc.r1Tor1();
+		org.drip.function.definition.R1ToR1 funcRegularizerR1ToR1 = _regularizerFunc.r1Tor1();
 
 		if (null == funcRegularizerR1ToR1)
 			throw new java.lang.Exception ("GeneralizedLearner::structuralLoss => Invalid Inputs");
@@ -131,7 +146,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 	}
 
 	@Override public double structuralLoss (
-		final org.drip.function.deterministic.RdToR1 funcLearnerRdToR1,
+		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
 		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
 		throws java.lang.Exception
 	{
@@ -139,7 +154,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 			(_funcClassRxToR1 instanceof org.drip.spaces.functionclass.NormedRdToNormedR1Finite))
 			throw new java.lang.Exception ("GeneralizedLearner::structuralLoss => Invalid Inputs");
 
-		org.drip.function.deterministic.RdToR1 funcRegularizerRdToR1 = _regularizerFunc.rdTor1();
+		org.drip.function.definition.RdToR1 funcRegularizerRdToR1 = _regularizerFunc.rdTor1();
 
 		if (null == funcRegularizerRdToR1)
 			throw new java.lang.Exception ("GeneralizedLearner::structuralLoss => Invalid Inputs");
@@ -168,6 +183,261 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 
 		return regularizerRdToR1.structuralLoss (funcLearnerRdToR1,
 			((org.drip.spaces.instance.ValidatedRealMultidimensional) gvvi).instance());
+	}
+
+	@Override public org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumStructuralLoss (
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX)
+	{
+		try {
+			return new org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator
+				(org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator.SUPREMUM_PENALTY_STRUCTURAL_LOSS,
+					this, null, null, null).supremum (gvviX);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@Override public double regularizedLoss (
+		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		throws java.lang.Exception
+	{
+		return empiricalLoss (funcLearnerR1ToR1, gvviX, gvviY) + structuralLoss (funcLearnerR1ToR1, gvviX);
+	}
+
+	@Override public double regularizedLoss (
+		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		throws java.lang.Exception
+	{
+		return empiricalLoss (funcLearnerRdToR1, gvviX, gvviY) + structuralLoss (funcLearnerRdToR1, gvviX);
+	}
+
+	@Override public org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumRegularizedLoss (
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+	{
+		try {
+			return new org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator
+				(org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator.SUPREMUM_PENALTY_REGULARIZED_LOSS,
+				this, gvviY, null, null).supremum (gvviX);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@Override public org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumEmpiricalRisk (
+		final org.drip.measure.continuous.R1R1 distR1R1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+	{
+		try {
+			return new org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator
+				(org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator.SUPREMUM_PENALTY_EMPIRICAL_RISK,
+					this, gvviY, distR1R1, null).supremum (gvviX);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@Override public org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumEmpiricalRisk (
+		final org.drip.measure.continuous.RdR1 distRdR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+	{
+		try {
+			return new org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator
+				(org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator.SUPREMUM_PENALTY_EMPIRICAL_RISK,
+					this, gvviY, null, distRdR1).supremum (gvviX);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@Override public double structuralRisk (
+		final org.drip.measure.continuous.R1R1 distR1R1,
+		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		throws java.lang.Exception
+	{
+		if (null == distR1R1 || null == gvviX || null == gvviY || !(gvviX instanceof
+			org.drip.spaces.instance.ValidatedRealUnidimensional) || !(gvviY instanceof
+				org.drip.spaces.instance.ValidatedRealUnidimensional) && !(_funcClassRxToR1 instanceof
+					org.drip.spaces.functionclass.NormedR1ToNormedR1Finite))
+			throw new java.lang.Exception ("GeneralizedLearner::structuralRisk => Invalid Inputs");
+
+		org.drip.function.definition.R1ToR1 funcRegularizerR1ToR1 = _regularizerFunc.r1Tor1();
+
+		if (null == funcRegularizerR1ToR1)
+			throw new java.lang.Exception ("GeneralizedLearner::structuralRisk => Invalid Inputs");
+
+		org.drip.spaces.functionclass.NormedR1ToNormedR1Finite finiteClassR1ToR1 =
+			(org.drip.spaces.functionclass.NormedR1ToNormedR1Finite) _funcClassRxToR1;
+
+		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsInput = finiteClassR1ToR1.input();
+
+		if (gmvsInput instanceof org.drip.spaces.metric.RealUnidimensionalNormedSpace)
+			throw new java.lang.Exception ("GeneralizedLearner::structuralRisk => Invalid Inputs");
+
+		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsOutput = finiteClassR1ToR1.output();
+
+		if (gmvsOutput instanceof org.drip.spaces.metric.ContinuousRealUnidimensional)
+			throw new java.lang.Exception ("GeneralizedLearner::structuralRisk => Invalid Inputs");
+
+		org.drip.learning.regularization.RegularizerR1ToR1 regularizerR1ToR1 =
+			org.drip.learning.regularization.RegularizerBuilder.ToR1Continuous (funcRegularizerR1ToR1,
+				(org.drip.spaces.metric.RealUnidimensionalNormedSpace) gmvsInput,
+					(org.drip.spaces.metric.ContinuousRealUnidimensional) gmvsOutput,
+						_regularizerFunc.lambda());
+
+		if (null == regularizerR1ToR1)
+			throw new java.lang.Exception ("GeneralizedLearner::structuralRisk => Invalid Inputs");
+
+		return regularizerR1ToR1.structuralRisk (distR1R1, funcLearnerR1ToR1,
+			((org.drip.spaces.instance.ValidatedRealUnidimensional) gvviX).instance(),
+				((org.drip.spaces.instance.ValidatedRealUnidimensional) gvviY).instance());
+	}
+
+	@Override public double structuralRisk (
+		final org.drip.measure.continuous.RdR1 distRdR1,
+		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		throws java.lang.Exception
+	{
+		if (null == distRdR1 || null == gvviX || null == gvviY || !(gvviX instanceof
+			org.drip.spaces.instance.ValidatedRealMultidimensional) || !(gvviY instanceof
+				org.drip.spaces.instance.ValidatedRealUnidimensional) && !(_funcClassRxToR1 instanceof
+					org.drip.spaces.functionclass.NormedR1ToNormedR1Finite))
+			throw new java.lang.Exception ("GeneralizedLearner::structuralRisk => Invalid Inputs");
+
+		org.drip.function.definition.RdToR1 funcRegularizerRdToR1 = _regularizerFunc.rdTor1();
+
+		if (null == funcRegularizerRdToR1)
+			throw new java.lang.Exception ("GeneralizedLearner::structuralRisk => Invalid Inputs");
+
+		org.drip.spaces.functionclass.NormedRdToNormedR1Finite finiteClassRdToR1 =
+			(org.drip.spaces.functionclass.NormedRdToNormedR1Finite) _funcClassRxToR1;
+
+		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsInput = finiteClassRdToR1.input();
+
+		if (gmvsInput instanceof org.drip.spaces.metric.RealMultidimensionalNormedSpace)
+			throw new java.lang.Exception ("GeneralizedLearner::structuralRisk => Invalid Inputs");
+
+		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsOutput = finiteClassRdToR1.output();
+
+		if (gmvsOutput instanceof org.drip.spaces.metric.ContinuousRealUnidimensional)
+			throw new java.lang.Exception ("GeneralizedLearner::structuralRisk => Invalid Inputs");
+
+		org.drip.learning.regularization.RegularizerRdToR1 regularizerRdToR1 =
+			org.drip.learning.regularization.RegularizerBuilder.ToRdContinuous (funcRegularizerRdToR1,
+				(org.drip.spaces.metric.RealMultidimensionalNormedSpace) gmvsInput,
+					(org.drip.spaces.metric.ContinuousRealUnidimensional) gmvsOutput,
+						_regularizerFunc.lambda());
+
+		if (null == regularizerRdToR1)
+			throw new java.lang.Exception ("GeneralizedLearner::structuralRisk => Invalid Inputs");
+
+		return regularizerRdToR1.structuralRisk (distRdR1, funcLearnerRdToR1,
+			((org.drip.spaces.instance.ValidatedRealMultidimensional) gvviX).instance(),
+				((org.drip.spaces.instance.ValidatedRealUnidimensional) gvviY).instance());
+	}
+
+	@Override public org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumStructuralRisk (
+		final org.drip.measure.continuous.R1R1 distR1R1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+	{
+		try {
+			return new org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator
+				(org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator.SUPREMUM_PENALTY_STRUCTURAL_RISK,
+					this, gvviY, distR1R1, null).supremum (gvviX);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@Override public org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumStructuralRisk (
+		final org.drip.measure.continuous.RdR1 distRdR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+	{
+		try {
+			return new org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator
+				(org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator.SUPREMUM_PENALTY_STRUCTURAL_RISK,
+					this, gvviY, null, distRdR1).supremum (gvviX);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@Override public double regularizedRisk (
+		final org.drip.measure.continuous.R1R1 distR1R1,
+		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		throws java.lang.Exception
+	{
+		return empiricalRisk (distR1R1, funcLearnerR1ToR1, gvviX, gvviY) + structuralRisk (distR1R1,
+			funcLearnerR1ToR1, gvviX, gvviY);
+	}
+
+	@Override public double regularizedRisk (
+		final org.drip.measure.continuous.RdR1 distRdR1,
+		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		throws java.lang.Exception
+	{
+		return empiricalRisk (distRdR1, funcLearnerRdToR1, gvviX, gvviY) + structuralRisk (distRdR1,
+			funcLearnerRdToR1, gvviX, gvviY);
+	}
+
+	@Override public org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumRegularizedRisk (
+		final org.drip.measure.continuous.R1R1 distR1R1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+	{
+		try {
+			return new org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator
+				(org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator.SUPREMUM_PENALTY_REGULARIZED_RISK,
+				this, gvviY, distR1R1, null).supremum (gvviX);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@Override public org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumRegularizedRisk (
+		final org.drip.measure.continuous.RdR1 distRdR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+	{
+		try {
+			return new org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator
+				(org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator.SUPREMUM_PENALTY_REGULARIZED_RISK,
+				this, gvviY, null, distRdR1).supremum (gvviX);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
@@ -230,8 +500,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 			throw new java.lang.Exception
 				("GeneralizedLearner::genericCoveringSampleSize => Invalid Inputs");
 
-		org.drip.function.deterministic.R1ToR1 funcDeviationUpperProbabilityBound = new
-			org.drip.function.deterministic.R1ToR1 (null) {
+		org.drip.function.definition.R1ToR1 funcDeviationUpperProbabilityBound = new
+			org.drip.function.definition.R1ToR1 (null) {
 			@Override public double evaluate (
 				final double dblSampleSize)
 				throws java.lang.Exception
@@ -240,8 +510,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 			}
 		};
 
-		org.drip.function.solver1D.FixedPointFinderOutput fpfo = new
-			org.drip.function.solver1D.FixedPointFinderZheng (dblDeviationUpperProbabilityBound,
+		org.drip.function.solverR1ToR1.FixedPointFinderOutput fpfo = new
+			org.drip.function.solverR1ToR1.FixedPointFinderZheng (dblDeviationUpperProbabilityBound,
 				funcDeviationUpperProbabilityBound, false).findRoot();
 
 		if (null == fpfo || !fpfo.containsRoot())
@@ -305,8 +575,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 			throw new java.lang.Exception
 				("GeneralizedLearner::genericCoveringSampleSize => Invalid Inputs");
 
-		org.drip.function.deterministic.R1ToR1 funcDeviationUpperProbabilityBound = new
-			org.drip.function.deterministic.R1ToR1 (null) {
+		org.drip.function.definition.R1ToR1 funcDeviationUpperProbabilityBound = new
+			org.drip.function.definition.R1ToR1 (null) {
 			@Override public double evaluate (
 				final double dblSampleSize)
 				throws java.lang.Exception
@@ -315,8 +585,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 			}
 		};
 
-		org.drip.function.solver1D.FixedPointFinderOutput fpfo = new
-			org.drip.function.solver1D.FixedPointFinderZheng (dblDeviationUpperProbabilityBound,
+		org.drip.function.solverR1ToR1.FixedPointFinderOutput fpfo = new
+			org.drip.function.solverR1ToR1.FixedPointFinderZheng (dblDeviationUpperProbabilityBound,
 				funcDeviationUpperProbabilityBound, false).findRoot();
 
 		if (null == fpfo || !fpfo.containsRoot())
@@ -351,8 +621,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 			throw new java.lang.Exception
 				("GeneralizedLearner::regressorCoveringProbabilityBound => Invalid Inputs");
 
-		org.drip.function.deterministic.R1ToR1 funcSampleCoefficient = new
-			org.drip.function.deterministic.R1ToR1 (null) {
+		org.drip.function.definition.R1ToR1 funcSampleCoefficient = new
+			org.drip.function.definition.R1ToR1 (null) {
 			@Override public double evaluate (
 				final double dblSampleSize)
 				throws java.lang.Exception
@@ -392,8 +662,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 			throw new java.lang.Exception
 				("GeneralizedLearner::regressorCoveringSampleSize => Invalid Inputs");
 
-		org.drip.function.deterministic.R1ToR1 funcDeviationUpperProbabilityBound = new
-			org.drip.function.deterministic.R1ToR1 (null) {
+		org.drip.function.definition.R1ToR1 funcDeviationUpperProbabilityBound = new
+			org.drip.function.definition.R1ToR1 (null) {
 			@Override public double evaluate (
 				final double dblSampleSize)
 				throws java.lang.Exception
@@ -402,8 +672,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 			}
 		};
 
-		org.drip.function.solver1D.FixedPointFinderOutput fpfo = new
-			org.drip.function.solver1D.FixedPointFinderZheng (dblDeviationUpperProbabilityBound,
+		org.drip.function.solverR1ToR1.FixedPointFinderOutput fpfo = new
+			org.drip.function.solverR1ToR1.FixedPointFinderZheng (dblDeviationUpperProbabilityBound,
 				funcDeviationUpperProbabilityBound, false).findRoot();
 
 		if (null == fpfo || !fpfo.containsRoot())
@@ -442,8 +712,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 			throw new java.lang.Exception
 				("GeneralizedLearner::regressorCoveringProbabilityBound => Invalid Inputs");
 
-		org.drip.function.deterministic.R1ToR1 funcSampleCoefficient = new
-			org.drip.function.deterministic.R1ToR1 (null) {
+		org.drip.function.definition.R1ToR1 funcSampleCoefficient = new
+			org.drip.function.definition.R1ToR1 (null) {
 			@Override public double evaluate (
 				final double dblSampleSize)
 				throws java.lang.Exception
@@ -484,8 +754,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 			throw new java.lang.Exception
 				("GeneralizedLearner::regressorCoveringSampleSize => Invalid Inputs");
 
-		org.drip.function.deterministic.R1ToR1 funcDeviationUpperProbabilityBound = new
-			org.drip.function.deterministic.R1ToR1 (null) {
+		org.drip.function.definition.R1ToR1 funcDeviationUpperProbabilityBound = new
+			org.drip.function.definition.R1ToR1 (null) {
 			@Override public double evaluate (
 				final double dblSampleSize)
 				throws java.lang.Exception
@@ -494,8 +764,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 			}
 		};
 
-		org.drip.function.solver1D.FixedPointFinderOutput fpfo = new
-			org.drip.function.solver1D.FixedPointFinderZheng (dblDeviationUpperProbabilityBound,
+		org.drip.function.solverR1ToR1.FixedPointFinderOutput fpfo = new
+			org.drip.function.solverR1ToR1.FixedPointFinderZheng (dblDeviationUpperProbabilityBound,
 				funcDeviationUpperProbabilityBound, false).findRoot();
 
 		if (null == fpfo || !fpfo.containsRoot())

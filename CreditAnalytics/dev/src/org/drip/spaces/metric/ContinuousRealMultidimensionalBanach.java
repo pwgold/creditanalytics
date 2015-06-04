@@ -43,7 +43,7 @@ public class ContinuousRealMultidimensionalBanach extends
 	org.drip.spaces.tensor.ContinuousRealMultidimensionalVector implements
 		org.drip.spaces.metric.RealMultidimensionalNormedSpace {
 	private int _iPNorm = -1;
-	private org.drip.measure.continuous.MultivariateDistribution _multiDist = null;
+	private org.drip.measure.continuous.Rd _multiDist = null;
 
 	/**
 	 * Construct the Standard l^p R^d Continuous Banach Space Instance
@@ -57,7 +57,7 @@ public class ContinuousRealMultidimensionalBanach extends
 
 	public static final ContinuousRealMultidimensionalBanach StandardBanach (
 		final int iDimension,
-		final org.drip.measure.continuous.MultivariateDistribution multiDist,
+		final org.drip.measure.continuous.Rd multiDist,
 		final int iPNorm)
 	{
 		try {
@@ -81,7 +81,7 @@ public class ContinuousRealMultidimensionalBanach extends
 
 	public static final ContinuousRealMultidimensionalBanach SupremumBanach (
 		final int iDimension,
-		final org.drip.measure.continuous.MultivariateDistribution multiDist)
+		final org.drip.measure.continuous.Rd multiDist)
 	{
 		try {
 			return 0 >= iDimension ? null : new ContinuousRealMultidimensionalBanach (new
@@ -105,7 +105,7 @@ public class ContinuousRealMultidimensionalBanach extends
 
 	public ContinuousRealMultidimensionalBanach (
 		final org.drip.spaces.tensor.ContinuousRealUnidimensionalVector[] aCURV,
-		final org.drip.measure.continuous.MultivariateDistribution multiDist,
+		final org.drip.measure.continuous.Rd multiDist,
 		final int iPNorm)
 		throws java.lang.Exception
 	{
@@ -123,7 +123,7 @@ public class ContinuousRealMultidimensionalBanach extends
 		return _iPNorm;
 	}
 
-	@Override public org.drip.measure.continuous.MultivariateDistribution borelSigmaMeasure()
+	@Override public org.drip.measure.continuous.Rd borelSigmaMeasure()
 	{
 		return _multiDist;
 	}
@@ -172,8 +172,8 @@ public class ContinuousRealMultidimensionalBanach extends
 	{
 		if (null == _multiDist) return null;
 
-		org.drip.function.deterministic.RdToR1 am = new
-			org.drip.function.deterministic.RdToR1 (null) {
+		org.drip.function.definition.RdToR1 am = new
+			org.drip.function.definition.RdToR1 (null) {
 			@Override public double evaluate (
 				final double[] adblX)
 				throws java.lang.Exception
@@ -182,7 +182,7 @@ public class ContinuousRealMultidimensionalBanach extends
 			}
 		};
 
-		org.drip.function.deterministic.VariateOutputPair vopMode = am.maxima (leftDimensionEdge(),
+		org.drip.function.definition.VariateOutputPair vopMode = am.maxima (leftDimensionEdge(),
 			rightDimensionEdge());
 
 		return null == vopMode ? null : vopMode.variates();
@@ -195,8 +195,8 @@ public class ContinuousRealMultidimensionalBanach extends
 			throw new java.lang.Exception
 				("ContinuousRealMultidimensionalBanach::populationMetricNorm => Invalid Inputs");
 
-		org.drip.function.deterministic.RdToR1 am = new
-			org.drip.function.deterministic.RdToR1 (null) {
+		org.drip.function.definition.RdToR1 am = new
+			org.drip.function.definition.RdToR1 (null) {
 			@Override public double evaluate (
 				final double[] adblX)
 				throws java.lang.Exception
@@ -215,15 +215,15 @@ public class ContinuousRealMultidimensionalBanach extends
 	}
 
 	@Override public double borelMeasureSpaceExpectation (
-		final org.drip.function.deterministic.RdToR1 funcRdToR1)
+		final org.drip.function.definition.RdToR1 funcRdToR1)
 		throws java.lang.Exception
 	{
 		if (null == _multiDist || null == funcRdToR1)
 			throw new java.lang.Exception
 				("ContinuousRealMultidimensionalBanach::borelMeasureSpaceExpectation => Invalid Inputs");
 
-		org.drip.function.deterministic.RdToR1 am = new
-			org.drip.function.deterministic.RdToR1 (null) {
+		org.drip.function.definition.RdToR1 am = new
+			org.drip.function.definition.RdToR1 (null) {
 			@Override public double evaluate (
 				final double[] adblX)
 				throws java.lang.Exception

@@ -1,8 +1,8 @@
 
 package org.drip.sample.sequence;
 
-import org.drip.function.deterministic.R1ToR1;
-import org.drip.function.deterministic1D.*;
+import org.drip.function.R1ToR1.*;
+import org.drip.function.definition.R1ToR1;
 import org.drip.quant.common.FormatUtil;
 import org.drip.sequence.metrics.*;
 import org.drip.sequence.random.BoundedUniform;

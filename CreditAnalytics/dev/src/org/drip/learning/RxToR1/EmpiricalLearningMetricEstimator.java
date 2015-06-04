@@ -100,7 +100,7 @@ public interface EmpiricalLearningMetricEstimator {
 	 */
 
 	public abstract double empiricalLoss (
-		final org.drip.function.deterministic.R1ToR1 funcLearnerR1ToR1,
+		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
 		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
 		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
 		throws java.lang.Exception;
@@ -118,7 +118,23 @@ public interface EmpiricalLearningMetricEstimator {
 	 */
 
 	public abstract double empiricalLoss (
-		final org.drip.function.deterministic.RdToR1 funcLearnerRdToR1,
+		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Supremum Empirical Sample Loss
+	 * 
+	 * @param gvviX The Validated Predictor Instance
+	 * @param gvviY The Validated Response Instance
+	 * 
+	 * @return The Supremum Empirical Sample Loss
+	 * 
+	 * @throws java.lang.Exception Thrown if the Supremum Empirical Sample Loss cannot be computed
+	 */
+
+	public abstract org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumEmpiricalLoss (
 		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
 		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
 		throws java.lang.Exception;
@@ -135,7 +151,7 @@ public interface EmpiricalLearningMetricEstimator {
 	 */
 
 	public abstract double structuralLoss (
-		final org.drip.function.deterministic.R1ToR1 funcLearnerR1ToR1,
+		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
 		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
 		throws java.lang.Exception;
 
@@ -151,7 +167,301 @@ public interface EmpiricalLearningMetricEstimator {
 	 */
 
 	public abstract double structuralLoss (
-		final org.drip.function.deterministic.RdToR1 funcLearnerRdToR1,
+		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
 		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Supremum Structural Sample Loss
+	 * 
+	 * @param gvviX The Validated Predictor Instance
+	 * 
+	 * @return The Supremum Structural Sample Loss
+	 * 
+	 * @throws java.lang.Exception Thrown if the Supremum Structural Sample Loss cannot be computed
+	 */
+
+	public abstract org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumStructuralLoss (
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Regularized Sample Loss (Empirical + Structural)
+	 * 
+	 * @param funcLearnerR1ToR1 The R^1 -> R^1 Learner Function
+	 * @param gvviX The Validated Predictor Instance
+	 * @param gvviY The Validated Response Instance
+	 * 
+	 * @return The Regularized Loss
+	 * 
+	 * @throws java.lang.Exception Thrown if the Regularized Loss cannot be computed
+	 */
+
+	public abstract double regularizedLoss (
+		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Regularized Sample Loss (Empirical + Structural)
+	 * 
+	 * @param funcLearnerRdToR1 The R^d -> R^1 Learner Function
+	 * @param gvviX The Validated Predictor Instance
+	 * @param gvviY The Validated Response Instance
+	 * 
+	 * @return The Regularized Loss
+	 * 
+	 * @throws java.lang.Exception Thrown if the Regularized Loss cannot be computed
+	 */
+
+	public abstract double regularizedLoss (
+		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Supremum Regularized Sample Loss
+	 * 
+	 * @param gvviX The Validated Predictor Instance
+	 * @param gvviY The Validated Response Instance
+	 * 
+	 * @return The Supremum Regularized Sample Loss
+	 * 
+	 * @throws java.lang.Exception Thrown if the Supremum Regularized Sample Loss cannot be computed
+	 */
+
+	public abstract org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumRegularizedLoss (
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Empirical Sample Risk
+	 * 
+	 * @param distR1R1 R^1 R^1 Multivariate Measure
+	 * @param funcLearnerR1ToR1 The R^1 -> R^1 Learner Function
+	 * @param gvviX The Validated Predictor Instance
+	 * @param gvviY The Validated Response Instance
+	 * 
+	 * @return The Empirical Sample Risk
+	 * 
+	 * @throws java.lang.Exception Thrown if the Empirical Sample Risk cannot be computed
+	 */
+
+	public abstract double empiricalRisk (
+		final org.drip.measure.continuous.R1R1 distR1R1,
+		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Empirical Sample Risk
+	 * 
+	 * @param distRdR1 R^d R^1 Multivariate Measure
+	 * @param funcLearnerRdToR1 The R^d -> R^1 Learner Function
+	 * @param gvviX The Validated Predictor Instance
+	 * @param gvviY The Validated Response Instance
+	 * 
+	 * @return The Empirical Sample Risk
+	 * 
+	 * @throws java.lang.Exception Thrown if the Empirical Sample Risk cannot be computed
+	 */
+
+	public abstract double empiricalRisk (
+		final org.drip.measure.continuous.RdR1 distRdR1,
+		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Supremum Empirical Sample Risk
+	 * 
+	 * @param distR1R1 R^1 R^1 Multivariate Measure
+	 * @param gvviX The Validated Predictor Instance
+	 * @param gvviY The Validated Response Instance
+	 * 
+	 * @return The Supremum Empirical Sample Loss
+	 * 
+	 * @throws java.lang.Exception Thrown if the Supremum Empirical Sample Loss cannot be computed
+	 */
+
+	public abstract org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumEmpiricalRisk (
+		final org.drip.measure.continuous.R1R1 distR1R1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Supremum Empirical Sample Risk
+	 * 
+	 * @param distRdR1 R^d R^1 Multivariate Measure
+	 * @param gvviX The Validated Predictor Instance
+	 * @param gvviY The Validated Response Instance
+	 * 
+	 * @return The Supremum Empirical Sample Loss
+	 * 
+	 * @throws java.lang.Exception Thrown if the Supremum Empirical Sample Loss cannot be computed
+	 */
+
+	public abstract org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumEmpiricalRisk (
+		final org.drip.measure.continuous.RdR1 distRdR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Structural Sample Risk
+	 * 
+	 * @param distR1R1 R^1 R^1 Multivariate Measure
+	 * @param funcLearnerR1ToR1 The R^1 -> R^1 Learner Function
+	 * @param gvviX The Validated Predictor Instance
+	 * @param gvviY The Validated Response Instance
+	 * 
+	 * @return The Structural Risk
+	 * 
+	 * @throws java.lang.Exception Thrown if the Structural Risk cannot be computed
+	 */
+
+	public abstract double structuralRisk (
+		final org.drip.measure.continuous.R1R1 distR1R1,
+		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Structural Sample Risk
+	 * 
+	 * @param distRdR1 R^d R^1 Multivariate Measure
+	 * @param funcLearnerRdToR1 The R^d -> R^1 Learner Function
+	 * @param gvviX The Validated Predictor Instance
+	 * @param gvviY The Validated Response Instance
+	 * 
+	 * @return The Structural Risk
+	 * 
+	 * @throws java.lang.Exception Thrown if the Structural Risk cannot be computed
+	 */
+
+	public abstract double structuralRisk (
+		final org.drip.measure.continuous.RdR1 distRdR1,
+		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Supremum Structural Sample Risk
+	 * 
+	 * @param distR1R1 R^1 R^1 Multivariate Measure
+	 * @param gvviX The Validated Predictor Instance
+	 * @param gvviY The Validated Response Instance
+	 * 
+	 * @return The Supremum Structural Sample Loss
+	 * 
+	 * @throws java.lang.Exception Thrown if the Supremum Structural Sample Risk cannot be computed
+	 */
+
+	public abstract org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumStructuralRisk (
+		final org.drip.measure.continuous.R1R1 distR1R1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Supremum Structural Sample Risk
+	 * 
+	 * @param distRdR1 R^d R^1 Multivariate Measure
+	 * @param gvviX The Validated Predictor Instance
+	 * @param gvviY The Validated Response Instance
+	 * 
+	 * @return The Supremum Structural Sample Risk
+	 * 
+	 * @throws java.lang.Exception Thrown if the Supremum Structural Sample Risk cannot be computed
+	 */
+
+	public abstract org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumStructuralRisk (
+		final org.drip.measure.continuous.RdR1 distRdR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Regularized Sample Risk (Empirical + Structural)
+	 * 
+	 * @param distR1R1 R^1 R^1 Multivariate Measure
+	 * @param funcLearnerR1ToR1 The R^1 -> R^1 Learner Function
+	 * @param gvviX The Validated Predictor Instance
+	 * @param gvviY The Validated Response Instance
+	 * 
+	 * @return The Regularized Sample Risk
+	 * 
+	 * @throws java.lang.Exception Thrown if the Regularized Sample Risk cannot be computed
+	 */
+
+	public abstract double regularizedRisk (
+		final org.drip.measure.continuous.R1R1 distR1R1,
+		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Regularized Sample Risk (Empirical + Structural)
+	 * 
+	 * @param distRdR1 R^d R^1 Multivariate Measure
+	 * @param funcLearnerRdToR1 The R^d -> R^1 Learner Function
+	 * @param gvviX The Validated Predictor Instance
+	 * @param gvviY The Validated Response Instance
+	 * 
+	 * @return The Regularized Sample Risk
+	 * 
+	 * @throws java.lang.Exception Thrown if the Regularized Sample Risk cannot be computed
+	 */
+
+	public abstract double regularizedRisk (
+		final org.drip.measure.continuous.RdR1 distRdR1,
+		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Supremum Regularized Sample Risk
+	 * 
+	 * @param distR1R1 R^1 R^1 Multivariate Measure
+	 * @param gvviX The Validated Predictor Instance
+	 * @param gvviY The Validated Response Instance
+	 * 
+	 * @return The Supremum Regularized Sample Risk
+	 * 
+	 * @throws java.lang.Exception Thrown if the Supremum Regularized Sample Risk cannot be computed
+	 */
+
+	public abstract org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumRegularizedRisk (
+		final org.drip.measure.continuous.R1R1 distR1R1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Supremum Regularized Sample Risk
+	 * 
+	 * @param distRdR1 R^d R^1 Multivariate Measure
+	 * @param gvviX The Validated Predictor Instance
+	 * @param gvviY The Validated Response Instance
+	 * 
+	 * @return The Supremum Regularized Sample Risk
+	 * 
+	 * @throws java.lang.Exception Thrown if the Supremum Regularized Sample Risk cannot be computed
+	 */
+
+	public abstract org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumRegularizedRisk (
+		final org.drip.measure.continuous.RdR1 distRdR1,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
 		throws java.lang.Exception;
 }

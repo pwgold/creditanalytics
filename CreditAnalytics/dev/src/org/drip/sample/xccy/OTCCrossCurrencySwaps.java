@@ -4,7 +4,7 @@ package org.drip.sample.xccy;
 import org.drip.analytics.date.*;
 import org.drip.analytics.rates.*;
 import org.drip.analytics.support.CaseInsensitiveTreeMap;
-import org.drip.function.deterministic1D.FlatUnivariate;
+import org.drip.function.R1ToR1.FlatUnivariate;
 import org.drip.market.otc.*;
 import org.drip.param.creator.ScenarioForwardCurveBuilder;
 import org.drip.param.market.CurveSurfaceQuoteSet;

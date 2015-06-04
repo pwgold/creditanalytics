@@ -43,7 +43,7 @@ public class CombinatorialRealUnidimensional extends
 	org.drip.spaces.tensor.CombinatorialRealUnidimensionalVector implements
 		org.drip.spaces.metric.RealUnidimensionalNormedSpace {
 	private int _iPNorm = -1;
-	private org.drip.measure.continuous.UnivariateDistribution _uniDist = null;
+	private org.drip.measure.continuous.R1 _uniDist = null;
 
 	/**
 	 * Construct the Standard l^p R^1 Combinatorial Space Instance
@@ -57,7 +57,7 @@ public class CombinatorialRealUnidimensional extends
 
 	public static final CombinatorialRealUnidimensional Standard (
 		final java.util.List<java.lang.Double> lsElementSpace,
-		final org.drip.measure.continuous.UnivariateDistribution uniDist,
+		final org.drip.measure.continuous.R1 uniDist,
 		final int iPNorm)
 	{
 		try {
@@ -80,7 +80,7 @@ public class CombinatorialRealUnidimensional extends
 
 	public static final CombinatorialRealUnidimensional Supremum (
 		final java.util.List<java.lang.Double> lsElementSpace,
-		final org.drip.measure.continuous.UnivariateDistribution uniDist)
+		final org.drip.measure.continuous.R1 uniDist)
 	{
 		try {
 			return new CombinatorialRealUnidimensional (lsElementSpace, uniDist, 0);
@@ -103,7 +103,7 @@ public class CombinatorialRealUnidimensional extends
 
 	public CombinatorialRealUnidimensional (
 		final java.util.List<java.lang.Double> lsElementSpace,
-		final org.drip.measure.continuous.UnivariateDistribution uniDist,
+		final org.drip.measure.continuous.R1 uniDist,
 		final int iPNorm)
 		throws java.lang.Exception
 	{
@@ -120,7 +120,7 @@ public class CombinatorialRealUnidimensional extends
 		return _iPNorm;
 	}
 
-	@Override public org.drip.measure.continuous.UnivariateDistribution borelSigmaMeasure()
+	@Override public org.drip.measure.continuous.R1 borelSigmaMeasure()
 	{
 		return _uniDist;
 	}
@@ -184,7 +184,7 @@ public class CombinatorialRealUnidimensional extends
 	}
 
 	@Override public double borelMeasureSpaceExpectation (
-		final org.drip.function.deterministic.R1ToR1 funcR1ToR1)
+		final org.drip.function.definition.R1ToR1 funcR1ToR1)
 		throws java.lang.Exception
 	{
 		if (null == funcR1ToR1 || null == _uniDist)

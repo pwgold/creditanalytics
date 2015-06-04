@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.drip.analytics.date.*;
 import org.drip.dynamics.hullwhite.*;
-import org.drip.function.deterministic1D.FlatUnivariate;
+import org.drip.function.R1ToR1.FlatUnivariate;
 import org.drip.quant.common.FormatUtil;
 import org.drip.sequence.random.BoxMullerGaussian;
 import org.drip.service.api.CreditAnalytics;

@@ -54,7 +54,7 @@ public class NormedR1ToL1NormedR1Finite extends org.drip.spaces.functionclass.No
 	 */
 
 	public static final NormedR1ToL1NormedR1Finite BoundedPredictorBoundedResponse (
-		final org.drip.function.deterministic.R1ToR1[] aR1ToR1,
+		final org.drip.function.definition.R1ToR1[] aR1ToR1,
 		final double dblPredictorSupport,
 		final double dblResponseBound)
 	{

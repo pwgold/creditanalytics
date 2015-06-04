@@ -46,7 +46,7 @@ package org.drip.dynamics.lmm;
 
 public class ContinuouslyCompoundedForwardProcess {
 	private double _dblSpotDate = java.lang.Double.NaN;
-	private org.drip.function.stochastic.R1R1ToR1 _funcR1R1ToR1 = null;
+	private org.drip.quant.stochastic.R1R1ToR1 _funcR1R1ToR1 = null;
 
 	/**
 	 * ContinuouslyCompoundedForwardProcess Constructor
@@ -59,7 +59,7 @@ public class ContinuouslyCompoundedForwardProcess {
 
 	public ContinuouslyCompoundedForwardProcess (
 		final double dblSpotDate,
-		final org.drip.function.stochastic.R1R1ToR1 funcR1R1ToR1)
+		final org.drip.quant.stochastic.R1R1ToR1 funcR1R1ToR1)
 		throws java.lang.Exception
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (_dblSpotDate = dblSpotDate) || null == (_funcR1R1ToR1
@@ -84,7 +84,7 @@ public class ContinuouslyCompoundedForwardProcess {
 	 * @return The Stochastic Forward Rate Function
 	 */
 
-	public org.drip.function.stochastic.R1R1ToR1 stochasticForwardRateFunction()
+	public org.drip.quant.stochastic.R1R1ToR1 stochasticForwardRateFunction()
 	{
 		return _funcR1R1ToR1;
 	}

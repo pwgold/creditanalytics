@@ -79,8 +79,8 @@ public class ContinuousForwardRateEvolver implements org.drip.dynamics.evolution
 		final boolean bTerminal)
 		throws java.lang.Exception
 	{
-		org.drip.function.deterministic.R1ToR1 pointVolatilityFunctionR1ToR1 = new
-			org.drip.function.deterministic.R1ToR1 (null) {
+		org.drip.function.definition.R1ToR1 pointVolatilityFunctionR1ToR1 = new
+			org.drip.function.definition.R1ToR1 (null) {
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
@@ -107,7 +107,7 @@ public class ContinuousForwardRateEvolver implements org.drip.dynamics.evolution
 		final org.drip.state.identifier.FundingLabel lslFunding,
 		final org.drip.state.identifier.ForwardLabel lslForward,
 		final org.drip.dynamics.hjm.MultiFactorVolatility mfv,
-		final org.drip.function.deterministic.R1ToR1 auInitialInstantaneousForwardRate)
+		final org.drip.function.definition.R1ToR1 auInitialInstantaneousForwardRate)
 		throws java.lang.Exception
 	{
 		if (null == (_lslFunding = lslFunding) || null == (_lslForward = lslForward) || null == (_mfv = mfv))

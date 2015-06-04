@@ -102,7 +102,7 @@ public class NormedRxToNormedR1Finite {
 
 	public org.drip.spaces.cover.FunctionClassCoveringBounds scaleSensitiveCoveringBounds (
 		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
-		final org.drip.function.deterministic.R1ToR1 funcR1ToR1FatShatter)
+		final org.drip.function.definition.R1ToR1 funcR1ToR1FatShatter)
 	{
 		if (null == gvvi || null == funcR1ToR1FatShatter) return null;
 

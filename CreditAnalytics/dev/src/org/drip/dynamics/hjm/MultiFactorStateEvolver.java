@@ -44,7 +44,7 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 	private org.drip.dynamics.hjm.MultiFactorVolatility _mfv = null;
 	private org.drip.state.identifier.ForwardLabel _lslForward = null;
 	private org.drip.state.identifier.FundingLabel _lslFunding = null;
-	private org.drip.function.deterministic.R1ToR1 _auInitialInstantaneousForwardRate = null;
+	private org.drip.function.definition.R1ToR1 _auInitialInstantaneousForwardRate = null;
 
 	/**
 	 * MultiFactorStateEvolver Constructor
@@ -61,7 +61,7 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 		final org.drip.state.identifier.FundingLabel lslFunding,
 		final org.drip.state.identifier.ForwardLabel lslForward,
 		final org.drip.dynamics.hjm.MultiFactorVolatility mfv,
-		final org.drip.function.deterministic.R1ToR1 auInitialInstantaneousForwardRate)
+		final org.drip.function.definition.R1ToR1 auInitialInstantaneousForwardRate)
 		throws java.lang.Exception
 	{
 		if (null == (_lslFunding = lslFunding) || null == (_lslForward = lslForward) || null == (_mfv = mfv)
@@ -108,7 +108,7 @@ public class MultiFactorStateEvolver implements org.drip.dynamics.evolution.Poin
 	 * @return The Initial Instantaneous Forward Rate Term Structure
 	 */
 
-	public org.drip.function.deterministic.R1ToR1 instantaneousForwardInitialTermStructure()
+	public org.drip.function.definition.R1ToR1 instantaneousForwardInitialTermStructure()
 	{
 		return _auInitialInstantaneousForwardRate;
 	}

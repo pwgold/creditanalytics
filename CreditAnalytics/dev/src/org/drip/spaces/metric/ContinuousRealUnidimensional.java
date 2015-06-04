@@ -42,7 +42,7 @@ package org.drip.spaces.metric;
 public class ContinuousRealUnidimensional extends org.drip.spaces.tensor.ContinuousRealUnidimensionalVector
 	implements org.drip.spaces.metric.RealUnidimensionalNormedSpace {
 	private int _iPNorm = -1;
-	private org.drip.measure.continuous.UnivariateDistribution _uniDist = null;
+	private org.drip.measure.continuous.R1 _uniDist = null;
 
 	/**
 	 * Construct the Standard l^p R^1 Continuous Space Instance
@@ -58,7 +58,7 @@ public class ContinuousRealUnidimensional extends org.drip.spaces.tensor.Continu
 	public static final ContinuousRealUnidimensional Standard (
 		final double dblLeftEdge,
 		final double dblRightEdge,
-		final org.drip.measure.continuous.UnivariateDistribution uniDist,
+		final org.drip.measure.continuous.R1 uniDist,
 		final int iPNorm)
 	{
 		try {
@@ -83,7 +83,7 @@ public class ContinuousRealUnidimensional extends org.drip.spaces.tensor.Continu
 	public static final ContinuousRealUnidimensional Supremum (
 		final double dblLeftEdge,
 		final double dblRightEdge,
-		final org.drip.measure.continuous.UnivariateDistribution uniDist)
+		final org.drip.measure.continuous.R1 uniDist)
 	{
 		try {
 			return new ContinuousRealUnidimensional (dblLeftEdge, dblRightEdge, uniDist, 0);
@@ -108,7 +108,7 @@ public class ContinuousRealUnidimensional extends org.drip.spaces.tensor.Continu
 	public ContinuousRealUnidimensional (
 		final double dblLeftEdge,
 		final double dblRightEdge,
-		final org.drip.measure.continuous.UnivariateDistribution uniDist,
+		final org.drip.measure.continuous.R1 uniDist,
 		final int iPNorm)
 		throws java.lang.Exception
 	{
@@ -125,7 +125,7 @@ public class ContinuousRealUnidimensional extends org.drip.spaces.tensor.Continu
 		return _iPNorm;
 	}
 
-	@Override public org.drip.measure.continuous.UnivariateDistribution borelSigmaMeasure()
+	@Override public org.drip.measure.continuous.R1 borelSigmaMeasure()
 	{
 		return _uniDist;
 	}
@@ -147,8 +147,8 @@ public class ContinuousRealUnidimensional extends org.drip.spaces.tensor.Continu
 		if (null == _uniDist)
 			throw new java.lang.Exception ("ContinuousRealUnidimensional::populationMode => Invalid Inputs");
 
-		org.drip.function.deterministic.R1ToR1 au = new
-			org.drip.function.deterministic.R1ToR1 (null) {
+		org.drip.function.definition.R1ToR1 au = new
+			org.drip.function.definition.R1ToR1 (null) {
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
@@ -157,7 +157,7 @@ public class ContinuousRealUnidimensional extends org.drip.spaces.tensor.Continu
 			}
 		};
 
-		org.drip.function.deterministic.VariateOutputPair vopMode = au.maxima (leftEdge(), rightEdge());
+		org.drip.function.definition.VariateOutputPair vopMode = au.maxima (leftEdge(), rightEdge());
 
 		if (null == vopMode)
 			throw new java.lang.Exception
@@ -173,8 +173,8 @@ public class ContinuousRealUnidimensional extends org.drip.spaces.tensor.Continu
 			throw new java.lang.Exception
 				("ContinuousRealUnidimensional::populationMetricNorm => Invalid Inputs");
 
-		org.drip.function.deterministic.R1ToR1 au = new
-			org.drip.function.deterministic.R1ToR1 (null) {
+		org.drip.function.definition.R1ToR1 au = new
+			org.drip.function.definition.R1ToR1 (null) {
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
@@ -187,15 +187,15 @@ public class ContinuousRealUnidimensional extends org.drip.spaces.tensor.Continu
 	}
 
 	@Override public double borelMeasureSpaceExpectation (
-		final org.drip.function.deterministic.R1ToR1 funcR1ToR1)
+		final org.drip.function.definition.R1ToR1 funcR1ToR1)
 		throws java.lang.Exception
 	{
 		if (null == funcR1ToR1 || null == _uniDist)
 			throw new java.lang.Exception
 				("ContinuousRealUnidimensional::borelMeasureSpaceExpectation => Invalid Inputs");
 
-		org.drip.function.deterministic.R1ToR1 au = new
-			org.drip.function.deterministic.R1ToR1 (null) {
+		org.drip.function.definition.R1ToR1 au = new
+			org.drip.function.definition.R1ToR1 (null) {
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception

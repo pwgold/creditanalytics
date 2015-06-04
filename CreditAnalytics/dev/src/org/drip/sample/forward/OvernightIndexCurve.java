@@ -6,7 +6,7 @@ import java.util.List;
 import org.drip.analytics.date.JulianDate;
 import org.drip.analytics.rates.*;
 import org.drip.analytics.support.*;
-import org.drip.function.deterministic1D.QuadraticRationalShapeControl;
+import org.drip.function.R1ToR1.QuadraticRationalShapeControl;
 import org.drip.market.definition.FloaterIndex;
 import org.drip.market.otc.FixedFloatSwapConvention;
 import org.drip.market.otc.OvernightFixedFloatContainer;

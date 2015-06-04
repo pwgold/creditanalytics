@@ -118,7 +118,7 @@ public class BasisSplineDeterministicVolatility extends org.drip.analytics.defin
 			throw new java.lang.Exception
 				("BasisSplineDeterministicVolatility::nodeDerivative => Invalid Inputs");
 
-		org.drip.function.deterministic.R1ToR1 au = new org.drip.function.deterministic.R1ToR1
+		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1
 			(null) {
 			@Override public double evaluate (
 				double dblX)

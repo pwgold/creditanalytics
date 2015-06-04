@@ -56,7 +56,7 @@ public class CombinatorialRealUnidimensionalBall extends
 
 	public static final CombinatorialRealUnidimensionalBall ClosedUnit (
 		final java.util.List<java.lang.Double> lsElementSpace,
-		final org.drip.measure.continuous.UnivariateDistribution uniDist,
+		final org.drip.measure.continuous.R1 uniDist,
 		final int iPNorm)
 	{
 		try {
@@ -81,7 +81,7 @@ public class CombinatorialRealUnidimensionalBall extends
 
 	public CombinatorialRealUnidimensionalBall (
 		final java.util.List<java.lang.Double> lsElementSpace,
-		final org.drip.measure.continuous.UnivariateDistribution uniDist,
+		final org.drip.measure.continuous.R1 uniDist,
 		final int iPNorm,
 		final double dblNormRadius)
 		throws java.lang.Exception

@@ -1,7 +1,7 @@
 
 package org.drip.sample.stretch;
 
-import org.drip.function.deterministic1D.QuadraticRationalShapeControl;
+import org.drip.function.R1ToR1.QuadraticRationalShapeControl;
 import org.drip.quant.common.FormatUtil;
 import org.drip.spline.basis.PolynomialFunctionSetParams;
 import org.drip.spline.params.*;

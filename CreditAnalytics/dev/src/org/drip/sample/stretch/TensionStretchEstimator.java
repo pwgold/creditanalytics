@@ -1,7 +1,7 @@
 	
 package org.drip.sample.stretch;
 
-import org.drip.function.deterministic1D.*;
+import org.drip.function.R1ToR1.*;
 import org.drip.quant.common.FormatUtil;
 import org.drip.spline.basis.*;
 import org.drip.spline.params.*;

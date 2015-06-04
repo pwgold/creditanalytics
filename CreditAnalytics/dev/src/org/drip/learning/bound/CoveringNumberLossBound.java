@@ -65,7 +65,7 @@ package org.drip.learning.bound;
 public class CoveringNumberLossBound {
 	private double _dblExponentScaler = java.lang.Double.NaN;
 	private double _dblEpsilonExponent = java.lang.Double.NaN;
-	private org.drip.function.deterministic.R1ToR1 _funcSampleCoefficient = null;
+	private org.drip.function.definition.R1ToR1 _funcSampleCoefficient = null;
 
 	/**
 	 * CoveringNumberLossBound Constructor
@@ -78,7 +78,7 @@ public class CoveringNumberLossBound {
 	 */
 
 	public CoveringNumberLossBound (
-		final org.drip.function.deterministic.R1ToR1 funcSampleCoefficient,
+		final org.drip.function.definition.R1ToR1 funcSampleCoefficient,
 		final double dblEpsilonExponent,
 		final double dblExponentScaler)
 		throws java.lang.Exception
@@ -95,7 +95,7 @@ public class CoveringNumberLossBound {
 	 * @return The Sample Coefficient Function
 	 */
 
-	public org.drip.function.deterministic.R1ToR1 sampleCoefficient()
+	public org.drip.function.definition.R1ToR1 sampleCoefficient()
 	{
 		return _funcSampleCoefficient;
 	}

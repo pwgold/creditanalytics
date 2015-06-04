@@ -54,7 +54,7 @@ public class CombinatorialRealMultidimensionalHilbert extends
 
 	public CombinatorialRealMultidimensionalHilbert (
 		final org.drip.spaces.tensor.CombinatorialRealUnidimensionalVector[] aCRU,
-		final org.drip.measure.continuous.MultivariateDistribution multiDist)
+		final org.drip.measure.continuous.Rd multiDist)
 		throws java.lang.Exception
 	{
 		super (aCRU, multiDist, 2);

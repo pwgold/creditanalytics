@@ -68,7 +68,7 @@ public class RegularizerR1CombinatorialToR1Continuous extends
 	 */
 
 	public RegularizerR1CombinatorialToR1Continuous (
-		final org.drip.function.deterministic.R1ToR1 funcRegularizerR1ToR1,
+		final org.drip.function.definition.R1ToR1 funcRegularizerR1ToR1,
 		final org.drip.spaces.metric.CombinatorialRealUnidimensional cruInput,
 		final org.drip.spaces.metric.ContinuousRealUnidimensional cruOutput,
 		final double dblLambda)
@@ -87,7 +87,7 @@ public class RegularizerR1CombinatorialToR1Continuous extends
 	}
 
 	@Override public double structuralLoss (
-		final org.drip.function.deterministic.R1ToR1 funcR1ToR1,
+		final org.drip.function.definition.R1ToR1 funcR1ToR1,
 		final double[] adblInstance)
 		throws java.lang.Exception
 	{
@@ -104,12 +104,47 @@ public class RegularizerR1CombinatorialToR1Continuous extends
 
 		int iPNorm = output().pNorm();
 
-		org.drip.function.deterministic.R1ToR1 funcRegularizerR1ToR1 = function();
+		org.drip.function.definition.R1ToR1 funcRegularizerR1ToR1 = function();
 
 		for (int i = 0; i < iNumSample; ++i)
 			dblLoss += java.lang.Math.pow (java.lang.Math.abs (funcRegularizerR1ToR1.evaluate
-				(adblInstance[i])), iPNorm);
+				(adblInstance[i]) * funcR1ToR1.evaluate (adblInstance[i])), iPNorm);
 
 		return dblLoss / iPNorm;
+	}
+
+	@Override public double structuralRisk (
+		final org.drip.measure.continuous.R1R1 distR1R1,
+		final org.drip.function.definition.R1ToR1 funcR1ToR1,
+		final double[] adblInstance,
+		final double[] adblY)
+		throws java.lang.Exception
+	{
+		if (null == funcR1ToR1 || null == adblInstance || null == adblY)
+			throw new java.lang.Exception
+				("RegularizerR1CombinatorialToR1Continuous::structuralRisk => Invalid Inputs");
+
+		double dblLoss = 0.;
+		double dblNormalizer = 0.;
+		int iNumSample = adblInstance.length;
+
+		if (0 == iNumSample || iNumSample != adblY.length)
+			throw new java.lang.Exception
+				("RegularizerR1CombinatorialToR1Continuous::structuralRisk => Invalid Inputs");
+
+		int iPNorm = output().pNorm();
+
+		org.drip.function.definition.R1ToR1 funcRegularizerR1ToR1 = function();
+
+		for (int i = 0; i < iNumSample; ++i) {
+			double dblDensity = distR1R1.density (adblInstance[i], adblY[i]);
+
+			dblNormalizer += dblDensity;
+
+			dblLoss += dblDensity * java.lang.Math.pow (java.lang.Math.abs (funcRegularizerR1ToR1.evaluate
+				(adblInstance[i]) * funcR1ToR1.evaluate (adblInstance[i])), iPNorm);
+		}
+
+		return dblLoss / iPNorm / dblNormalizer;
 	}
 }

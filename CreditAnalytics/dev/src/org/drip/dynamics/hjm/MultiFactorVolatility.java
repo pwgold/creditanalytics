@@ -93,7 +93,7 @@ public class MultiFactorVolatility {
 	 * @return The Factor-Specific Univariate Volatility Function for the Specified Date
 	 */
 
-	public org.drip.function.deterministic.R1ToR1 xDateVolatilityFunction (
+	public org.drip.function.definition.R1ToR1 xDateVolatilityFunction (
 		final int iFactorIndex,
 		final double dblXDate)
 	{
@@ -103,7 +103,7 @@ public class MultiFactorVolatility {
 
 		final int iNumVariate = _aMSVolatility.length;
 
-		return new org.drip.function.deterministic.R1ToR1 (null) {
+		return new org.drip.function.definition.R1ToR1 (null) {
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
@@ -142,7 +142,7 @@ public class MultiFactorVolatility {
 		final double dblYDate)
 		throws java.lang.Exception
 	{
-		org.drip.function.deterministic.R1ToR1 auVolatilityFunction = xDateVolatilityFunction
+		org.drip.function.definition.R1ToR1 auVolatilityFunction = xDateVolatilityFunction
 			(iFactorIndex, dblXDate);
 
 		if (null == auVolatilityFunction)
@@ -315,8 +315,8 @@ public class MultiFactorVolatility {
 		final boolean bTerminal)
 		throws java.lang.Exception
 	{
-		org.drip.function.deterministic.R1ToR1 pointVolatilityR1ToR1 = new
-			org.drip.function.deterministic.R1ToR1 (null) {
+		org.drip.function.definition.R1ToR1 pointVolatilityR1ToR1 = new
+			org.drip.function.definition.R1ToR1 (null) {
 			@Override public double evaluate (
 				final double dblVariate)
 				throws java.lang.Exception

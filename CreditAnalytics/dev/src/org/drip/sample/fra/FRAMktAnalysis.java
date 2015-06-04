@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.drip.analytics.date.*;
 import org.drip.analytics.rates.*;
-import org.drip.function.deterministic.R1ToR1;
-import org.drip.function.deterministic1D.*;
+import org.drip.function.R1ToR1.*;
+import org.drip.function.definition.R1ToR1;
 import org.drip.param.creator.MarketParamsBuilder;
 import org.drip.param.market.CurveSurfaceQuoteSet;
 import org.drip.param.valuation.ValuationParams;

@@ -49,7 +49,7 @@ public interface RealUnidimensionalNormedSpace extends org.drip.spaces.metric.Ge
 	 * @return The Borel Sigma Univariate Probability Measure
 	 */
 
-	public abstract org.drip.measure.continuous.UnivariateDistribution borelSigmaMeasure();
+	public abstract org.drip.measure.continuous.R1 borelSigmaMeasure();
 
 	/**
 	 * Compute the Metric Norm of the Sample
@@ -87,6 +87,6 @@ public interface RealUnidimensionalNormedSpace extends org.drip.spaces.metric.Ge
 	 */
 
 	public double borelMeasureSpaceExpectation (
-		final org.drip.function.deterministic.R1ToR1 funcR1ToR1)
+		final org.drip.function.definition.R1ToR1 funcR1ToR1)
 		throws java.lang.Exception;
 }

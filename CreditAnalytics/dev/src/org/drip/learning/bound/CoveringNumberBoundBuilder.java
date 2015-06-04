@@ -82,7 +82,7 @@ public class CoveringNumberBoundBuilder {
 
 	public static final org.drip.learning.bound.CoveringNumberLossBound
 		RegressionLearning (
-			final org.drip.function.deterministic.R1ToR1 funcSampleCoefficient,
+			final org.drip.function.definition.R1ToR1 funcSampleCoefficient,
 			final double dblExponentScaler)
 	{
 		try {
@@ -106,7 +106,7 @@ public class CoveringNumberBoundBuilder {
 
 	public static final org.drip.learning.bound.CoveringNumberLossBound
 		AgnosticLearning (
-			final org.drip.function.deterministic.R1ToR1 funcSampleCoefficient,
+			final org.drip.function.definition.R1ToR1 funcSampleCoefficient,
 			final double dblExponentScaler)
 	{
 		try {
@@ -130,7 +130,7 @@ public class CoveringNumberBoundBuilder {
 
 	public static final org.drip.learning.bound.CoveringNumberLossBound
 		AgnosticConvexLearning (
-			final org.drip.function.deterministic.R1ToR1 funcSampleCoefficient,
+			final org.drip.function.definition.R1ToR1 funcSampleCoefficient,
 			final double dblExponentScaler)
 	{
 		try {

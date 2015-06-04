@@ -35,7 +35,7 @@ package org.drip.measure.discrete;
  * @author Lakshmi Krishnamurthy
  */
 
-public class UnivariateBoundedUniformInteger extends org.drip.measure.continuous.UnivariateDistribution {
+public class UnivariateBoundedUniformInteger extends org.drip.measure.continuous.R1 {
 	private int _iStart = -1;
 	private int _iFinish = -1;
 

@@ -53,7 +53,7 @@ public class NormedR1ContinuousToR1Continuous extends org.drip.spaces.RxToR1.Nor
 	 */
 
 	public NormedR1ContinuousToR1Continuous (
-		final org.drip.function.deterministic.R1ToR1 funcR1ToR1,
+		final org.drip.function.definition.R1ToR1 funcR1ToR1,
 		final org.drip.spaces.metric.ContinuousRealUnidimensional cruInput,
 		final org.drip.spaces.metric.ContinuousRealUnidimensional cruOutput)
 		throws java.lang.Exception
@@ -69,9 +69,9 @@ public class NormedR1ContinuousToR1Continuous extends org.drip.spaces.RxToR1.Nor
 		org.drip.spaces.metric.ContinuousRealUnidimensional cru =
 			(org.drip.spaces.metric.ContinuousRealUnidimensional) guvsInput;
 
-		final org.drip.function.deterministic.R1ToR1 funcR1ToR1 = function();
+		final org.drip.function.definition.R1ToR1 funcR1ToR1 = function();
 
-		final org.drip.measure.continuous.UnivariateDistribution uniDist = cru.borelSigmaMeasure();
+		final org.drip.measure.continuous.R1 uniDist = cru.borelSigmaMeasure();
 
 		if (null == uniDist || null == funcR1ToR1)
 			throw new java.lang.Exception
@@ -79,8 +79,8 @@ public class NormedR1ContinuousToR1Continuous extends org.drip.spaces.RxToR1.Nor
 
 		final int iPNorm = output().pNorm();
 
-		org.drip.function.deterministic.R1ToR1 am = new
-			org.drip.function.deterministic.R1ToR1 (null) {
+		org.drip.function.definition.R1ToR1 am = new
+			org.drip.function.definition.R1ToR1 (null) {
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception

@@ -40,7 +40,7 @@ public class SingleSequenceAgnosticMetrics {
 	private double[] _adblSequence = null;
 	private double _dblEmpiricalVariance = java.lang.Double.NaN;
 	private double _dblEmpiricalExpectation = java.lang.Double.NaN;
-	private org.drip.measure.continuous.UnivariateDistribution _distPopulation = null;
+	private org.drip.measure.continuous.R1 _distPopulation = null;
 
 	/**
 	 * Build out the Sequence and their Metrics
@@ -53,7 +53,7 @@ public class SingleSequenceAgnosticMetrics {
 
 	public SingleSequenceAgnosticMetrics (
 		final double[] adblSequence,
-		final org.drip.measure.continuous.UnivariateDistribution distPopulation)
+		final org.drip.measure.continuous.R1 distPopulation)
 		throws java.lang.Exception
 	{
 		if (null == (_adblSequence = adblSequence))
@@ -192,7 +192,7 @@ public class SingleSequenceAgnosticMetrics {
 	 */
 
 	public SingleSequenceAgnosticMetrics functionSequenceMetrics (
-		final org.drip.function.deterministic.R1ToR1 au)
+		final org.drip.function.definition.R1ToR1 au)
 	{
 		if (null == au) return null;
 
@@ -217,7 +217,7 @@ public class SingleSequenceAgnosticMetrics {
 	 * @return The Population Distribution
 	 */
 
-	public org.drip.measure.continuous.UnivariateDistribution populationDistribution()
+	public org.drip.measure.continuous.R1 populationDistribution()
 	{
 		return _distPopulation;
 	}
@@ -302,7 +302,7 @@ public class SingleSequenceAgnosticMetrics {
 
 	public double markovUpperProbabilityBound (
 		final double dblLevel,
-		final org.drip.function.deterministic.R1ToR1 auNonDecreasing)
+		final org.drip.function.definition.R1ToR1 auNonDecreasing)
 		throws java.lang.Exception
 	{
 		if (!isPositive() || !org.drip.quant.common.NumberUtil.IsValid (dblLevel) || dblLevel <= 0.)
@@ -432,9 +432,9 @@ public class SingleSequenceAgnosticMetrics {
 	 */
 
 	public org.drip.sequence.metrics.PivotedDepartureBounds chebyshevAssociationBound (
-		final org.drip.function.deterministic.R1ToR1 au1,
+		final org.drip.function.definition.R1ToR1 au1,
 		final boolean bNonDecreasing1,
-		final org.drip.function.deterministic.R1ToR1 au2,
+		final org.drip.function.definition.R1ToR1 au2,
 		final boolean bNonDecreasing2)
 	{
 		if (null == au1 || null == au2) return null;

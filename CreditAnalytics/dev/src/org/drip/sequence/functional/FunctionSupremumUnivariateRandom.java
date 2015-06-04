@@ -35,9 +35,9 @@ package org.drip.sequence.functional;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FunctionSupremumUnivariateRandom extends org.drip.function.deterministic1D.FunctionClassSupremum
+public class FunctionSupremumUnivariateRandom extends org.drip.function.R1ToR1.FunctionClassSupremum
 {
-	private org.drip.measure.continuous.UnivariateDistribution _dist = null;
+	private org.drip.measure.continuous.R1 _dist = null;
 
 	/**
 	 * FunctionSupremumUnivariateRandom Constructor
@@ -49,8 +49,8 @@ public class FunctionSupremumUnivariateRandom extends org.drip.function.determin
 	 */
 
 	public FunctionSupremumUnivariateRandom (
-		final org.drip.function.deterministic.R1ToR1[] aAUClass,
-		final org.drip.measure.continuous.UnivariateDistribution dist)
+		final org.drip.function.definition.R1ToR1[] aAUClass,
+		final org.drip.measure.continuous.R1 dist)
 		throws java.lang.Exception
 	{
 		super (aAUClass);
@@ -133,7 +133,7 @@ public class FunctionSupremumUnivariateRandom extends org.drip.function.determin
 	 * @return The Underlying Distribution
 	 */
 
-	public org.drip.measure.continuous.UnivariateDistribution underlyingDistribution()
+	public org.drip.measure.continuous.R1 underlyingDistribution()
 	{
 		return _dist;
 	}

@@ -1,7 +1,7 @@
 
 package org.drip.sample.coveringNumber;
 
-import org.drip.function.deterministic.R1ToR1;
+import org.drip.function.definition.R1ToR1;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.api.CreditAnalytics;
 import org.drip.spaces.cover.ScaleSensitiveCoveringBounds;

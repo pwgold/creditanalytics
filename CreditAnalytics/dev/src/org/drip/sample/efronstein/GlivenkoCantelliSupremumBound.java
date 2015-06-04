@@ -1,8 +1,8 @@
 
 package org.drip.sample.efronstein;
 
-import org.drip.function.deterministic.R1ToR1;
-import org.drip.function.deterministic1D.OffsetIdempotent;
+import org.drip.function.R1ToR1.OffsetIdempotent;
+import org.drip.function.definition.R1ToR1;
 import org.drip.quant.common.FormatUtil;
 import org.drip.sequence.custom.GlivenkoCantelliFunctionSupremum;
 import org.drip.sequence.functional.*;

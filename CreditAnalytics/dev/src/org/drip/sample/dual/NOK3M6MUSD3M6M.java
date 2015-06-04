@@ -4,7 +4,7 @@ package org.drip.sample.dual;
 import org.drip.analytics.date.*;
 import org.drip.analytics.rates.*;
 import org.drip.analytics.support.CompositePeriodBuilder;
-import org.drip.function.deterministic1D.QuadraticRationalShapeControl;
+import org.drip.function.R1ToR1.QuadraticRationalShapeControl;
 import org.drip.market.definition.*;
 import org.drip.sample.forward.*;
 import org.drip.service.api.CreditAnalytics;

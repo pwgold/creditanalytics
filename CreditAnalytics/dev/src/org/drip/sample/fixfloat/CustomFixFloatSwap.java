@@ -7,7 +7,7 @@ import org.drip.analytics.date.*;
 import org.drip.analytics.daycount.*;
 import org.drip.analytics.rates.*;
 import org.drip.analytics.support.*;
-import org.drip.function.deterministic1D.QuadraticRationalShapeControl;
+import org.drip.function.R1ToR1.QuadraticRationalShapeControl;
 import org.drip.param.creator.*;
 import org.drip.param.market.CurveSurfaceQuoteSet;
 import org.drip.param.period.*;

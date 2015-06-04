@@ -4,7 +4,7 @@ package org.drip.sample.futures;
 import org.drip.analytics.date.*;
 import org.drip.analytics.rates.DiscountCurve;
 import org.drip.analytics.support.CompositePeriodBuilder;
-import org.drip.function.deterministic1D.QuadraticRationalShapeControl;
+import org.drip.function.R1ToR1.QuadraticRationalShapeControl;
 import org.drip.market.exchange.*;
 import org.drip.market.otc.*;
 import org.drip.param.creator.*;

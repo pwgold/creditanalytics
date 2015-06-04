@@ -73,7 +73,27 @@ public interface RegularizerRdToR1 {
 	 */
 
 	public abstract double structuralLoss (
-		final org.drip.function.deterministic.RdToR1 funcRdToR1,
+		final org.drip.function.definition.RdToR1 funcRdToR1,
 		final double[][] aadblInstance)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Regularization Sample Structural Loss
+	 * 
+	 * @param distRdR1 R^d R^1 Multivariate Measure
+	 * @param funcRdToR1 R^d -> R^1 Function Instance
+	 * @param aadblInstance The Sample Instance
+	 * @param adblY The Response Instance
+	 * 
+	 * @return The Regularization Sample Structural Loss
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public abstract double structuralRisk (
+		final org.drip.measure.continuous.RdR1 distRdR1,
+		final org.drip.function.definition.RdToR1 funcRdToR1,
+		final double[][] aadblInstance,
+		final double[] adblY)
 		throws java.lang.Exception;
 }

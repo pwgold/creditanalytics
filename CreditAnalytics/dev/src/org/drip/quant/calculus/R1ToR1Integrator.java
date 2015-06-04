@@ -57,7 +57,7 @@ public class R1ToR1Integrator {
 	 */
 
 	public static final double LinearQuadrature (
-		final org.drip.function.deterministic.R1ToR1 funcR1ToR1,
+		final org.drip.function.definition.R1ToR1 funcR1ToR1,
 		final double dblLeft,
 		final double dblRight)
 		throws java.lang.Exception
@@ -99,7 +99,7 @@ public class R1ToR1Integrator {
 	 */
 
 	public static final double MidPoint (
-		final org.drip.function.deterministic.R1ToR1 funcR1ToR1,
+		final org.drip.function.definition.R1ToR1 funcR1ToR1,
 		final double dblLeft,
 		final double dblRight)
 		throws java.lang.Exception
@@ -132,7 +132,7 @@ public class R1ToR1Integrator {
 	 */
 
 	public static final double Trapezoidal (
-		final org.drip.function.deterministic.R1ToR1 funcR1ToR1,
+		final org.drip.function.definition.R1ToR1 funcR1ToR1,
 		final double dblLeft,
 		final double dblRight)
 		throws java.lang.Exception
@@ -171,7 +171,7 @@ public class R1ToR1Integrator {
 	 */
 
 	public static final double Simpson (
-		final org.drip.function.deterministic.R1ToR1 funcR1ToR1,
+		final org.drip.function.definition.R1ToR1 funcR1ToR1,
 		final double dblLeft,
 		final double dblRight)
 		throws java.lang.Exception
@@ -215,7 +215,7 @@ public class R1ToR1Integrator {
 	 */
 
 	public static final double Simpson38 (
-		final org.drip.function.deterministic.R1ToR1 funcR1ToR1,
+		final org.drip.function.definition.R1ToR1 funcR1ToR1,
 		final double dblLeft,
 		final double dblRight)
 		throws java.lang.Exception
@@ -268,7 +268,7 @@ public class R1ToR1Integrator {
 	 */
 
 	public static final double Boole (
-		final org.drip.function.deterministic.R1ToR1 funcR1ToR1,
+		final org.drip.function.definition.R1ToR1 funcR1ToR1,
 		final double dblLeft,
 		final double dblRight)
 		throws java.lang.Exception
@@ -324,14 +324,14 @@ public class R1ToR1Integrator {
 	 */
 
 	public static final double LeftInfiniteRightInfinite (
-		final org.drip.function.deterministic.R1ToR1 funcR1ToR1)
+		final org.drip.function.definition.R1ToR1 funcR1ToR1)
 		throws java.lang.Exception
 	{
 		if (null == funcR1ToR1)
 			throw new java.lang.Exception ("IntegratorR1ToR1::LeftInfiniteRightInfinite => Invalid Inputs");
 
-		org.drip.function.deterministic.R1ToR1 auTransformed = new
-			org.drip.function.deterministic.R1ToR1 (null) {
+		org.drip.function.definition.R1ToR1 auTransformed = new
+			org.drip.function.definition.R1ToR1 (null) {
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
@@ -363,15 +363,15 @@ public class R1ToR1Integrator {
 	 */
 
 	public static final double LeftInfinite (
-		final org.drip.function.deterministic.R1ToR1 funcR1ToR1,
+		final org.drip.function.definition.R1ToR1 funcR1ToR1,
 		final double dblRight)
 		throws java.lang.Exception
 	{
 		if (null == funcR1ToR1 || !org.drip.quant.common.NumberUtil.IsValid (dblRight))
 			throw new java.lang.Exception ("IntegratorR1ToR1::LeftInfinite => Invalid Inputs");
 
-		org.drip.function.deterministic.R1ToR1 auTransformed = new
-			org.drip.function.deterministic.R1ToR1 (null) {
+		org.drip.function.definition.R1ToR1 auTransformed = new
+			org.drip.function.definition.R1ToR1 (null) {
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
@@ -398,15 +398,15 @@ public class R1ToR1Integrator {
 	 */
 
 	public static final double RightInfinite (
-		final org.drip.function.deterministic.R1ToR1 funcR1ToR1,
+		final org.drip.function.definition.R1ToR1 funcR1ToR1,
 		final double dblLeft)
 		throws java.lang.Exception
 	{
 		if (null == funcR1ToR1 || !org.drip.quant.common.NumberUtil.IsValid (dblLeft))
 			throw new java.lang.Exception ("IntegratorR1ToR1::RightInfinite => Invalid Inputs");
 
-		org.drip.function.deterministic.R1ToR1 auTransformed = new
-			org.drip.function.deterministic.R1ToR1 (null) {
+		org.drip.function.definition.R1ToR1 auTransformed = new
+			org.drip.function.definition.R1ToR1 (null) {
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception

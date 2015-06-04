@@ -39,7 +39,7 @@ package org.drip.spline.stretch;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CalibratableMultiSegmentSequence extends org.drip.function.deterministic.R1ToR1 implements
+public class CalibratableMultiSegmentSequence extends org.drip.function.definition.R1ToR1 implements
 	org.drip.spline.stretch.MultiSegmentSequence {
 	private static final int MAXIMA_PREDICTOR_ORDINATE_NODE = 1;
 	private static final int MINIMA_PREDICTOR_ORDINATE_NODE = 2;
@@ -168,11 +168,11 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.determin
 				!_ssb.manifestMeasureSensitivity (0.))
 				return false;
 		} else if (0 != (org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE & iCalibrationDetail)) {
-			org.drip.function.solver1D.FixedPointFinderOutput fpop = null;
+			org.drip.function.solverR1ToR1.FixedPointFinderOutput fpop = null;
 
 			if (null == fpop || !fpop.containsRoot()) {
 				try {
-					fpop = new org.drip.function.solver1D.FixedPointFinderZheng (0., this, true).findRoot();
+					fpop = new org.drip.function.solverR1ToR1.FixedPointFinderZheng (0., this, true).findRoot();
 				} catch (java.lang.Exception e) {
 					e.printStackTrace();
 
@@ -646,10 +646,10 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.determin
 			null);
 	}
 
-	@Override public org.drip.function.deterministic.R1ToR1 toAU()
+	@Override public org.drip.function.definition.R1ToR1 toAU()
 	{
-		org.drip.function.deterministic.R1ToR1 au = new
-			org.drip.function.deterministic.R1ToR1 (null)
+		org.drip.function.definition.R1ToR1 au = new
+			org.drip.function.definition.R1ToR1 (null)
 		{
 			@Override public double evaluate (
 				final double dblVariate)

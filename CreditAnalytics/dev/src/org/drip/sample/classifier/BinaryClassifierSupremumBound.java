@@ -70,7 +70,7 @@ public class BinaryClassifierSupremumBound {
 		return aSSAM;
 	}
 
-	private static final EmpiricalLossSupremum EmpiricalLossSupremumFunction (
+	private static final EmpiricalPenaltySupremumEstimator EmpiricalLossSupremumFunction (
 		final double[] asEmpiricalOutcome)
 		throws Exception
 	{
@@ -104,7 +104,7 @@ public class BinaryClassifierSupremumBound {
 				adblEmpiricalOutcome.length
 			);
 
-			EmpiricalSupremumLossMetrics eslm = new EmpiricalSupremumLossMetrics (
+			EmpiricalPenaltySupremumMetrics eslm = new EmpiricalPenaltySupremumMetrics (
 				EmpiricalLossSupremumFunction (
 					adblEmpiricalOutcome
 				),
@@ -134,7 +134,7 @@ public class BinaryClassifierSupremumBound {
 				adblEmpiricalOutcome.length
 			);
 
-			EmpiricalSupremumLossMetrics eslm = new EmpiricalSupremumLossMetrics (
+			EmpiricalPenaltySupremumMetrics eslm = new EmpiricalPenaltySupremumMetrics (
 				EmpiricalLossSupremumFunction (
 					adblEmpiricalOutcome
 				),
@@ -169,7 +169,7 @@ public class BinaryClassifierSupremumBound {
 				adblEmpiricalOutcome.length
 			);
 
-			EmpiricalSupremumLossMetrics eslm = new EmpiricalSupremumLossMetrics (
+			EmpiricalPenaltySupremumMetrics eslm = new EmpiricalPenaltySupremumMetrics (
 				EmpiricalLossSupremumFunction (
 						adblEmpiricalOutcome
 				),
@@ -204,7 +204,7 @@ public class BinaryClassifierSupremumBound {
 				adblEmpiricalOutcome.length
 			);
 
-			EmpiricalSupremumLossMetrics eslm = new EmpiricalSupremumLossMetrics (
+			EmpiricalPenaltySupremumMetrics eslm = new EmpiricalPenaltySupremumMetrics (
 				EmpiricalLossSupremumFunction (
 					adblEmpiricalOutcome
 				),
@@ -234,7 +234,7 @@ public class BinaryClassifierSupremumBound {
 				adblEmpiricalOutcome.length
 			);
 
-			EmpiricalSupremumLossMetrics eslm = new EmpiricalSupremumLossMetrics (
+			EmpiricalPenaltySupremumMetrics eslm = new EmpiricalPenaltySupremumMetrics (
 				EmpiricalLossSupremumFunction (
 					adblEmpiricalOutcome
 				),

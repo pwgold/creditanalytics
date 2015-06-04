@@ -51,7 +51,7 @@ public class BoundedIdempotentUnivariateRandom extends
 
 	public BoundedIdempotentUnivariateRandom (
 		final double dblOffset,
-		final org.drip.measure.continuous.UnivariateDistribution dist,
+		final org.drip.measure.continuous.R1 dist,
 		final double dblVariateBound)
 		throws java.lang.Exception
 	{

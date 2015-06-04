@@ -44,7 +44,7 @@ public class CombinatorialRealMultidimensionalBanach extends
 	org.drip.spaces.tensor.CombinatorialRealMultidimensionalVector implements
 		org.drip.spaces.metric.RealMultidimensionalNormedSpace {
 	private int _iPNorm = -1;
-	private org.drip.measure.continuous.MultivariateDistribution _multiDist = null;
+	private org.drip.measure.continuous.Rd _multiDist = null;
 
 	/**
 	 * CombinatorialRealMultidimensionalBanach Space Constructor
@@ -58,7 +58,7 @@ public class CombinatorialRealMultidimensionalBanach extends
 
 	public CombinatorialRealMultidimensionalBanach (
 		final org.drip.spaces.tensor.CombinatorialRealUnidimensionalVector[] aCURV,
-		final org.drip.measure.continuous.MultivariateDistribution multiDist,
+		final org.drip.measure.continuous.Rd multiDist,
 		final int iPNorm)
 		throws java.lang.Exception
 	{
@@ -76,7 +76,7 @@ public class CombinatorialRealMultidimensionalBanach extends
 		return _iPNorm;
 	}
 
-	@Override public org.drip.measure.continuous.MultivariateDistribution borelSigmaMeasure()
+	@Override public org.drip.measure.continuous.Rd borelSigmaMeasure()
 	{
 		return _multiDist;
 	}
@@ -187,7 +187,7 @@ public class CombinatorialRealMultidimensionalBanach extends
 	}
 
 	@Override public double borelMeasureSpaceExpectation (
-		final org.drip.function.deterministic.RdToR1 funcRdToR1)
+		final org.drip.function.definition.RdToR1 funcRdToR1)
 		throws java.lang.Exception
 	{
 		if (null == _multiDist || null == funcRdToR1)

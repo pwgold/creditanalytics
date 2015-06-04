@@ -56,7 +56,7 @@ public class CombinatorialRealMultidimensionalBall extends
 
 	public static final CombinatorialRealMultidimensionalBall ClosedUnit (
 		final org.drip.spaces.tensor.CombinatorialRealUnidimensionalVector[] aCRU,
-		final org.drip.measure.continuous.MultivariateDistribution multiDist,
+		final org.drip.measure.continuous.Rd multiDist,
 		final int iPNorm)
 	{
 		try {
@@ -81,7 +81,7 @@ public class CombinatorialRealMultidimensionalBall extends
 
 	public CombinatorialRealMultidimensionalBall (
 		final org.drip.spaces.tensor.CombinatorialRealUnidimensionalVector[] aCRU,
-		final org.drip.measure.continuous.MultivariateDistribution multiDist,
+		final org.drip.measure.continuous.Rd multiDist,
 		final int iPNorm,
 		final double dblNormRadius)
 		throws java.lang.Exception

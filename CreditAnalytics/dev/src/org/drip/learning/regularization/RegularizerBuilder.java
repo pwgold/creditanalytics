@@ -63,7 +63,7 @@ public class RegularizerBuilder {
 	 */
 
 	public static final org.drip.learning.regularization.RegularizerR1ToR1 R1CombinatorialToR1Continuous (
-		final org.drip.function.deterministic.R1ToR1 funcRegularizerR1ToR1,
+		final org.drip.function.definition.R1ToR1 funcRegularizerR1ToR1,
 		final org.drip.spaces.RxToR1.NormedR1CombinatorialToR1Continuous funcSpaceR1ToR1,
 		final double dblLambda)
 	{
@@ -91,7 +91,7 @@ public class RegularizerBuilder {
 	 */
 
 	public static final org.drip.learning.regularization.RegularizerR1ToR1 R1ContinuousToR1Continuous (
-		final org.drip.function.deterministic.R1ToR1 funcRegularizerR1ToR1,
+		final org.drip.function.definition.R1ToR1 funcRegularizerR1ToR1,
 		final org.drip.spaces.RxToR1.NormedR1ContinuousToR1Continuous funcSpaceR1ToR1,
 		final double dblLambda)
 	{
@@ -120,7 +120,7 @@ public class RegularizerBuilder {
 	 */
 
 	public static final org.drip.learning.regularization.RegularizerR1ToR1 ToR1Continuous (
-		final org.drip.function.deterministic.R1ToR1 funcRegularizerR1ToR1,
+		final org.drip.function.definition.R1ToR1 funcRegularizerR1ToR1,
 		final org.drip.spaces.metric.RealUnidimensionalNormedSpace runsInput,
 		final org.drip.spaces.metric.ContinuousRealUnidimensional cruOutput,
 		final double dblLambda)
@@ -154,7 +154,7 @@ public class RegularizerBuilder {
 	 */
 
 	public static final org.drip.learning.regularization.RegularizerRdToR1 RdCombinatorialToR1Continuous (
-		final org.drip.function.deterministic.RdToR1 funcRegularizerRdToR1,
+		final org.drip.function.definition.RdToR1 funcRegularizerRdToR1,
 		final org.drip.spaces.RxToR1.NormedRdCombinatorialToR1Continuous funcSpaceRdToR1,
 		final double dblLambda)
 	{
@@ -182,7 +182,7 @@ public class RegularizerBuilder {
 	 */
 
 	public static final org.drip.learning.regularization.RegularizerRdToR1 RdContinuousToR1Continuous (
-		final org.drip.function.deterministic.RdToR1 funcRegularizerRdToR1,
+		final org.drip.function.definition.RdToR1 funcRegularizerRdToR1,
 		final org.drip.spaces.RxToR1.NormedRdContinuousToR1Continuous funcSpaceRdToR1,
 		final double dblLambda)
 	{
@@ -211,7 +211,7 @@ public class RegularizerBuilder {
 	 */
 
 	public static final org.drip.learning.regularization.RegularizerRdToR1 ToRdContinuous (
-		final org.drip.function.deterministic.RdToR1 funcRegularizerRdToR1,
+		final org.drip.function.definition.RdToR1 funcRegularizerRdToR1,
 		final org.drip.spaces.metric.RealMultidimensionalNormedSpace rmnsInput,
 		final org.drip.spaces.metric.ContinuousRealUnidimensional cruOutput,
 		final double dblLambda)

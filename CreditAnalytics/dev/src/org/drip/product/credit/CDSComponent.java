@@ -1292,8 +1292,8 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 			final org.drip.analytics.definition.CreditCurve ccOld = csqs.creditCurve (creditLabel());
 
-			org.drip.function.deterministic.R1ToR1 ofCDSPriceFromFlatSpread = new
-				org.drip.function.deterministic.R1ToR1 (null) {
+			org.drip.function.definition.R1ToR1 ofCDSPriceFromFlatSpread = new
+				org.drip.function.definition.R1ToR1 (null) {
 				@Override public double evaluate (
 					final double dblFlatSpread)
 					throws java.lang.Exception
@@ -1313,8 +1313,8 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 			};
 
 			try {
-				org.drip.function.solver1D.FixedPointFinderOutput rfop = new
-					org.drip.function.solver1D.FixedPointFinderBrent (0., ofCDSPriceFromFlatSpread,
+				org.drip.function.solverR1ToR1.FixedPointFinderOutput rfop = new
+					org.drip.function.solverR1ToR1.FixedPointFinderBrent (0., ofCDSPriceFromFlatSpread,
 						true).findRoot();
 
 				if (null == rfop || !rfop.containsRoot() && !csqs.setCreditCurve (ccOld))

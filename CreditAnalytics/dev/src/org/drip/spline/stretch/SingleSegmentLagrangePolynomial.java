@@ -192,7 +192,7 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 			throw new java.lang.Exception
 				("SingleSegmentLagrangePolynomial::responseValueDerivative => Invalid inputs!");
 
-		org.drip.function.deterministic.R1ToR1 au = new org.drip.function.deterministic.R1ToR1
+		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1
 			(null) {
 			@Override public double evaluate (
 				double dblX)
@@ -293,8 +293,8 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 			}
 		}
 
-		org.drip.function.deterministic.R1ToR1 auDeriv = new
-			org.drip.function.deterministic.R1ToR1 (null) {
+		org.drip.function.definition.R1ToR1 auDeriv = new
+			org.drip.function.definition.R1ToR1 (null) {
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
@@ -314,9 +314,9 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 		};
 
 		try {
-			org.drip.function.solver1D.FixedPointFinderOutput fpop = new
-				org.drip.function.solver1D.FixedPointFinderBrent (0., auDeriv, true).findRoot
-					(org.drip.function.solver1D.InitializationHeuristics.FromHardSearchEdges (0., 1.));
+			org.drip.function.solverR1ToR1.FixedPointFinderOutput fpop = new
+				org.drip.function.solverR1ToR1.FixedPointFinderBrent (0., auDeriv, true).findRoot
+					(org.drip.function.solverR1ToR1.InitializationHeuristics.FromHardSearchEdges (0., 1.));
 
 			if (null == fpop || !fpop.containsRoot())
 				return new org.drip.spline.segment.Monotonocity
@@ -456,10 +456,10 @@ public class SingleSegmentLagrangePolynomial implements org.drip.spline.stretch.
 		return false;
 	}
 
-	@Override public org.drip.function.deterministic.R1ToR1 toAU()
+	@Override public org.drip.function.definition.R1ToR1 toAU()
 	{
-		org.drip.function.deterministic.R1ToR1 au = new
-			org.drip.function.deterministic.R1ToR1 (null)
+		org.drip.function.definition.R1ToR1 au = new
+			org.drip.function.definition.R1ToR1 (null)
 		{
 			@Override public double evaluate (
 				final double dblVariate)

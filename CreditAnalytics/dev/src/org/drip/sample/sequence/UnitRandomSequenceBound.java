@@ -62,7 +62,7 @@ public class UnitRandomSequenceBound {
 
 	private static final void ChernoffBinomialBounds (
 		final UnivariateSequenceGenerator iidsg,
-		final UnivariateDistribution dist,
+		final R1 dist,
 		final int[] aiSampleSize,
 		final double[] adblTolerance)
 		throws Exception
@@ -84,7 +84,7 @@ public class UnitRandomSequenceBound {
 
 	private static final void PoissonChernoffBinomialBounds (
 		final UnivariateSequenceGenerator iidsg,
-		final UnivariateDistribution dist,
+		final R1 dist,
 		final int[] aiSampleSize,
 		final double[] adblTolerance)
 		throws Exception
@@ -106,7 +106,7 @@ public class UnitRandomSequenceBound {
 
 	private static final void KarpHagerupRubUpperBounds (
 		final UnivariateSequenceGenerator iidsg,
-		final UnivariateDistribution dist,
+		final R1 dist,
 		final int[] aiSampleSize,
 		final double[] adblTolerance)
 		throws Exception
@@ -128,7 +128,7 @@ public class UnitRandomSequenceBound {
 
 	private static final void KarpHagerupRubLowerBounds (
 		final UnivariateSequenceGenerator iidsg,
-		final UnivariateDistribution dist,
+		final R1 dist,
 		final int[] aiSampleSize,
 		final double[] adblTolerance)
 		throws Exception
@@ -156,7 +156,7 @@ public class UnitRandomSequenceBound {
 
 		BoundedUniform uniformRandom = new BoundedUniform (0., 1.);
 
-		UnivariateBoundedUniformDistribution uniformDistribution = new UnivariateBoundedUniformDistribution (0., 1.);
+		R1Lebesgue uniformDistribution = new R1Lebesgue (0., 1.);
 
 		int[] aiSampleSize = new int[] {
 			10, 20, 50, 100, 250

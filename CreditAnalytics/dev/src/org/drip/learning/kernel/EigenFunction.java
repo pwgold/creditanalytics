@@ -53,7 +53,7 @@ public abstract class EigenFunction extends org.drip.spaces.RxToR1.NormedRdToNor
 	protected EigenFunction (
 		final org.drip.spaces.metric.RealMultidimensionalNormedSpace rmnsInput,
 		final org.drip.spaces.metric.RealUnidimensionalNormedSpace runsOutput,
-		final org.drip.function.deterministic.RdToR1 funcRdToR1,
+		final org.drip.function.definition.RdToR1 funcRdToR1,
 		final double dblAgnosticUpperBound)
 		throws java.lang.Exception
 	{
