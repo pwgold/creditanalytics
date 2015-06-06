@@ -70,9 +70,9 @@ public class RegularizerBuilder {
 		try {
 			return null == funcSpaceR1ToR1 ? null : new
 				org.drip.learning.regularization.RegularizerR1CombinatorialToR1Continuous
-					(funcRegularizerR1ToR1, (org.drip.spaces.metric.CombinatorialRealUnidimensional)
-						funcSpaceR1ToR1.input(), (org.drip.spaces.metric.ContinuousRealUnidimensional)
-							funcSpaceR1ToR1.output(), dblLambda);
+					(funcRegularizerR1ToR1, (org.drip.spaces.metric.R1Combinatorial)
+						funcSpaceR1ToR1.inputMetricVectorSpace(), (org.drip.spaces.metric.R1Continuous)
+							funcSpaceR1ToR1.outputMetricVectorSpace(), dblLambda);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -98,9 +98,9 @@ public class RegularizerBuilder {
 		try {
 			return null == funcSpaceR1ToR1 ? null : new
 				org.drip.learning.regularization.RegularizerR1ContinuousToR1Continuous
-					(funcRegularizerR1ToR1, (org.drip.spaces.metric.ContinuousRealUnidimensional)
-						funcSpaceR1ToR1.input(), (org.drip.spaces.metric.ContinuousRealUnidimensional)
-							funcSpaceR1ToR1.output(), dblLambda);
+					(funcRegularizerR1ToR1, (org.drip.spaces.metric.R1Continuous)
+						funcSpaceR1ToR1.inputMetricVectorSpace(), (org.drip.spaces.metric.R1Continuous)
+							funcSpaceR1ToR1.outputMetricVectorSpace(), dblLambda);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -112,8 +112,8 @@ public class RegularizerBuilder {
 	 * Construct an Instance of R^1 Combinatorial/Continuous -> R^1 Continuous Regularizer
 	 * 
 	 * @param funcRegularizerR1ToR1 The R^1 -> R^1 Regularizer Function
-	 * @param runsInput The R^1 Combinatorial/Continuous Input Space
-	 * @param cruOutput The R^1 Continuous Output Space
+	 * @param r1Input The R^1 Combinatorial/Continuous Input Space
+	 * @param r1ContinuousOutput The R^1 Continuous Output Space
 	 * @param dblLambda The Regularization Lambda
 	 * 
 	 * @return The R^1 Combinatorial/Continuous -> R^1 Continuous Regularizer Instance
@@ -121,21 +121,21 @@ public class RegularizerBuilder {
 
 	public static final org.drip.learning.regularization.RegularizerR1ToR1 ToR1Continuous (
 		final org.drip.function.definition.R1ToR1 funcRegularizerR1ToR1,
-		final org.drip.spaces.metric.RealUnidimensionalNormedSpace runsInput,
-		final org.drip.spaces.metric.ContinuousRealUnidimensional cruOutput,
+		final org.drip.spaces.metric.R1Normed r1Input,
+		final org.drip.spaces.metric.R1Continuous r1ContinuousOutput,
 		final double dblLambda)
 	{
-		if (null == runsInput) return null;
+		if (null == r1Input) return null;
 
 		try {
-			if (runsInput instanceof org.drip.spaces.metric.ContinuousRealUnidimensional)
+			if (r1Input instanceof org.drip.spaces.metric.R1Continuous)
 				return new org.drip.learning.regularization.RegularizerR1ContinuousToR1Continuous
-					(funcRegularizerR1ToR1, (org.drip.spaces.metric.ContinuousRealUnidimensional) runsInput,
-						cruOutput, dblLambda);
+					(funcRegularizerR1ToR1, (org.drip.spaces.metric.R1Continuous) r1Input,
+						r1ContinuousOutput, dblLambda);
 
 			return new org.drip.learning.regularization.RegularizerR1CombinatorialToR1Continuous
-				(funcRegularizerR1ToR1, (org.drip.spaces.metric.CombinatorialRealUnidimensional) runsInput,
-					cruOutput, dblLambda);
+				(funcRegularizerR1ToR1, (org.drip.spaces.metric.R1Combinatorial) r1Input,
+					r1ContinuousOutput, dblLambda);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -161,9 +161,9 @@ public class RegularizerBuilder {
 		try {
 			return null == funcSpaceRdToR1 ? null : new
 				org.drip.learning.regularization.RegularizerRdCombinatorialToR1Continuous
-					(funcRegularizerRdToR1, (org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach)
-						funcSpaceRdToR1.input(), (org.drip.spaces.metric.ContinuousRealUnidimensional)
-							funcSpaceRdToR1.output(), dblLambda);
+					(funcRegularizerRdToR1, (org.drip.spaces.metric.RdCombinatorialBanach)
+						funcSpaceRdToR1.inputMetricVectorSpace(), (org.drip.spaces.metric.R1Continuous)
+							funcSpaceRdToR1.outputMetricVectorSpace(), dblLambda);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -189,9 +189,9 @@ public class RegularizerBuilder {
 		try {
 			return null == funcSpaceRdToR1 ? null : new
 				org.drip.learning.regularization.RegularizerRdContinuousToR1Continuous
-					(funcRegularizerRdToR1, (org.drip.spaces.metric.ContinuousRealMultidimensionalBanach)
-						funcSpaceRdToR1.input(), (org.drip.spaces.metric.ContinuousRealUnidimensional)
-							funcSpaceRdToR1.output(), dblLambda);
+					(funcRegularizerRdToR1, (org.drip.spaces.metric.RdContinuousBanach)
+						funcSpaceRdToR1.inputMetricVectorSpace(), (org.drip.spaces.metric.R1Continuous)
+							funcSpaceRdToR1.outputMetricVectorSpace(), dblLambda);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -203,8 +203,8 @@ public class RegularizerBuilder {
 	 * Construct an Instance of R^d Combinatorial/Continuous -> R^1 Continuous Regularizer
 	 * 
 	 * @param funcRegularizerRdToR1 The R^d -> R^1 Regularizer Function
-	 * @param rmnsInput The R^d Combinatorial/Continuous Input Space
-	 * @param cruOutput The R^1 Continuous Output Space
+	 * @param rdInput The R^d Combinatorial/Continuous Input Space
+	 * @param r1ContinuousOutput The R^1 Continuous Output Space
 	 * @param dblLambda The Regularization Lambda
 	 * 
 	 * @return The R^1 Combinatorial/Continuous -> R^1 Continuous Regularizer Instance
@@ -212,21 +212,21 @@ public class RegularizerBuilder {
 
 	public static final org.drip.learning.regularization.RegularizerRdToR1 ToRdContinuous (
 		final org.drip.function.definition.RdToR1 funcRegularizerRdToR1,
-		final org.drip.spaces.metric.RealMultidimensionalNormedSpace rmnsInput,
-		final org.drip.spaces.metric.ContinuousRealUnidimensional cruOutput,
+		final org.drip.spaces.metric.RdNormed rdInput,
+		final org.drip.spaces.metric.R1Continuous r1ContinuousOutput,
 		final double dblLambda)
 	{
-		if (null == rmnsInput) return null;
+		if (null == rdInput) return null;
 
 		try {
-			if (rmnsInput instanceof org.drip.spaces.metric.ContinuousRealMultidimensionalBanach)
+			if (rdInput instanceof org.drip.spaces.metric.RdContinuousBanach)
 				return new org.drip.learning.regularization.RegularizerRdContinuousToR1Continuous
-					(funcRegularizerRdToR1, (org.drip.spaces.metric.ContinuousRealMultidimensionalBanach)
-						rmnsInput, cruOutput, dblLambda);
+					(funcRegularizerRdToR1, (org.drip.spaces.metric.RdContinuousBanach) rdInput,
+						r1ContinuousOutput, dblLambda);
 
 			return new org.drip.learning.regularization.RegularizerRdCombinatorialToR1Continuous
-				(funcRegularizerRdToR1, (org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach)
-					rmnsInput, cruOutput, dblLambda);
+				(funcRegularizerRdToR1, (org.drip.spaces.metric.RdCombinatorialBanach) rdInput,
+					r1ContinuousOutput, dblLambda);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}

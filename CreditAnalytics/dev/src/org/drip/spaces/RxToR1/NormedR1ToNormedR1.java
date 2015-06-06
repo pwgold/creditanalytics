@@ -29,7 +29,7 @@ package org.drip.spaces.RxToR1;
  */
 
 /**
- * NormedR1ToNormedR1 is the abstract class underlying the f : Validated Normed R^1 -> Validated Normed R^1
+ * NormedR1ToNormedR1 is the Abstract Class underlying the f : Validated Normed R^1 -> Validated Normed R^1
  *  Function Spaces.
  * 
  * The Reference we've used is:
@@ -41,17 +41,17 @@ package org.drip.spaces.RxToR1;
  */
 
 public abstract class NormedR1ToNormedR1 extends org.drip.spaces.RxToR1.NormedRxToNormedR1 {
+	private org.drip.spaces.metric.R1Normed _r1Input = null;
+	private org.drip.spaces.metric.R1Normed _r1Output = null;
 	private org.drip.function.definition.R1ToR1 _funcR1ToR1 = null;
-	private org.drip.spaces.metric.RealUnidimensionalNormedSpace _runsInput = null;
-	private org.drip.spaces.metric.RealUnidimensionalNormedSpace _runsOutput = null;
 
 	protected NormedR1ToNormedR1 (
-		final org.drip.spaces.metric.RealUnidimensionalNormedSpace runsInput,
-		final org.drip.spaces.metric.RealUnidimensionalNormedSpace runsOutput,
+		final org.drip.spaces.metric.R1Normed r1Input,
+		final org.drip.spaces.metric.R1Normed r1Output,
 		final org.drip.function.definition.R1ToR1 funcR1ToR1)
 		throws java.lang.Exception
 	{
-		if (null == (_runsInput = runsInput) || null == (_runsOutput = runsOutput))
+		if (null == (_r1Input = r1Input) || null == (_r1Output = r1Output))
 			throw new java.lang.Exception ("NormedR1ToNormedR1 ctr: Invalid Inputs");
 
 		_funcR1ToR1 = funcR1ToR1;
@@ -72,10 +72,10 @@ public abstract class NormedR1ToNormedR1 extends org.drip.spaces.RxToR1.NormedRx
 		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
 		throws java.lang.Exception
 	{
-		if (null == _funcR1ToR1 || null == gvvi || !gvvi.tensorSpaceType().match (_runsInput))
+		if (null == _funcR1ToR1 || null == gvvi || !gvvi.tensorSpaceType().match (_r1Input))
 			throw new java.lang.Exception ("NormedR1ToNormedR1::sampleSupremumNorm => Invalid Input");
 
-		double[] adblInstance = ((org.drip.spaces.instance.ValidatedRealUnidimensional) gvvi).instance();
+		double[] adblInstance = ((org.drip.spaces.instance.ValidatedR1) gvvi).instance();
 
 		int iNumSample = adblInstance.length;
 
@@ -94,15 +94,17 @@ public abstract class NormedR1ToNormedR1 extends org.drip.spaces.RxToR1.NormedRx
 		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
 		throws java.lang.Exception
 	{
-		if (null == _funcR1ToR1 || null == gvvi || !gvvi.tensorSpaceType().match (_runsInput))
+		int iPNorm = _r1Output.pNorm();
+
+		if (java.lang.Integer.MAX_VALUE == iPNorm) return sampleSupremumNorm (gvvi);
+
+		if (null == _funcR1ToR1 || null == gvvi || !gvvi.tensorSpaceType().match (_r1Input))
 			throw new java.lang.Exception ("NormedR1ToNormedR1::sampleMetricNorm => Invalid Input");
 
-		double[] adblInstance = ((org.drip.spaces.instance.ValidatedRealUnidimensional) gvvi).instance();
+		double[] adblInstance = ((org.drip.spaces.instance.ValidatedR1) gvvi).instance();
 
 		double dblNorm = 0.;
 		int iNumSample = adblInstance.length;
-
-		int iPNorm = _runsOutput.pNorm();
 
 		for (int i = 0; i < iNumSample; ++i)
 			dblNorm += java.lang.Math.pow (java.lang.Math.abs (_funcR1ToR1.evaluate (adblInstance[i])),
@@ -117,16 +119,16 @@ public abstract class NormedR1ToNormedR1 extends org.drip.spaces.RxToR1.NormedRx
 		if (null == _funcR1ToR1)
 			throw new java.lang.Exception ("NormedR1ToNormedR1::populationESS => Invalid Input");
 
-		return _funcR1ToR1.evaluate (_runsInput.populationMode());
+		return _funcR1ToR1.evaluate (_r1Input.populationMode());
 	}
 
-	@Override public org.drip.spaces.metric.RealUnidimensionalNormedSpace output()
+	@Override public org.drip.spaces.metric.R1Normed outputMetricVectorSpace()
 	{
-		return _runsOutput;
+		return _r1Output;
 	}
 
-	@Override public org.drip.spaces.metric.RealUnidimensionalNormedSpace input()
+	@Override public org.drip.spaces.metric.R1Normed inputMetricVectorSpace()
 	{
-		return _runsInput;
+		return _r1Input;
 	}
 }

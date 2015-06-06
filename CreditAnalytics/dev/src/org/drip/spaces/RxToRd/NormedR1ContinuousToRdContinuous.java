@@ -45,37 +45,39 @@ public class NormedR1ContinuousToRdContinuous extends org.drip.spaces.RxToRd.Nor
 	/**
 	 * NormedR1ContinuousToRdContinuous Function Space Constructor
 	 * 
+	 * @param r1ContinuousInput The R^1 Input Metric Vector Space
+	 * @param rdContinuousOutput The R^d Output Metric Vector Space
 	 * @param funcR1ToRd The R1ToRd Function
-	 * @param cruInput The R^1 Input Metric Vector Space
-	 * @param crmbOutput The R^d Output Metric Vector Space
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NormedR1ContinuousToRdContinuous (
-		final org.drip.function.definition.R1ToRd funcR1ToRd,
-		final org.drip.spaces.metric.ContinuousRealUnidimensional cruInput,
-		final org.drip.spaces.metric.ContinuousRealMultidimensionalBanach crmbOutput)
+		final org.drip.spaces.metric.R1Continuous r1ContinuousInput,
+		final org.drip.spaces.metric.RdContinuousBanach rdContinuousOutput,
+		final org.drip.function.definition.R1ToRd funcR1ToRd)
 		throws java.lang.Exception
 	{
-		super (cruInput, crmbOutput, funcR1ToRd);
+		super (r1ContinuousInput, rdContinuousOutput, funcR1ToRd);
 	}
 
 	@Override public double[] populationMetricNorm()
 	{
-		org.drip.spaces.metric.CombinatorialRealUnidimensional cru =
-			(org.drip.spaces.metric.CombinatorialRealUnidimensional) input();
+		final int iPNorm = outputMetricVectorSpace().pNorm();
 
-		final org.drip.measure.continuous.R1 uniDist = cru.borelSigmaMeasure();
+		if (java.lang.Integer.MAX_VALUE == iPNorm) return populationSupremumNorm();
+
+		org.drip.spaces.metric.R1Combinatorial r1ContinuousInput = (org.drip.spaces.metric.R1Combinatorial)
+			inputMetricVectorSpace();
+
+		final org.drip.measure.continuous.R1 distR1 = r1ContinuousInput.borelSigmaMeasure();
 
 		final org.drip.function.definition.R1ToRd funcR1ToRd = function();
 
-		if (null == uniDist || null == funcR1ToRd) return null;
+		if (null == distR1 || null == funcR1ToRd) return null;
 
-		final int iPNorm = output().pNorm();
-
-		org.drip.function.definition.R1ToRd funcR1ToRdPointNorm = new
-			org.drip.function.definition.R1ToRd (null) {
+		org.drip.function.definition.R1ToRd funcR1ToRdPointNorm = new org.drip.function.definition.R1ToRd
+			(null) {
 			@Override public double[] evaluate (
 				final double dblX)
 			{
@@ -89,7 +91,7 @@ public class NormedR1ContinuousToRdContinuous extends org.drip.spaces.RxToRd.Nor
 				if (0 == iOutputDimension) return null;
 
 				try {
-					dblProbabilityDensity = uniDist.density (dblX);
+					dblProbabilityDensity = distR1.density (dblX);
 				} catch (java.lang.Exception e) {
 					e.printStackTrace();
 
@@ -104,8 +106,8 @@ public class NormedR1ContinuousToRdContinuous extends org.drip.spaces.RxToRd.Nor
 			}
 		};
 
-		double[] adblPopulationRdMetricNorm = funcR1ToRdPointNorm.integrate (cru.leftEdge(),
-			cru.rightEdge());
+		double[] adblPopulationRdMetricNorm = funcR1ToRdPointNorm.integrate (r1ContinuousInput.leftEdge(),
+			r1ContinuousInput.rightEdge());
 
 		if (null == adblPopulationRdMetricNorm) return null;
 

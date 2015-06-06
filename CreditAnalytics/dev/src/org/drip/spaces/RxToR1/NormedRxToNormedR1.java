@@ -29,7 +29,7 @@ package org.drip.spaces.RxToR1;
  */
 
 /**
- * NormedRxToNormedR1 is the abstract Class that exposes f : Normed R^x (x >= 1) -> Normed R^1 Function
+ * NormedRxToNormedR1 is the Abstract Class that exposes f : Normed R^x (x >= 1) -> Normed R^1 Function
  *  Space.
  * 
  * The Reference we've used is:
@@ -48,7 +48,7 @@ public abstract class NormedRxToNormedR1 {
 	 * @return The Input Metric Vector Space
 	 */
 
-	public abstract org.drip.spaces.metric.GeneralizedMetricVectorSpace input();
+	public abstract org.drip.spaces.metric.GeneralizedMetricVectorSpace inputMetricVectorSpace();
 
 	/**
 	 * Retrieve the Output Metric Vector Space
@@ -56,7 +56,7 @@ public abstract class NormedRxToNormedR1 {
 	 * @return The Output Metric Vector Space
 	 */
 
-	public abstract org.drip.spaces.metric.RealUnidimensionalNormedSpace output();
+	public abstract org.drip.spaces.metric.R1Normed outputMetricVectorSpace();
 
 	/**
 	 * Retrieve the Sample Supremum Norm
@@ -154,6 +154,20 @@ public abstract class NormedRxToNormedR1 {
 		throws java.lang.Exception;
 
 	/**
+	 * Retrieve the Population Supremum Metric Norm
+	 * 
+	 * @return The Population Supremum Metric Norm
+	 * 
+	 * @throws java.lang.Exception Thrown if the Population Supremum Metric Norm cannot be computed
+	 */
+
+	public double populationSupremumMetricNorm()
+		throws java.lang.Exception
+	{
+		return populationESS();
+	}
+
+	/**
 	 * Retrieve the Population Covering Number
 	 * 
 	 * @param dblCover The Cover
@@ -191,6 +205,6 @@ public abstract class NormedRxToNormedR1 {
 			throw new java.lang.Exception
 				("NormedRxToNormedR1::populationSupremumCoveringNumber => Invalid Inputs");
 
-		return populationESS() / dblCover;
+		return populationSupremumMetricNorm() / dblCover;
 	}
 }

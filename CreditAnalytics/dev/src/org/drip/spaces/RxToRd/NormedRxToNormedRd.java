@@ -48,7 +48,7 @@ public abstract class NormedRxToNormedRd {
 	 * @return The Input Metric Vector Space
 	 */
 
-	public abstract org.drip.spaces.metric.GeneralizedMetricVectorSpace input();
+	public abstract org.drip.spaces.metric.GeneralizedMetricVectorSpace inputMetricVectorSpace();
 
 	/**
 	 * Retrieve the Output Metric Vector Space
@@ -56,7 +56,7 @@ public abstract class NormedRxToNormedRd {
 	 * @return The Output Metric Vector Space
 	 */
 
-	public abstract org.drip.spaces.metric.RealMultidimensionalNormedSpace output();
+	public abstract org.drip.spaces.metric.RdNormed outputMetricVectorSpace();
 
 	/**
 	 * Retrieve the Sample Supremum Norm Array
@@ -104,7 +104,7 @@ public abstract class NormedRxToNormedRd {
 
 		if (0 == iOutputDimensionality) return null;
 
-		double dblCoverBallVolume = java.lang.Math.pow (dblCover, output().pNorm());
+		double dblCoverBallVolume = java.lang.Math.pow (dblCover, outputMetricVectorSpace().pNorm());
 
 		for (int i = 0; i < iOutputDimensionality; ++i)
 			adblSampleCoveringNumber[i] = adblSampleMetricNorm[i] / dblCoverBallVolume;
@@ -129,6 +129,17 @@ public abstract class NormedRxToNormedRd {
 	public abstract double[] populationMetricNorm();
 
 	/**
+	 * Retrieve the Population Supremum Norm Array
+	 * 
+	 * @return The Population Supremum Norm Array
+	 */
+
+	public double[] populationSupremumNorm()
+	{
+		return populationMetricNorm();
+	}
+
+	/**
 	 * Retrieve the Population Covering Number Array
 	 * 
 	 * @param dblCover The Cover
@@ -151,7 +162,7 @@ public abstract class NormedRxToNormedRd {
 
 		if (0 == iOutputDimensionality) return null;
 
-		double dblCoverBallVolume = java.lang.Math.pow (dblCover, output().pNorm());
+		double dblCoverBallVolume = java.lang.Math.pow (dblCover, outputMetricVectorSpace().pNorm());
 
 		for (int i = 0; i < iOutputDimensionality; ++i)
 			adblPopulationCoveringNumber[i] = adblPopulationMetricNorm[i] / dblCoverBallVolume;

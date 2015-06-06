@@ -83,22 +83,21 @@ public class IntegralOperatorEigenComponent {
 				}
 			};
 
-			org.drip.spaces.metric.RealMultidimensionalNormedSpace rmnsInput = _eigenFunction.input();
+			org.drip.spaces.metric.RdNormed rmnsInput = _eigenFunction.inputMetricVectorSpace();
 
-			org.drip.spaces.metric.RealUnidimensionalNormedSpace runsOutput = _eigenFunction.output();
+			org.drip.spaces.metric.R1Normed runsOutput = _eigenFunction.outputMetricVectorSpace();
 
-			org.drip.spaces.metric.ContinuousRealUnidimensional cru =
-				org.drip.spaces.metric.ContinuousRealUnidimensional.Standard (runsOutput.leftEdge(),
+			org.drip.spaces.metric.R1Continuous cru =
+				org.drip.spaces.metric.R1Continuous.Standard (runsOutput.leftEdge(),
 					runsOutput.rightEdge(), runsOutput.borelSigmaMeasure(), 2);
 
 			_rkhsFeatureMap = rmnsInput instanceof
-				org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach ? new
-					org.drip.spaces.RxToR1.NormedRdCombinatorialToR1Continuous (rkhsFeatureMapRdToR1,
-						(org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach) rmnsInput, cru) :
-							new org.drip.spaces.RxToR1.NormedRdContinuousToR1Continuous
-								(rkhsFeatureMapRdToR1,
-									(org.drip.spaces.metric.ContinuousRealMultidimensionalBanach) rmnsInput,
-										cru);
+				org.drip.spaces.metric.RdCombinatorialBanach ? new
+					org.drip.spaces.RxToR1.NormedRdCombinatorialToR1Continuous
+						((org.drip.spaces.metric.RdCombinatorialBanach) rmnsInput, cru, rkhsFeatureMapRdToR1)
+							: new org.drip.spaces.RxToR1.NormedRdContinuousToR1Continuous
+								((org.drip.spaces.metric.RdContinuousBanach) rmnsInput, cru,
+									rkhsFeatureMapRdToR1);
 		}
 	}
 

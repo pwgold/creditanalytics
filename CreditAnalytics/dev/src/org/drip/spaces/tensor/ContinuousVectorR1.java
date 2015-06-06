@@ -29,8 +29,8 @@ package org.drip.spaces.tensor;
  */
 
 /**
- * ContinuousRealUnidimensionalVector exposes the normed/non-normed, bounded/unbounded Continuous 1D Vector
- * 	Spaces with Real-valued Elements.
+ * ContinuousVectorR1 exposes the Normed/non-normed, Bounded/Unbounded Continuous R^1 Vector Spaces with
+ *  Real-valued Elements.
  * 
  * The Reference we've used is:
  * 
@@ -40,21 +40,20 @@ package org.drip.spaces.tensor;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ContinuousRealUnidimensionalVector implements
-	org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace {
+public class ContinuousVectorR1 implements org.drip.spaces.tensor.GeneralizedVectorR1 {
 	private double _dblLeftEdge = java.lang.Double.NaN;
 	private double _dblRightEdge = java.lang.Double.NaN;
 
 	/**
-	 * Create the Standard R^1 Real-valued Space
+	 * Create the Standard Continuous R^1 Vector Space
 	 * 
-	 * @return The Standard R^1 Real-valued Space
+	 * @return The Standard Continuous R^1 Vector Space
 	 */
 
-	public static final ContinuousRealUnidimensionalVector Standard()
+	public static final ContinuousVectorR1 Standard()
 	{
 		try {
-			return new ContinuousRealUnidimensionalVector (java.lang.Double.NEGATIVE_INFINITY,
+			return new ContinuousVectorR1 (java.lang.Double.NEGATIVE_INFINITY,
 				java.lang.Double.POSITIVE_INFINITY);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -64,7 +63,7 @@ public class ContinuousRealUnidimensionalVector implements
 	}
 
 	/**
-	 * ContinuousRealUnidimensionalVector Constructor
+	 * ContinuousVectorR1 Constructor
 	 * 
 	 * @param dblLeftEdge The Left Edge
 	 * @param dblRightEdge The Right Edge
@@ -72,14 +71,14 @@ public class ContinuousRealUnidimensionalVector implements
 	 * @throws java.lang.Exception Thrown if the Inputs are invalid
 	 */
 
-	public ContinuousRealUnidimensionalVector (
+	public ContinuousVectorR1 (
 		final double dblLeftEdge,
 		final double dblRightEdge)
 		throws java.lang.Exception
 	{
 		if (!java.lang.Double.isNaN (_dblLeftEdge = dblLeftEdge) || !java.lang.Double.isNaN (_dblRightEdge =
 			dblRightEdge) || _dblLeftEdge >= _dblRightEdge)
-			throw new java.lang.Exception ("ContinuousRealUnidimensionalVector ctr: Invalid Inputs");
+			throw new java.lang.Exception ("ContinuousVectorR1 ctr: Invalid Inputs");
 	}
 
 	@Override public double leftEdge()
@@ -105,23 +104,23 @@ public class ContinuousRealUnidimensionalVector implements
 	}
 
 	@Override public boolean match (
-		final org.drip.spaces.tensor.GeneralizedVectorSpace gvsOther)
+		final org.drip.spaces.tensor.GeneralizedVector gvOther)
 	{
-		if (null == gvsOther || !(gvsOther instanceof ContinuousRealUnidimensionalVector)) return false;
+		if (null == gvOther || !(gvOther instanceof ContinuousVectorR1)) return false;
 
-		ContinuousRealUnidimensionalVector cruvOther = (ContinuousRealUnidimensionalVector) gvsOther;
+		ContinuousVectorR1 cvR1Other = (ContinuousVectorR1) gvOther;
 
-		return cruvOther.leftEdge() == _dblLeftEdge && cruvOther.rightEdge() == _dblRightEdge;
+		return cvR1Other.leftEdge() == _dblLeftEdge && cvR1Other.rightEdge() == _dblRightEdge;
 	}
 
 	@Override public boolean subset (
-		final org.drip.spaces.tensor.GeneralizedVectorSpace gvsOther)
+		final org.drip.spaces.tensor.GeneralizedVector gvOther)
 	{
-		if (null == gvsOther || !(gvsOther instanceof ContinuousRealUnidimensionalVector)) return false;
+		if (null == gvOther || !(gvOther instanceof ContinuousVectorR1)) return false;
 
-		ContinuousRealUnidimensionalVector cruvOther = (ContinuousRealUnidimensionalVector) gvsOther;
+		ContinuousVectorR1 cvR1Other = (ContinuousVectorR1) gvOther;
 
-		return cruvOther.leftEdge() >= _dblLeftEdge && cruvOther.rightEdge() <= _dblRightEdge;
+		return cvR1Other.leftEdge() >= _dblLeftEdge && cvR1Other.rightEdge() <= _dblRightEdge;
 	}
 
 	@Override public boolean isPredictorBounded()
@@ -134,8 +133,7 @@ public class ContinuousRealUnidimensionalVector implements
 		throws java.lang.Exception
 	{
 		if (!isPredictorBounded())
-			throw new java.lang.Exception
-				("ContinuousRealUnidimensionalVector::hyperVolume => Space not Bounded");
+			throw new java.lang.Exception ("ContinuousVectorR1::hyperVolume => Space not Bounded");
 
 		return _dblRightEdge - _dblLeftEdge;
 	}

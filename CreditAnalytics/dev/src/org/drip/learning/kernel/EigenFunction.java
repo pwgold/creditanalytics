@@ -51,8 +51,8 @@ public abstract class EigenFunction extends org.drip.spaces.RxToR1.NormedRdToNor
 	private double _dblAgnosticUpperBound = java.lang.Double.NaN;
 
 	protected EigenFunction (
-		final org.drip.spaces.metric.RealMultidimensionalNormedSpace rmnsInput,
-		final org.drip.spaces.metric.RealUnidimensionalNormedSpace runsOutput,
+		final org.drip.spaces.metric.RdNormed rmnsInput,
+		final org.drip.spaces.metric.R1Normed runsOutput,
 		final org.drip.function.definition.RdToR1 funcRdToR1,
 		final double dblAgnosticUpperBound)
 		throws java.lang.Exception

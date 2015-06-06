@@ -29,90 +29,83 @@ package org.drip.spaces.tensor;
  */
 
 /**
- * CombinatorialRealMultidimensionalVector exposes the normed/non-normed Discrete Spaces with
- *  Multidimensional Real-valued Combinatorial Vector Elements.
+ * ContinuousVectorRd implements the Normed/non-normed, Bounded/Unbounded Continuous R^d Vector Spaces.
+ * 
+ * The Reference we've used is:
+ * 
+ * 	- Carl, B., and I. Stephani (1990): Entropy, Compactness, and Approximation of Operators, Cambridge
+ * 		University Press, Cambridge UK.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class CombinatorialRealMultidimensionalVector extends
-	org.drip.spaces.tensor.AggregatedMultidimensionalVectorSpace {
+public class ContinuousVectorRd extends org.drip.spaces.tensor.AggregatedRdVector {
 
 	/**
-	 * CombinatorialRealMultidimensionalVector Constructor
+	 * Construct the ContinuousVectorRd Instance
 	 * 
-	 * @param aCRUV Array of the Underlying Unidimensional Combinatorial Real Vector Spaces
+	 * @param iDimension The Space Dimension
+	 * 
+	 * @return The ContinuousVectorRd Instance
+	 */
+
+	public static final ContinuousVectorRd Standard (
+		final int iDimension)
+	{
+		try {
+			return 0 >= iDimension ? null : new ContinuousVectorRd (new
+				org.drip.spaces.tensor.ContinuousVectorR1[iDimension]);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * ContinuousVectorRd Constructor
+	 * 
+	 * @param aCVR1 Array of the Continuous R^1 Vector Spaces
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CombinatorialRealMultidimensionalVector (
-		final org.drip.spaces.tensor.CombinatorialRealUnidimensionalVector[] aCRUV)
+	public ContinuousVectorRd (
+		final org.drip.spaces.tensor.ContinuousVectorR1[] aCVR1)
 		throws java.lang.Exception
 	{
-		super (aCRUV);
-	}
-
-	@Override public org.drip.spaces.tensor.Cardinality cardinality()
-	{
-		org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace[] aGUVS = vectorSpaces();
-
-		int iDimension = aGUVS.length;
-		double dblCardinalNumber = 1.;
-
-		for (int i = 0; i < iDimension; ++i)
-			dblCardinalNumber *= ((org.drip.spaces.tensor.CombinatorialRealUnidimensionalVector)
-				aGUVS[i]).cardinality().number();
-
-		return org.drip.spaces.tensor.Cardinality.CountablyFinite (dblCardinalNumber);
-	}
-
-	/**
-	 * Retrieve the Multidimensional Iterator associated with the Underlying Vector Space
-	 * 
-	 * @return The Multidimensional Iterator associated with the Underlying Vector Space
-	 */
-
-	public org.drip.spaces.tensor.CombinatorialRealMultidimensionalIterator iterator()
-	{
-		org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace[] aGUVS = vectorSpaces();
-
-		int iDimension = aGUVS.length;
-		org.drip.spaces.tensor.CombinatorialRealUnidimensionalVector[] aCRUV = new
-			org.drip.spaces.tensor.CombinatorialRealUnidimensionalVector[iDimension];
-
-		for (int i = 0; i < iDimension; ++i)
-			aCRUV[i] = (org.drip.spaces.tensor.CombinatorialRealUnidimensionalVector) aGUVS[i];
-
-		return org.drip.spaces.tensor.CombinatorialRealMultidimensionalIterator.Standard (aCRUV);
+		super (aCVR1);
 	}
 
 	@Override public double[] leftDimensionEdge()
 	{
-		org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace[] aGUVS = vectorSpaces();
+		org.drip.spaces.tensor.GeneralizedVectorR1[] aGVR1 = vectorSpaces();
 
-		int iDimension = aGUVS.length;
+		int iDimension = aGVR1.length;
 		double[] adblLeftEdge = new double[iDimension];
 
 		for (int i = 0; i < iDimension; ++i)
-			adblLeftEdge[i] = ((org.drip.spaces.tensor.ContinuousRealUnidimensionalVector)
-				aGUVS[i]).leftEdge();
+			adblLeftEdge[i] = ((org.drip.spaces.tensor.ContinuousVectorR1) aGVR1[i]).leftEdge();
 
 		return adblLeftEdge;
 	}
 
 	@Override public double[] rightDimensionEdge()
 	{
-		org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace[] aGUVS = vectorSpaces();
+		org.drip.spaces.tensor.GeneralizedVectorR1[] aGVR1 = vectorSpaces();
 
-		int iDimension = aGUVS.length;
+		int iDimension = aGVR1.length;
 		double[] adblRightEdge = new double[iDimension];
 
 		for (int i = 0; i < iDimension; ++i)
-			adblRightEdge[i] = ((org.drip.spaces.tensor.ContinuousRealUnidimensionalVector)
-				aGUVS[i]).rightEdge();
+			adblRightEdge[i] = ((org.drip.spaces.tensor.ContinuousVectorR1) aGVR1[i]).rightEdge();
 
 		return adblRightEdge;
+	}
+
+	@Override public org.drip.spaces.tensor.Cardinality cardinality()
+	{
+		return org.drip.spaces.tensor.Cardinality.UncountablyInfinite();
 	}
 
 	@Override public double leftEdge()
@@ -147,8 +140,7 @@ public class CombinatorialRealMultidimensionalVector extends
 		throws java.lang.Exception
 	{
 		if (!isPredictorBounded())
-			throw new java.lang.Exception
-				("CombinatorialRealMultidimensionalVector::hyperVolume => Space not Bounded");
+			throw new java.lang.Exception ("ContinuousVectorRd::hyperVolume => Space not Bounded");
 
 		double[] adblLeftEdge = leftDimensionEdge();
 

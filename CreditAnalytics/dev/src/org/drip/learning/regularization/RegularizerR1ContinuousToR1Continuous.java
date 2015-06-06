@@ -60,8 +60,8 @@ public class RegularizerR1ContinuousToR1Continuous extends
 	 * RegularizerR1ContinuousToR1Continuous Function Space Constructor
 	 * 
 	 * @param funcRegularizerR1ToR1 The R^1 -> R^1 Regularizer Function
-	 * @param cruInput The Continuous R^1 Input Metric Vector Space
-	 * @param cruOutput The Continuous R^1 Output Metric Vector Space
+	 * @param r1ContinuousInput The Continuous R^1 Input Metric Vector Space
+	 * @param r1ContinuousOutput The Continuous R^1 Output Metric Vector Space
 	 * @param dblLambda The Regularization Lambda
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -69,12 +69,12 @@ public class RegularizerR1ContinuousToR1Continuous extends
 
 	public RegularizerR1ContinuousToR1Continuous (
 		final org.drip.function.definition.R1ToR1 funcRegularizerR1ToR1,
-		final org.drip.spaces.metric.ContinuousRealUnidimensional cruInput,
-		final org.drip.spaces.metric.ContinuousRealUnidimensional cruOutput,
+		final org.drip.spaces.metric.R1Continuous r1ContinuousInput,
+		final org.drip.spaces.metric.R1Continuous r1ContinuousOutput,
 		final double dblLambda)
 		throws java.lang.Exception
 	{
-		super (funcRegularizerR1ToR1, cruInput, cruOutput);
+		super (r1ContinuousInput, r1ContinuousOutput, funcRegularizerR1ToR1);
 
 		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLambda = dblLambda) || 0 > _dblLambda)
 			throw new java.lang.Exception
@@ -88,27 +88,40 @@ public class RegularizerR1ContinuousToR1Continuous extends
 
 	@Override public double structuralLoss (
 		final org.drip.function.definition.R1ToR1 funcR1ToR1,
-		final double[] adblInstance)
+		final double[] adblX)
 		throws java.lang.Exception
 	{
-		if (null == funcR1ToR1 || null == adblInstance)
+		if (null == funcR1ToR1 || null == adblX)
 			throw new java.lang.Exception
 				("RegularizerR1ContinuousToR1Continuous::structuralLoss => Invalid Inputs");
 
 		double dblLoss = 0.;
-		int iNumSample = adblInstance.length;
+		int iNumSample = adblX.length;
 
 		if (0 == iNumSample)
 			throw new java.lang.Exception
 				("RegularizerR1ContinuousToR1Continuous::structuralLoss => Invalid Inputs");
 
-		int iPNorm = output().pNorm();
-
 		org.drip.function.definition.R1ToR1 funcRegularizerR1ToR1 = function();
 
+		int iPNorm = outputMetricVectorSpace().pNorm();
+
+		if (java.lang.Integer.MAX_VALUE == iPNorm) {
+			double dblSupremum = 0.;
+
+			for (int i = 0; i < iNumSample; ++i) {
+				double dblNodeValue = java.lang.Math.abs (funcRegularizerR1ToR1.evaluate (adblX[i]) *
+					funcR1ToR1.evaluate (adblX[i]));
+
+				if (dblSupremum < dblNodeValue) dblSupremum = dblNodeValue;
+			}
+
+			return dblSupremum;
+		}
+
 		for (int i = 0; i < iNumSample; ++i)
-			dblLoss += java.lang.Math.pow (java.lang.Math.abs (funcRegularizerR1ToR1.evaluate
-				(adblInstance[i]) * funcR1ToR1.evaluate (adblInstance[i])), iPNorm);
+			dblLoss += java.lang.Math.pow (java.lang.Math.abs (funcRegularizerR1ToR1.evaluate (adblX[i]) *
+				funcR1ToR1.evaluate (adblX[i])), iPNorm);
 
 		return dblLoss / iPNorm;
 	}
@@ -116,33 +129,52 @@ public class RegularizerR1ContinuousToR1Continuous extends
 	@Override public double structuralRisk (
 		final org.drip.measure.continuous.R1R1 distR1R1,
 		final org.drip.function.definition.R1ToR1 funcR1ToR1,
-		final double[] adblInstance,
+		final double[] adblX,
 		final double[] adblY)
 		throws java.lang.Exception
 	{
-		if (null == funcR1ToR1 || null == adblInstance || null == adblY)
+		if (null == funcR1ToR1 || null == adblX || null == adblY)
 			throw new java.lang.Exception
 				("RegularizerR1ContinuousToR1Continuous::structuralRisk => Invalid Inputs");
 
 		double dblLoss = 0.;
 		double dblNormalizer = 0.;
-		int iNumSample = adblInstance.length;
+		int iNumSample = adblX.length;
 
 		if (0 == iNumSample || iNumSample != adblY.length)
 			throw new java.lang.Exception
 				("RegularizerR1ContinuousToR1Continuous::structuralRisk => Invalid Inputs");
 
-		int iPNorm = output().pNorm();
+		int iPNorm = outputMetricVectorSpace().pNorm();
 
 		org.drip.function.definition.R1ToR1 funcRegularizerR1ToR1 = function();
 
+		if (java.lang.Integer.MAX_VALUE == iPNorm) {
+			double dblWeightedSupremum = 0.;
+			double dblSupremumNodeValue = 0.;
+
+			for (int i = 0; i < iNumSample; ++i) {
+				double dblNodeValue = java.lang.Math.abs (funcRegularizerR1ToR1.evaluate (adblX[i]) *
+					funcR1ToR1.evaluate (adblX[i]));
+
+				double dblWeightedNodeValue = distR1R1.density (adblX[i], adblY[i]) * dblNodeValue;
+
+				if (dblWeightedNodeValue > dblWeightedSupremum) {
+					dblSupremumNodeValue = dblNodeValue;
+					dblWeightedSupremum = dblWeightedNodeValue;
+				}
+			}
+
+			return dblSupremumNodeValue;
+		}
+
 		for (int i = 0; i < iNumSample; ++i) {
-			double dblDensity = distR1R1.density (adblInstance[i], adblY[i]);
+			double dblDensity = distR1R1.density (adblX[i], adblY[i]);
 
 			dblNormalizer += dblDensity;
 
 			dblLoss += dblDensity * java.lang.Math.pow (java.lang.Math.abs (funcRegularizerR1ToR1.evaluate
-				(adblInstance[i]) * funcR1ToR1.evaluate (adblInstance[i])), iPNorm);
+				(adblX[i]) * funcR1ToR1.evaluate (adblX[i])), iPNorm);
 		}
 
 		return dblLoss / iPNorm / dblNormalizer;

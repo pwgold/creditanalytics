@@ -34,7 +34,7 @@ package org.drip.spaces.metric;
  * @author Lakshmi Krishnamurthy
  */
 
-public interface GeneralizedMetricVectorSpace extends org.drip.spaces.tensor.GeneralizedVectorSpace {
+public interface GeneralizedMetricVectorSpace extends org.drip.spaces.tensor.GeneralizedVector {
 
 	/**
 	 * Retrieve the P-Norm Index of the Metric Space

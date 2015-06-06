@@ -1,5 +1,5 @@
 
-package org.drip.spaces.instance;
+package org.drip.spaces.metric;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,8 +29,7 @@ package org.drip.spaces.instance;
  */
 
 /**
- * GeneralizedValidatedVectorInstance holds the Validated Vector Variate Instance Sequence and the
- * 	Corresponding Generalized Vector Space Type.
+ * RdCombinatorialHilbert implements the Bounded/Unbounded, Combinatorial l^2 R^d Spaces.
  * 
  * The Reference we've used is:
  * 
@@ -40,21 +39,41 @@ package org.drip.spaces.instance;
  * @author Lakshmi Krishnamurthy
  */
 
-public interface GeneralizedValidatedVectorInstance {
+public class RdCombinatorialHilbert extends org.drip.spaces.metric.RdCombinatorialBanach {
 
 	/**
-	 * Retrieve the Generalized Tensor Space Type
+	 * RdCombinatorialHilbert Space Constructor
 	 * 
-	 * @return The Generalized Tensor Space Type
+	 * @param aR1CV Array of Combinatorial R^1 Vector Spaces
+	 * @param distRd The R^d Borel Sigma Measure
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract org.drip.spaces.tensor.GeneralizedVector tensorSpaceType();
+	public RdCombinatorialHilbert (
+		final org.drip.spaces.tensor.CombinatorialVectorR1[] aR1CV,
+		final org.drip.measure.continuous.Rd distRd)
+		throws java.lang.Exception
+	{
+		super (aR1CV, distRd, 2);
+	}
 
-	/**
-	 * Retrieve the Sample Size
-	 * 
-	 * @return The Sample Size
-	 */
+	@Override public double sampleMetricNorm (
+		final double[] adblX)
+		throws java.lang.Exception
+	{
+		if (!validateInstance (adblX))
+			throw new java.lang.Exception ("RdCombinatorialHilbert::sampleMetricNorm => Invalid Inputs");
 
-	public abstract int sampleSize();
+		double dblNorm = 0.;
+		int iDimension = adblX.length;
+
+		for (int i = 0; i < iDimension; ++i) {
+			double dblAbsoluteX = java.lang.Math.abs (adblX[i]);
+
+			dblNorm += dblAbsoluteX * dblAbsoluteX;
+		}
+
+		return dblNorm;
+	}
 }

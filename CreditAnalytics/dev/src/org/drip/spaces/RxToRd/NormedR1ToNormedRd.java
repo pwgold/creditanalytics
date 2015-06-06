@@ -41,20 +41,30 @@ package org.drip.spaces.RxToRd;
  */
 
 public abstract class NormedR1ToNormedRd extends org.drip.spaces.RxToRd.NormedRxToNormedRd {
+	private org.drip.spaces.metric.R1Normed _r1Input = null;
+	private org.drip.spaces.metric.RdNormed _rdOutput = null;
 	private org.drip.function.definition.R1ToRd _funcR1ToRd = null;
-	private org.drip.spaces.metric.RealUnidimensionalNormedSpace _runsInput = null;
-	private org.drip.spaces.metric.RealMultidimensionalNormedSpace _rmnsOutput = null;
 
 	protected NormedR1ToNormedRd (
-		final org.drip.spaces.metric.RealUnidimensionalNormedSpace runsInput,
-		final org.drip.spaces.metric.RealMultidimensionalNormedSpace rmnsOutput,
+		final org.drip.spaces.metric.R1Normed r1Input,
+		final org.drip.spaces.metric.RdNormed rdOutput,
 		final org.drip.function.definition.R1ToRd funcR1ToRd)
 		throws java.lang.Exception
 	{
-		if (null == (_runsInput = runsInput) || null == (_rmnsOutput = rmnsOutput))
+		if (null == (_r1Input = r1Input) || null == (_rdOutput = rdOutput))
 			throw new java.lang.Exception ("NormedR1ToNormedRd ctr: Invalid Inputs");
 
 		_funcR1ToRd = funcR1ToRd;
+	}
+
+	@Override public org.drip.spaces.metric.R1Normed inputMetricVectorSpace()
+	{
+		return _r1Input;
+	}
+
+	@Override public org.drip.spaces.metric.RdNormed outputMetricVectorSpace()
+	{
+		return _rdOutput;
 	}
 
 	/**
@@ -68,31 +78,20 @@ public abstract class NormedR1ToNormedRd extends org.drip.spaces.RxToRd.NormedRx
 		return _funcR1ToRd;
 	}
 
-	@Override public org.drip.spaces.metric.RealUnidimensionalNormedSpace input()
-	{
-		return _runsInput;
-	}
-
-	@Override public org.drip.spaces.metric.RealMultidimensionalNormedSpace output()
-	{
-		return _rmnsOutput;
-	}
-
 	@Override public double[] sampleSupremumNorm (
 		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
 	{
-		if (null == _funcR1ToRd || null == gvvi || !gvvi.tensorSpaceType().match (_runsInput) || ! (gvvi
-			instanceof org.drip.spaces.instance.ValidatedRealUnidimensional))
+		if (null == _funcR1ToRd || null == gvvi || !gvvi.tensorSpaceType().match (_r1Input) || !(gvvi
+			instanceof org.drip.spaces.instance.ValidatedR1))
 			return null;
 
-		org.drip.spaces.instance.ValidatedRealUnidimensional vruInstance =
-			(org.drip.spaces.instance.ValidatedRealUnidimensional) gvvi;
+		org.drip.spaces.instance.ValidatedR1 vr1 = (org.drip.spaces.instance.ValidatedR1) gvvi;
 
-		double[] adblInstance = vruInstance.instance();
+		double[] adblInstance = vr1.instance();
 
 		int iNumSample = adblInstance.length;
 
-		int iOutputDimension = _rmnsOutput.dimension();
+		int iOutputDimension = _rdOutput.dimension();
 
 		double[] adblSupremumNorm = _funcR1ToRd.evaluate (adblInstance[0]);
 
@@ -121,21 +120,20 @@ public abstract class NormedR1ToNormedRd extends org.drip.spaces.RxToRd.NormedRx
 	@Override public double[] sampleMetricNorm (
 		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
 	{
-		if (null == _funcR1ToRd || null == gvvi || !gvvi.tensorSpaceType().match (_runsInput) || ! (gvvi
-			instanceof org.drip.spaces.instance.ValidatedRealUnidimensional))
+		int iPNorm = outputMetricVectorSpace().pNorm();
+
+		if (java.lang.Integer.MAX_VALUE == iPNorm) sampleSupremumNorm (gvvi);
+
+		if (null == _funcR1ToRd || null == gvvi || !gvvi.tensorSpaceType().match (_r1Input) || !(gvvi
+			instanceof org.drip.spaces.instance.ValidatedR1))
 			return null;
 
-		org.drip.spaces.instance.ValidatedRealUnidimensional vruInstance =
-			(org.drip.spaces.instance.ValidatedRealUnidimensional) gvvi;
+		int iOutputDimension = _rdOutput.dimension();
 
-		double[] adblInstance = vruInstance.instance();
-
-		int iOutputDimension = _rmnsOutput.dimension();
+		double[] adblInstance = ((org.drip.spaces.instance.ValidatedR1) gvvi).instance();
 
 		double[] adblMetricNorm = new double[iOutputDimension];
 		int iNumSample = adblInstance.length;
-
-		int iPNorm = output().pNorm();
 
 		for (int i = 0; i < iNumSample; ++i)
 			adblMetricNorm[i] = 0.;
@@ -161,7 +159,7 @@ public abstract class NormedR1ToNormedRd extends org.drip.spaces.RxToRd.NormedRx
 	@Override public double[] populationESS()
 	{
 		try {
-			return null == _funcR1ToRd ? null : _funcR1ToRd.evaluate (_runsInput.populationMode());
+			return null == _funcR1ToRd ? null : _funcR1ToRd.evaluate (_r1Input.populationMode());
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}

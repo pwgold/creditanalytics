@@ -45,51 +45,57 @@ public class NormedR1ContinuousToR1Continuous extends org.drip.spaces.RxToR1.Nor
 	/**
 	 * NormedR1ContinuousToR1Continuous Function Space Constructor
 	 * 
-	 * @param funcR1ToR1 The R^1 -> R^1 Function
 	 * @param cruInput The R^1 Input Metric Vector Space
 	 * @param cruOutput The R^1 Output Metric Vector Space
+	 * @param funcR1ToR1 The R^1 -> R^1 Function
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NormedR1ContinuousToR1Continuous (
-		final org.drip.function.definition.R1ToR1 funcR1ToR1,
-		final org.drip.spaces.metric.ContinuousRealUnidimensional cruInput,
-		final org.drip.spaces.metric.ContinuousRealUnidimensional cruOutput)
+		final org.drip.spaces.metric.R1Continuous r1ContinuousInput,
+		final org.drip.spaces.metric.R1Continuous r1ContinuousOutput,
+		final org.drip.function.definition.R1ToR1 funcR1ToR1)
 		throws java.lang.Exception
 	{
-		super (cruInput, cruOutput, funcR1ToR1);
+		super (r1ContinuousInput, r1ContinuousOutput, funcR1ToR1);
 	}
 
 	@Override public double populationMetricNorm()
 		throws java.lang.Exception
 	{
-		org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace guvsInput = input();
+		final int iPNorm = outputMetricVectorSpace().pNorm();
 
-		org.drip.spaces.metric.ContinuousRealUnidimensional cru =
-			(org.drip.spaces.metric.ContinuousRealUnidimensional) guvsInput;
+		if (java.lang.Integer.MAX_VALUE == iPNorm) return populationSupremumMetricNorm();
+
+		org.drip.spaces.tensor.GeneralizedVectorR1 gvR1Input = inputMetricVectorSpace();
+
+		org.drip.spaces.metric.R1Continuous r1Continuous = (org.drip.spaces.metric.R1Continuous) gvR1Input;
 
 		final org.drip.function.definition.R1ToR1 funcR1ToR1 = function();
 
-		final org.drip.measure.continuous.R1 uniDist = cru.borelSigmaMeasure();
+		final org.drip.measure.continuous.R1 distR1 = r1Continuous.borelSigmaMeasure();
 
-		if (null == uniDist || null == funcR1ToR1)
+		if (null == distR1 || null == funcR1ToR1)
 			throw new java.lang.Exception
 				("NormedR1ContinuousToR1Continuous::populationMetricNorm => Invalid Inputs");
 
-		final int iPNorm = output().pNorm();
-
-		org.drip.function.definition.R1ToR1 am = new
-			org.drip.function.definition.R1ToR1 (null) {
+		org.drip.function.definition.R1ToR1 funcDensityR1ToR1 = new org.drip.function.definition.R1ToR1
+			(null) {
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
 				return java.lang.Math.pow (java.lang.Math.abs (funcR1ToR1.evaluate (dblX)), iPNorm) *
-					uniDist.density (dblX);
+					distR1.density (dblX);
 			}
 		};
 
-		return java.lang.Math.pow (am.integrate (cru.leftEdge(), cru.rightEdge()), 1. / iPNorm);
+		double dblLeftEdge = r1Continuous.leftEdge();
+
+		double dblRightEdge = r1Continuous.rightEdge();
+
+		return java.lang.Math.pow (funcDensityR1ToR1.integrate (dblLeftEdge, dblRightEdge) /
+			distR1.incremental (dblLeftEdge, dblRightEdge), 1. / iPNorm);
 	}
 }

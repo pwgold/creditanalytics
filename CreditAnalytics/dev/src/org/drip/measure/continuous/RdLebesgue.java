@@ -36,7 +36,7 @@ package org.drip.measure.continuous;
  */
 
 public class RdLebesgue extends org.drip.measure.continuous.Rd {
-	private org.drip.spaces.tensor.GeneralizedMultidimensionalVectorSpace _gmvs = null;
+	private org.drip.spaces.tensor.GeneralizedVectorRd _gmvs = null;
 
 	/**
 	 * RdLebesgue Constructor
@@ -47,7 +47,7 @@ public class RdLebesgue extends org.drip.measure.continuous.Rd {
 	 */
 
 	public RdLebesgue (
-		final org.drip.spaces.tensor.GeneralizedMultidimensionalVectorSpace gmvs)
+		final org.drip.spaces.tensor.GeneralizedVectorRd gmvs)
 		throws java.lang.Exception
 	{
 		if (null == (_gmvs = gmvs)) throw new java.lang.Exception ("RdLebesgue ctr: Invalid Inputs");
@@ -59,7 +59,7 @@ public class RdLebesgue extends org.drip.measure.continuous.Rd {
 	 * @return The Vector Space Underlying the Measure
 	 */
 
-	public org.drip.spaces.tensor.GeneralizedMultidimensionalVectorSpace measureSpace()
+	public org.drip.spaces.tensor.GeneralizedVectorRd measureSpace()
 	{
 		return _gmvs;
 	}

@@ -83,9 +83,9 @@ public class IntegralOperatorEigenContainer {
 	 * @return The Eigen Input Space
 	 */
 
-	public org.drip.spaces.metric.RealMultidimensionalNormedSpace input()
+	public org.drip.spaces.metric.RdNormed input()
 	{
-		return _aIOEC[0].eigenFunction().input();
+		return _aIOEC[0].eigenFunction().inputMetricVectorSpace();
 	}
 
 	/**
@@ -94,9 +94,9 @@ public class IntegralOperatorEigenContainer {
 	 * @return The Eigen Output Space
 	 */
 
-	public org.drip.spaces.metric.RealUnidimensionalNormedSpace output()
+	public org.drip.spaces.metric.R1Normed output()
 	{
-		return _aIOEC[0].eigenFunction().output();
+		return _aIOEC[0].eigenFunction().outputMetricVectorSpace();
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class IntegralOperatorEigenContainer {
 	 * @return The Diagonally Scaled Normed Vector Space of the RKHS Feature Space
 	 */
 
-	public org.drip.spaces.metric.CombinatorialRealUnidimensional diagonallyScaledFeatureSpace (
+	public org.drip.spaces.metric.R1Combinatorial diagonallyScaledFeatureSpace (
 		final org.drip.learning.kernel.DiagonalScalingOperator dso)
 	{
 		if (null == dso) return null;
@@ -126,7 +126,7 @@ public class IntegralOperatorEigenContainer {
 				adblDiagonalScalingOperator[i]);
 
 		try {
-			return new org.drip.spaces.metric.CombinatorialRealUnidimensional (lsElementSpace, null, 2);
+			return new org.drip.spaces.metric.R1Combinatorial (lsElementSpace, null, 2);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -146,7 +146,7 @@ public class IntegralOperatorEigenContainer {
 	public org.drip.spaces.cover.OperatorClassCoveringBounds scaledCoveringNumberBounds (
 		final org.drip.learning.kernel.DiagonalScalingOperator dso)
 	{
-		final org.drip.spaces.metric.CombinatorialRealUnidimensional cruScaled = diagonallyScaledFeatureSpace
+		final org.drip.spaces.metric.R1Combinatorial cruScaled = diagonallyScaledFeatureSpace
 			(dso);
 
 		if (null == cruScaled) return null;

@@ -67,17 +67,15 @@ public class NormedR1ToL1NormedR1Finite extends org.drip.spaces.functionclass.No
 		if (0 == iNumFunction) return null;
 
 		try {
-			org.drip.spaces.metric.ContinuousRealUnidimensional cruInput = new
-				org.drip.spaces.metric.ContinuousRealUnidimensional (-0.5 * dblPredictorSupport, 0.5 *
-					dblPredictorSupport, null, 1);
+			org.drip.spaces.metric.R1Continuous r1ContinuousInput = new org.drip.spaces.metric.R1Continuous
+				(-0.5 * dblPredictorSupport, 0.5 * dblPredictorSupport, null, 1);
 
-			org.drip.spaces.metric.ContinuousRealUnidimensional cruOutput = new
-				org.drip.spaces.metric.ContinuousRealUnidimensional (-0.5 * dblResponseBound, 0.5 *
-					dblResponseBound, null, 1);
+			org.drip.spaces.metric.R1Continuous r1ContinuousOutput = new org.drip.spaces.metric.R1Continuous
+				(-0.5 * dblResponseBound, 0.5 * dblResponseBound, null, 1);
 
 			for (int i = 0; i < iNumFunction; ++i)
 				aR1ToR1FunctionSpace[i] = new org.drip.spaces.RxToR1.NormedR1ContinuousToR1Continuous
-					(aR1ToR1[i], cruInput, cruOutput);
+					(r1ContinuousInput, r1ContinuousOutput, aR1ToR1[i]);
 
 			return new NormedR1ToL1NormedR1Finite (aR1ToR1FunctionSpace);
 		} catch (java.lang.Exception e) {
@@ -108,9 +106,9 @@ public class NormedR1ToL1NormedR1Finite extends org.drip.spaces.functionclass.No
 		for (int i = 0; i < iNumFunction; ++i) {
 			org.drip.spaces.RxToR1.NormedR1ToNormedR1 r1Tor1 = aNormedR1ToNormedR1[i];
 
-			org.drip.spaces.metric.RealUnidimensionalNormedSpace runsInput = r1Tor1.input();
+			org.drip.spaces.metric.R1Normed runsInput = r1Tor1.inputMetricVectorSpace();
 
-			org.drip.spaces.metric.RealUnidimensionalNormedSpace runsOutput = r1Tor1.output();
+			org.drip.spaces.metric.R1Normed runsOutput = r1Tor1.outputMetricVectorSpace();
 
 			if (!runsInput.isPredictorBounded() || !runsOutput.isPredictorBounded()) return null;
 

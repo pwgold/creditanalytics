@@ -49,7 +49,7 @@ package org.drip.learning.kernel;
 public abstract class IntegralOperator {
 	private org.drip.learning.kernel.SymmetricRxToNormedR1Kernel _kernel = null;
 	private org.drip.function.definition.RdToR1 _funcRdToR1 = null;
-	private org.drip.spaces.metric.RealUnidimensionalNormedSpace _runsOperatorOutput = null;
+	private org.drip.spaces.metric.R1Normed _runsOperatorOutput = null;
 	private org.drip.measure.continuous.Rd _mdInputBorelSigmaMeasure = null;
 
 	/**
@@ -65,14 +65,14 @@ public abstract class IntegralOperator {
 	public IntegralOperator (
 		final org.drip.learning.kernel.SymmetricRxToNormedR1Kernel kernel,
 		final org.drip.function.definition.RdToR1 funcRdToR1,
-		final org.drip.spaces.metric.RealUnidimensionalNormedSpace runsOperatorOutput)
+		final org.drip.spaces.metric.R1Normed runsOperatorOutput)
 		throws java.lang.Exception
 	{
 		if (null == (_kernel = kernel) || null == (_funcRdToR1 = funcRdToR1) || null == (_runsOperatorOutput
 			= runsOperatorOutput) || 2 != _runsOperatorOutput.pNorm())
 			throw new java.lang.Exception ("IntegralOperator ctr: Invalid Inputs");
 
-		org.drip.spaces.metric.RealMultidimensionalNormedSpace rmnsSymmetricKernelInput = _kernel.input();
+		org.drip.spaces.metric.RdNormed rmnsSymmetricKernelInput = _kernel.input();
 
 		if (2 != rmnsSymmetricKernelInput.pNorm() || null == (_mdInputBorelSigmaMeasure =
 			rmnsSymmetricKernelInput.borelSigmaMeasure()))
@@ -118,7 +118,7 @@ public abstract class IntegralOperator {
 	 * @return The Kernel Integral Operator Output Space
 	 */
 
-	public org.drip.spaces.metric.RealUnidimensionalNormedSpace output()
+	public org.drip.spaces.metric.R1Normed output()
 	{
 		return _runsOperatorOutput;
 	}

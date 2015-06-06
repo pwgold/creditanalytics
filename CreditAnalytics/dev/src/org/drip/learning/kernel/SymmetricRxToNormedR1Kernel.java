@@ -47,8 +47,8 @@ package org.drip.learning.kernel;
  */
 
 public abstract class SymmetricRxToNormedR1Kernel {
-	private org.drip.spaces.metric.RealUnidimensionalNormedSpace _runsOutput = null;
-	private org.drip.spaces.metric.RealMultidimensionalNormedSpace _rmnsInput = null;
+	private org.drip.spaces.metric.R1Normed _runsOutput = null;
+	private org.drip.spaces.metric.RdNormed _rmnsInput = null;
 
 	/**
 	 * SymmetricRxToNormedR1Kernel Constructor
@@ -60,8 +60,8 @@ public abstract class SymmetricRxToNormedR1Kernel {
 	 */
 
 	public SymmetricRxToNormedR1Kernel (
-		final org.drip.spaces.metric.RealMultidimensionalNormedSpace rmnsInput,
-		final org.drip.spaces.metric.RealUnidimensionalNormedSpace runsOutput)
+		final org.drip.spaces.metric.RdNormed rmnsInput,
+		final org.drip.spaces.metric.R1Normed runsOutput)
 		throws java.lang.Exception
 	{
 		if (null == (_rmnsInput = rmnsInput) || 2 != _rmnsInput.pNorm() || null == (_runsOutput = runsOutput)
@@ -75,7 +75,7 @@ public abstract class SymmetricRxToNormedR1Kernel {
 	 * @return The Symmetric Input Metric R^x Space
 	 */
 
-	public org.drip.spaces.metric.RealMultidimensionalNormedSpace input()
+	public org.drip.spaces.metric.RdNormed input()
 	{
 		return _rmnsInput;
 	}
@@ -86,7 +86,7 @@ public abstract class SymmetricRxToNormedR1Kernel {
 	 * @return The Output R^1 Metric Space
 	 */
 
-	public org.drip.spaces.metric.RealUnidimensionalNormedSpace output()
+	public org.drip.spaces.metric.R1Normed output()
 	{
 		return _runsOutput;
 	}

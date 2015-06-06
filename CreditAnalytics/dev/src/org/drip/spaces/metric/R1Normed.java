@@ -29,8 +29,7 @@ package org.drip.spaces.metric;
  */
 
 /**
- * RealMultidimensionalNormedSpace abstract Class implements the normed, bounded/unbounded
- *  Continuous/Combinatorial l^p R^d Spaces.
+ * R1Normed Abstract Class implements the Normed, Bounded/Unbounded Continuous/Combinatorial l^p R^1 Spaces.
  * 
  * The Reference we've used is:
  * 
@@ -40,35 +39,21 @@ package org.drip.spaces.metric;
  * @author Lakshmi Krishnamurthy
  */
 
-public interface RealMultidimensionalNormedSpace extends org.drip.spaces.metric.GeneralizedMetricVectorSpace,
-	org.drip.spaces.tensor.GeneralizedMultidimensionalVectorSpace {
+public interface R1Normed extends org.drip.spaces.metric.GeneralizedMetricVectorSpace,
+	org.drip.spaces.tensor.GeneralizedVectorR1 {
 
 	/**
-	 * Retrieve the Borel Sigma Multivariate Probability Measure
+	 * Retrieve the Borel Sigma R^1 Probability Measure
 	 * 
-	 * @return The Borel Sigma Multivariate Probability Measure
+	 * @return The Borel Sigma R^1 Probability Measure
 	 */
 
-	public abstract org.drip.measure.continuous.Rd borelSigmaMeasure();
-
-	/**
-	 * Compute the Supremum Norm of the Sample
-	 * 
-	 * @param adblX The Sample
-	 * 
-	 * @return The Supremum Norm of the Sample
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public abstract double sampleSupremumNorm (
-		final double[] adblX)
-		throws java.lang.Exception;
+	public abstract org.drip.measure.continuous.R1 borelSigmaMeasure();
 
 	/**
 	 * Compute the Metric Norm of the Sample
 	 * 
-	 * @param adblX The Sample
+	 * @param dblX The Sample
 	 * 
 	 * @return The Metric Norm of the Sample
 	 * 
@@ -76,28 +61,31 @@ public interface RealMultidimensionalNormedSpace extends org.drip.spaces.metric.
 	 */
 
 	public abstract double sampleMetricNorm (
-		final double[] adblX)
+		final double dblX)
 		throws java.lang.Exception;
 
 	/**
 	 * Retrieve the Population Mode
 	 * 
 	 * @return The Population Mode
+	 * 
+	 * @throws java.lang.Exception Thrown if the Population Mode cannot be calculated
 	 */
 
-	public abstract double[] populationMode();
+	public double populationMode()
+		throws java.lang.Exception;
 
 	/**
-	 * Compute the Borel Measure Expectation for the specified R^d -> R^1 Function over the full Input Space
+	 * Compute the Borel Measure Expectation for the specified R^1 -> R^1 Function over the full Input Space
 	 * 
-	 * @param funcRdToR1 R^d -> R^1 Function
+	 * @param funcR1ToR1 R^1 -> R^1 Function Instance
 	 * 
-	 * @return The Borel Measure Expectation for the specified R^d -> R^1 Function over the full Input Space
+	 * @return The Borel Measure Expectation for the specified R^1 -> R^1 Function over the full Input Space
 	 * 
 	 * @throws java.lang.Exception Thrown if the Population Mode cannot be calculated
 	 */
 
 	public double borelMeasureSpaceExpectation (
-		final org.drip.function.definition.RdToR1 funcRdToR1)
+		final org.drip.function.definition.R1ToR1 funcR1ToR1)
 		throws java.lang.Exception;
 }

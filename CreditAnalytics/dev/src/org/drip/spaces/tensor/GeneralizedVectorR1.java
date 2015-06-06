@@ -29,54 +29,21 @@ package org.drip.spaces.tensor;
  */
 
 /**
- * GeneralizedMultidimensionalVectorSpace exposes the basic Properties of the General R^d Vector Space.
+ * GeneralizedVectorR1 exposes the basic Properties of the General R^1 Vector Space.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface GeneralizedMultidimensionalVectorSpace extends org.drip.spaces.tensor.GeneralizedVectorSpace
-{
+public interface GeneralizedVectorR1 extends org.drip.spaces.tensor.GeneralizedVector {
 
 	/**
-	 * Retrieve the Dimension of the Space
-	 *  
-	 * @return The Dimension of the Space
-	 */
-
-	public abstract int dimension();
-
-	/**
-	 * Retrieve the Array of the Underlying Unidimensional Vector Spaces
+	 * Validate the Input Instance Ordinate
 	 * 
-	 * @return The Array of the Underlying Unidimensional Vector Spaces
-	 */
-
-	public abstract org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace[] vectorSpaces();
-
-	/**
-	 * Validate the Input Instance
+	 * @param dblInstance The Input Instance Ordinate
 	 * 
-	 * @param adblInstance The Input Instance
-	 * 
-	 * @return TRUE => Instance is a Valid Entry in the Space
+	 * @return TRUE => Instance Ordinate is a Valid Entry in the Space
 	 */
 
 	public abstract boolean validateInstance (
-		final double[] adblInstance);
-
-	/**
-	 * Retrieve the Array of the Variate Left Edges
-	 * 
-	 * @return The Array of the Variate Left Edges
-	 */
-
-	public abstract double[] leftDimensionEdge();
-
-	/**
-	 * Retrieve the Array of the Variate Right Edges
-	 * 
-	 * @return The Array of the Variate Right Edges
-	 */
-
-	public abstract double[] rightDimensionEdge();
+		final double dblInstance);
 }

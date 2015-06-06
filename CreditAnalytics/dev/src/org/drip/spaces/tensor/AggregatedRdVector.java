@@ -29,32 +29,28 @@ package org.drip.spaces.tensor;
  */
 
 /**
- * AggregatedMultidimensionalVectorSpace exposes the basic Properties of the R^d as a Sectional
- *  Super-position of R^1 Vector Spaces.
+ * AggregatedRdVector exposes the basic Properties of the R^d as a Sectional Super-position of R^1 Vector
+ *  Spaces.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class AggregatedMultidimensionalVectorSpace implements
-	org.drip.spaces.tensor.GeneralizedMultidimensionalVectorSpace
-{
-	private org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace[] _aGUVS = null;
+public abstract class AggregatedRdVector implements org.drip.spaces.tensor.GeneralizedVectorRd {
+	private org.drip.spaces.tensor.GeneralizedVectorR1[] _aGUVS = null;
 
-	protected AggregatedMultidimensionalVectorSpace (
-		final org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace[] aGUVS)
+	protected AggregatedRdVector (
+		final org.drip.spaces.tensor.GeneralizedVectorR1[] aGUVS)
 		throws java.lang.Exception
 	{
 		if (null == (_aGUVS = aGUVS))
-			throw new java.lang.Exception ("AggregatedMultidimensionalVectorSpace ctr: Invalid Inputs");
+			throw new java.lang.Exception ("AggregatedRdVector ctr: Invalid Inputs");
 
 		int iDimension = _aGUVS.length;
 
-		if (0 == iDimension)
-			throw new java.lang.Exception ("AggregatedMultidimensionalVectorSpace ctr: Invalid Inputs");
+		if (0 == iDimension) throw new java.lang.Exception ("AggregatedRdVector ctr: Invalid Inputs");
 
 		for (int i = 0; i < iDimension; ++i) {
-			if (null == _aGUVS[i])
-				throw new java.lang.Exception ("AggregatedMultidimensionalVectorSpace ctr: Invalid Inputs");
+			if (null == _aGUVS[i]) throw new java.lang.Exception ("AggregatedRdVector ctr: Invalid Inputs");
 		}
 	}
 
@@ -63,7 +59,7 @@ public abstract class AggregatedMultidimensionalVectorSpace implements
 		return _aGUVS.length;
 	}
 
-	@Override public org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace[] vectorSpaces()
+	@Override public org.drip.spaces.tensor.GeneralizedVectorR1[] vectorSpaces()
 	{
 		return _aGUVS;
 	}
@@ -85,17 +81,17 @@ public abstract class AggregatedMultidimensionalVectorSpace implements
 	}
 
 	@Override public boolean match (
-		final org.drip.spaces.tensor.GeneralizedVectorSpace gvsOther)
+		final org.drip.spaces.tensor.GeneralizedVector gvsOther)
 	{
-		if (null == gvsOther || !(gvsOther instanceof AggregatedMultidimensionalVectorSpace)) return false;
+		if (null == gvsOther || !(gvsOther instanceof AggregatedRdVector)) return false;
 
-		AggregatedMultidimensionalVectorSpace gmvsOther = (AggregatedMultidimensionalVectorSpace) gvsOther;
+		AggregatedRdVector gmvsOther = (AggregatedRdVector) gvsOther;
 
 		int iDimensionOther = gmvsOther.dimension();
 
 		if (iDimensionOther != dimension()) return false;
 
-		org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace[] aGUVSOther = gmvsOther.vectorSpaces();
+		org.drip.spaces.tensor.GeneralizedVectorR1[] aGUVSOther = gmvsOther.vectorSpaces();
 
 		for (int i = 0; i < iDimensionOther; ++i) {
 			if (!aGUVSOther[i].match (_aGUVS[i])) return false;
@@ -105,15 +101,14 @@ public abstract class AggregatedMultidimensionalVectorSpace implements
 	}
 
 	@Override public boolean subset (
-		final org.drip.spaces.tensor.GeneralizedVectorSpace gvsOther)
+		final org.drip.spaces.tensor.GeneralizedVector gvsOther)
 	{
-		if (null == gvsOther || !(gvsOther instanceof AggregatedMultidimensionalVectorSpace)) return false;
-
-		AggregatedMultidimensionalVectorSpace gmvsOther = (AggregatedMultidimensionalVectorSpace) gvsOther;
-
-		org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace[] aGUVSOther = gmvsOther.vectorSpaces();
+		if (null == gvsOther || !(gvsOther instanceof AggregatedRdVector)) return false;
 
 		int iDimensionOther = _aGUVS.length;
+		AggregatedRdVector gmvsOther = (AggregatedRdVector) gvsOther;
+
+		org.drip.spaces.tensor.GeneralizedVectorR1[] aGUVSOther = gmvsOther.vectorSpaces();
 
 		for (int i = 0; i < iDimensionOther; ++i) {
 			if (!aGUVSOther[i].match (_aGUVS[i])) return false;

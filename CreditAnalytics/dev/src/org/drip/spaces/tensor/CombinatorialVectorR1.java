@@ -29,30 +29,29 @@ package org.drip.spaces.tensor;
  */
 
 /**
- * CombinatorialRealUnidimensionalVector exposes the normed/non-normed Discrete Spaces with Unidimensional
- * 	Real-valued Combinatorial Vector Elements.
+ * CombinatorialVectorR1 exposes the normed/non-normed Discrete Spaces with R^1 Combinatorial Vector
+ *  Elements.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class CombinatorialRealUnidimensionalVector implements
-	org.drip.spaces.tensor.GeneralizedUnidimensionalVectorSpace {
+public class CombinatorialVectorR1 implements org.drip.spaces.tensor.GeneralizedVectorR1 {
 	private java.util.List<java.lang.Double> _lsElementSpace = new java.util.ArrayList<java.lang.Double>();
 
 	/**
-	 * CombinatorialRealUnidimensionalVector Constructor
+	 * CombinatorialVectorR1 Constructor
 	 * 
 	 * @param lsElementSpace The List Space of Elements
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CombinatorialRealUnidimensionalVector (
+	public CombinatorialVectorR1 (
 		final java.util.List<java.lang.Double> lsElementSpace)
 		throws java.lang.Exception
 	{
 		if (null == (_lsElementSpace = lsElementSpace) || 0 == _lsElementSpace.size())
-			throw new java.lang.Exception ("CombinatorialRealUnidimensionalVector ctr: Invalid Inputs");
+			throw new java.lang.Exception ("CombinatorialVectorR1 ctr: Invalid Inputs");
 	}
 
 	/**
@@ -101,9 +100,9 @@ public class CombinatorialRealUnidimensionalVector implements
 	}
 
 	@Override public boolean validateInstance (
-		final double dblXInstance)
+		final double dblX)
 	{
-		return _lsElementSpace.contains (dblXInstance);
+		return _lsElementSpace.contains (dblX);
 	}
 
 	@Override public org.drip.spaces.tensor.Cardinality cardinality()
@@ -112,36 +111,36 @@ public class CombinatorialRealUnidimensionalVector implements
 	}
 
 	@Override public boolean match (
-		final org.drip.spaces.tensor.GeneralizedVectorSpace gvsOther)
+		final org.drip.spaces.tensor.GeneralizedVector gvOther)
 	{
-		if (null == gvsOther || !(gvsOther instanceof CombinatorialRealUnidimensionalVector)) return false;
+		if (null == gvOther || !(gvOther instanceof CombinatorialVectorR1)) return false;
 
-		CombinatorialRealUnidimensionalVector cruvOther = (CombinatorialRealUnidimensionalVector) gvsOther;
+		CombinatorialVectorR1 cvR1Other = (CombinatorialVectorR1) gvOther;
 
-		if (!cardinality().match (cruvOther.cardinality())) return false;
+		if (!cardinality().match (cvR1Other.cardinality())) return false;
 
-		java.util.List<java.lang.Double> setElementOther = cruvOther.elementSpace();
+		java.util.List<java.lang.Double> lsElementSpaceOther = cvR1Other.elementSpace();
 
 		for (double dblElement : _lsElementSpace) {
-			if (!setElementOther.contains (dblElement)) return false;
+			if (!lsElementSpaceOther.contains (dblElement)) return false;
 		}
 
 		return true;
 	}
 
 	@Override public boolean subset (
-		final org.drip.spaces.tensor.GeneralizedVectorSpace gvsOther)
+		final org.drip.spaces.tensor.GeneralizedVector gvOther)
 	{
-		if (null == gvsOther || !(gvsOther instanceof CombinatorialRealUnidimensionalVector)) return false;
+		if (null == gvOther || !(gvOther instanceof CombinatorialVectorR1)) return false;
 
-		CombinatorialRealUnidimensionalVector cruvOther = (CombinatorialRealUnidimensionalVector) gvsOther;
+		CombinatorialVectorR1 cvR1Other = (CombinatorialVectorR1) gvOther;
 
-		if (cardinality().number() < cruvOther.cardinality().number()) return false;
+		if (cardinality().number() < cvR1Other.cardinality().number()) return false;
 
-		java.util.List<java.lang.Double> setElementOther = cruvOther.elementSpace();
+		java.util.List<java.lang.Double> lsElementSpaceOther = cvR1Other.elementSpace();
 
 		for (double dblElement : _lsElementSpace) {
-			if (!setElementOther.contains (dblElement)) return false;
+			if (!lsElementSpaceOther.contains (dblElement)) return false;
 		}
 
 		return true;
@@ -157,8 +156,7 @@ public class CombinatorialRealUnidimensionalVector implements
 		throws java.lang.Exception
 	{
 		if (!isPredictorBounded())
-			throw new java.lang.Exception
-				("CombinatorialRealUnidimensionalVector::hyperVolume => Space not Bounded");
+			throw new java.lang.Exception ("CombinatorialVectorR1::hyperVolume => Space not Bounded");
 
 		return rightEdge() - leftEdge();
 	}

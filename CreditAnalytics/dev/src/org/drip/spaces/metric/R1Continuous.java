@@ -29,7 +29,7 @@ package org.drip.spaces.metric;
  */
 
 /**
- * ContinuousRealUnidimensional implements the normed, bounded/unbounded Continuous l^p R^1 Spaces.
+ * R1Continuous implements the Normed, Bounded/Unbounded Continuous l^p R^1 Spaces.
  * 
  * The Reference we've used is:
  * 
@@ -39,30 +39,30 @@ package org.drip.spaces.metric;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ContinuousRealUnidimensional extends org.drip.spaces.tensor.ContinuousRealUnidimensionalVector
-	implements org.drip.spaces.metric.RealUnidimensionalNormedSpace {
+public class R1Continuous extends org.drip.spaces.tensor.ContinuousVectorR1 implements
+	org.drip.spaces.metric.R1Normed {
 	private int _iPNorm = -1;
-	private org.drip.measure.continuous.R1 _uniDist = null;
+	private org.drip.measure.continuous.R1 _distR1 = null;
 
 	/**
 	 * Construct the Standard l^p R^1 Continuous Space Instance
 	 * 
 	 * @param dblLeftEdge The Left Edge
 	 * @param dblRightEdge The Right Edge
-	 * @param uniDist The Univariate Borel Sigma Measure
+	 * @param distR1 The R^1 Borel Sigma Measure
 	 * @param iPNorm The p-norm of the Space
 	 * 
 	 * @return The Standard l^p R^1 Continuous Space Instance
 	 */
 
-	public static final ContinuousRealUnidimensional Standard (
+	public static final R1Continuous Standard (
 		final double dblLeftEdge,
 		final double dblRightEdge,
-		final org.drip.measure.continuous.R1 uniDist,
+		final org.drip.measure.continuous.R1 distR1,
 		final int iPNorm)
 	{
 		try {
-			return new ContinuousRealUnidimensional (dblLeftEdge, dblRightEdge, uniDist, iPNorm);
+			return new R1Continuous (dblLeftEdge, dblRightEdge, distR1, iPNorm);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -75,18 +75,18 @@ public class ContinuousRealUnidimensional extends org.drip.spaces.tensor.Continu
 	 * 
 	 * @param dblLeftEdge The Left Edge
 	 * @param dblRightEdge The Right Edge
-	 * @param uniDist The Univariate Borel Sigma Measure
+	 * @param distR1 The R^1 Borel Sigma Measure
 	 * 
 	 * @return The Supremum (i.e., l^Infinity) R^1 Continuous Space Instance
 	 */
 
-	public static final ContinuousRealUnidimensional Supremum (
+	public static final R1Continuous Supremum (
 		final double dblLeftEdge,
 		final double dblRightEdge,
-		final org.drip.measure.continuous.R1 uniDist)
+		final org.drip.measure.continuous.R1 distR1)
 	{
 		try {
-			return new ContinuousRealUnidimensional (dblLeftEdge, dblRightEdge, uniDist, 0);
+			return new R1Continuous (dblLeftEdge, dblRightEdge, distR1, java.lang.Integer.MAX_VALUE);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -95,29 +95,29 @@ public class ContinuousRealUnidimensional extends org.drip.spaces.tensor.Continu
 	}
 
 	/**
-	 * ContinuousRealUnidimensional Space Constructor
+	 * R1Continuous Space Constructor
 	 * 
 	 * @param dblLeftEdge The Left Edge
 	 * @param dblRightEdge The Right Edge
-	 * @param uniDist The Univariate Borel Sigma Measure
+	 * @param distR1 The R^1 Borel Sigma Measure
 	 * @param iPNorm The p-norm of the Space
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public ContinuousRealUnidimensional (
+	public R1Continuous (
 		final double dblLeftEdge,
 		final double dblRightEdge,
-		final org.drip.measure.continuous.R1 uniDist,
+		final org.drip.measure.continuous.R1 distR1,
 		final int iPNorm)
 		throws java.lang.Exception
 	{
 		super (dblLeftEdge, dblRightEdge);
 
 		if (0 > (_iPNorm = iPNorm))
-			throw new java.lang.Exception ("ContinuousRealUnidimensional Constructor: Invalid p-norm");
+			throw new java.lang.Exception ("R1Continuous Constructor: Invalid p-norm");
 
-		_uniDist = uniDist;
+		_distR1 = distR1;
 	}
 
 	@Override public int pNorm()
@@ -127,7 +127,7 @@ public class ContinuousRealUnidimensional extends org.drip.spaces.tensor.Continu
 
 	@Override public org.drip.measure.continuous.R1 borelSigmaMeasure()
 	{
-		return _uniDist;
+		return _distR1;
 	}
 
 	@Override public double sampleMetricNorm (
@@ -135,8 +135,7 @@ public class ContinuousRealUnidimensional extends org.drip.spaces.tensor.Continu
 		throws java.lang.Exception
 	{
 		if (!validateInstance (dblX))
-			throw new java.lang.Exception
-				("ContinuousRealUnidimensional::sampleMetricNorm => Invalid Inputs");
+			throw new java.lang.Exception ("R1Continuous::sampleMetricNorm => Invalid Inputs");
 
 		return java.lang.Math.abs (dblX);
 	}
@@ -144,24 +143,22 @@ public class ContinuousRealUnidimensional extends org.drip.spaces.tensor.Continu
 	@Override public double populationMode()
 		throws java.lang.Exception
 	{
-		if (null == _uniDist)
-			throw new java.lang.Exception ("ContinuousRealUnidimensional::populationMode => Invalid Inputs");
+		if (null == _distR1)
+			throw new java.lang.Exception ("R1Continuous::populationMode => Invalid Inputs");
 
-		org.drip.function.definition.R1ToR1 au = new
-			org.drip.function.definition.R1ToR1 (null) {
+		org.drip.function.definition.R1ToR1 funcR1ToR1 = new org.drip.function.definition.R1ToR1 (null) {
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-				return _uniDist.density (dblX);
+				return _distR1.density (dblX);
 			}
 		};
 
-		org.drip.function.definition.VariateOutputPair vopMode = au.maxima (leftEdge(), rightEdge());
+		org.drip.function.definition.VariateOutputPair vopMode = funcR1ToR1.maxima (leftEdge(), rightEdge());
 
 		if (null == vopMode)
-			throw new java.lang.Exception
-				("ContinuousRealUnidimensional::populationMode => Cannot compute VOP Mode");
+			throw new java.lang.Exception ("R1Continuous::populationMode => Cannot compute VOP Mode");
 
 		return vopMode.variates()[0];
 	}
@@ -169,41 +166,38 @@ public class ContinuousRealUnidimensional extends org.drip.spaces.tensor.Continu
 	@Override public double populationMetricNorm()
 		throws java.lang.Exception
 	{
-		if (null == _uniDist)
-			throw new java.lang.Exception
-				("ContinuousRealUnidimensional::populationMetricNorm => Invalid Inputs");
+		if (null == _distR1)
+			throw new java.lang.Exception ("R1Continuous::populationMetricNorm => Invalid Inputs");
 
-		org.drip.function.definition.R1ToR1 au = new
-			org.drip.function.definition.R1ToR1 (null) {
+		org.drip.function.definition.R1ToR1 funcR1ToR1 = new org.drip.function.definition.R1ToR1 (null) {
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-				return sampleMetricNorm (dblX) * _uniDist.density (dblX);
+				return sampleMetricNorm (dblX) * _distR1.density (dblX);
 			}
 		};
 
-		return au.integrate (leftEdge(), rightEdge());
+		return funcR1ToR1.integrate (leftEdge(), rightEdge());
 	}
 
 	@Override public double borelMeasureSpaceExpectation (
 		final org.drip.function.definition.R1ToR1 funcR1ToR1)
 		throws java.lang.Exception
 	{
-		if (null == funcR1ToR1 || null == _uniDist)
-			throw new java.lang.Exception
-				("ContinuousRealUnidimensional::borelMeasureSpaceExpectation => Invalid Inputs");
+		if (null == funcR1ToR1 || null == _distR1)
+			throw new java.lang.Exception ("R1Continuous::borelMeasureSpaceExpectation => Invalid Inputs");
 
-		org.drip.function.definition.R1ToR1 au = new
-			org.drip.function.definition.R1ToR1 (null) {
+		org.drip.function.definition.R1ToR1 funcDensityR1ToR1 = new org.drip.function.definition.R1ToR1
+			(null) {
 			@Override public double evaluate (
 				final double dblX)
 				throws java.lang.Exception
 			{
-				return funcR1ToR1.evaluate (dblX) * _uniDist.density (dblX);
+				return funcR1ToR1.evaluate (dblX) * _distR1.density (dblX);
 			}
 		};
 
-		return au.integrate (leftEdge(), rightEdge());
+		return funcDensityR1ToR1.integrate (leftEdge(), rightEdge());
 	}
 }

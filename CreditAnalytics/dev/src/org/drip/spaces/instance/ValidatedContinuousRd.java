@@ -29,8 +29,8 @@ package org.drip.spaces.instance;
  */
 
 /**
- * ValidatedRealMultidimensional holds the Validated Multidimensional Real-Valued Vector Instance Sequence
- *  and the Corresponding Generalized Vector Space Type.
+ * ValidatedContinuousRd holds the Continuous R^d Vector Instance Sequence and the Corresponding Generalized
+ *  Vector Space Type.
  * 
  * The Reference we've used is:
  * 
@@ -40,47 +40,27 @@ package org.drip.spaces.instance;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ValidatedRealMultidimensional implements
-	org.drip.spaces.instance.GeneralizedValidatedVectorInstance {
-	private double[][] _aadblInstance = null;
-	private org.drip.spaces.tensor.GeneralizedMultidimensionalVectorSpace _gmvs = null;
+public class ValidatedContinuousRd extends org.drip.spaces.instance.ValidatedRd {
 
 	/**
-	 * ValidatedRealMultidimensional Constructor
+	 * ValidatedContinuousRd Constructor
 	 * 
-	 * @param gmvs The Multidimensional Real-Valued Tensor Space Type
+	 * @param cvRd The Continuous R^d Tensor Space Type
 	 * @param aadblInstance The Data Instance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public ValidatedRealMultidimensional (
-		final org.drip.spaces.tensor.GeneralizedMultidimensionalVectorSpace gmvs,
+	public ValidatedContinuousRd (
+		final org.drip.spaces.tensor.ContinuousVectorRd cvRd,
 		final double[][] aadblInstance)
 		throws java.lang.Exception
 	{
-		if (null == (_gmvs = gmvs) || null == (_aadblInstance = aadblInstance) || 0 == _aadblInstance.length)
-			throw new java.lang.Exception ("ValidatedRealMultidimensional ctr: Invalid Inputs");
+		super (cvRd, aadblInstance);
 	}
 
-	@Override public org.drip.spaces.tensor.GeneralizedMultidimensionalVectorSpace tensorSpaceType()
+	@Override public org.drip.spaces.tensor.ContinuousVectorRd tensorSpaceType()
 	{
-		return _gmvs;
-	}
-
-	/**
-	 * Retrieve the Instance Sequence
-	 * 
-	 * @return The Instance Sequence
-	 */
-
-	public double[][] instance()
-	{
-		return _aadblInstance;
-	}
-
-	@Override public int sampleSize()
-	{
-		return _aadblInstance.length;
+		return (org.drip.spaces.tensor.ContinuousVectorRd) super.tensorSpaceType();
 	}
 }

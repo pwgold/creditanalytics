@@ -1,5 +1,5 @@
 
-package org.drip.spaces.metric;
+package org.drip.learning.svm;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,54 +29,50 @@ package org.drip.spaces.metric;
  */
 
 /**
- * CombinatorialRealMultidimensionalHilbert implements the normed, bounded/unbounded, Combinatorial l^2 R^d
- *  Spaces.
- * 
- * The Reference we've used is:
- * 
- * 	- Carl, B., and I. Stephani (1990): Entropy, Compactness, and Approximation of Operators, Cambridge
- * 		University Press, Cambridge UK.
+ * LinearRdDecisionFunction implements the Linear R^d Decision Function-Based SVM Functionality for
+ *  Classification and Regression.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class CombinatorialRealMultidimensionalHilbert extends
-	org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach {
+public abstract class LinearRdDecisionFunction extends org.drip.learning.svm.RdDecisionFunction {
 
 	/**
-	 * CombinatorialRealMultidimensionalHilbert Space Constructor
+	 * LinearRdDecisionFunction Constructor
 	 * 
-	 * @param aCRU Array of Combinatorial Real Valued Vector Spaces
-	 * @param multiDist The Multivariate Borel Sigma Measure
+	 * @param gmvsPredictor The R^d Metric Input Predictor Space
+	 * @param rmnsInverseMargin The Inverse Margin Weights R^d L2 Space
+	 * @param adblInverseMarginWeight Array of Inverse Margin Weights
+	 * @param dblB The Offset
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CombinatorialRealMultidimensionalHilbert (
-		final org.drip.spaces.tensor.CombinatorialRealUnidimensionalVector[] aCRU,
-		final org.drip.measure.continuous.Rd multiDist)
+	public LinearRdDecisionFunction (
+		final org.drip.spaces.tensor.GeneralizedVectorRd gmvsPredictor,
+		final org.drip.spaces.metric.RdNormed rmnsInverseMargin,
+		final double[] adblInverseMarginWeight,
+		final double dblB)
 		throws java.lang.Exception
 	{
-		super (aCRU, multiDist, 2);
+		super (gmvsPredictor, rmnsInverseMargin, adblInverseMarginWeight, dblB);
 	}
 
-	@Override public double sampleMetricNorm (
+	@Override public double evaluate (
 		final double[] adblX)
 		throws java.lang.Exception
 	{
-		if (!validateInstance (adblX))
-			throw new java.lang.Exception
-				("CombinatorialRealMultidimensionalHilbert::sampleMetricNorm => Invalid Inputs");
+		if (!predictorSpace().validateInstance (adblX))
+			throw new java.lang.Exception ("LinearRdDecisionFunction::evaluate => Invalid Inputs");
 
-		double dblNorm = 0.;
+		double dblDotProduct = 0.;
 		int iDimension = adblX.length;
 
-		for (int i = 0; i < iDimension; ++i) {
-			double dblAbsoluteX = java.lang.Math.abs (adblX[i]);
+		double[] adblInverseMarginWeight = inverseMarginWeights();
 
-			dblNorm += dblAbsoluteX * dblAbsoluteX;
-		}
+		for (int i = 0; i < iDimension; ++i)
+			dblDotProduct += adblInverseMarginWeight[i] * adblX[i];
 
-		return dblNorm;
+		return dblDotProduct + offset();
 	}
 }

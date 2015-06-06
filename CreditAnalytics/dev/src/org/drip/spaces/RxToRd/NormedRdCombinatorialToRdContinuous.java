@@ -45,47 +45,49 @@ public class NormedRdCombinatorialToRdContinuous extends org.drip.spaces.RxToRd.
 	/**
 	 * NormedRdCombinatorialToRdContinuous Function Space Constructor
 	 * 
+	 * @param rdCombinatorialInput The Combinatorial R^d Input Metric Vector Space
+	 * @param rdContinuousOutput The Continuous R^d Output Metric Vector Space
 	 * @param funcRdToRd The RdToRd Function
-	 * @param crmbInput The Combinatorial R^d Input Metric Vector Space
-	 * @param crmbOutput The Continuous R^d Output Metric Vector Space
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NormedRdCombinatorialToRdContinuous (
-		final org.drip.function.definition.RdToRd funcRdToRd,
-		final org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach crmbInput,
-		final org.drip.spaces.metric.ContinuousRealMultidimensionalBanach crmbOutput)
+		final org.drip.spaces.metric.RdCombinatorialBanach rdCombinatorialInput,
+		final org.drip.spaces.metric.RdContinuousBanach rdContinuousOutput,
+		final org.drip.function.definition.RdToRd funcRdToRd)
 		throws java.lang.Exception
 	{
-		super (crmbInput, crmbOutput, funcRdToRd);
+		super (rdCombinatorialInput, rdContinuousOutput, funcRdToRd);
 	}
 
 	@Override public double[] populationMetricNorm()
 	{
-		org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach crmb =
-			(org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach) input();
+		int iPNorm = outputMetricVectorSpace().pNorm();
 
-		org.drip.measure.continuous.Rd multiDist = crmb.borelSigmaMeasure();
+		if (java.lang.Integer.MAX_VALUE == iPNorm) return populationSupremumNorm();
 
-		org.drip.spaces.tensor.CombinatorialRealMultidimensionalIterator crmi = crmb.iterator();
+		org.drip.spaces.metric.RdCombinatorialBanach rdCombinatorialInput =
+			(org.drip.spaces.metric.RdCombinatorialBanach) inputMetricVectorSpace();
+
+		org.drip.measure.continuous.Rd distRd = rdCombinatorialInput.borelSigmaMeasure();
+
+		org.drip.spaces.tensor.CombinatorialIteratorRd ciRd = rdCombinatorialInput.iterator();
 
 		org.drip.function.definition.RdToRd funcRdToRd = function();
 
-		if (null == multiDist || null == funcRdToRd) return null;
+		if (null == distRd || null == funcRdToRd) return null;
 
-		double[] adblVariate = crmi.cursorVariates();
+		double[] adblVariate = ciRd.cursorVariates();
 
 		double dblProbabilityDensity = java.lang.Double.NaN;
 		double[] adblPopulationMetricNorm = null;
 		int iOutputDimension = -1;
 		double dblNormalizer = 0.;
 
-		int iPNorm = output().pNorm();
-
 		while (null != adblVariate) {
 			try {
-				dblProbabilityDensity = multiDist.density (adblVariate);
+				dblProbabilityDensity = distRd.density (adblVariate);
 			} catch (java.lang.Exception e) {
 				e.printStackTrace();
 
@@ -109,7 +111,7 @@ public class NormedRdCombinatorialToRdContinuous extends org.drip.spaces.RxToRd.
 				adblPopulationMetricNorm[i] += dblProbabilityDensity * java.lang.Math.pow (java.lang.Math.abs
 					(adblValue[i]), iPNorm);
 
-			adblVariate = crmi.nextVariates();
+			adblVariate = ciRd.nextVariates();
 		}
 
 		for (int i = 0; i < iOutputDimension; ++i)

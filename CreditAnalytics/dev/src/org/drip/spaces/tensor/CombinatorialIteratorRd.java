@@ -29,39 +29,37 @@ package org.drip.spaces.tensor;
  */
 
 /**
- * CombinatorialRealMultidimensionalInterator contains the Functionality to iterate through a Combinatorial
- *  Real Multidimensional Vector Space.
+ * CombinatorialIteratorRd contains the Functionality to iterate through an R^d Combinatorial Space.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class CombinatorialRealMultidimensionalIterator extends
-	org.drip.analytics.support.MultidimensionalInterator {
-	private org.drip.spaces.tensor.CombinatorialRealUnidimensionalVector[] _aCRUV = null;
+public class CombinatorialIteratorRd extends org.drip.analytics.support.MultidimensionalInterator {
+	private org.drip.spaces.tensor.CombinatorialVectorR1[] _aCVR1 = null;
 
 	/**
-	 * Retrieve the Multidimensional Iterator associated with the Underlying Vector Space
+	 * Retrieve the CombinatorialIteratorRd Instance associated with the Underlying Vector Space
 	 * 
-	 * @param aCRUV Array of the Combinatorial Real Unidimensional Vectors
+	 * @param aCVR1 Array of the Combinatorial R^1 Vectors
 	 * 
-	 * @return The Multidimensional Iterator associated with the Underlying Vector Space
+	 * @return The CombinatorialIteratorRd Instance associated with the Underlying Vector Space
 	 */
 
-	public static final CombinatorialRealMultidimensionalIterator Standard (
-		final org.drip.spaces.tensor.CombinatorialRealUnidimensionalVector[] aCRUV)
+	public static final CombinatorialIteratorRd Standard (
+		final org.drip.spaces.tensor.CombinatorialVectorR1[] aCVR1)
 	{
-		if (null == aCRUV) return null;
+		if (null == aCVR1) return null;
 
-		int iDimension = aCRUV.length;
+		int iDimension = aCVR1.length;
 		int[] aiMax = new int[iDimension];
 
 		if (0 == iDimension) return null;
 
 		for (int i = 0; i < iDimension; ++i)
-			aiMax[i] = (int) aCRUV[i].cardinality().number();
+			aiMax[i] = (int) aCVR1[i].cardinality().number();
 
 		try {
-			return new CombinatorialRealMultidimensionalIterator (aCRUV, aiMax);
+			return new CombinatorialIteratorRd (aCVR1, aiMax);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -70,34 +68,34 @@ public class CombinatorialRealMultidimensionalIterator extends
 	}
 
 	/**
-	 * CombinatorialRealMultidimensionalIterator Constructor
+	 * CombinatorialIteratorRd Constructor
 	 * 
-	 * @param aCRUV Array of the Combinatorial Real Unidimensional Vectors
+	 * @param aCVR1 Array of the Combinatorial R^1 Vectors
 	 * @param aiMax The Array of Dimension Maximum
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CombinatorialRealMultidimensionalIterator (
-		final org.drip.spaces.tensor.CombinatorialRealUnidimensionalVector[] aCRUV,
+	public CombinatorialIteratorRd (
+		final org.drip.spaces.tensor.CombinatorialVectorR1[] aCVR1,
 		final int[] aiMax)
 		throws java.lang.Exception
 	{
 		super (aiMax, false);
 
-		if (null == (_aCRUV = aCRUV) || _aCRUV.length != aiMax.length)
-			throw new java.lang.Exception ("CombinatorialRealMultidimensionalIterator ctr: Invalid Inputs");
+		if (null == (_aCVR1 = aCVR1) || _aCVR1.length != aiMax.length)
+			throw new java.lang.Exception ("CombinatorialIteratorRd ctr: Invalid Inputs");
 	}
 
 	/**
-	 * Retrieve the Array of the Combinatorial Real Unidimensional Vectors
+	 * Retrieve the Array of the Combinatorial R^1 Vectors
 	 * 
-	 * @return The Array of the Combinatorial Real Unidimensional Vectors
+	 * @return The Array of the Combinatorial R^1 Vectors
 	 */
 
-	public org.drip.spaces.tensor.CombinatorialRealUnidimensionalVector[] cruv()
+	public org.drip.spaces.tensor.CombinatorialVectorR1[] cvR1()
 	{
-		return _aCRUV;
+		return _aCVR1;
 	}
 
 	/**
@@ -113,15 +111,15 @@ public class CombinatorialRealMultidimensionalIterator extends
 	{
 		if (null == aiIndex) return null;
 
-		org.drip.spaces.tensor.CombinatorialRealUnidimensionalVector[] aCRUV = cruv();
+		org.drip.spaces.tensor.CombinatorialVectorR1[] _aCVR1 = cvR1();
 
-		int iDimension = aCRUV.length;
+		int iDimension = _aCVR1.length;
 		double[] adblVariate = new double[iDimension];
 
 		if (iDimension != aiIndex.length) return null;
 
 		for (int i = 0; i < iDimension; ++i)
-			adblVariate[i] = aCRUV[i].elementSpace().get (aiIndex[i]);
+			adblVariate[i] = _aCVR1[i].elementSpace().get (aiIndex[i]);
 
 		return adblVariate;
 	}

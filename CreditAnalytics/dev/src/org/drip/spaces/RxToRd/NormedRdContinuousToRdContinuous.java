@@ -45,37 +45,37 @@ public class NormedRdContinuousToRdContinuous extends org.drip.spaces.RxToRd.Nor
 	/**
 	 * NormedRdContinuousToRdContinuous Function Space Constructor
 	 * 
+	 * @param rdContinuousInput The Continuous R^d Input Metric Vector Space
+	 * @param rdContinuousOutput The Continuous R^d Output Metric Vector Space
 	 * @param funcRdToRd The RdToRd Function
-	 * @param crmbInput The Continuous R^d Input Metric Vector Space
-	 * @param crmbOutput The Continuous R^d Output Metric Vector Space
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NormedRdContinuousToRdContinuous (
-		final org.drip.function.definition.RdToRd funcRdToRd,
-		final org.drip.spaces.metric.ContinuousRealMultidimensionalBanach crmbInput,
-		final org.drip.spaces.metric.ContinuousRealMultidimensionalBanach crmbOutput)
+		final org.drip.spaces.metric.RdContinuousBanach rdContinuousInput,
+		final org.drip.spaces.metric.RdContinuousBanach rdContinuousOutput,
+		final org.drip.function.definition.RdToRd funcRdToRd)
 		throws java.lang.Exception
 	{
-		super (crmbInput, crmbOutput, funcRdToRd);
+		super (rdContinuousInput, rdContinuousOutput, funcRdToRd);
 	}
 
 	@Override public double[] populationMetricNorm()
 	{
-		org.drip.spaces.metric.ContinuousRealMultidimensionalBanach crmb =
-			(org.drip.spaces.metric.ContinuousRealMultidimensionalBanach) input();
+		org.drip.spaces.metric.RdContinuousBanach rdContinuousInput =
+			(org.drip.spaces.metric.RdContinuousBanach) inputMetricVectorSpace();
 
-		final org.drip.measure.continuous.Rd multiDist = crmb.borelSigmaMeasure();
+		final org.drip.measure.continuous.Rd multiDist = rdContinuousInput.borelSigmaMeasure();
 
 		final org.drip.function.definition.RdToRd funcRdToRd = function();
 
 		if (null == multiDist || null == funcRdToRd) return null;
 
-		final int iPNorm = output().pNorm();
+		final int iPNorm = outputMetricVectorSpace().pNorm();
 
-		org.drip.function.definition.RdToRd funcRdToRdPointNorm = new
-			org.drip.function.definition.RdToRd (null) {
+		org.drip.function.definition.RdToRd funcRdToRdPointNorm = new org.drip.function.definition.RdToRd
+			(null) {
 			@Override public double[] evaluate (
 				final double[] adblX)
 			{
@@ -104,8 +104,8 @@ public class NormedRdContinuousToRdContinuous extends org.drip.spaces.RxToRd.Nor
 			}
 		};
 
-		double[] adblPopulationRdMetricNorm = funcRdToRdPointNorm.integrate (crmb.leftDimensionEdge(),
-			crmb.rightDimensionEdge());
+		double[] adblPopulationRdMetricNorm = funcRdToRdPointNorm.integrate
+			(rdContinuousInput.leftDimensionEdge(), rdContinuousInput.rightDimensionEdge());
 
 		if (null == adblPopulationRdMetricNorm) return null;
 

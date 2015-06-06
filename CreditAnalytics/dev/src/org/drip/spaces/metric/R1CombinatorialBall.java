@@ -29,8 +29,7 @@ package org.drip.spaces.metric;
  */
 
 /**
- * ContinuousRealMultidimensionalBall extends the Continuous R^d Banach Space by enforcing the Closed Bounded
- *  Metric.
+ * R1CombinatorialBall extends the Combinatorial R^1 Banach Space by enforcing the Closed Bounded Metric.
  * 
  * The Reference we've used is:
  * 
@@ -40,27 +39,26 @@ package org.drip.spaces.metric;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ContinuousRealMultidimensionalBall extends
-	org.drip.spaces.metric.ContinuousRealMultidimensionalBanach {
+public class R1CombinatorialBall extends org.drip.spaces.metric.R1Combinatorial {
 	private double _dblNormRadius = java.lang.Double.NaN;
 
 	/**
-	 * Construct a ContinuousRealMultidimensionalBall Instance of Unit Radius
+	 * Construct a R1CombinatorialBall Instance of Unit Radius
 	 * 
-	 * @param aCRU Array of Continuous Real Valued Multidimensional Vector Spaces
-	 * @param multiDist The Multivariate Borel Sigma Measure
+	 * @param lsElementSpace The List Space of Elements
+	 * @param distR1 The R^1 Borel Sigma Measure
 	 * @param iPNorm The p-norm of the Space
 	 * 
-	 * @return ContinuousRealMultidimensionalBall Instance of Unit Radius
+	 * @return ContinuousRealUnidimensionalBall Instance of Unit Radius
 	 */
 
-	public static final ContinuousRealMultidimensionalBall ClosedUnit (
-		final org.drip.spaces.tensor.ContinuousRealUnidimensionalVector[] aCRU,
-		final org.drip.measure.continuous.Rd multiDist,
+	public static final R1CombinatorialBall ClosedUnit (
+		final java.util.List<java.lang.Double> lsElementSpace,
+		final org.drip.measure.continuous.R1 distR1,
 		final int iPNorm)
 	{
 		try {
-			return new ContinuousRealMultidimensionalBall (aCRU, multiDist, iPNorm, 1.);
+			return new R1CombinatorialBall (lsElementSpace, distR1, iPNorm, 1.);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -69,28 +67,28 @@ public class ContinuousRealMultidimensionalBall extends
 	}
 
 	/**
-	 * ContinuousRealMultidimensionalBall Constructor
+	 * R1CombinatorialBall Constructor
 	 * 
-	 * @param aCRU Array of Continuous Real Valued Unidimensional Vector Spaces
-	 * @param multiDist The Multivariate Borel Sigma Measure
+	 * @param lsElementSpace The List Space of Elements
+	 * @param distR1 The R^1 Borel Sigma Measure
 	 * @param iPNorm The p-norm of the Space
 	 * @param dblNormRadius Radius Norm of the Unit Ball
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public ContinuousRealMultidimensionalBall (
-		final org.drip.spaces.tensor.ContinuousRealUnidimensionalVector[] aCRU,
-		final org.drip.measure.continuous.Rd multiDist,
+	public R1CombinatorialBall (
+		final java.util.List<java.lang.Double> lsElementSpace,
+		final org.drip.measure.continuous.R1 distR1,
 		final int iPNorm,
 		final double dblNormRadius)
 		throws java.lang.Exception
 	{
-		super (aCRU, multiDist, iPNorm);
+		super (lsElementSpace, distR1, iPNorm);
 
 		if (!org.drip.quant.common.NumberUtil.IsValid (_dblNormRadius = dblNormRadius) || 0. >=
 			_dblNormRadius)
-			throw new java.lang.Exception ("ContinuousRealMultidimensionalBall Constructor: Invalid Inputs");
+			throw new java.lang.Exception ("R1CombinatorialBall Constructor: Invalid Inputs");
 	}
 
 	/**
@@ -105,11 +103,10 @@ public class ContinuousRealMultidimensionalBall extends
 	}
 
 	@Override public boolean validateInstance (
-		final double[] adblInstance)
+		final double dblInstance)
 	{
 		try {
-			return super.validateInstance (adblInstance) && _dblNormRadius <= sampleMetricNorm
-				(adblInstance);
+			return super.validateInstance (dblInstance) && _dblNormRadius <= sampleMetricNorm (dblInstance);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}

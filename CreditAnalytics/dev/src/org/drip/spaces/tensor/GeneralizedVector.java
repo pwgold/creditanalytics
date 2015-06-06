@@ -29,12 +29,12 @@ package org.drip.spaces.tensor;
  */
 
 /**
- * GeneralizedVectorSpace exposes the basic Properties of the General Vector Space.
+ * GeneralizedVector exposes the basic Properties of the General Vector Space.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface GeneralizedVectorSpace {
+public interface GeneralizedVector {
 
 	/**
 	 * Retrieve the Left Edge
@@ -69,7 +69,7 @@ public interface GeneralizedVectorSpace {
 	 */
 
 	public abstract boolean match (
-		final org.drip.spaces.tensor.GeneralizedVectorSpace gvsOther);
+		final org.drip.spaces.tensor.GeneralizedVector gvsOther);
 
 	/**
 	 * Indicate if the "Other" Generalized Vector Space is a Subset of "this"
@@ -80,7 +80,7 @@ public interface GeneralizedVectorSpace {
 	 */
 
 	public abstract boolean subset (
-		final org.drip.spaces.tensor.GeneralizedVectorSpace gvsOther);
+		final org.drip.spaces.tensor.GeneralizedVector gvsOther);
 
 	/**
 	 * Indicate if the Predictor Variate Space is bounded from the Left and the Right

@@ -29,7 +29,7 @@ package org.drip.spaces.RxToR1;
  */
 
 /**
- * NormedR1CombinatorialToR1Continuous implements the f : Validated Normed R^d Combinatorial -> Validated
+ * NormedR1CombinatorialToR1Continuous implements the f : Validated Normed R^1 Combinatorial -> Validated
  * 	Normed R^1 Continuous Function Spaces.
  * 
  * The Reference we've used is:
@@ -45,45 +45,47 @@ public class NormedR1CombinatorialToR1Continuous extends org.drip.spaces.RxToR1.
 	/**
 	 * NormedR1CombinatorialToR1Continuous Function Space Constructor
 	 * 
+	 * @param r1CombinatorialInput The Combinatorial R^1 Input Metric Vector Space
+	 * @param r1ContinuousOutput The Continuous R^1 Output Metric Vector Space
 	 * @param funcR1ToR1 The R1ToR1 Function
-	 * @param cruInput The Combinatorial R^1 Input Metric Vector Space
-	 * @param cruOutput The Continuous R^1 Output Metric Vector Space
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NormedR1CombinatorialToR1Continuous (
-		final org.drip.function.definition.R1ToR1 funcR1ToR1,
-		final org.drip.spaces.metric.CombinatorialRealUnidimensional cruInput,
-		final org.drip.spaces.metric.ContinuousRealUnidimensional cruOutput)
+		final org.drip.spaces.metric.R1Combinatorial r1CombinatorialInput,
+		final org.drip.spaces.metric.R1Continuous r1ContinuousOutput,
+		final org.drip.function.definition.R1ToR1 funcR1ToR1)
 		throws java.lang.Exception
 	{
-		super (cruInput, cruOutput, funcR1ToR1);
+		super (r1CombinatorialInput, r1ContinuousOutput, funcR1ToR1);
 	}
 
 	@Override public double populationMetricNorm()
 		throws java.lang.Exception
 	{
-		org.drip.spaces.metric.CombinatorialRealUnidimensional cru =
-			(org.drip.spaces.metric.CombinatorialRealUnidimensional) input();
+		int iPNorm = outputMetricVectorSpace().pNorm();
+
+		if (java.lang.Integer.MAX_VALUE == iPNorm) return populationSupremumMetricNorm();
+
+		org.drip.spaces.metric.R1Combinatorial r1Combinatorial = (org.drip.spaces.metric.R1Combinatorial)
+			inputMetricVectorSpace();
 
 		org.drip.function.definition.R1ToR1 funcR1ToR1 = function();
 
-		org.drip.measure.continuous.R1 uniDist = cru.borelSigmaMeasure();
+		org.drip.measure.continuous.R1 distR1 = r1Combinatorial.borelSigmaMeasure();
 
-		if (null == uniDist || null == funcR1ToR1)
+		if (null == distR1 || null == funcR1ToR1)
 			throw new java.lang.Exception
-				("NormedR1CombinatorialToR1Continuous::populationMetricNorm => No Univariate Distribution");
+				("NormedR1CombinatorialToR1Continuous::populationMetricNorm => Cannot compute Population Norm");
 
-		java.util.List<java.lang.Double> lsElem = cru.elementSpace();
+		java.util.List<java.lang.Double> lsElem = r1Combinatorial.elementSpace();
 
 		double dblPopulationMetricNorm  = 0.;
 		double dblNormalizer = 0.;
 
-		int iPNorm = output().pNorm();
-
 		for (double dblElement : lsElem) {
-			double dblProbabilityDensity = uniDist.density (dblElement);
+			double dblProbabilityDensity = distR1.density (dblElement);
 
 			dblNormalizer += dblProbabilityDensity;
 

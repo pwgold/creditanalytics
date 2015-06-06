@@ -69,12 +69,12 @@ public class RegularizerRdCombinatorialToR1Continuous extends
 
 	public RegularizerRdCombinatorialToR1Continuous (
 		final org.drip.function.definition.RdToR1 funcRegularizerRdToR1,
-		final org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach crmbInput,
-		final org.drip.spaces.metric.ContinuousRealUnidimensional cruOutput,
+		final org.drip.spaces.metric.RdCombinatorialBanach crmbInput,
+		final org.drip.spaces.metric.R1Continuous cruOutput,
 		final double dblLambda)
 		throws java.lang.Exception
 	{
-		super (funcRegularizerRdToR1, crmbInput, cruOutput);
+		super (crmbInput, cruOutput, funcRegularizerRdToR1);
 
 		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLambda = dblLambda) || 0 > _dblLambda)
 			throw new java.lang.Exception
@@ -102,7 +102,7 @@ public class RegularizerRdCombinatorialToR1Continuous extends
 			throw new java.lang.Exception
 				("RegularizerRdCombinatorialToR1Continuous::structuralLoss => Invalid Inputs");
 
-		int iPNorm = output().pNorm();
+		int iPNorm = outputMetricVectorSpace().pNorm();
 
 		org.drip.function.definition.RdToR1 funcRegularizerRdToR1 = function();
 
@@ -132,7 +132,7 @@ public class RegularizerRdCombinatorialToR1Continuous extends
 			throw new java.lang.Exception
 				("RegularizerRdCombinatorialToR1Continuous::structuralRisk => Invalid Inputs");
 
-		int iPNorm = output().pNorm();
+		int iPNorm = outputMetricVectorSpace().pNorm();
 
 		org.drip.function.definition.RdToR1 funcRegularizerRdToR1 = function();
 

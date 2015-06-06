@@ -29,8 +29,8 @@ package org.drip.spaces.instance;
  */
 
 /**
- * ValidatedContinuousRealUnidimensional holds the Validated Continuous Uni-dimensional Real-Valued Vector
- * 	Instance Sequence and the Corresponding Generalized Vector Space Type.
+ * ValidatedR1 holds the Validated R^1 Vector Instance Sequence and the Corresponding Generalized Vector
+ *  Space Type.
  * 
  * The Reference we've used is:
  * 
@@ -40,28 +40,46 @@ package org.drip.spaces.instance;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ValidatedContinuousRealUnidimensional extends
-	org.drip.spaces.instance.ValidatedRealUnidimensional {
+public class ValidatedR1 implements org.drip.spaces.instance.GeneralizedValidatedVectorInstance {
+	private double[] _adblInstance = null;
+	private org.drip.spaces.tensor.GeneralizedVectorR1 _gvR1 = null;
 
 	/**
-	 * ValidatedContinuousRealUnidimensional Constructor
+	 * ValidatedR1 Constructor
 	 * 
-	 * @param cruv The Continuous Uni-dimensional Real-Valued Tensor Space Type
+	 * @param gvR1 The R^1 Tensor Space Type
 	 * @param adblInstance The Data Instance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public ValidatedContinuousRealUnidimensional (
-		final org.drip.spaces.tensor.ContinuousRealUnidimensionalVector cruv,
+	public ValidatedR1 (
+		final org.drip.spaces.tensor.GeneralizedVectorR1 gvR1,
 		final double[] adblInstance)
 		throws java.lang.Exception
 	{
-		super (cruv, adblInstance);
+		if (null == (_gvR1 = gvR1) || null == (_adblInstance = adblInstance) || 0 == _adblInstance.length)
+			throw new java.lang.Exception ("ValidatedR1 ctr: Invalid Inputs");
 	}
 
-	@Override public org.drip.spaces.tensor.ContinuousRealUnidimensionalVector tensorSpaceType()
+	@Override public org.drip.spaces.tensor.GeneralizedVectorR1 tensorSpaceType()
 	{
-		return (org.drip.spaces.tensor.ContinuousRealUnidimensionalVector) super.tensorSpaceType();
+		return _gvR1;
+	}
+
+	/**
+	 * Retrieve the Instance Sequence
+	 * 
+	 * @return The Instance Sequence
+	 */
+
+	public double[] instance()
+	{
+		return _adblInstance;
+	}
+
+	@Override public int sampleSize()
+	{
+		return _adblInstance.length;
 	}
 }

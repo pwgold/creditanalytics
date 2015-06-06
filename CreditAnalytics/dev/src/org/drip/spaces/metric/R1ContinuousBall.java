@@ -29,8 +29,7 @@ package org.drip.spaces.metric;
  */
 
 /**
- * CombinatorialRealUnidimensionalBall extends the Combinatorial R^1 Banach Space by enforcing the Closed
- *  Bounded Metric.
+ * R1ContinuousBall extends the Continuous R^1 Banach Space by enforcing the Closed Bounded Metric.
  * 
  * The Reference we've used is:
  * 
@@ -40,27 +39,28 @@ package org.drip.spaces.metric;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CombinatorialRealUnidimensionalBall extends
-	org.drip.spaces.metric.CombinatorialRealUnidimensional {
+public class R1ContinuousBall extends org.drip.spaces.metric.R1Continuous {
 	private double _dblNormRadius = java.lang.Double.NaN;
 
 	/**
-	 * Construct a ContinuousRealUnidimensionalBall Instance of Unit Radius
+	 * Construct a R1ContinuousBall Instance of Unit Radius
 	 * 
-	 * @param lsElementSpace The List Space of Elements
-	 * @param uniDist The Univariate Borel Sigma Measure
+	 * @param dblLeftEdge The Left Edge
+	 * @param dblRightEdge The Right Edge
+	 * @param distR1 The R^1 Borel Sigma Measure
 	 * @param iPNorm The p-norm of the Space
 	 * 
-	 * @return ContinuousRealUnidimensionalBall Instance of Unit Radius
+	 * @return R1ContinuousBall Instance of Unit Radius
 	 */
 
-	public static final CombinatorialRealUnidimensionalBall ClosedUnit (
-		final java.util.List<java.lang.Double> lsElementSpace,
-		final org.drip.measure.continuous.R1 uniDist,
+	public static final R1ContinuousBall ClosedUnit (
+		final double dblLeftEdge,
+		final double dblRightEdge,
+		final org.drip.measure.continuous.R1 distR1,
 		final int iPNorm)
 	{
 		try {
-			return new CombinatorialRealUnidimensionalBall (lsElementSpace, uniDist, iPNorm, 1.);
+			return new R1ContinuousBall (dblLeftEdge, dblRightEdge, distR1, iPNorm, 1.);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -69,29 +69,30 @@ public class CombinatorialRealUnidimensionalBall extends
 	}
 
 	/**
-	 * CombinatorialRealUnidimensionalBall Constructor
+	 * R1ContinuousBall Constructor
 	 * 
-	 * @param lsElementSpace The List Space of Elements
-	 * @param uniDist The Univariate Borel Sigma Measure
+	 * @param dblLeftEdge The Left Edge
+	 * @param dblRightEdge The Right Edge
+	 * @param distR1 The R^1 Borel Sigma Measure
 	 * @param iPNorm The p-norm of the Space
 	 * @param dblNormRadius Radius Norm of the Unit Ball
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CombinatorialRealUnidimensionalBall (
-		final java.util.List<java.lang.Double> lsElementSpace,
-		final org.drip.measure.continuous.R1 uniDist,
+	public R1ContinuousBall (
+		final double dblLeftEdge,
+		final double dblRightEdge,
+		final org.drip.measure.continuous.R1 distR1,
 		final int iPNorm,
 		final double dblNormRadius)
 		throws java.lang.Exception
 	{
-		super (lsElementSpace, uniDist, iPNorm);
+		super (dblLeftEdge, dblRightEdge, distR1, iPNorm);
 
 		if (!org.drip.quant.common.NumberUtil.IsValid (_dblNormRadius = dblNormRadius) || 0. >=
 			_dblNormRadius)
-			throw new java.lang.Exception
-				("CombinatorialRealUnidimensionalBall Constructor: Invalid Inputs");
+			throw new java.lang.Exception ("R1ContinuousBall Constructor: Invalid Inputs");
 	}
 
 	/**

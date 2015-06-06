@@ -29,8 +29,8 @@ package org.drip.spaces.instance;
  */
 
 /**
- * ValidatedCombinatorialRealUnidimensional holds the Validated Cobinatorial Uni-dimensional Real-Valued
- *  Vector Instance Sequence and the Corresponding Generalized Vector Space Type.
+ * ValidatedCombinatorialRd holds the Combinatorial R^d Vector Instance Sequence and the Corresponding
+ *  Generalized Vector Space Type.
  * 
  * The Reference we've used is:
  * 
@@ -40,28 +40,27 @@ package org.drip.spaces.instance;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ValidatedCombinatorialRealUnidimensional extends
-	org.drip.spaces.instance.ValidatedRealUnidimensional {
+public class ValidatedCombinatorialRd extends org.drip.spaces.instance.ValidatedRd {
 
 	/**
-	 * ValidatedCombinatorialRealUnidimensional Constructor
+	 * ValidatedCombinatorialRd Constructor
 	 * 
-	 * @param cruv The Combinatorial Uni-dimensional Real-Valued Tensor Space Type
-	 * @param adblInstance The Data Instance
+	 * @param cvRd The Combinatorial R^d Tensor Space Type
+	 * @param aadblInstance The Data Instance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public ValidatedCombinatorialRealUnidimensional (
-		final org.drip.spaces.tensor.CombinatorialRealUnidimensionalVector cruv,
-		final double[] adblInstance)
+	public ValidatedCombinatorialRd (
+		final org.drip.spaces.tensor.CombinatorialVectorRd cvRd,
+		final double[][] aadblInstance)
 		throws java.lang.Exception
 	{
-		super (cruv, adblInstance);
+		super (cvRd, aadblInstance);
 	}
 
-	@Override public org.drip.spaces.tensor.CombinatorialRealUnidimensionalVector tensorSpaceType()
+	@Override public org.drip.spaces.tensor.CombinatorialVectorRd tensorSpaceType()
 	{
-		return (org.drip.spaces.tensor.CombinatorialRealUnidimensionalVector) super.tensorSpaceType();
+		return (org.drip.spaces.tensor.CombinatorialVectorRd) super.tensorSpaceType();
 	}
 }

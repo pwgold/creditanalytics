@@ -69,12 +69,12 @@ public class RegularizerRdContinuousToR1Continuous extends
 
 	public RegularizerRdContinuousToR1Continuous (
 		final org.drip.function.definition.RdToR1 funcRdToR1,
-		final org.drip.spaces.metric.ContinuousRealMultidimensionalBanach crmbInput,
-		final org.drip.spaces.metric.ContinuousRealUnidimensional cruOutput,
+		final org.drip.spaces.metric.RdContinuousBanach crmbInput,
+		final org.drip.spaces.metric.R1Continuous cruOutput,
 		final double dblLambda)
 		throws java.lang.Exception
 	{
-		super (funcRdToR1, crmbInput, cruOutput);
+		super (crmbInput, cruOutput, funcRdToR1);
 
 		if (!org.drip.quant.common.NumberUtil.IsValid (_dblLambda = dblLambda) || 0 > _dblLambda)
 			throw new java.lang.Exception
@@ -102,7 +102,7 @@ public class RegularizerRdContinuousToR1Continuous extends
 			throw new java.lang.Exception
 				("RegularizerRdContinuousToR1Continuous::structuralLoss => Invalid Inputs");
 
-		int iPNorm = output().pNorm();
+		int iPNorm = outputMetricVectorSpace().pNorm();
 
 		org.drip.function.definition.RdToR1 funcRegularizerRdToR1 = function();
 
@@ -132,7 +132,7 @@ public class RegularizerRdContinuousToR1Continuous extends
 			throw new java.lang.Exception
 				("RegularizerRdContinuousToR1Continuous::structuralRisk => Invalid Inputs");
 
-		int iPNorm = output().pNorm();
+		int iPNorm = outputMetricVectorSpace().pNorm();
 
 		org.drip.function.definition.RdToR1 funcRegularizerRdToR1 = function();
 

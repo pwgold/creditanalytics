@@ -29,7 +29,7 @@ package org.drip.spaces.metric;
  */
 
 /**
- * CombinatorialRealUnidimensional implements the normed, bounded/unbounded Combinatorial l^p R^1 Spaces.
+ * R1Combinatorial implements the Normed, Bounded/Unbounded Combinatorial l^p R^1 Spaces.
  * 
  * The Reference we've used is:
  * 
@@ -39,29 +39,28 @@ package org.drip.spaces.metric;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CombinatorialRealUnidimensional extends
-	org.drip.spaces.tensor.CombinatorialRealUnidimensionalVector implements
-		org.drip.spaces.metric.RealUnidimensionalNormedSpace {
+public class R1Combinatorial extends org.drip.spaces.tensor.CombinatorialVectorR1 implements
+	org.drip.spaces.metric.R1Normed {
 	private int _iPNorm = -1;
-	private org.drip.measure.continuous.R1 _uniDist = null;
+	private org.drip.measure.continuous.R1 _distR1 = null;
 
 	/**
 	 * Construct the Standard l^p R^1 Combinatorial Space Instance
 	 * 
 	 * @param lsElementSpace The List Space of Elements
-	 * @param uniDist The Univariate Borel Sigma Measure
+	 * @param distR1 The R^1 Borel Sigma Measure
 	 * @param iPNorm The p-norm of the Space
 	 * 
 	 * @return The Standard l^p R^1 Combinatorial Space Instance
 	 */
 
-	public static final CombinatorialRealUnidimensional Standard (
+	public static final R1Combinatorial Standard (
 		final java.util.List<java.lang.Double> lsElementSpace,
-		final org.drip.measure.continuous.R1 uniDist,
+		final org.drip.measure.continuous.R1 distR1,
 		final int iPNorm)
 	{
 		try {
-			return new CombinatorialRealUnidimensional (lsElementSpace, uniDist, iPNorm);
+			return new R1Combinatorial (lsElementSpace, distR1, iPNorm);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -73,17 +72,17 @@ public class CombinatorialRealUnidimensional extends
 	 * Construct the Supremum (i.e., l^Infinity) R^1 Combinatorial Space Instance
 	 * 
 	 * @param lsElementSpace The List Space of Elements
-	 * @param uniDist The Univariate Borel Sigma Measure
+	 * @param distR1 The R^1 Borel Sigma Measure
 	 * 
 	 * @return The Supremum (i.e., l^Infinity) R^1 Combinatorial Space Instance
 	 */
 
-	public static final CombinatorialRealUnidimensional Supremum (
+	public static final R1Combinatorial Supremum (
 		final java.util.List<java.lang.Double> lsElementSpace,
-		final org.drip.measure.continuous.R1 uniDist)
+		final org.drip.measure.continuous.R1 distR1)
 	{
 		try {
-			return new CombinatorialRealUnidimensional (lsElementSpace, uniDist, 0);
+			return new R1Combinatorial (lsElementSpace, distR1, java.lang.Integer.MAX_VALUE);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -92,27 +91,27 @@ public class CombinatorialRealUnidimensional extends
 	}
 
 	/**
-	 * CombinatorialRealUnidimensional Space Constructor
+	 * R1Combinatorial Space Constructor
 	 * 
 	 * @param lsElementSpace The List Space of Elements
-	 * @param uniDist The Univariate Borel Sigma Measure
+	 * @param distR1 The R^1 Borel Sigma Measure
 	 * @param iPNorm The p-norm of the Space
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CombinatorialRealUnidimensional (
+	public R1Combinatorial (
 		final java.util.List<java.lang.Double> lsElementSpace,
-		final org.drip.measure.continuous.R1 uniDist,
+		final org.drip.measure.continuous.R1 distR1,
 		final int iPNorm)
 		throws java.lang.Exception
 	{
 		super (lsElementSpace);
 
 		if (0 > (_iPNorm = iPNorm))
-			throw new java.lang.Exception ("CombinatorialRealUnidimensional Constructor: Invalid p-norm");
+			throw new java.lang.Exception ("R1Combinatorial Constructor: Invalid p-norm");
 
-		_uniDist = uniDist;
+		_distR1 = distR1;
 	}
 
 	@Override public int pNorm()
@@ -122,7 +121,7 @@ public class CombinatorialRealUnidimensional extends
 
 	@Override public org.drip.measure.continuous.R1 borelSigmaMeasure()
 	{
-		return _uniDist;
+		return _distR1;
 	}
 
 	@Override public double sampleMetricNorm (
@@ -130,8 +129,7 @@ public class CombinatorialRealUnidimensional extends
 		throws java.lang.Exception
 	{
 		if (!validateInstance (dblX))
-			throw new java.lang.Exception
-				("CombinatorialRealUnidimensional::sampleMetricNorm => Invalid Inputs");
+			throw new java.lang.Exception ("R1Combinatorial::sampleMetricNorm => Invalid Inputs");
 
 		return java.lang.Math.abs (dblX);
 	}
@@ -139,18 +137,17 @@ public class CombinatorialRealUnidimensional extends
 	@Override public double populationMode()
 		throws java.lang.Exception
 	{
-		if (null == _uniDist)
-			throw new java.lang.Exception
-				("CombinatorialRealUnidimensional::populationMode => Invalid Inputs");
+		if (null == _distR1)
+			throw new java.lang.Exception ("R1Combinatorial::populationMode => Invalid Inputs");
 
 		double dblMode = java.lang.Double.NaN;
 		double dblModeProbability = java.lang.Double.NaN;
 
 		for (double dblElement : elementSpace()) {
 			if (!org.drip.quant.common.NumberUtil.IsValid (dblMode))
-				dblModeProbability = _uniDist.density (dblMode = dblElement);
+				dblModeProbability = _distR1.density (dblMode = dblElement);
 			else {
-				double dblElementProbability = _uniDist.density (dblElement);
+				double dblElementProbability = _distR1.density (dblElement);
 
 				if (dblElementProbability > dblModeProbability) {
 					dblMode = dblElement;
@@ -165,15 +162,14 @@ public class CombinatorialRealUnidimensional extends
 	@Override public double populationMetricNorm()
 		throws java.lang.Exception
 	{
-		if (null == _uniDist)
-			throw new java.lang.Exception
-				("CombinatorialRealUnidimensional::populationMetricNorm => Invalid Inputs");
+		if (null == _distR1)
+			throw new java.lang.Exception ("R1Combinatorial::populationMetricNorm => Invalid Inputs");
 
 		double dblNorm = 0.;
 		double dblNormalizer = 0.;
 
 		for (double dblElement : elementSpace()) {
-			double dblElementProbability = _uniDist.density (dblElement);
+			double dblElementProbability = _distR1.density (dblElement);
 
 			dblNormalizer += dblElementProbability;
 
@@ -187,15 +183,15 @@ public class CombinatorialRealUnidimensional extends
 		final org.drip.function.definition.R1ToR1 funcR1ToR1)
 		throws java.lang.Exception
 	{
-		if (null == funcR1ToR1 || null == _uniDist)
+		if (null == funcR1ToR1 || null == _distR1)
 			throw new java.lang.Exception
-				("CombinatorialRealUnidimensional::borelMeasureSpaceExpectation => Invalid Inputs");
+				("R1Combinatorial::borelMeasureSpaceExpectation => Invalid Inputs");
 
-		double dblBorelMeasureSpaceExpectation = 0.;
 		double dblNormalizer = 0.;
+		double dblBorelMeasureSpaceExpectation = 0.;
 
 		for (double dblElement : elementSpace()) {
-			double dblElementProbability = _uniDist.density (dblElement);
+			double dblElementProbability = _distR1.density (dblElement);
 
 			dblNormalizer += dblElementProbability;
 

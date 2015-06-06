@@ -29,8 +29,7 @@ package org.drip.spaces.metric;
  */
 
 /**
- * CombinatorialRealMultidimensionalBall extends the Combinatorial R^d Banach Space by enforcing the Closed
- *  Bounded Metric.
+ * RdCombinatorialBall extends the Combinatorial R^d Banach Space by enforcing the Closed Bounded Metric.
  * 
  * The Reference we've used is:
  * 
@@ -40,27 +39,26 @@ package org.drip.spaces.metric;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CombinatorialRealMultidimensionalBall extends
-	org.drip.spaces.metric.CombinatorialRealMultidimensionalBanach {
+public class RdCombinatorialBall extends org.drip.spaces.metric.RdCombinatorialBanach {
 	private double _dblNormRadius = java.lang.Double.NaN;
 
 	/**
-	 * Construct a CombinatorialRealMultidimensionalBall Instance of Unit Radius
+	 * Construct a RdCombinatorialBall Instance of Unit Radius
 	 * 
-	 * @param aCRU Array of Combinatorial Real Valued Multidimensional Vector Spaces
-	 * @param multiDist The Multivariate Borel Sigma Measure
+	 * @param aR1CV Array of Combinatorial R^d Vector Spaces
+	 * @param distRd The R^d Borel Sigma Measure
 	 * @param iPNorm The p-norm of the Space
 	 * 
-	 * @return CombinatorialRealMultidimensionalBall Instance of Unit Radius
+	 * @return RdCombinatorialBall Instance of Unit Radius
 	 */
 
-	public static final CombinatorialRealMultidimensionalBall ClosedUnit (
-		final org.drip.spaces.tensor.CombinatorialRealUnidimensionalVector[] aCRU,
-		final org.drip.measure.continuous.Rd multiDist,
+	public static final RdCombinatorialBall ClosedUnit (
+		final org.drip.spaces.tensor.CombinatorialVectorR1[] aR1CV,
+		final org.drip.measure.continuous.Rd distRd,
 		final int iPNorm)
 	{
 		try {
-			return new CombinatorialRealMultidimensionalBall (aCRU, multiDist, iPNorm, 1.);
+			return new RdCombinatorialBall (aR1CV, distRd, iPNorm, 1.);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -69,28 +67,28 @@ public class CombinatorialRealMultidimensionalBall extends
 	}
 
 	/**
-	 * CombinatorialRealMultidimensionalBall Constructor
+	 * RdCombinatorialBall Constructor
 	 * 
-	 * @param aCRU Array of Combinatorial Real Valued Unidimensional Vector Spaces
-	 * @param multiDist The Multivariate Borel Sigma Measure
+	 * @param aR1CV Array of Combinatorial R^d Vector Spaces
+	 * @param distRd The R^d Borel Sigma Measure
 	 * @param iPNorm The p-norm of the Space
 	 * @param dblNormRadius Radius Norm of the Unit Ball
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CombinatorialRealMultidimensionalBall (
-		final org.drip.spaces.tensor.CombinatorialRealUnidimensionalVector[] aCRU,
-		final org.drip.measure.continuous.Rd multiDist,
+	public RdCombinatorialBall (
+		final org.drip.spaces.tensor.CombinatorialVectorR1[] aR1CV,
+		final org.drip.measure.continuous.Rd distRd,
 		final int iPNorm,
 		final double dblNormRadius)
 		throws java.lang.Exception
 	{
-		super (aCRU, multiDist, iPNorm);
+		super (aR1CV, distRd, iPNorm);
 
 		if (!org.drip.quant.common.NumberUtil.IsValid (_dblNormRadius = dblNormRadius) || 0. >=
 			_dblNormRadius)
-			throw new java.lang.Exception ("CombinatorialRealMultidimensionalBall Constructor: Invalid Inputs");
+			throw new java.lang.Exception ("RdCombinatorialBall Constructor: Invalid Inputs");
 	}
 
 	/**

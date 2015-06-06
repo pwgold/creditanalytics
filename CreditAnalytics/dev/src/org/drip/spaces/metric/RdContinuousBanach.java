@@ -29,7 +29,7 @@ package org.drip.spaces.metric;
  */
 
 /**
- * ContinuousRealMultidimensionalBanach implements the normed, bounded/unbounded Continuous l^p R^d Spaces.
+ * RdContinuousBanach implements the Normed, Bounded/Unbounded Continuous l^p R^d Spaces.
  * 
  * The Reference we've used is:
  * 
@@ -39,30 +39,29 @@ package org.drip.spaces.metric;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ContinuousRealMultidimensionalBanach extends
-	org.drip.spaces.tensor.ContinuousRealMultidimensionalVector implements
-		org.drip.spaces.metric.RealMultidimensionalNormedSpace {
+public class RdContinuousBanach extends org.drip.spaces.tensor.ContinuousVectorRd implements
+	org.drip.spaces.metric.RdNormed {
 	private int _iPNorm = -1;
-	private org.drip.measure.continuous.Rd _multiDist = null;
+	private org.drip.measure.continuous.Rd _distRd = null;
 
 	/**
 	 * Construct the Standard l^p R^d Continuous Banach Space Instance
 	 * 
 	 * @param iDimension The Space Dimension
-	 * @param multiDist The Multivariate Borel Sigma Measure
+	 * @param distRd The R^d Borel Sigma Measure
 	 * @param iPNorm The p-norm of the Space
 	 * 
 	 * @return The Standard l^p R^d Continuous Banach Space Instance
 	 */
 
-	public static final ContinuousRealMultidimensionalBanach StandardBanach (
+	public static final RdContinuousBanach StandardBanach (
 		final int iDimension,
-		final org.drip.measure.continuous.Rd multiDist,
+		final org.drip.measure.continuous.Rd distRd,
 		final int iPNorm)
 	{
 		try {
-			return 0 >= iDimension ? null : new ContinuousRealMultidimensionalBanach (new
-				org.drip.spaces.tensor.ContinuousRealUnidimensionalVector[iDimension], multiDist, iPNorm);
+			return 0 >= iDimension ? null : new RdContinuousBanach (new
+				org.drip.spaces.tensor.ContinuousVectorR1[iDimension], distRd, iPNorm);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -74,18 +73,18 @@ public class ContinuousRealMultidimensionalBanach extends
 	 * Construct the Supremum (i.e., l^Infinity) R^d Continuous Banach Space Instance
 	 * 
 	 * @param iDimension The Space Dimension
-	 * @param multiDist The Multivariate Borel Sigma Measure
+	 * @param distRd The R^d Borel Sigma Measure
 	 * 
 	 * @return The Supremum (i.e., l^Infinity) R^d Continuous Banach Space Instance
 	 */
 
-	public static final ContinuousRealMultidimensionalBanach SupremumBanach (
+	public static final RdContinuousBanach SupremumBanach (
 		final int iDimension,
-		final org.drip.measure.continuous.Rd multiDist)
+		final org.drip.measure.continuous.Rd distRd)
 	{
 		try {
-			return 0 >= iDimension ? null : new ContinuousRealMultidimensionalBanach (new
-				org.drip.spaces.tensor.ContinuousRealUnidimensionalVector[iDimension], multiDist, 0);
+			return 0 >= iDimension ? null : new RdContinuousBanach (new
+				org.drip.spaces.tensor.ContinuousVectorR1[iDimension], distRd, java.lang.Integer.MAX_VALUE);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -94,28 +93,27 @@ public class ContinuousRealMultidimensionalBanach extends
 	}
 
 	/**
-	 * ContinuousRealMultidimensionalBanach Space Constructor
+	 * RdContinuousBanach Space Constructor
 	 * 
-	 * @param aCURV Array of Continuous Real Valued Vector Spaces
-	 * @param multiDist The Multivariate Borel Sigma Measure
+	 * @param aR1CV Array of R^1 Continuous Vector
+	 * @param distRd The R^d Borel Sigma Measure
 	 * @param iPNorm The p-norm of the Space
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public ContinuousRealMultidimensionalBanach (
-		final org.drip.spaces.tensor.ContinuousRealUnidimensionalVector[] aCURV,
-		final org.drip.measure.continuous.Rd multiDist,
+	public RdContinuousBanach (
+		final org.drip.spaces.tensor.ContinuousVectorR1[] aR1CV,
+		final org.drip.measure.continuous.Rd distRd,
 		final int iPNorm)
 		throws java.lang.Exception
 	{
-		super (aCURV);
+		super (aR1CV);
 
 		if (0 > (_iPNorm = iPNorm))
-			throw new java.lang.Exception
-				("ContinuousRealMultidimensionalBanach Constructor: Invalid p-norm");
+			throw new java.lang.Exception ("RdContinuousBanach Constructor: Invalid p-norm");
 
-		_multiDist = multiDist;
+		_distRd = distRd;
 	}
 
 	@Override public int pNorm()
@@ -125,7 +123,7 @@ public class ContinuousRealMultidimensionalBanach extends
 
 	@Override public org.drip.measure.continuous.Rd borelSigmaMeasure()
 	{
-		return _multiDist;
+		return _distRd;
 	}
 
 	@Override public double sampleSupremumNorm (
@@ -133,8 +131,7 @@ public class ContinuousRealMultidimensionalBanach extends
 		throws java.lang.Exception
 	{
 		if (!validateInstance (adblX))
-			throw new java.lang.Exception
-				("ContinuousRealMultidimensionalBanach::sampleSupremumNorm => Invalid Inputs");
+			throw new java.lang.Exception ("RdContinuousBanach::sampleSupremumNorm => Invalid Inputs");
 
 		int iDimension = adblX.length;
 
@@ -154,10 +151,9 @@ public class ContinuousRealMultidimensionalBanach extends
 		throws java.lang.Exception
 	{
 		if (!validateInstance (adblX))
-			throw new java.lang.Exception
-				("ContinuousRealMultidimensionalBanach::sampleMetricNorm => Invalid Inputs");
+			throw new java.lang.Exception ("RdContinuousBanach::sampleMetricNorm => Invalid Inputs");
 
-		if (0 == _iPNorm) return sampleSupremumNorm (adblX);
+		if (java.lang.Integer.MAX_VALUE == _iPNorm) return sampleSupremumNorm (adblX);
 
 		double dblNorm = 0.;
 		int iDimension = adblX.length;
@@ -170,33 +166,41 @@ public class ContinuousRealMultidimensionalBanach extends
 
 	@Override public double[] populationMode()
 	{
-		if (null == _multiDist) return null;
+		if (null == _distRd) return null;
 
-		org.drip.function.definition.RdToR1 am = new
-			org.drip.function.definition.RdToR1 (null) {
+		org.drip.function.definition.RdToR1 funcRdToR1 = new org.drip.function.definition.RdToR1 (null) {
 			@Override public double evaluate (
 				final double[] adblX)
 				throws java.lang.Exception
 			{
-				return _multiDist.density (adblX);
+				return _distRd.density (adblX);
 			}
 		};
 
-		org.drip.function.definition.VariateOutputPair vopMode = am.maxima (leftDimensionEdge(),
+		org.drip.function.definition.VariateOutputPair vopMode = funcRdToR1.maxima (leftDimensionEdge(),
 			rightDimensionEdge());
 
 		return null == vopMode ? null : vopMode.variates();
 	}
 
+	@Override public double populationSupremumNorm()
+		throws java.lang.Exception
+	{
+		if (null == _distRd)
+			throw new java.lang.Exception ("RdContinuousBanach::populationSupremumNorm => Invalid Inputs");
+
+		return sampleSupremumNorm (populationMode());
+	}
+
 	@Override public double populationMetricNorm()
 		throws java.lang.Exception
 	{
-		if (null == _multiDist)
-			throw new java.lang.Exception
-				("ContinuousRealMultidimensionalBanach::populationMetricNorm => Invalid Inputs");
+		if (null == _distRd)
+			throw new java.lang.Exception ("RdContinuousBanach::populationMetricNorm => Invalid Inputs");
 
-		org.drip.function.definition.RdToR1 am = new
-			org.drip.function.definition.RdToR1 (null) {
+		if (java.lang.Integer.MAX_VALUE == _iPNorm) return sampleSupremumNorm (populationMode());
+
+		org.drip.function.definition.RdToR1 funcRdToR1 = new org.drip.function.definition.RdToR1 (null) {
 			@Override public double evaluate (
 				final double[] adblX)
 				throws java.lang.Exception
@@ -207,31 +211,32 @@ public class ContinuousRealMultidimensionalBanach extends
 				for (int i = 0; i < iDimension; ++i)
 					dblNorm += java.lang.Math.pow (java.lang.Math.abs (adblX[i]), _iPNorm);
 
-				return dblNorm * _multiDist.density (adblX);
+				return dblNorm * _distRd.density (adblX);
 			}
 		};
 
-		return java.lang.Math.pow (am.integrate (leftDimensionEdge(), rightDimensionEdge()), 1. / _iPNorm);
+		return java.lang.Math.pow (funcRdToR1.integrate (leftDimensionEdge(), rightDimensionEdge()), 1. /
+			_iPNorm);
 	}
 
 	@Override public double borelMeasureSpaceExpectation (
 		final org.drip.function.definition.RdToR1 funcRdToR1)
 		throws java.lang.Exception
 	{
-		if (null == _multiDist || null == funcRdToR1)
+		if (null == _distRd || null == funcRdToR1)
 			throw new java.lang.Exception
-				("ContinuousRealMultidimensionalBanach::borelMeasureSpaceExpectation => Invalid Inputs");
+				("RdContinuousBanach::borelMeasureSpaceExpectation => Invalid Inputs");
 
-		org.drip.function.definition.RdToR1 am = new
-			org.drip.function.definition.RdToR1 (null) {
+		org.drip.function.definition.RdToR1 funcDensityRdToR1 = new org.drip.function.definition.RdToR1
+			(null) {
 			@Override public double evaluate (
 				final double[] adblX)
 				throws java.lang.Exception
 			{
-				return funcRdToR1.evaluate (adblX) * _multiDist.density (adblX);
+				return funcRdToR1.evaluate (adblX) * _distRd.density (adblX);
 			}
 		};
 
-		return am.integrate (leftDimensionEdge(), rightDimensionEdge());
+		return funcDensityRdToR1.integrate (leftDimensionEdge(), rightDimensionEdge());
 	}
 }

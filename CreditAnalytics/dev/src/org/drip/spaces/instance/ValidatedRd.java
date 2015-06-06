@@ -29,8 +29,8 @@ package org.drip.spaces.instance;
  */
 
 /**
- * ValidatedContinuousRealMultidimensional holds the Continuous Multi-dimensional Real-Valued Vector Instance
- *  Sequence and the Corresponding Generalized Vector Space Type.
+ * ValidatedRd holds the Validated R^d Vector Instance Sequence and the Corresponding Generalized Vector
+ *  Space Type.
  * 
  * The Reference we've used is:
  * 
@@ -40,28 +40,46 @@ package org.drip.spaces.instance;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ValidatedContinuousRealMultidimensional extends
-	org.drip.spaces.instance.ValidatedRealMultidimensional {
+public class ValidatedRd implements org.drip.spaces.instance.GeneralizedValidatedVectorInstance {
+	private double[][] _aadblInstance = null;
+	private org.drip.spaces.tensor.GeneralizedVectorRd _gvRd = null;
 
 	/**
-	 * ValidatedMultidimensionalRealValued Constructor
+	 * ValidatedRd Constructor
 	 * 
-	 * @param crmv The Continuous Multi-dimensional Real-Valued Tensor Space Type
+	 * @param gvRd The R^d Tensor Space Type
 	 * @param aadblInstance The Data Instance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public ValidatedContinuousRealMultidimensional (
-		final org.drip.spaces.tensor.ContinuousRealMultidimensionalVector crmv,
+	public ValidatedRd (
+		final org.drip.spaces.tensor.GeneralizedVectorRd gvRd,
 		final double[][] aadblInstance)
 		throws java.lang.Exception
 	{
-		super (crmv, aadblInstance);
+		if (null == (_gvRd = gvRd) || null == (_aadblInstance = aadblInstance) || 0 == _aadblInstance.length)
+			throw new java.lang.Exception ("ValidatedRd ctr: Invalid Inputs");
 	}
 
-	@Override public org.drip.spaces.tensor.ContinuousRealMultidimensionalVector tensorSpaceType()
+	@Override public org.drip.spaces.tensor.GeneralizedVectorRd tensorSpaceType()
 	{
-		return (org.drip.spaces.tensor.ContinuousRealMultidimensionalVector) super.tensorSpaceType();
+		return _gvRd;
+	}
+
+	/**
+	 * Retrieve the Instance Sequence
+	 * 
+	 * @return The Instance Sequence
+	 */
+
+	public double[][] instance()
+	{
+		return _aadblInstance;
+	}
+
+	@Override public int sampleSize()
+	{
+		return _aadblInstance.length;
 	}
 }

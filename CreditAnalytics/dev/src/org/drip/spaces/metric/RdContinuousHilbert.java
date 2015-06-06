@@ -29,7 +29,7 @@ package org.drip.spaces.metric;
  */
 
 /**
- * ContinuousRealMultidimensionalHilbert implements the normed, bounded/unbounded, Continuous l^2 R^d Spaces.
+ * RdContinuousHilbert implements the Bounded/Unbounded, Continuous l^2 R^d Spaces.
  * 
  * The Reference we've used is:
  * 
@@ -39,25 +39,24 @@ package org.drip.spaces.metric;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ContinuousRealMultidimensionalHilbert extends
-	org.drip.spaces.metric.ContinuousRealMultidimensionalBanach {
+public class RdContinuousHilbert extends org.drip.spaces.metric.RdContinuousBanach {
 
 	/**
 	 * Construct the Standard l^2 R^d Hilbert Space Instance
 	 * 
 	 * @param iDimension The Space Dimension
-	 * @param multiDist The Multivariate Borel Sigma Measure
+	 * @param distRd The R^d Borel Sigma Measure
 	 * 
 	 * @return The Standard l^2 R^d Hilbert Space Instance
 	 */
 
-	public static final ContinuousRealMultidimensionalHilbert StandardHilbert (
+	public static final RdContinuousHilbert StandardHilbert (
 		final int iDimension,
-		final org.drip.measure.continuous.Rd multiDist)
+		final org.drip.measure.continuous.Rd distRd)
 	{
 		try {
-			return 0 >= iDimension ? null : new ContinuousRealMultidimensionalHilbert (new
-				org.drip.spaces.tensor.ContinuousRealUnidimensionalVector[iDimension], multiDist);
+			return 0 >= iDimension ? null : new RdContinuousHilbert (new
+				org.drip.spaces.tensor.ContinuousVectorR1[iDimension], distRd);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -66,20 +65,20 @@ public class ContinuousRealMultidimensionalHilbert extends
 	}
 
 	/**
-	 * ContinuousRealMultidimensionalHilbert Space Constructor
+	 * RdContinuousHilbert Space Constructor
 	 * 
-	 * @param aCRU Array of Continuous Real Valued Vector Spaces
-	 * @param multiDist The Multivariate Borel Sigma Measure
+	 * @param aR1CV Array of R^1 Continuous Vector Spaces
+	 * @param distRd The Multivariate Borel Sigma Measure
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public ContinuousRealMultidimensionalHilbert (
-		final org.drip.spaces.tensor.ContinuousRealUnidimensionalVector[] aCRU,
-		final org.drip.measure.continuous.Rd multiDist)
+	public RdContinuousHilbert (
+		final org.drip.spaces.tensor.ContinuousVectorR1[] aR1CV,
+		final org.drip.measure.continuous.Rd distRd)
 		throws java.lang.Exception
 	{
-		super (aCRU, multiDist, 2);
+		super (aR1CV, distRd, 2);
 	}
 
 	@Override public double sampleMetricNorm (
@@ -87,8 +86,7 @@ public class ContinuousRealMultidimensionalHilbert extends
 		throws java.lang.Exception
 	{
 		if (!validateInstance (adblX))
-			throw new java.lang.Exception
-				("ContinuousRealMultidimensionalHilbert::sampleMetricNorm => Invalid Inputs");
+			throw new java.lang.Exception ("RdContinuousHilbert::sampleMetricNorm => Invalid Inputs");
 
 		double dblNorm = 0.;
 		int iDimension = adblX.length;

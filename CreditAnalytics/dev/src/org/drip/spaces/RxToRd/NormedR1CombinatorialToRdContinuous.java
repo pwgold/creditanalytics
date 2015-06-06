@@ -45,45 +45,47 @@ public class NormedR1CombinatorialToRdContinuous extends org.drip.spaces.RxToRd.
 	/**
 	 * NormedR1CombinatorialToRdContinuous Function Space Constructor
 	 * 
+	 * @param r1CombinatorialInput The Combinatorial R^1 Input Metric Vector Space
+	 * @param rdContinuousInput The Continuous R^d Output Metric Vector Space
 	 * @param funcR1ToRd The R1ToRd Function
-	 * @param cruInput The Combinatorial R^1 Input Metric Vector Space
-	 * @param crmbOutput The Continuous R^d Output Metric Vector Space
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NormedR1CombinatorialToRdContinuous (
-		final org.drip.function.definition.R1ToRd funcR1ToRd,
-		final org.drip.spaces.metric.CombinatorialRealUnidimensional cruInput,
-		final org.drip.spaces.metric.ContinuousRealMultidimensionalBanach crmbOutput)
+		final org.drip.spaces.metric.R1Combinatorial r1CombinatorialInput,
+		final org.drip.spaces.metric.RdContinuousBanach rdContinuousInput,
+		final org.drip.function.definition.R1ToRd funcR1ToRd)
 		throws java.lang.Exception
 	{
-		super (cruInput, crmbOutput, funcR1ToRd);
+		super (r1CombinatorialInput, rdContinuousInput, funcR1ToRd);
 	}
 
 	@Override public double[] populationMetricNorm()
 	{
-		org.drip.spaces.metric.CombinatorialRealUnidimensional cru =
-			(org.drip.spaces.metric.CombinatorialRealUnidimensional) input();
+		int iPNorm = outputMetricVectorSpace().pNorm();
 
-		org.drip.measure.continuous.R1 uniDist = cru.borelSigmaMeasure();
+		if (java.lang.Integer.MAX_VALUE == iPNorm) return populationSupremumNorm();
+
+		org.drip.spaces.metric.R1Combinatorial r1CombinatorialInput =
+			(org.drip.spaces.metric.R1Combinatorial) inputMetricVectorSpace();
+
+		org.drip.measure.continuous.R1 distR1 = r1CombinatorialInput.borelSigmaMeasure();
+
+		java.util.List<java.lang.Double> lsElem = r1CombinatorialInput.elementSpace();
 
 		org.drip.function.definition.R1ToRd funcR1ToRd = function();
 
-		if (null == uniDist || null == funcR1ToRd) return null;
-
-		java.util.List<java.lang.Double> lsElem = cru.elementSpace();
+		if (null == distR1 || null == funcR1ToRd) return null;
 
 		double dblProbabilityDensity = java.lang.Double.NaN;
 		double[] adblPopulationMetricNorm = null;
 		int iOutputDimension = -1;
 		double dblNormalizer = 0.;
 
-		int iPNorm = output().pNorm();
-
 		for (double dblElement : lsElem) {
 			try {
-				dblProbabilityDensity = uniDist.density (dblElement);
+				dblProbabilityDensity = distR1.density (dblElement);
 			} catch (java.lang.Exception e) {
 				e.printStackTrace();
 

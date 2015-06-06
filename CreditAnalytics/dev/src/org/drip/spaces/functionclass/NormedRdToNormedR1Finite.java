@@ -45,19 +45,19 @@ public class NormedRdToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 	/**
 	 * NormedRdToNormedR1Finite Function Class Constructor
 	 * 
-	 * @param aRdToR1FunctionSpace Array of the Function Spaces
+	 * @param aNormedRdToNormedR1 Array of the Function Spaces
 	 * 
 	 * @throws java.lang.Exception Thrown if NormedRdToNormedR1Class Instance cannot be created
 	 */
 
 	public NormedRdToNormedR1Finite (
-		final org.drip.spaces.RxToR1.NormedRdToNormedR1[] aRdToR1FunctionSpace)
+		final org.drip.spaces.RxToR1.NormedRdToNormedR1[] aNormedRdToNormedR1)
 		throws java.lang.Exception
 	{
-		super (aRdToR1FunctionSpace);
+		super (aNormedRdToNormedR1);
 
-		for (int i = 0; i < aRdToR1FunctionSpace.length; ++i) {
-			if (null == aRdToR1FunctionSpace[i])
+		for (int i = 0; i < aNormedRdToNormedR1.length; ++i) {
+			if (null == aNormedRdToNormedR1[i])
 				throw new java.lang.Exception ("NormedRdToNormedR1Finite ctr: Invalid Input Function");
 		}
 	}
