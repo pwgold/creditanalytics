@@ -29,8 +29,7 @@ package org.drip.spaces.functionclass;
  */
 
 /**
- * NormedR1ToL1NormedR1Finite implements the Class f E F : Normed R^1 -> Normed L1 R^1 Spaces of Finite
- * 	Functions.
+ * NormedR1ToL1R1Finite implements the Class f E F : Normed R^1 -> L1 R^1 Spaces of Finite Functions.
  * 
  * The Reference we've used is:
  * 
@@ -40,7 +39,7 @@ package org.drip.spaces.functionclass;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormedR1ToL1NormedR1Finite extends org.drip.spaces.functionclass.NormedR1ToNormedR1Finite {
+public class NormedR1ToL1R1Finite extends org.drip.spaces.functionclass.NormedR1ToNormedR1Finite {
 
 	/**
 	 * Create Bounded R^1 -> Bounded L1 R^1 Function Class for the specified Bounded Class of Finite
@@ -53,7 +52,7 @@ public class NormedR1ToL1NormedR1Finite extends org.drip.spaces.functionclass.No
 	 * @return The Bounded R^1 -> Bounded R^1 Function Class for the specified Function Set
 	 */
 
-	public static final NormedR1ToL1NormedR1Finite BoundedPredictorBoundedResponse (
+	public static final NormedR1ToL1R1Finite BoundedPredictorBoundedResponse (
 		final org.drip.function.definition.R1ToR1[] aR1ToR1,
 		final double dblPredictorSupport,
 		final double dblResponseBound)
@@ -77,7 +76,7 @@ public class NormedR1ToL1NormedR1Finite extends org.drip.spaces.functionclass.No
 				aR1ToR1FunctionSpace[i] = new org.drip.spaces.RxToR1.NormedR1ContinuousToR1Continuous
 					(r1ContinuousInput, r1ContinuousOutput, aR1ToR1[i]);
 
-			return new NormedR1ToL1NormedR1Finite (aR1ToR1FunctionSpace);
+			return new NormedR1ToL1R1Finite (aR1ToR1FunctionSpace);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -85,7 +84,7 @@ public class NormedR1ToL1NormedR1Finite extends org.drip.spaces.functionclass.No
 		return null;
 	}
 
-	protected NormedR1ToL1NormedR1Finite (
+	protected NormedR1ToL1R1Finite (
 		final org.drip.spaces.RxToR1.NormedR1ToNormedR1[] aR1ToR1FunctionSpace)
 		throws java.lang.Exception
 	{
@@ -152,7 +151,7 @@ public class NormedR1ToL1NormedR1Finite extends org.drip.spaces.functionclass.No
 		double dblVariation = dblResponseUpperBound - dblResponseLowerBound;
 
 		try {
-			return new org.drip.spaces.cover.R1L1CoveringBounds (dblPredictorUpperBound -
+			return new org.drip.spaces.cover.L1R1CoveringBounds (dblPredictorUpperBound -
 				dblPredictorLowerBound, dblVariation, dblVariation);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();

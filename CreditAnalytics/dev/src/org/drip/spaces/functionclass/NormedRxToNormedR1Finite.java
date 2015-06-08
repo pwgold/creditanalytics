@@ -40,28 +40,8 @@ package org.drip.spaces.functionclass;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormedRxToNormedR1Finite {
+public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.NormedRxToNormedRxFinite {
 	private org.drip.spaces.RxToR1.NormedRxToNormedR1[] _aNormedRxToNormedR1 = null;
-
-	/**
-	 * Compute the Dyadic Entropy Number from the nth Entropy Number
-	 * 
-	 * @param dblLogNEntropyNumber Log of the nth Entropy Number
-	 * 
-	 * @return The Dyadic Entropy Number
-	 * 
-	 * @throws java.lang.Exception Thrown if the Dyadic Entropy Number cannot be calculated
-	 */
-
-	public static final double DyadicEntropyNumber (
-		final double dblLogNEntropyNumber)
-		throws java.lang.Exception
-	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblLogNEntropyNumber))
-			throw new java.lang.Exception ("NormedRxToNormedR1Finite::DyadicEntropyNumber => Invalid Inputs");
-
-		return 1. + (dblLogNEntropyNumber / java.lang.Math.log (2.));
-	}
 
 	protected NormedRxToNormedR1Finite (
 		final org.drip.spaces.RxToR1.NormedRxToNormedR1[] aNormedRxToNormedR1)
@@ -79,58 +59,30 @@ public class NormedRxToNormedR1Finite {
 		}
 	}
 
-	/**
-	 * Retrieve the Agnostic Covering Number Upper/Lower Bounds for the Function Class
-	 * 
-	 * @return The Agnostic Covering Number Upper/Lower Bounds for the Function Class
-	 */
-
-	public org.drip.spaces.cover.FunctionClassCoveringBounds agnosticCoveringNumberBounds()
+	@Override public org.drip.spaces.cover.FunctionClassCoveringBounds agnosticCoveringNumberBounds()
 	{
 		return null;
 	}
 
+	@Override public org.drip.spaces.metric.GeneralizedMetricVectorSpace inputMetricVectorSpace()
+	{
+		return null == _aNormedRxToNormedR1 ? null : _aNormedRxToNormedR1[0].inputMetricVectorSpace();
+	}
+
+	@Override public org.drip.spaces.metric.R1Normed outputMetricVectorSpace()
+	{
+		return null == _aNormedRxToNormedR1 ? null : _aNormedRxToNormedR1[0].outputMetricVectorSpace();
+	}
+
 	/**
-	 * Retrieve the Scale-Sensitive Covering Number Upper/Lower Bounds given the Specified Sample for the
-	 *  Function Class
+	 * Retrieve the Array of Function Spaces in the Class
 	 * 
-	 * @param gvvi The Validated Instance Vector Sequence
-	 * @param funcR1ToR1FatShatter The Cover Fat Shattering Coefficient R^1 -> R^1
-	 * 
-	 * @return The Scale-Sensitive Covering Number Upper/Lower Bounds given the Specified Sample for the
-	 *  Function Class
+	 * @return The Array of Function Spaces in the Class
 	 */
 
-	public org.drip.spaces.cover.FunctionClassCoveringBounds scaleSensitiveCoveringBounds (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
-		final org.drip.function.definition.R1ToR1 funcR1ToR1FatShatter)
+	public org.drip.spaces.RxToR1.NormedRxToNormedR1[] functionSpaces()
 	{
-		if (null == gvvi || null == funcR1ToR1FatShatter) return null;
-
-		int iSampleSize = -1;
-
-		if (gvvi instanceof org.drip.spaces.instance.ValidatedR1) {
-			double[] adblInstance = ((org.drip.spaces.instance.ValidatedR1) gvvi).instance();
-
-			if (null == adblInstance) return null;
-
-			iSampleSize = adblInstance.length;
-		} else if (gvvi instanceof org.drip.spaces.instance.ValidatedRd) {
-			double[][] aadblInstance = ((org.drip.spaces.instance.ValidatedRd) gvvi).instance();
-
-			if (null == aadblInstance) return null;
-
-			iSampleSize = aadblInstance.length;
-		}
-
-		try {
-			return new org.drip.spaces.cover.ScaleSensitiveCoveringBounds (funcR1ToR1FatShatter,
-				iSampleSize);
-		} catch (java.lang.Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
+		return _aNormedRxToNormedR1;
 	}
 
 	/**
@@ -194,7 +146,7 @@ public class NormedRxToNormedR1Finite {
 
 		int iFunctionSpaceSize = _aNormedRxToNormedR1.length;
 
-		double dblPopulationSupremumCoveringNumber = _aNormedRxToNormedR1[0].populationCoveringNumber
+		double dblPopulationSupremumCoveringNumber = _aNormedRxToNormedR1[0].populationSupremumCoveringNumber
 			(dblCover);
 
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblPopulationSupremumCoveringNumber))
@@ -301,39 +253,6 @@ public class NormedRxToNormedR1Finite {
 		}
 
 		return dblSampleSupremumCoveringNumber;
-	}
-
-	/**
-	 * Retrieve the Array of Function Spaces in the Class
-	 * 
-	 * @return The Array of Function Spaces in the Class
-	 */
-
-	public org.drip.spaces.RxToR1.NormedRxToNormedR1[] functionSpaces()
-	{
-		return _aNormedRxToNormedR1;
-	}
-
-	/**
-	 * Retrieve the Input Vector Space
-	 * 
-	 * @return The Input Vector Space
-	 */
-
-	public org.drip.spaces.metric.GeneralizedMetricVectorSpace inputMetricVectorSpace()
-	{
-		return null == _aNormedRxToNormedR1 ? null : _aNormedRxToNormedR1[0].inputMetricVectorSpace();
-	}
-
-	/**
-	 * Retrieve the Output Vector Space
-	 * 
-	 * @return The Output Vector Space
-	 */
-
-	public org.drip.spaces.metric.R1Normed outputMetricVectorSpace()
-	{
-		return null == _aNormedRxToNormedR1 ? null : _aNormedRxToNormedR1[0].outputMetricVectorSpace();
 	}
 
 	/**

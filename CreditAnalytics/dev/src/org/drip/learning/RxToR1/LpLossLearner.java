@@ -124,9 +124,9 @@ public class LpLossLearner extends org.drip.learning.RxToR1.GeneralizedLearner {
 		org.drip.spaces.functionclass.NormedRxToNormedR1Finite funcClassRxToR1 = functionClass();
 
 		org.drip.learning.bound.LipschitzCoveringNumberBound llcn = new
-			org.drip.learning.bound.LipschitzCoveringNumberBound (funcClassRxToR1.sampleSupremumCoveringNumber
-				(gvvi, dblLipschitzCover), funcClassRxToR1.sampleCoveringNumber (gvvi, gvvi.sampleSize() *
-					dblLipschitzCover));
+			org.drip.learning.bound.LipschitzCoveringNumberBound
+				(funcClassRxToR1.sampleSupremumCoveringNumber (gvvi, dblLipschitzCover),
+					funcClassRxToR1.sampleCoveringNumber (gvvi, gvvi.sampleSize() * dblLipschitzCover));
 
 		return bSupremum ? llcn.supremumUpperBound() : llcn.lpUpperBound();
 	}

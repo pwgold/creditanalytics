@@ -337,8 +337,7 @@ public class EmpiricalPenaltySupremumEstimator extends org.drip.sequence.functio
 
 		try {
 			eps = supremumRd (new org.drip.spaces.instance.ValidatedRd
-				(org.drip.spaces.tensor.ContinuousVectorRd.Standard (aadblX.length),
-					aadblX));
+				(org.drip.spaces.tensor.ContinuousVectorRd.Standard (aadblX.length), aadblX));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 
@@ -353,8 +352,8 @@ public class EmpiricalPenaltySupremumEstimator extends org.drip.sequence.functio
 		throws java.lang.Exception
 	{
 		org.drip.learning.RxToR1.EmpiricalPenaltySupremum eps = supremumR1 (new
-			org.drip.spaces.instance.ValidatedR1
-				(org.drip.spaces.tensor.ContinuousVectorR1.Standard(), adblX));
+			org.drip.spaces.instance.ValidatedR1 (org.drip.spaces.tensor.ContinuousVectorR1.Standard(),
+				adblX));
 
 		if (null == eps)
 			throw new java.lang.Exception ("EmpiricalPenaltySupremumEstimator::evaluate => Invalid Inputs");
@@ -380,9 +379,8 @@ public class EmpiricalPenaltySupremumEstimator extends org.drip.sequence.functio
 			throw new java.lang.Exception ("EmpiricalPenaltySupremumEstimator::evaluate => Invalid Inputs");
 
 		org.drip.learning.RxToR1.EmpiricalPenaltySupremum eps = supremumRd (new
-			org.drip.spaces.instance.ValidatedRd
-				(org.drip.spaces.tensor.ContinuousVectorRd.Standard (aadblX.length),
-					aadblX));
+			org.drip.spaces.instance.ValidatedRd (org.drip.spaces.tensor.ContinuousVectorRd.Standard
+				(aadblX.length), aadblX));
 
 		if (null == eps)
 			throw new java.lang.Exception ("EmpiricalPenaltySupremumEstimator::evaluate => Invalid Inputs");

@@ -67,7 +67,7 @@ public class EmpiricalPenaltySupremumMetrics extends org.drip.sequence.functiona
 	 * @return The Empirical Penalty Supremum Function
 	 */
 
-	public org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator empiricalPenaltySupremum()
+	public org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator empiricalPenaltySupremumEstimator()
 	{
 		return _epse;
 	}

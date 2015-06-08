@@ -129,22 +129,21 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 			throw new java.lang.Exception ("GeneralizedLearner::structuralLoss => Invalid Inputs");
 
 		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsOutput =
-				finiteClassR1ToR1.outputMetricVectorSpace();
+			finiteClassR1ToR1.outputMetricVectorSpace();
 
 		if (gmvsOutput instanceof org.drip.spaces.metric.R1Continuous)
 			throw new java.lang.Exception ("GeneralizedLearner::structuralLoss => Invalid Inputs");
 
 		org.drip.learning.regularization.RegularizerR1ToR1 regularizerR1ToR1 =
 			org.drip.learning.regularization.RegularizerBuilder.ToR1Continuous (funcRegularizerR1ToR1,
-				(org.drip.spaces.metric.R1Normed) gmvsInput,
-					(org.drip.spaces.metric.R1Continuous) gmvsOutput,
-						_regularizerFunc.lambda());
+				(org.drip.spaces.metric.R1Normed) gmvsInput, (org.drip.spaces.metric.R1Continuous)
+					gmvsOutput, _regularizerFunc.lambda());
 
 		if (null == regularizerR1ToR1)
 			throw new java.lang.Exception ("GeneralizedLearner::structuralLoss => Invalid Inputs");
 
-		return regularizerR1ToR1.structuralLoss (funcLearnerR1ToR1,
-			((org.drip.spaces.instance.ValidatedR1) gvvi).instance());
+		return regularizerR1ToR1.structuralLoss (funcLearnerR1ToR1, ((org.drip.spaces.instance.ValidatedR1)
+			gvvi).instance());
 	}
 
 	@Override public double structuralLoss (
@@ -178,15 +177,14 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 
 		org.drip.learning.regularization.RegularizerRdToR1 regularizerRdToR1 =
 			org.drip.learning.regularization.RegularizerBuilder.ToRdContinuous (funcRegularizerRdToR1,
-				(org.drip.spaces.metric.RdNormed) gmvsInput,
-					(org.drip.spaces.metric.R1Continuous) gmvsOutput,
-						_regularizerFunc.lambda());
+				(org.drip.spaces.metric.RdNormed) gmvsInput, (org.drip.spaces.metric.R1Continuous)
+					gmvsOutput, _regularizerFunc.lambda());
 
 		if (null == regularizerRdToR1)
 			throw new java.lang.Exception ("GeneralizedLearner::structuralLoss => Invalid Inputs");
 
-		return regularizerRdToR1.structuralLoss (funcLearnerRdToR1,
-			((org.drip.spaces.instance.ValidatedRd) gvvi).instance());
+		return regularizerRdToR1.structuralLoss (funcLearnerRdToR1, ((org.drip.spaces.instance.ValidatedRd)
+			gvvi).instance());
 	}
 
 	@Override public org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumStructuralLoss (
@@ -303,9 +301,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 
 		org.drip.learning.regularization.RegularizerR1ToR1 regularizerR1ToR1 =
 			org.drip.learning.regularization.RegularizerBuilder.ToR1Continuous (funcRegularizerR1ToR1,
-				(org.drip.spaces.metric.R1Normed) gmvsInput,
-					(org.drip.spaces.metric.R1Continuous) gmvsOutput,
-						_regularizerFunc.lambda());
+				(org.drip.spaces.metric.R1Normed) gmvsInput, (org.drip.spaces.metric.R1Continuous)
+					gmvsOutput, _regularizerFunc.lambda());
 
 		if (null == regularizerR1ToR1)
 			throw new java.lang.Exception ("GeneralizedLearner::structuralRisk => Invalid Inputs");
@@ -350,9 +347,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 
 		org.drip.learning.regularization.RegularizerRdToR1 regularizerRdToR1 =
 			org.drip.learning.regularization.RegularizerBuilder.ToRdContinuous (funcRegularizerRdToR1,
-				(org.drip.spaces.metric.RdNormed) gmvsInput,
-					(org.drip.spaces.metric.R1Continuous) gmvsOutput,
-						_regularizerFunc.lambda());
+				(org.drip.spaces.metric.RdNormed) gmvsInput, (org.drip.spaces.metric.R1Continuous)
+					gmvsOutput, _regularizerFunc.lambda());
 
 		if (null == regularizerRdToR1)
 			throw new java.lang.Exception ("GeneralizedLearner::structuralRisk => Invalid Inputs");

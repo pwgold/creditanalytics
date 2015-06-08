@@ -113,6 +113,38 @@ public abstract class NormedRxToNormedRd {
 	}
 
 	/**
+	 * Retrieve the Sample Supremum Covering Number Array
+	 * 
+	 * @param gvvi The Validated Vector Space Instance
+	 * @param dblCover The Cover
+	 * 
+	 * @return The Sample Supremum Covering Number Array
+	 */
+
+	public double[] sampleSupremumCoveringNumber (
+		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final double dblCover)
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover) return null;
+
+		double[] adblSampleSupremumNorm = sampleSupremumNorm (gvvi);
+
+		if (null == adblSampleSupremumNorm) return null;
+
+		int iOutputDimensionality = adblSampleSupremumNorm.length;
+		double[] adblSampleSupremumCoveringNumber = new double[iOutputDimensionality];
+
+		if (0 == iOutputDimensionality) return null;
+
+		double dblCoverBallVolume = java.lang.Math.pow (dblCover, outputMetricVectorSpace().pNorm());
+
+		for (int i = 0; i < iOutputDimensionality; ++i)
+			adblSampleSupremumCoveringNumber[i] = adblSampleSupremumNorm[i] / dblCoverBallVolume;
+
+		return adblSampleSupremumCoveringNumber;
+	}
+
+	/**
 	 * Retrieve the Population ESS (Essential Spectrum) Array
 	 * 
 	 * @return The Population ESS (Essential Spectrum) Array
@@ -149,8 +181,7 @@ public abstract class NormedRxToNormedRd {
 
 	public double[] populationCoveringNumber (
 		final double dblCover)
-		throws java.lang.Exception
-		{
+	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover) return null;
 
 		double[] adblPopulationMetricNorm = populationMetricNorm();
@@ -168,5 +199,35 @@ public abstract class NormedRxToNormedRd {
 			adblPopulationCoveringNumber[i] = adblPopulationMetricNorm[i] / dblCoverBallVolume;
 
 		return adblPopulationCoveringNumber;
+	}
+
+	/**
+	 * Retrieve the Population Supremum Covering Number Array
+	 * 
+	 * @param dblCover The Cover
+	 * 
+	 * @return The Population Supremum Covering Number Array
+	 */
+
+	public double[] populationSupremumCoveringNumber (
+		final double dblCover)
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover) return null;
+
+		double[] adblPopulationSupremumNorm = populationSupremumNorm();
+
+		if (null == adblPopulationSupremumNorm) return null;
+
+		int iOutputDimensionality = adblPopulationSupremumNorm.length;
+		double[] adblPopulationSupremumCoveringNumber = new double[iOutputDimensionality];
+
+		if (0 == iOutputDimensionality) return null;
+
+		double dblCoverBallVolume = java.lang.Math.pow (dblCover, outputMetricVectorSpace().pNorm());
+
+		for (int i = 0; i < iOutputDimensionality; ++i)
+			adblPopulationSupremumCoveringNumber[i] = adblPopulationSupremumNorm[i] / dblCoverBallVolume;
+
+		return adblPopulationSupremumCoveringNumber;
 	}
 }
