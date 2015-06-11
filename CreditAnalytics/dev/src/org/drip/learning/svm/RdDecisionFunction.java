@@ -50,7 +50,7 @@ public abstract class RdDecisionFunction extends org.drip.function.definition.Rd
 	private double _dblB = java.lang.Double.NaN;
 	private double[] _adblInverseMarginWeight = null;
 	private org.drip.spaces.metric.RdNormed _rmnsInverseMargin = null;
-	private org.drip.spaces.tensor.GeneralizedVectorRd _gmvsPredictor = null;
+	private org.drip.spaces.tensor.RdGeneralizedVector _gmvsPredictor = null;
 
 	/**
 	 * RdDecisionFunction Constructor
@@ -64,7 +64,7 @@ public abstract class RdDecisionFunction extends org.drip.function.definition.Rd
 	 */
 
 	public RdDecisionFunction (
-		final org.drip.spaces.tensor.GeneralizedVectorRd gmvsPredictor,
+		final org.drip.spaces.tensor.RdGeneralizedVector gmvsPredictor,
 		final org.drip.spaces.metric.RdNormed rmnsInverseMargin,
 		final double[] adblInverseMarginWeight,
 		final double dblB)
@@ -89,7 +89,7 @@ public abstract class RdDecisionFunction extends org.drip.function.definition.Rd
 	 * @return The Input Predictor Metric Vector Space
 	 */
 
-	public org.drip.spaces.tensor.GeneralizedVectorRd predictorSpace()
+	public org.drip.spaces.tensor.RdGeneralizedVector predictorSpace()
 	{
 		return _gmvsPredictor;
 	}

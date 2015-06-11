@@ -52,15 +52,19 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 	/**
 	 * NormedRxToNormedRdFinite Constructor
 	 * 
+	 * @param dblMaureyConstant Maurey Constant
 	 * @param aNormedRxToNormedRd Array of the Normed R^x -> Normed R^d Spaces
 	 *  
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NormedRxToNormedRdFinite (
+		final double dblMaureyConstant,
 		final org.drip.spaces.RxToRd.NormedRxToNormedRd[] aNormedRxToNormedRd)
 		throws java.lang.Exception
 	{
+		super (dblMaureyConstant);
+
 		int iClassSize = null == (_aNormedRxToNormedRd = aNormedRxToNormedRd) ? 0 :
 			_aNormedRxToNormedRd.length;
 
@@ -233,7 +237,7 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 	 */
 
 	public double[] sampleCoveringNumber (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final double[] adblCover)
 	{
 		if (null == _aNormedRxToNormedRd || null == adblCover) return null;
@@ -274,7 +278,7 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 	 */
 
 	public double[] sampleCoveringNumber (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final double dblCover)
 	{
 		int iDimension = outputMetricVectorSpace().dimension();
@@ -297,7 +301,7 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 	 */
 
 	public double[] sampleSupremumCoveringNumber (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final double[] adblCover)
 	{
 		if (null == _aNormedRxToNormedRd || null == adblCover) return null;
@@ -339,7 +343,7 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 	 */
 
 	public double[] sampleSupremumCoveringNumber (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final double dblCover)
 	{
 		int iDimension = outputMetricVectorSpace().dimension();
@@ -425,7 +429,7 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 	 */
 
 	public double[] sampleRdMetricNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 	{
 		if (null == _aNormedRxToNormedRd) return null;
 
@@ -460,7 +464,7 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 	 */
 
 	public double[] sampleRdSupremumNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 	{
 		if (null == _aNormedRxToNormedRd) return null;
 
@@ -486,15 +490,7 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 		return adblSampleRdSupremumNorm;
 	}
 
-	/**
-	 * Compute the Operator Population Metric Norm
-	 * 
-	 * @return The Operator Population Metric Norm
-	 * 
-	 * @throws java.lang.Exception Thrown if the Operator Norm cannot be computed
-	 */
-
-	public double operatorPopulationMetricNorm()
+	@Override public double operatorPopulationMetricNorm()
 		throws java.lang.Exception
 	{
 		double[] adblPopulationMetricNorm = populationRdMetricNorm();
@@ -522,15 +518,7 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 		return dblOperatorPopulationMetricNorm;
 	}
 
-	/**
-	 * Compute the Operator Population Supremum Norm
-	 * 
-	 * @return The Operator Population Supremum Norm
-	 * 
-	 * @throws java.lang.Exception Thrown if the Operator Norm cannot be computed
-	 */
-
-	public double operatorPopulationSupremumNorm()
+	@Override public double operatorPopulationSupremumNorm()
 		throws java.lang.Exception
 	{
 		double[] adblPopulationSupremumNorm = populationRdSupremumNorm();
@@ -558,32 +546,22 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 		return dblOperatorPopulationSupremumNorm;
 	}
 
-	/**
-	 * Compute the Operator Sample Metric Norm
-	 * 
-	 * @param gvvi The Validated Vector Space Instance
-	 * 
-	 * @return The Operator Sample Metric Norm
-	 * 
-	 * @throws java.lang.Exception Thrown if the Operator Norm cannot be computed
-	 */
-
-	public double operatorSampleMetricNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
+	@Override public double operatorSampleMetricNorm (
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 		throws java.lang.Exception
 	{
 		double[] adblSampleMetricNorm = sampleRdMetricNorm (gvvi);
 
 		if (null == adblSampleMetricNorm)
 			throw new java.lang.Exception
-				("NormedRxToNormedRdFinite::operatorSampleSupremumNorm => Invalid Inputs");
+				("NormedRxToNormedRdFinite::operatorSampleMetricNorm => Invalid Inputs");
 
 		int iDimension = adblSampleMetricNorm.length;
 		double dblOperatorSampleMetricNorm = java.lang.Double.NaN;
 
 		if (0 == iDimension)
 			throw new java.lang.Exception
-				("NormedRxToNormedRdFinite::operatorSampleSupremumNorm => Invalid Inputs");
+				("NormedRxToNormedRdFinite::operatorSampleMetricNorm => Invalid Inputs");
 
 		for (int j = 0; j < iDimension; ++j) {
 			if (0 == j)
@@ -597,18 +575,8 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 		return dblOperatorSampleMetricNorm;
 	}
 
-	/**
-	 * Compute the Operator Sample Supremum Norm
-	 * 
-	 * @param gvvi The Validated Vector Space Instance
-	 * 
-	 * @return The Operator Sample Supremum Norm
-	 * 
-	 * @throws java.lang.Exception Thrown if the Operator Norm cannot be computed
-	 */
-
-	public double operatorSampleSupremumNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
+	@Override public double operatorSampleSupremumNorm (
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 		throws java.lang.Exception
 	{
 		double[] adblSampleSupremumNorm = sampleRdSupremumNorm (gvvi);

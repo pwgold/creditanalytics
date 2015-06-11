@@ -29,83 +29,87 @@ package org.drip.spaces.tensor;
  */
 
 /**
- * ContinuousVectorRd implements the Normed/non-normed, Bounded/Unbounded Continuous R^d Vector Spaces.
- * 
- * The Reference we've used is:
- * 
- * 	- Carl, B., and I. Stephani (1990): Entropy, Compactness, and Approximation of Operators, Cambridge
- * 		University Press, Cambridge UK.
+ * RdCombinatorialVector exposes the Normed/Non-normed Discrete Spaces with R^d Combinatorial Vector
+ *  Elements.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ContinuousVectorRd extends org.drip.spaces.tensor.AggregatedRdVector {
+public class RdCombinatorialVector extends org.drip.spaces.tensor.RdAggregate {
 
 	/**
-	 * Construct the ContinuousVectorRd Instance
+	 * RdCombinatorialVector Constructor
 	 * 
-	 * @param iDimension The Space Dimension
-	 * 
-	 * @return The ContinuousVectorRd Instance
-	 */
-
-	public static final ContinuousVectorRd Standard (
-		final int iDimension)
-	{
-		try {
-			return 0 >= iDimension ? null : new ContinuousVectorRd (new
-				org.drip.spaces.tensor.ContinuousVectorR1[iDimension]);
-		} catch (java.lang.Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * ContinuousVectorRd Constructor
-	 * 
-	 * @param aCVR1 Array of the Continuous R^1 Vector Spaces
+	 * @param aR1CV Array of the Underlying R^1 Combinatorial Vector Spaces
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public ContinuousVectorRd (
-		final org.drip.spaces.tensor.ContinuousVectorR1[] aCVR1)
+	public RdCombinatorialVector (
+		final org.drip.spaces.tensor.R1CombinatorialVector[] aR1CV)
 		throws java.lang.Exception
 	{
-		super (aCVR1);
+		super (aR1CV);
+	}
+
+	@Override public org.drip.spaces.tensor.Cardinality cardinality()
+	{
+		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GV = vectorSpaces();
+
+		int iDimension = aR1GV.length;
+		double dblCardinalNumber = 1.;
+
+		for (int i = 0; i < iDimension; ++i)
+			dblCardinalNumber *= ((org.drip.spaces.tensor.R1CombinatorialVector)
+				aR1GV[i]).cardinality().number();
+
+		return org.drip.spaces.tensor.Cardinality.CountablyFinite (dblCardinalNumber);
+	}
+
+	/**
+	 * Retrieve the Multidimensional Iterator associated with the Underlying Vector Space
+	 * 
+	 * @return The Multidimensional Iterator associated with the Underlying Vector Space
+	 */
+
+	public org.drip.spaces.tensor.RdCombinatorialIterator iterator()
+	{
+		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GV = vectorSpaces();
+
+		int iDimension = aR1GV.length;
+		org.drip.spaces.tensor.R1CombinatorialVector[] aR1CV = new
+			org.drip.spaces.tensor.R1CombinatorialVector[iDimension];
+
+		for (int i = 0; i < iDimension; ++i)
+			aR1CV[i] = (org.drip.spaces.tensor.R1CombinatorialVector) aR1GV[i];
+
+		return org.drip.spaces.tensor.RdCombinatorialIterator.Standard (aR1CV);
 	}
 
 	@Override public double[] leftDimensionEdge()
 	{
-		org.drip.spaces.tensor.GeneralizedVectorR1[] aGVR1 = vectorSpaces();
+		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GV = vectorSpaces();
 
-		int iDimension = aGVR1.length;
+		int iDimension = aR1GV.length;
 		double[] adblLeftEdge = new double[iDimension];
 
 		for (int i = 0; i < iDimension; ++i)
-			adblLeftEdge[i] = ((org.drip.spaces.tensor.ContinuousVectorR1) aGVR1[i]).leftEdge();
+			adblLeftEdge[i] = ((org.drip.spaces.tensor.R1ContinuousVector) aR1GV[i]).leftEdge();
 
 		return adblLeftEdge;
 	}
 
 	@Override public double[] rightDimensionEdge()
 	{
-		org.drip.spaces.tensor.GeneralizedVectorR1[] aGVR1 = vectorSpaces();
+		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GV = vectorSpaces();
 
-		int iDimension = aGVR1.length;
+		int iDimension = aR1GV.length;
 		double[] adblRightEdge = new double[iDimension];
 
 		for (int i = 0; i < iDimension; ++i)
-			adblRightEdge[i] = ((org.drip.spaces.tensor.ContinuousVectorR1) aGVR1[i]).rightEdge();
+			adblRightEdge[i] = ((org.drip.spaces.tensor.R1ContinuousVector) aR1GV[i]).rightEdge();
 
 		return adblRightEdge;
-	}
-
-	@Override public org.drip.spaces.tensor.Cardinality cardinality()
-	{
-		return org.drip.spaces.tensor.Cardinality.UncountablyInfinite();
 	}
 
 	@Override public double leftEdge()
@@ -140,7 +144,7 @@ public class ContinuousVectorRd extends org.drip.spaces.tensor.AggregatedRdVecto
 		throws java.lang.Exception
 	{
 		if (!isPredictorBounded())
-			throw new java.lang.Exception ("ContinuousVectorRd::hyperVolume => Space not Bounded");
+			throw new java.lang.Exception ("RdCombinatorialVector::hyperVolume => Space not Bounded");
 
 		double[] adblLeftEdge = leftDimensionEdge();
 

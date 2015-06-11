@@ -39,7 +39,7 @@ package org.drip.spaces.metric;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1Combinatorial extends org.drip.spaces.tensor.CombinatorialVectorR1 implements
+public class R1Combinatorial extends org.drip.spaces.tensor.R1CombinatorialVector implements
 	org.drip.spaces.metric.R1Normed {
 	private int _iPNorm = -1;
 	private org.drip.measure.continuous.R1 _distR1 = null;

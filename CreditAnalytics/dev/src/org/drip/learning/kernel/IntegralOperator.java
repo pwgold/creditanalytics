@@ -47,34 +47,34 @@ package org.drip.learning.kernel;
  */
 
 public abstract class IntegralOperator {
-	private org.drip.learning.kernel.SymmetricRxToNormedR1Kernel _kernel = null;
+	private org.drip.measure.continuous.Rd _distRd = null;
 	private org.drip.function.definition.RdToR1 _funcRdToR1 = null;
-	private org.drip.spaces.metric.R1Normed _runsOperatorOutput = null;
-	private org.drip.measure.continuous.Rd _mdInputBorelSigmaMeasure = null;
+	private org.drip.spaces.metric.R1Normed _r1OperatorOutput = null;
+	private org.drip.learning.kernel.SymmetricRdToNormedR1Kernel _kernel = null;
 
 	/**
 	 * IntegralOperator Constructor
 	 * 
-	 * @param kernel The Symmetric Mercer Kernel - this should be R^x L2 X R^x L2 -> R^1 L0
+	 * @param kernel The Symmetric Mercer Kernel - this should be R^x L2 X R^x L2 -> R^1
 	 * @param funcRdToR1 The R^d -> R^1 Operator Function
-	 * @param runsOperatorOutput The Kernel Integral Operator Output Space - this is R^1 L2
+	 * @param r1OperatorOutput The Kernel Integral Operator Output Space - this is R^1 L2
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are invalid
 	 */
 
 	public IntegralOperator (
-		final org.drip.learning.kernel.SymmetricRxToNormedR1Kernel kernel,
+		final org.drip.learning.kernel.SymmetricRdToNormedR1Kernel kernel,
 		final org.drip.function.definition.RdToR1 funcRdToR1,
-		final org.drip.spaces.metric.R1Normed runsOperatorOutput)
+		final org.drip.spaces.metric.R1Normed r1OperatorOutput)
 		throws java.lang.Exception
 	{
-		if (null == (_kernel = kernel) || null == (_funcRdToR1 = funcRdToR1) || null == (_runsOperatorOutput
-			= runsOperatorOutput) || 2 != _runsOperatorOutput.pNorm())
+		if (null == (_kernel = kernel) || null == (_funcRdToR1 = funcRdToR1) || null == (_r1OperatorOutput =
+			r1OperatorOutput) || 2 != _r1OperatorOutput.pNorm())
 			throw new java.lang.Exception ("IntegralOperator ctr: Invalid Inputs");
 
-		org.drip.spaces.metric.RdNormed rmnsSymmetricKernelInput = _kernel.input();
+		org.drip.spaces.metric.RdNormed rmnsSymmetricKernelInput = _kernel.inputMetricVectorSpace();
 
-		if (2 != rmnsSymmetricKernelInput.pNorm() || null == (_mdInputBorelSigmaMeasure =
+		if (2 != rmnsSymmetricKernelInput.pNorm() || null == (_distRd =
 			rmnsSymmetricKernelInput.borelSigmaMeasure()))
 			throw new java.lang.Exception ("IntegralOperator ctr: Invalid Inputs");
 	}
@@ -85,7 +85,7 @@ public abstract class IntegralOperator {
 	 * @return The Mercer Kernel
 	 */
 
-	public org.drip.learning.kernel.SymmetricRxToNormedR1Kernel kernel()
+	public org.drip.learning.kernel.SymmetricRdToNormedR1Kernel kernel()
 	{
 		return _kernel;
 	}
@@ -109,7 +109,7 @@ public abstract class IntegralOperator {
 
 	public org.drip.measure.continuous.Rd inputSpaceBorelMeasure()
 	{
-		return _mdInputBorelSigmaMeasure;
+		return _distRd;
 	}
 
 	/**
@@ -118,9 +118,9 @@ public abstract class IntegralOperator {
 	 * @return The Kernel Integral Operator Output Space
 	 */
 
-	public org.drip.spaces.metric.R1Normed output()
+	public org.drip.spaces.metric.R1Normed outputVectorMetricSpace()
 	{
-		return _runsOperatorOutput;
+		return _r1OperatorOutput;
 	}
 
 	/**
@@ -137,8 +137,7 @@ public abstract class IntegralOperator {
 		final double[] adblX)
 		throws java.lang.Exception
 	{
-		org.drip.function.definition.RdToR1 funcRdToR1 = new org.drip.function.definition.RdToR1 (null)
-		{
+		org.drip.function.definition.RdToR1 funcRdToR1 = new org.drip.function.definition.RdToR1 (null) {
 			@Override public double evaluate (
 				final double[] adblY)
 				throws java.lang.Exception
@@ -147,7 +146,7 @@ public abstract class IntegralOperator {
 			}
 		};
 
-		return _kernel.input().borelMeasureSpaceExpectation (funcRdToR1);
+		return _kernel.inputMetricVectorSpace().borelMeasureSpaceExpectation (funcRdToR1);
 	}
 
 	/**

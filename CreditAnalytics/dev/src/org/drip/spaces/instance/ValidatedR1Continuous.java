@@ -1,5 +1,5 @@
 
-package org.drip.spaces.tensor;
+package org.drip.spaces.instance;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,54 +29,38 @@ package org.drip.spaces.tensor;
  */
 
 /**
- * GeneralizedVectorRd exposes the basic Properties of the General R^d Vector Space.
+ * ValidatedR1Continuous holds the Validated R^1 Continuous Vector Instance Sequence and the Corresponding
+ *  Generalized Vector Space Type.
+ * 
+ * The Reference we've used is:
+ * 
+ * 	- Carl, B., and I. Stephani (1990): Entropy, Compactness, and Approximation of Operators, Cambridge
+ * 		University Press, Cambridge UK.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface GeneralizedVectorRd extends org.drip.spaces.tensor.GeneralizedVector
-{
+public class ValidatedR1Continuous extends org.drip.spaces.instance.ValidatedR1 {
 
 	/**
-	 * Retrieve the Dimension of the Space
-	 *  
-	 * @return The Dimension of the Space
+	 * ValidatedR1Continuous Constructor
+	 * 
+	 * @param cvR1 The Continuous R^1 Tensor Space Type
+	 * @param adblInstance The Data Instance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract int dimension();
+	public ValidatedR1Continuous (
+		final org.drip.spaces.tensor.R1ContinuousVector cvR1,
+		final double[] adblInstance)
+		throws java.lang.Exception
+	{
+		super (cvR1, adblInstance);
+	}
 
-	/**
-	 * Retrieve the Array of the Underlying R^1 Vector Spaces
-	 * 
-	 * @return The Array of the Underlying R^1 Vector Spaces
-	 */
-
-	public abstract org.drip.spaces.tensor.GeneralizedVectorR1[] vectorSpaces();
-
-	/**
-	 * Validate the Input Instance
-	 * 
-	 * @param adblInstance The Input Instance
-	 * 
-	 * @return TRUE => Instance is a Valid Entry in the Space
-	 */
-
-	public abstract boolean validateInstance (
-		final double[] adblInstance);
-
-	/**
-	 * Retrieve the Array of the Variate Left Edges
-	 * 
-	 * @return The Array of the Variate Left Edges
-	 */
-
-	public abstract double[] leftDimensionEdge();
-
-	/**
-	 * Retrieve the Array of the Variate Right Edges
-	 * 
-	 * @return The Array of the Variate Right Edges
-	 */
-
-	public abstract double[] rightDimensionEdge();
+	@Override public org.drip.spaces.tensor.R1ContinuousVector tensorSpaceType()
+	{
+		return (org.drip.spaces.tensor.R1ContinuousVector) super.tensorSpaceType();
+	}
 }

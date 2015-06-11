@@ -49,7 +49,7 @@ public abstract class LinearRdDecisionFunction extends org.drip.learning.svm.RdD
 	 */
 
 	public LinearRdDecisionFunction (
-		final org.drip.spaces.tensor.GeneralizedVectorRd gmvsPredictor,
+		final org.drip.spaces.tensor.RdGeneralizedVector gmvsPredictor,
 		final org.drip.spaces.metric.RdNormed rmnsInverseMargin,
 		final double[] adblInverseMarginWeight,
 		final double dblB)

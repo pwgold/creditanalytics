@@ -29,7 +29,7 @@ package org.drip.spaces.tensor;
  */
 
 /**
- * ContinuousVectorR1 exposes the Normed/non-normed, Bounded/Unbounded Continuous R^1 Vector Spaces with
+ * R1ContinuousVector exposes the Normed/non-normed, Bounded/Unbounded Continuous R^1 Vector Spaces with
  *  Real-valued Elements.
  * 
  * The Reference we've used is:
@@ -40,20 +40,20 @@ package org.drip.spaces.tensor;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ContinuousVectorR1 implements org.drip.spaces.tensor.GeneralizedVectorR1 {
+public class R1ContinuousVector implements org.drip.spaces.tensor.R1GeneralizedVector {
 	private double _dblLeftEdge = java.lang.Double.NaN;
 	private double _dblRightEdge = java.lang.Double.NaN;
 
 	/**
-	 * Create the Standard Continuous R^1 Vector Space
+	 * Create the Standard R^1 Continuous Vector Space
 	 * 
-	 * @return The Standard Continuous R^1 Vector Space
+	 * @return The Standard R^1 Continuous Vector Space
 	 */
 
-	public static final ContinuousVectorR1 Standard()
+	public static final R1ContinuousVector Standard()
 	{
 		try {
-			return new ContinuousVectorR1 (java.lang.Double.NEGATIVE_INFINITY,
+			return new R1ContinuousVector (java.lang.Double.NEGATIVE_INFINITY,
 				java.lang.Double.POSITIVE_INFINITY);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -63,7 +63,7 @@ public class ContinuousVectorR1 implements org.drip.spaces.tensor.GeneralizedVec
 	}
 
 	/**
-	 * ContinuousVectorR1 Constructor
+	 * R1ContinuousVector Constructor
 	 * 
 	 * @param dblLeftEdge The Left Edge
 	 * @param dblRightEdge The Right Edge
@@ -71,14 +71,14 @@ public class ContinuousVectorR1 implements org.drip.spaces.tensor.GeneralizedVec
 	 * @throws java.lang.Exception Thrown if the Inputs are invalid
 	 */
 
-	public ContinuousVectorR1 (
+	public R1ContinuousVector (
 		final double dblLeftEdge,
 		final double dblRightEdge)
 		throws java.lang.Exception
 	{
 		if (!java.lang.Double.isNaN (_dblLeftEdge = dblLeftEdge) || !java.lang.Double.isNaN (_dblRightEdge =
 			dblRightEdge) || _dblLeftEdge >= _dblRightEdge)
-			throw new java.lang.Exception ("ContinuousVectorR1 ctr: Invalid Inputs");
+			throw new java.lang.Exception ("R1ContinuousVector ctr: Invalid Inputs");
 	}
 
 	@Override public double leftEdge()
@@ -106,21 +106,21 @@ public class ContinuousVectorR1 implements org.drip.spaces.tensor.GeneralizedVec
 	@Override public boolean match (
 		final org.drip.spaces.tensor.GeneralizedVector gvOther)
 	{
-		if (null == gvOther || !(gvOther instanceof ContinuousVectorR1)) return false;
+		if (null == gvOther || !(gvOther instanceof R1ContinuousVector)) return false;
 
-		ContinuousVectorR1 cvR1Other = (ContinuousVectorR1) gvOther;
+		R1ContinuousVector r1cvOther = (R1ContinuousVector) gvOther;
 
-		return cvR1Other.leftEdge() == _dblLeftEdge && cvR1Other.rightEdge() == _dblRightEdge;
+		return r1cvOther.leftEdge() == _dblLeftEdge && r1cvOther.rightEdge() == _dblRightEdge;
 	}
 
 	@Override public boolean subset (
 		final org.drip.spaces.tensor.GeneralizedVector gvOther)
 	{
-		if (null == gvOther || !(gvOther instanceof ContinuousVectorR1)) return false;
+		if (null == gvOther || !(gvOther instanceof R1ContinuousVector)) return false;
 
-		ContinuousVectorR1 cvR1Other = (ContinuousVectorR1) gvOther;
+		R1ContinuousVector r1cvOther = (R1ContinuousVector) gvOther;
 
-		return cvR1Other.leftEdge() >= _dblLeftEdge && cvR1Other.rightEdge() <= _dblRightEdge;
+		return r1cvOther.leftEdge() >= _dblLeftEdge && r1cvOther.rightEdge() <= _dblRightEdge;
 	}
 
 	@Override public boolean isPredictorBounded()
@@ -133,7 +133,7 @@ public class ContinuousVectorR1 implements org.drip.spaces.tensor.GeneralizedVec
 		throws java.lang.Exception
 	{
 		if (!isPredictorBounded())
-			throw new java.lang.Exception ("ContinuousVectorR1::hyperVolume => Space not Bounded");
+			throw new java.lang.Exception ("R1ContinuousVector::hyperVolume => Space not Bounded");
 
 		return _dblRightEdge - _dblLeftEdge;
 	}

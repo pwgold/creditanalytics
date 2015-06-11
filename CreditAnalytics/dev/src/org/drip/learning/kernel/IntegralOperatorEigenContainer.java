@@ -83,7 +83,7 @@ public class IntegralOperatorEigenContainer {
 	 * @return The Eigen Input Space
 	 */
 
-	public org.drip.spaces.metric.RdNormed input()
+	public org.drip.spaces.metric.RdNormed inputMetricVectorSpace()
 	{
 		return _aIOEC[0].eigenFunction().inputMetricVectorSpace();
 	}
@@ -94,7 +94,7 @@ public class IntegralOperatorEigenContainer {
 	 * @return The Eigen Output Space
 	 */
 
-	public org.drip.spaces.metric.R1Normed output()
+	public org.drip.spaces.metric.R1Normed outputMetricVectorSpace()
 	{
 		return _aIOEC[0].eigenFunction().outputMetricVectorSpace();
 	}
@@ -146,15 +146,14 @@ public class IntegralOperatorEigenContainer {
 	public org.drip.spaces.cover.OperatorClassCoveringBounds scaledCoveringNumberBounds (
 		final org.drip.learning.kernel.DiagonalScalingOperator dso)
 	{
-		final org.drip.spaces.metric.R1Combinatorial cruScaled = diagonallyScaledFeatureSpace
-			(dso);
+		final org.drip.spaces.metric.R1Combinatorial r1ContinuousScaled = diagonallyScaledFeatureSpace (dso);
 
-		if (null == cruScaled) return null;
+		if (null == r1ContinuousScaled) return null;
 
 		try {
-			final double dblPopulationMetricNorm = cruScaled.populationMetricNorm();
+			final double dblPopulationMetricNorm = r1ContinuousScaled.populationMetricNorm();
 
-			org.drip.spaces.cover.OperatorClassCoveringBounds ocnb = new
+			org.drip.spaces.cover.OperatorClassCoveringBounds occb = new
 				org.drip.spaces.cover.OperatorClassCoveringBounds() {
 				@Override public double lowerBound()
 					throws java.lang.Exception
@@ -169,7 +168,7 @@ public class IntegralOperatorEigenContainer {
 				}
 			};
 
-			return ocnb;
+			return occb;
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}

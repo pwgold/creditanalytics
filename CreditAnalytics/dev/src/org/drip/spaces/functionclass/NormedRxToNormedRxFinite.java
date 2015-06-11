@@ -47,26 +47,100 @@ package org.drip.spaces.functionclass;
  */
 
 public abstract class NormedRxToNormedRxFinite {
+	private double _dblMaureyConstant = java.lang.Double.NaN;
 
-	/**
-	 * Compute the Dyadic Entropy Number from the nth Entropy Number
-	 * 
-	 * @param dblLogNEntropyNumber Log of the nth Entropy Number
-	 * 
-	 * @return The Dyadic Entropy Number
-	 * 
-	 * @throws java.lang.Exception Thrown if the Dyadic Entropy Number cannot be calculated
-	 */
-
-	public static final double DyadicEntropyNumber (
-		final double dblLogNEntropyNumber)
+	protected NormedRxToNormedRxFinite (
+		final double dblMaureyConstant)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblLogNEntropyNumber))
-			throw new java.lang.Exception
-				("NormedRxToNormedRxFinite::DyadicEntropyNumber => Invalid Inputs");
+		if (!org.drip.quant.common.NumberUtil.IsValid (_dblMaureyConstant = dblMaureyConstant) || 0. >=
+			_dblMaureyConstant)
+			throw new java.lang.Exception ("NormedRxToNormedRxFinite ctr => Invalid Inputs");
+	}
 
-		return 1. + (dblLogNEntropyNumber / java.lang.Math.log (2.));
+	/**
+	 * Retrieve the Input Vector Space
+	 * 
+	 * @return The Input Vector Space
+	 */
+
+	public abstract org.drip.spaces.metric.GeneralizedMetricVectorSpace inputMetricVectorSpace();
+
+	/**
+	 * Retrieve the Output Vector Space
+	 * 
+	 * @return The Output Vector Space
+	 */
+
+	public abstract org.drip.spaces.metric.GeneralizedMetricVectorSpace outputMetricVectorSpace();
+
+	/**
+	 * Compute the Operator Population Metric Norm
+	 * 
+	 * @return The Operator Population Metric Norm
+	 * 
+	 * @throws java.lang.Exception Thrown if the Operator Norm cannot be computed
+	 */
+
+	public abstract double operatorPopulationMetricNorm()
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Operator Population Supremum Norm
+	 * 
+	 * @return The Operator Population Supremum Norm
+	 * 
+	 * @throws java.lang.Exception Thrown if the Operator Population Supremum Norm cannot be computed
+	 */
+
+	public abstract double operatorPopulationSupremumNorm()
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Operator Sample Metric Norm
+	 * 
+	 * @param gvvi The Validated Vector Space Instance
+	 * 
+	 * @return The Operator Sample Metric Norm
+	 * 
+	 * @throws java.lang.Exception Thrown if the Operator Norm cannot be computed
+	 */
+
+	public abstract double operatorSampleMetricNorm (
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Operator Sample Supremum Norm
+	 * 
+	 * @param gvvi The Validated Vector Space Instance
+	 * 
+	 * @return The Operator Sample Supremum Norm
+	 * 
+	 * @throws java.lang.Exception Thrown if the Operator Sample Supremum Norm cannot be computed
+	 */
+
+	public abstract double operatorSampleSupremumNorm (
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
+		throws java.lang.Exception;
+
+	/**
+	 * Retrieve the Agnostic Covering Number Upper/Lower Bounds for the Function Class
+	 * 
+	 * @return The Agnostic Covering Number Upper/Lower Bounds for the Function Class
+	 */
+
+	public abstract org.drip.spaces.cover.FunctionClassCoveringBounds agnosticCoveringNumberBounds();
+
+	/**
+	 * Retrieve the Maurey Constant
+	 * 
+	 * @return The Maurey Constant
+	 */
+
+	public double maureyConstant()
+	{
+		return _dblMaureyConstant;
 	}
 
 	/**
@@ -81,7 +155,7 @@ public abstract class NormedRxToNormedRxFinite {
 	 */
 
 	public org.drip.spaces.cover.FunctionClassCoveringBounds scaleSensitiveCoveringBounds (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final org.drip.function.definition.R1ToR1 funcR1ToR1FatShatter)
 	{
 		if (null == gvvi || null == funcR1ToR1FatShatter) return null;
@@ -113,26 +187,105 @@ public abstract class NormedRxToNormedRxFinite {
 	}
 
 	/**
-	 * Retrieve the Agnostic Covering Number Upper/Lower Bounds for the Function Class
+	 * Compute the Output Dimension
 	 * 
-	 * @return The Agnostic Covering Number Upper/Lower Bounds for the Function Class
+	 * @return The Output Dimension
+	 * 
+	 * @throws java.lang.Exception Thrown if the Output Dimension is Invalid
 	 */
 
-	public abstract org.drip.spaces.cover.FunctionClassCoveringBounds agnosticCoveringNumberBounds();
+	public int outputDimension()
+		throws java.lang.Exception
+	{
+		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsOutput = outputMetricVectorSpace();
+
+		if (!(gmvsOutput instanceof org.drip.spaces.metric.R1Continuous) && !(gmvsOutput instanceof
+			org.drip.spaces.metric.RdContinuousBanach))
+			throw new java.lang.Exception ("NormedRxToNormedRxFinite::dimension => Invalid Inputs");
+
+		return gmvsOutput instanceof org.drip.spaces.metric.R1Continuous ? 1 :
+			((org.drip.spaces.metric.RdContinuousBanach) gmvsOutput).dimension();
+	}
 
 	/**
-	 * Retrieve the Input Vector Space
+	 * Compute the Maurey Covering Number Upper Bounds for Operator Population Metric Norm
 	 * 
-	 * @return The Input Vector Space
+	 * @return The Maurey Operator Covering Number Upper Bounds Instance Corresponding to the Operator
+	 *  Population Metric Norm
 	 */
 
-	public abstract org.drip.spaces.metric.GeneralizedMetricVectorSpace inputMetricVectorSpace();
+	public org.drip.spaces.cover.MaureyOperatorCoveringBounds populationMetricCoveringBounds()
+	{
+		try {
+			return new org.drip.spaces.cover.MaureyOperatorCoveringBounds (_dblMaureyConstant,
+				outputDimension(), operatorPopulationMetricNorm());
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	/**
-	 * Retrieve the Output Vector Space
+	 * Compute the Maurey Covering Number Upper Bounds for Operator Population Supremum Norm
 	 * 
-	 * @return The Output Vector Space
+	 * @return The Maurey Operator Covering Number Upper Bounds Instance Corresponding to the Operator
+	 *  Population Supremum Norm
 	 */
 
-	public abstract org.drip.spaces.metric.GeneralizedMetricVectorSpace outputMetricVectorSpace();
+	public org.drip.spaces.cover.MaureyOperatorCoveringBounds populationSupremumCoveringBounds()
+	{
+		try {
+			return new org.drip.spaces.cover.MaureyOperatorCoveringBounds (_dblMaureyConstant,
+				outputDimension(), operatorPopulationSupremumNorm());
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Compute the Maurey Covering Number Upper Bounds for Operator Sample Metric Norm
+	 * 
+	 * @param gvvi The Validated Vector Space Instance
+	 * 
+	 * @return The Maurey Operator Covering Number Upper Bounds Instance Corresponding to the Operator Sample
+	 *  Metric Norm
+	 */
+
+	public org.drip.spaces.cover.MaureyOperatorCoveringBounds sampleMetricCoveringBounds (
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
+	{
+		try {
+			return new org.drip.spaces.cover.MaureyOperatorCoveringBounds (_dblMaureyConstant,
+				outputDimension(), operatorSampleMetricNorm (gvvi));
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Compute the Maurey Covering Number Upper Bounds for Operator Sample Supremum Norm
+	 * 
+	 * @param gvvi The Validated Vector Space Instance
+	 * 
+	 * @return The Maurey Operator Covering Number Upper Bounds Instance Corresponding to the Operator Sample
+	 *  Supremum Norm
+	 */
+
+	public org.drip.spaces.cover.MaureyOperatorCoveringBounds sampleSupremumCoveringBounds (
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
+	{
+		try {
+			return new org.drip.spaces.cover.MaureyOperatorCoveringBounds (_dblMaureyConstant,
+				outputDimension(), operatorSampleSupremumNorm (gvvi));
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }

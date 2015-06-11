@@ -45,16 +45,18 @@ public class NormedR1ToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 	/**
 	 * NormedR1ToNormedR1Finite Finite Function Class Constructor
 	 * 
+	 * @param dblMaureyConstant The Maurey Constant
 	 * @param aNormedR1ToNormedR1 Array of the Function Spaces
 	 * 
 	 * @throws java.lang.Exception Thrown if NormedR1ToNormedR1 Class Instance cannot be created
 	 */
 
 	public NormedR1ToNormedR1Finite (
+		final double dblMaureyConstant,
 		final org.drip.spaces.RxToR1.NormedR1ToNormedR1[] aNormedR1ToNormedR1)
 		throws java.lang.Exception
 	{
-		super (aNormedR1ToNormedR1);
+		super (dblMaureyConstant, aNormedR1ToNormedR1);
 
 		for (int i = 0; i < aNormedR1ToNormedR1.length; ++i) {
 			if (null == aNormedR1ToNormedR1[i])

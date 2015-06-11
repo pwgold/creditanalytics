@@ -29,39 +29,37 @@ package org.drip.spaces.tensor;
  */
 
 /**
- * AggregatedRdVector exposes the basic Properties of the R^d as a Sectional Super-position of R^1 Vector
- *  Spaces.
+ * RdAggregate exposes the basic Properties of the R^d as a Sectional Super-position of R^1 Vector Spaces.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class AggregatedRdVector implements org.drip.spaces.tensor.GeneralizedVectorRd {
-	private org.drip.spaces.tensor.GeneralizedVectorR1[] _aGUVS = null;
+public abstract class RdAggregate implements org.drip.spaces.tensor.RdGeneralizedVector {
+	private org.drip.spaces.tensor.R1GeneralizedVector[] _aR1GV = null;
 
-	protected AggregatedRdVector (
-		final org.drip.spaces.tensor.GeneralizedVectorR1[] aGUVS)
+	protected RdAggregate (
+		final org.drip.spaces.tensor.R1GeneralizedVector[] aR1GV)
 		throws java.lang.Exception
 	{
-		if (null == (_aGUVS = aGUVS))
-			throw new java.lang.Exception ("AggregatedRdVector ctr: Invalid Inputs");
+		if (null == (_aR1GV = aR1GV)) throw new java.lang.Exception ("RdAggregate ctr: Invalid Inputs");
 
-		int iDimension = _aGUVS.length;
+		int iDimension = _aR1GV.length;
 
-		if (0 == iDimension) throw new java.lang.Exception ("AggregatedRdVector ctr: Invalid Inputs");
+		if (0 == iDimension) throw new java.lang.Exception ("RdAggregate ctr: Invalid Inputs");
 
 		for (int i = 0; i < iDimension; ++i) {
-			if (null == _aGUVS[i]) throw new java.lang.Exception ("AggregatedRdVector ctr: Invalid Inputs");
+			if (null == _aR1GV[i]) throw new java.lang.Exception ("RdAggregate ctr: Invalid Inputs");
 		}
 	}
 
 	@Override public int dimension()
 	{
-		return _aGUVS.length;
+		return _aR1GV.length;
 	}
 
-	@Override public org.drip.spaces.tensor.GeneralizedVectorR1[] vectorSpaces()
+	@Override public org.drip.spaces.tensor.R1GeneralizedVector[] vectorSpaces()
 	{
-		return _aGUVS;
+		return _aR1GV;
 	}
 
 	@Override public boolean validateInstance (
@@ -69,49 +67,49 @@ public abstract class AggregatedRdVector implements org.drip.spaces.tensor.Gener
 	{
 		if (null == adblInstance) return false;
 
-		int iDimension = _aGUVS.length;
+		int iDimension = _aR1GV.length;
 
 		if (adblInstance.length != iDimension) return false;
 
 		for (int i = 0; i < iDimension; ++i) {
-			if (!_aGUVS[i].validateInstance (adblInstance[i])) return false;
+			if (!_aR1GV[i].validateInstance (adblInstance[i])) return false;
 		}
 
 		return true;
 	}
 
 	@Override public boolean match (
-		final org.drip.spaces.tensor.GeneralizedVector gvsOther)
+		final org.drip.spaces.tensor.GeneralizedVector gvOther)
 	{
-		if (null == gvsOther || !(gvsOther instanceof AggregatedRdVector)) return false;
+		if (null == gvOther || !(gvOther instanceof RdAggregate)) return false;
 
-		AggregatedRdVector gmvsOther = (AggregatedRdVector) gvsOther;
+		RdAggregate rdaOther = (RdAggregate) gvOther;
 
-		int iDimensionOther = gmvsOther.dimension();
+		int iDimensionOther = rdaOther.dimension();
 
 		if (iDimensionOther != dimension()) return false;
 
-		org.drip.spaces.tensor.GeneralizedVectorR1[] aGUVSOther = gmvsOther.vectorSpaces();
+		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GVOther = rdaOther.vectorSpaces();
 
 		for (int i = 0; i < iDimensionOther; ++i) {
-			if (!aGUVSOther[i].match (_aGUVS[i])) return false;
+			if (!aR1GVOther[i].match (_aR1GV[i])) return false;
 		}
 
 		return true;
 	}
 
 	@Override public boolean subset (
-		final org.drip.spaces.tensor.GeneralizedVector gvsOther)
+		final org.drip.spaces.tensor.GeneralizedVector gvOther)
 	{
-		if (null == gvsOther || !(gvsOther instanceof AggregatedRdVector)) return false;
+		if (null == gvOther || !(gvOther instanceof RdAggregate)) return false;
 
-		int iDimensionOther = _aGUVS.length;
-		AggregatedRdVector gmvsOther = (AggregatedRdVector) gvsOther;
+		int iDimensionOther = _aR1GV.length;
+		RdAggregate rdaOther = (RdAggregate) gvOther;
 
-		org.drip.spaces.tensor.GeneralizedVectorR1[] aGUVSOther = gmvsOther.vectorSpaces();
+		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GVOther = rdaOther.vectorSpaces();
 
 		for (int i = 0; i < iDimensionOther; ++i) {
-			if (!aGUVSOther[i].match (_aGUVS[i])) return false;
+			if (!aR1GVOther[i].match (_aR1GV[i])) return false;
 		}
 
 		return true;
@@ -119,10 +117,10 @@ public abstract class AggregatedRdVector implements org.drip.spaces.tensor.Gener
 
 	@Override public boolean isPredictorBounded()
 	{
-		int iDimension = _aGUVS.length;
+		int iDimension = _aR1GV.length;
 
 		for (int i = 0; i < iDimension; ++i) {
-			if (!_aGUVS[i].isPredictorBounded()) return false;
+			if (!_aR1GV[i].isPredictorBounded()) return false;
 		}
 
 		return true;

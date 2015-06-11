@@ -40,7 +40,7 @@ package org.drip.spaces.metric;
  */
 
 public interface RdNormed extends org.drip.spaces.metric.GeneralizedMetricVectorSpace,
-	org.drip.spaces.tensor.GeneralizedVectorRd {
+	org.drip.spaces.tensor.RdGeneralizedVector {
 
 	/**
 	 * Retrieve the Borel Sigma R^d Probability Measure

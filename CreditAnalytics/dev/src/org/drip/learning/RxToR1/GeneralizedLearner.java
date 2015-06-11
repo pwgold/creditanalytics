@@ -91,8 +91,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 	}
 
 	@Override public org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumEmpiricalLoss (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 	{
 		try {
 			return new org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator
@@ -107,7 +107,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 
 	@Override public double structuralLoss (
 		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 		throws java.lang.Exception
 	{
 		if (null == gvvi || !(gvvi instanceof org.drip.spaces.instance.ValidatedR1) &&
@@ -148,7 +148,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 
 	@Override public double structuralLoss (
 		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 		throws java.lang.Exception
 	{
 		if (null == gvvi || !(gvvi instanceof org.drip.spaces.instance.ValidatedRd) &&
@@ -188,7 +188,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 	}
 
 	@Override public org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumStructuralLoss (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX)
 	{
 		try {
 			return new org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator
@@ -203,8 +203,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 
 	@Override public double regularizedLoss (
 		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception
 	{
 		return empiricalLoss (funcLearnerR1ToR1, gvviX, gvviY) + structuralLoss (funcLearnerR1ToR1, gvviX);
@@ -212,16 +212,16 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 
 	@Override public double regularizedLoss (
 		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception
 	{
 		return empiricalLoss (funcLearnerRdToR1, gvviX, gvviY) + structuralLoss (funcLearnerRdToR1, gvviX);
 	}
 
 	@Override public org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumRegularizedLoss (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 	{
 		try {
 			return new org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator
@@ -236,8 +236,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 
 	@Override public org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumEmpiricalRisk (
 		final org.drip.measure.continuous.R1R1 distR1R1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 	{
 		try {
 			return new org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator
@@ -252,8 +252,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 
 	@Override public org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumEmpiricalRisk (
 		final org.drip.measure.continuous.RdR1 distRdR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 	{
 		try {
 			return new org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator
@@ -269,8 +269,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 	@Override public double structuralRisk (
 		final org.drip.measure.continuous.R1R1 distR1R1,
 		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception
 	{
 		if (null == distR1R1 || null == gvviX || null == gvviY || !(gvviX instanceof
@@ -315,8 +315,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 	@Override public double structuralRisk (
 		final org.drip.measure.continuous.RdR1 distRdR1,
 		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception
 	{
 		if (null == distRdR1 || null == gvviX || null == gvviY || !(gvviX instanceof
@@ -360,8 +360,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 
 	@Override public org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumStructuralRisk (
 		final org.drip.measure.continuous.R1R1 distR1R1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 	{
 		try {
 			return new org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator
@@ -376,8 +376,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 
 	@Override public org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumStructuralRisk (
 		final org.drip.measure.continuous.RdR1 distRdR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 	{
 		try {
 			return new org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator
@@ -393,8 +393,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 	@Override public double regularizedRisk (
 		final org.drip.measure.continuous.R1R1 distR1R1,
 		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception
 	{
 		return empiricalRisk (distR1R1, funcLearnerR1ToR1, gvviX, gvviY) + structuralRisk (distR1R1,
@@ -404,8 +404,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 	@Override public double regularizedRisk (
 		final org.drip.measure.continuous.RdR1 distRdR1,
 		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception
 	{
 		return empiricalRisk (distRdR1, funcLearnerRdToR1, gvviX, gvviY) + structuralRisk (distRdR1,
@@ -414,8 +414,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 
 	@Override public org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumRegularizedRisk (
 		final org.drip.measure.continuous.R1R1 distR1R1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 	{
 		try {
 			return new org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator
@@ -430,8 +430,8 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 
 	@Override public org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumRegularizedRisk (
 		final org.drip.measure.continuous.RdR1 distRdR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 	{
 		try {
 			return new org.drip.learning.RxToR1.EmpiricalPenaltySupremumEstimator
@@ -543,7 +543,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 	 */
 
 	public double genericCoveringProbabilityBound (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final int iSampleSize,
 		final double dblEpsilon,
 		final boolean bSupremum)
@@ -568,7 +568,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 	 */
 
 	public double genericCoveringSampleSize (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final double dblEpsilon,
 		final double dblDeviationUpperProbabilityBound,
 		final boolean bSupremum)
@@ -705,7 +705,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 	 */
 
 	public double regressorCoveringProbabilityBound (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final int iSampleSize,
 		final double dblEpsilon,
 		final boolean bSupremum)
@@ -747,7 +747,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.RxToR1.Emp
 	 */
 
 	public double regressorCoveringSampleSize (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final double dblEpsilon,
 		final double dblDeviationUpperProbabilityBound,
 		final boolean bSupremum)

@@ -40,9 +40,9 @@ package org.drip.spaces.instance;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ValidatedR1 implements org.drip.spaces.instance.GeneralizedValidatedVectorInstance {
+public class ValidatedR1 implements org.drip.spaces.instance.GeneralizedValidatedVector {
 	private double[] _adblInstance = null;
-	private org.drip.spaces.tensor.GeneralizedVectorR1 _gvR1 = null;
+	private org.drip.spaces.tensor.R1GeneralizedVector _gvR1 = null;
 
 	/**
 	 * ValidatedR1 Constructor
@@ -54,7 +54,7 @@ public class ValidatedR1 implements org.drip.spaces.instance.GeneralizedValidate
 	 */
 
 	public ValidatedR1 (
-		final org.drip.spaces.tensor.GeneralizedVectorR1 gvR1,
+		final org.drip.spaces.tensor.R1GeneralizedVector gvR1,
 		final double[] adblInstance)
 		throws java.lang.Exception
 	{
@@ -62,7 +62,7 @@ public class ValidatedR1 implements org.drip.spaces.instance.GeneralizedValidate
 			throw new java.lang.Exception ("ValidatedR1 ctr: Invalid Inputs");
 	}
 
-	@Override public org.drip.spaces.tensor.GeneralizedVectorR1 tensorSpaceType()
+	@Override public org.drip.spaces.tensor.R1GeneralizedVector tensorSpaceType()
 	{
 		return _gvR1;
 	}

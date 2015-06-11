@@ -29,8 +29,8 @@ package org.drip.spaces.instance;
  */
 
 /**
- * GeneralizedValidatedVectorInstance holds the Validated Vector Variate Instance Sequence and the
- * 	Corresponding Generalized Vector Space Type.
+ * ValidatedRdCombinatorial holds the Validated R^d R^d Vector Instance Sequence and the Corresponding
+ *  Generalized Vector Space Type.
  * 
  * The Reference we've used is:
  * 
@@ -40,21 +40,27 @@ package org.drip.spaces.instance;
  * @author Lakshmi Krishnamurthy
  */
 
-public interface GeneralizedValidatedVectorInstance {
+public class ValidatedRdCombinatorial extends org.drip.spaces.instance.ValidatedRd {
 
 	/**
-	 * Retrieve the Generalized Tensor Space Type
+	 * ValidatedRdCombinatorial Constructor
 	 * 
-	 * @return The Generalized Tensor Space Type
+	 * @param cvRd The Combinatorial R^d Tensor Space Type
+	 * @param aadblInstance The Data Instance
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract org.drip.spaces.tensor.GeneralizedVector tensorSpaceType();
+	public ValidatedRdCombinatorial (
+		final org.drip.spaces.tensor.RdCombinatorialVector cvRd,
+		final double[][] aadblInstance)
+		throws java.lang.Exception
+	{
+		super (cvRd, aadblInstance);
+	}
 
-	/**
-	 * Retrieve the Sample Size
-	 * 
-	 * @return The Sample Size
-	 */
-
-	public abstract int sampleSize();
+	@Override public org.drip.spaces.tensor.RdCombinatorialVector tensorSpaceType()
+	{
+		return (org.drip.spaces.tensor.RdCombinatorialVector) super.tensorSpaceType();
+	}
 }

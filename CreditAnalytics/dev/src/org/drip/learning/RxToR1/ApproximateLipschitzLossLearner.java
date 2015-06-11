@@ -94,7 +94,7 @@ public class ApproximateLipschitzLossLearner extends org.drip.learning.RxToR1.Li
 	}
 
 	@Override public double lossSampleCoveringNumber (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final double dblEpsilon,
 		final boolean bSupremum)
 		throws java.lang.Exception

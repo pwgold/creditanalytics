@@ -68,7 +68,7 @@ public class NormedR1ContinuousToR1Continuous extends org.drip.spaces.RxToR1.Nor
 
 		if (java.lang.Integer.MAX_VALUE == iPNorm) return populationSupremumMetricNorm();
 
-		org.drip.spaces.tensor.GeneralizedVectorR1 gvR1Input = inputMetricVectorSpace();
+		org.drip.spaces.tensor.R1GeneralizedVector gvR1Input = inputMetricVectorSpace();
 
 		org.drip.spaces.metric.R1Continuous r1Continuous = (org.drip.spaces.metric.R1Continuous) gvR1Input;
 

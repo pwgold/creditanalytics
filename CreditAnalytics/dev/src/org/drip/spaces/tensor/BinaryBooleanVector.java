@@ -34,7 +34,7 @@ package org.drip.spaces.tensor;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BinaryBooleanVector extends org.drip.spaces.tensor.CombinatorialVectorR1 {
+public class BinaryBooleanVector extends org.drip.spaces.tensor.R1CombinatorialVector {
 
 	/**
 	 * Binary/Boolean Space "UP"

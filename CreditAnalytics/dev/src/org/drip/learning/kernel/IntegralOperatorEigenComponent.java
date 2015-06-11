@@ -83,21 +83,20 @@ public class IntegralOperatorEigenComponent {
 				}
 			};
 
-			org.drip.spaces.metric.RdNormed rmnsInput = _eigenFunction.inputMetricVectorSpace();
+			org.drip.spaces.metric.RdNormed rdContinuousInput = _eigenFunction.inputMetricVectorSpace();
 
-			org.drip.spaces.metric.R1Normed runsOutput = _eigenFunction.outputMetricVectorSpace();
+			org.drip.spaces.metric.R1Normed r1ContinuousOutput = _eigenFunction.outputMetricVectorSpace();
 
-			org.drip.spaces.metric.R1Continuous cru =
-				org.drip.spaces.metric.R1Continuous.Standard (runsOutput.leftEdge(),
-					runsOutput.rightEdge(), runsOutput.borelSigmaMeasure(), 2);
+			org.drip.spaces.metric.R1Continuous r1Continuous = org.drip.spaces.metric.R1Continuous.Standard
+				(r1ContinuousOutput.leftEdge(), r1ContinuousOutput.rightEdge(),
+					r1ContinuousOutput.borelSigmaMeasure(), 2);
 
-			_rkhsFeatureMap = rmnsInput instanceof
-				org.drip.spaces.metric.RdCombinatorialBanach ? new
-					org.drip.spaces.RxToR1.NormedRdCombinatorialToR1Continuous
-						((org.drip.spaces.metric.RdCombinatorialBanach) rmnsInput, cru, rkhsFeatureMapRdToR1)
-							: new org.drip.spaces.RxToR1.NormedRdContinuousToR1Continuous
-								((org.drip.spaces.metric.RdContinuousBanach) rmnsInput, cru,
-									rkhsFeatureMapRdToR1);
+			_rkhsFeatureMap = rdContinuousInput instanceof org.drip.spaces.metric.RdCombinatorialBanach ? new
+				org.drip.spaces.RxToR1.NormedRdCombinatorialToR1Continuous
+					((org.drip.spaces.metric.RdCombinatorialBanach) rdContinuousInput, r1Continuous,
+						rkhsFeatureMapRdToR1) : new org.drip.spaces.RxToR1.NormedRdContinuousToR1Continuous
+							((org.drip.spaces.metric.RdContinuousBanach) rdContinuousInput, r1Continuous,
+								rkhsFeatureMapRdToR1);
 		}
 	}
 

@@ -67,7 +67,7 @@ public abstract class NormedRxToNormedRd {
 	 */
 
 	public abstract double[] sampleSupremumNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi);
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi);
 
 	/**
 	 * Retrieve the Sample Metric Norm Array
@@ -78,7 +78,7 @@ public abstract class NormedRxToNormedRd {
 	 */
 
 	public abstract double[] sampleMetricNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi);
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi);
 
 	/**
 	 * Retrieve the Sample Covering Number Array
@@ -90,7 +90,7 @@ public abstract class NormedRxToNormedRd {
 	 */
 
 	public double[] sampleCoveringNumber (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final double dblCover)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover) return null;
@@ -122,7 +122,7 @@ public abstract class NormedRxToNormedRd {
 	 */
 
 	public double[] sampleSupremumCoveringNumber (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final double dblCover)
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover) return null;

@@ -1,5 +1,5 @@
 
-package org.drip.spaces.functionclass;
+package org.drip.spaces.cover;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,8 +29,8 @@ package org.drip.spaces.functionclass;
  */
 
 /**
- * HilbertRxToSupremumRdFinite implements the Class F with f E f : Hilbert R^x -> Supremum R^d Space of
- *  Finite Functions.
+ * CarlStephaniNormedBounds contains the Normed Bounds that result from the Convolution of 2 Normed R^x ->
+ *  Normed R^x Function Spaces.
  * 
  *  The References are:
  *  
@@ -46,26 +46,59 @@ package org.drip.spaces.functionclass;
  * @author Lakshmi Krishnamurthy
  */
 
-public class HilbertRxToSupremumRdFinite extends org.drip.spaces.functionclass.NormedRxToNormedRdFinite {
+public class CarlStephaniNormedBounds {
+	private double _dblEntropyBoundNormA = java.lang.Double.NaN;
+	private double _dblEntropyBoundNormB = java.lang.Double.NaN;
 
 	/**
-	 * HilbertRxToSupremumRdFinite Constructor
+	 * CarlStephaniNormedBounds Constructor
 	 * 
-	 * @param dblMaureyConstant Maurey Constant
-	 * @param aHilbertRxToSupremumRd Array of the Hilbert R^x -> Supremum R^d Spaces
-	 *  
+	 * @param dblEntropyBoundNormA The Entropy Bound using the Function Class Norm A
+	 * @param dblEntropyBoundNormB The Entropy Bound using the Function Class Norm B
+	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public HilbertRxToSupremumRdFinite (
-		final double dblMaureyConstant,
-		final org.drip.spaces.RxToRd.NormedRxToNormedRd[] aHilbertRxToSupremumRd)
+	public CarlStephaniNormedBounds (
+		final double dblEntropyBoundNormA,
+		final double dblEntropyBoundNormB)
 		throws java.lang.Exception
 	{
-		super (dblMaureyConstant, aHilbertRxToSupremumRd);
+		if (!org.drip.quant.common.NumberUtil.IsValid (_dblEntropyBoundNormA = dblEntropyBoundNormA) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_dblEntropyBoundNormB = dblEntropyBoundNormB))
+			throw new java.lang.Exception ("CarlStephaniNormedBounds Constructor => Invalid Inputs");
+	}
 
-		if (2 != aHilbertRxToSupremumRd[0].inputMetricVectorSpace().pNorm() || java.lang.Integer.MAX_VALUE !=
-			aHilbertRxToSupremumRd[0].outputMetricVectorSpace().pNorm())
-			throw new java.lang.Exception ("HilbertRxToSupremumRdFinite ctr: Invalid Inputs");
+	/**
+	 * Retrieve the Entropy Bound using the Function Class Norm A
+	 * 
+	 * @return The Entropy Bound using the Function Class Norm A
+	 */
+
+	public double entropyBoundNormA()
+	{
+		return _dblEntropyBoundNormA;
+	}
+
+	/**
+	 * Retrieve the Entropy Bound using the Function Class Norm B
+	 * 
+	 * @return The Entropy Bound using the Function Class Norm B
+	 */
+
+	public double entropyBoundNormB()
+	{
+		return _dblEntropyBoundNormB;
+	}
+
+	/**
+	 * Retrieve the Minimum Upper Entropy Bound
+	 * 
+	 * @return The Minimum Upper Entropy Bound
+	 */
+
+	public double minimumUpperBound()
+	{
+		return _dblEntropyBoundNormA < _dblEntropyBoundNormB ? _dblEntropyBoundNormA : _dblEntropyBoundNormB;
 	}
 }

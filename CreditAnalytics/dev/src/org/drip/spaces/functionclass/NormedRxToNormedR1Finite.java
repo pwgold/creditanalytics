@@ -44,9 +44,12 @@ public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 	private org.drip.spaces.RxToR1.NormedRxToNormedR1[] _aNormedRxToNormedR1 = null;
 
 	protected NormedRxToNormedR1Finite (
+		final double dblMaureyConstant,
 		final org.drip.spaces.RxToR1.NormedRxToNormedR1[] aNormedRxToNormedR1)
 		throws java.lang.Exception
 	{
+		super (dblMaureyConstant);
+
 		int iClassSize = null == (_aNormedRxToNormedR1 = aNormedRxToNormedR1) ? 0 :
 			_aNormedRxToNormedR1.length;
 
@@ -180,7 +183,7 @@ public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 	 */
 
 	public double sampleCoveringNumber (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final double dblCover)
 		throws java.lang.Exception
 	{
@@ -223,7 +226,7 @@ public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 	 */
 
 	public double sampleSupremumCoveringNumber (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final double dblCover)
 		throws java.lang.Exception
 	{
@@ -255,15 +258,7 @@ public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 		return dblSampleSupremumCoveringNumber;
 	}
 
-	/**
-	 * Compute the Operator Population Metric Norm
-	 * 
-	 * @return The Operator Population Metric Norm
-	 * 
-	 * @throws java.lang.Exception Thrown if the Operator Population Metric Norm cannot be computed
-	 */
-
-	public double operatorPopulationMetricNorm()
+	@Override public double operatorPopulationMetricNorm()
 		throws java.lang.Exception
 	{
 		if (null == _aNormedRxToNormedR1)
@@ -294,15 +289,7 @@ public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 		return dblOperatorPopulationMetricNorm;
 	}
 
-	/**
-	 * Compute the Operator Population Supremum Norm
-	 * 
-	 * @return The Operator Population Supremum Norm
-	 * 
-	 * @throws java.lang.Exception Thrown if the Operator Population Supremum Norm cannot be computed
-	 */
-
-	public double operatorPopulationSupremumNorm()
+	@Override public double operatorPopulationSupremumNorm()
 		throws java.lang.Exception
 	{
 		if (null == _aNormedRxToNormedR1)
@@ -333,18 +320,8 @@ public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 		return dblOperatorPopulationSupremumNorm;
 	}
 
-	/**
-	 * Compute the Operator Sample Metric Norm
-	 * 
-	 * @param gvvi The Validated Vector Space Instance
-	 * 
-	 * @return The Operator Sample Metric Norm
-	 * 
-	 * @throws java.lang.Exception Thrown if the Operator Sample Metric Norm cannot be computed
-	 */
-
-	public double operatorSampleMetricNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
+	@Override public double operatorSampleMetricNorm (
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 		throws java.lang.Exception
 	{
 		if (null == _aNormedRxToNormedR1)
@@ -375,18 +352,8 @@ public class NormedRxToNormedR1Finite extends org.drip.spaces.functionclass.Norm
 		return dblOperatorSampleMetricNorm;
 	}
 
-	/**
-	 * Compute the Operator Sample Supremum Norm
-	 * 
-	 * @param gvvi The Validated Vector Space Instance
-	 * 
-	 * @return The Operator Sample Supremum Norm
-	 * 
-	 * @throws java.lang.Exception Thrown if the Operator Sample Supremum Norm cannot be computed
-	 */
-
-	public double operatorSampleSupremumNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
+	@Override public double operatorSampleSupremumNorm (
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 		throws java.lang.Exception
 	{
 		if (null == _aNormedRxToNormedR1)

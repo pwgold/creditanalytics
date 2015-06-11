@@ -51,7 +51,7 @@ public class RdCombinatorialHilbert extends org.drip.spaces.metric.RdCombinatori
 	 */
 
 	public RdCombinatorialHilbert (
-		final org.drip.spaces.tensor.CombinatorialVectorR1[] aR1CV,
+		final org.drip.spaces.tensor.R1CombinatorialVector[] aR1CV,
 		final org.drip.measure.continuous.Rd distRd)
 		throws java.lang.Exception
 	{

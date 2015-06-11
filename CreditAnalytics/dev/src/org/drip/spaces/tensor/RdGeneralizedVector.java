@@ -1,5 +1,5 @@
 
-package org.drip.spaces.instance;
+package org.drip.spaces.tensor;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,38 +29,54 @@ package org.drip.spaces.instance;
  */
 
 /**
- * ValidatedContinuousRd holds the Continuous R^d Vector Instance Sequence and the Corresponding Generalized
- *  Vector Space Type.
- * 
- * The Reference we've used is:
- * 
- * 	- Carl, B., and I. Stephani (1990): Entropy, Compactness, and Approximation of Operators, Cambridge
- * 		University Press, Cambridge UK.
+ * RdGeneralizedVector exposes the basic Properties of the Generalized R^d Vector Space.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ValidatedContinuousRd extends org.drip.spaces.instance.ValidatedRd {
+public interface RdGeneralizedVector extends org.drip.spaces.tensor.GeneralizedVector
+{
 
 	/**
-	 * ValidatedContinuousRd Constructor
-	 * 
-	 * @param cvRd The Continuous R^d Tensor Space Type
-	 * @param aadblInstance The Data Instance
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * Retrieve the Dimension of the Space
+	 *  
+	 * @return The Dimension of the Space
 	 */
 
-	public ValidatedContinuousRd (
-		final org.drip.spaces.tensor.ContinuousVectorRd cvRd,
-		final double[][] aadblInstance)
-		throws java.lang.Exception
-	{
-		super (cvRd, aadblInstance);
-	}
+	public abstract int dimension();
 
-	@Override public org.drip.spaces.tensor.ContinuousVectorRd tensorSpaceType()
-	{
-		return (org.drip.spaces.tensor.ContinuousVectorRd) super.tensorSpaceType();
-	}
+	/**
+	 * Retrieve the Array of the Underlying R^1 Vector Spaces
+	 * 
+	 * @return The Array of the Underlying R^1 Vector Spaces
+	 */
+
+	public abstract org.drip.spaces.tensor.R1GeneralizedVector[] vectorSpaces();
+
+	/**
+	 * Validate the Input Instance
+	 * 
+	 * @param adblInstance The Input Instance
+	 * 
+	 * @return TRUE => Instance is a Valid Entry in the Space
+	 */
+
+	public abstract boolean validateInstance (
+		final double[] adblInstance);
+
+	/**
+	 * Retrieve the Array of the Variate Left Edges
+	 * 
+	 * @return The Array of the Variate Left Edges
+	 */
+
+	public abstract double[] leftDimensionEdge();
+
+	/**
+	 * Retrieve the Array of the Variate Right Edges
+	 * 
+	 * @return The Array of the Variate Right Edges
+	 */
+
+	public abstract double[] rightDimensionEdge();
 }

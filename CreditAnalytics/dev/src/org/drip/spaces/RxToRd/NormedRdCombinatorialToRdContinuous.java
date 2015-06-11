@@ -72,7 +72,7 @@ public class NormedRdCombinatorialToRdContinuous extends org.drip.spaces.RxToRd.
 
 		org.drip.measure.continuous.Rd distRd = rdCombinatorialInput.borelSigmaMeasure();
 
-		org.drip.spaces.tensor.CombinatorialIteratorRd ciRd = rdCombinatorialInput.iterator();
+		org.drip.spaces.tensor.RdCombinatorialIterator ciRd = rdCombinatorialInput.iterator();
 
 		org.drip.function.definition.RdToRd funcRdToRd = function();
 

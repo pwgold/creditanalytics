@@ -29,37 +29,37 @@ package org.drip.spaces.tensor;
  */
 
 /**
- * CombinatorialIteratorRd contains the Functionality to iterate through an R^d Combinatorial Space.
+ * RdCombinatorialIterator contains the Functionality to iterate through an R^d Combinatorial Space.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class CombinatorialIteratorRd extends org.drip.analytics.support.MultidimensionalInterator {
-	private org.drip.spaces.tensor.CombinatorialVectorR1[] _aCVR1 = null;
+public class RdCombinatorialIterator extends org.drip.analytics.support.MultidimensionalInterator {
+	private org.drip.spaces.tensor.R1CombinatorialVector[] _aR1CV = null;
 
 	/**
-	 * Retrieve the CombinatorialIteratorRd Instance associated with the Underlying Vector Space
+	 * Retrieve the RdCombinatorialIterator Instance associated with the Underlying Vector Space
 	 * 
-	 * @param aCVR1 Array of the Combinatorial R^1 Vectors
+	 * @param aR1CV Array of R^1 Combinatorial Vectors
 	 * 
-	 * @return The CombinatorialIteratorRd Instance associated with the Underlying Vector Space
+	 * @return The RdCombinatorialIterator Instance associated with the Underlying Vector Space
 	 */
 
-	public static final CombinatorialIteratorRd Standard (
-		final org.drip.spaces.tensor.CombinatorialVectorR1[] aCVR1)
+	public static final RdCombinatorialIterator Standard (
+		final org.drip.spaces.tensor.R1CombinatorialVector[] aR1CV)
 	{
-		if (null == aCVR1) return null;
+		if (null == aR1CV) return null;
 
-		int iDimension = aCVR1.length;
+		int iDimension = aR1CV.length;
 		int[] aiMax = new int[iDimension];
 
 		if (0 == iDimension) return null;
 
 		for (int i = 0; i < iDimension; ++i)
-			aiMax[i] = (int) aCVR1[i].cardinality().number();
+			aiMax[i] = (int) aR1CV[i].cardinality().number();
 
 		try {
-			return new CombinatorialIteratorRd (aCVR1, aiMax);
+			return new RdCombinatorialIterator (aR1CV, aiMax);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -68,34 +68,34 @@ public class CombinatorialIteratorRd extends org.drip.analytics.support.Multidim
 	}
 
 	/**
-	 * CombinatorialIteratorRd Constructor
+	 * RdCombinatorialIterator Constructor
 	 * 
-	 * @param aCVR1 Array of the Combinatorial R^1 Vectors
+	 * @param aR1CV Array of the R^1 Combinatorial Vectors
 	 * @param aiMax The Array of Dimension Maximum
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CombinatorialIteratorRd (
-		final org.drip.spaces.tensor.CombinatorialVectorR1[] aCVR1,
+	public RdCombinatorialIterator (
+		final org.drip.spaces.tensor.R1CombinatorialVector[] aR1CV,
 		final int[] aiMax)
 		throws java.lang.Exception
 	{
 		super (aiMax, false);
 
-		if (null == (_aCVR1 = aCVR1) || _aCVR1.length != aiMax.length)
-			throw new java.lang.Exception ("CombinatorialIteratorRd ctr: Invalid Inputs");
+		if (null == (_aR1CV = aR1CV) || _aR1CV.length != aiMax.length)
+			throw new java.lang.Exception ("RdCombinatorialIterator ctr: Invalid Inputs");
 	}
 
 	/**
-	 * Retrieve the Array of the Combinatorial R^1 Vectors
+	 * Retrieve the Array of the R^1 Combinatorial Vectors
 	 * 
-	 * @return The Array of the Combinatorial R^1 Vectors
+	 * @return The Array of the R^1 Combinatorial Vectors
 	 */
 
-	public org.drip.spaces.tensor.CombinatorialVectorR1[] cvR1()
+	public org.drip.spaces.tensor.R1CombinatorialVector[] r1()
 	{
-		return _aCVR1;
+		return _aR1CV;
 	}
 
 	/**
@@ -111,15 +111,13 @@ public class CombinatorialIteratorRd extends org.drip.analytics.support.Multidim
 	{
 		if (null == aiIndex) return null;
 
-		org.drip.spaces.tensor.CombinatorialVectorR1[] _aCVR1 = cvR1();
-
-		int iDimension = _aCVR1.length;
+		int iDimension = _aR1CV.length;
 		double[] adblVariate = new double[iDimension];
 
 		if (iDimension != aiIndex.length) return null;
 
 		for (int i = 0; i < iDimension; ++i)
-			adblVariate[i] = _aCVR1[i].elementSpace().get (aiIndex[i]);
+			adblVariate[i] = _aR1CV[i].elementSpace().get (aiIndex[i]);
 
 		return adblVariate;
 	}

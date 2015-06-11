@@ -53,7 +53,7 @@ public class RdContinuousBall extends org.drip.spaces.metric.RdContinuousBanach 
 	 */
 
 	public static final RdContinuousBall ClosedUnit (
-		final org.drip.spaces.tensor.ContinuousVectorR1[] aR1CV,
+		final org.drip.spaces.tensor.R1ContinuousVector[] aR1CV,
 		final org.drip.measure.continuous.Rd distRd,
 		final int iPNorm)
 	{
@@ -78,7 +78,7 @@ public class RdContinuousBall extends org.drip.spaces.metric.RdContinuousBanach 
 	 */
 
 	public RdContinuousBall (
-		final org.drip.spaces.tensor.ContinuousVectorR1[] aR1CV,
+		final org.drip.spaces.tensor.R1ContinuousVector[] aR1CV,
 		final org.drip.measure.continuous.Rd distRd,
 		final int iPNorm,
 		final double dblNormRadius)

@@ -40,7 +40,7 @@ package org.drip.spaces.metric;
  */
 
 public interface R1Normed extends org.drip.spaces.metric.GeneralizedMetricVectorSpace,
-	org.drip.spaces.tensor.GeneralizedVectorR1 {
+	org.drip.spaces.tensor.R1GeneralizedVector {
 
 	/**
 	 * Retrieve the Borel Sigma R^1 Probability Measure

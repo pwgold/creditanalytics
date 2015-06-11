@@ -82,7 +82,7 @@ public interface EmpiricalLearningMetricEstimator {
 	 */
 
 	public abstract double lossSampleCoveringNumber (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final double dblEpsilon,
 		final boolean bSupremum)
 		throws java.lang.Exception;
@@ -101,8 +101,8 @@ public interface EmpiricalLearningMetricEstimator {
 
 	public abstract double empiricalLoss (
 		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception;
 
 	/**
@@ -119,8 +119,8 @@ public interface EmpiricalLearningMetricEstimator {
 
 	public abstract double empiricalLoss (
 		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception;
 
 	/**
@@ -135,8 +135,8 @@ public interface EmpiricalLearningMetricEstimator {
 	 */
 
 	public abstract org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumEmpiricalLoss (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception;
 
 	/**
@@ -152,7 +152,7 @@ public interface EmpiricalLearningMetricEstimator {
 
 	public abstract double structuralLoss (
 		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 		throws java.lang.Exception;
 
 	/**
@@ -168,7 +168,7 @@ public interface EmpiricalLearningMetricEstimator {
 
 	public abstract double structuralLoss (
 		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 		throws java.lang.Exception;
 
 	/**
@@ -182,7 +182,7 @@ public interface EmpiricalLearningMetricEstimator {
 	 */
 
 	public abstract org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumStructuralLoss (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX)
 		throws java.lang.Exception;
 
 	/**
@@ -199,8 +199,8 @@ public interface EmpiricalLearningMetricEstimator {
 
 	public abstract double regularizedLoss (
 		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception;
 
 	/**
@@ -217,8 +217,8 @@ public interface EmpiricalLearningMetricEstimator {
 
 	public abstract double regularizedLoss (
 		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception;
 
 	/**
@@ -233,8 +233,8 @@ public interface EmpiricalLearningMetricEstimator {
 	 */
 
 	public abstract org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumRegularizedLoss (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception;
 
 	/**
@@ -253,8 +253,8 @@ public interface EmpiricalLearningMetricEstimator {
 	public abstract double empiricalRisk (
 		final org.drip.measure.continuous.R1R1 distR1R1,
 		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception;
 
 	/**
@@ -273,8 +273,8 @@ public interface EmpiricalLearningMetricEstimator {
 	public abstract double empiricalRisk (
 		final org.drip.measure.continuous.RdR1 distRdR1,
 		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception;
 
 	/**
@@ -291,8 +291,8 @@ public interface EmpiricalLearningMetricEstimator {
 
 	public abstract org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumEmpiricalRisk (
 		final org.drip.measure.continuous.R1R1 distR1R1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception;
 
 	/**
@@ -309,8 +309,8 @@ public interface EmpiricalLearningMetricEstimator {
 
 	public abstract org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumEmpiricalRisk (
 		final org.drip.measure.continuous.RdR1 distRdR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception;
 
 	/**
@@ -329,8 +329,8 @@ public interface EmpiricalLearningMetricEstimator {
 	public abstract double structuralRisk (
 		final org.drip.measure.continuous.R1R1 distR1R1,
 		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception;
 
 	/**
@@ -349,8 +349,8 @@ public interface EmpiricalLearningMetricEstimator {
 	public abstract double structuralRisk (
 		final org.drip.measure.continuous.RdR1 distRdR1,
 		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception;
 
 	/**
@@ -367,8 +367,8 @@ public interface EmpiricalLearningMetricEstimator {
 
 	public abstract org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumStructuralRisk (
 		final org.drip.measure.continuous.R1R1 distR1R1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception;
 
 	/**
@@ -385,8 +385,8 @@ public interface EmpiricalLearningMetricEstimator {
 
 	public abstract org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumStructuralRisk (
 		final org.drip.measure.continuous.RdR1 distRdR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception;
 
 	/**
@@ -405,8 +405,8 @@ public interface EmpiricalLearningMetricEstimator {
 	public abstract double regularizedRisk (
 		final org.drip.measure.continuous.R1R1 distR1R1,
 		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception;
 
 	/**
@@ -425,8 +425,8 @@ public interface EmpiricalLearningMetricEstimator {
 	public abstract double regularizedRisk (
 		final org.drip.measure.continuous.RdR1 distRdR1,
 		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception;
 
 	/**
@@ -443,8 +443,8 @@ public interface EmpiricalLearningMetricEstimator {
 
 	public abstract org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumRegularizedRisk (
 		final org.drip.measure.continuous.R1R1 distR1R1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception;
 
 	/**
@@ -461,7 +461,7 @@ public interface EmpiricalLearningMetricEstimator {
 
 	public abstract org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumRegularizedRisk (
 		final org.drip.measure.continuous.RdR1 distRdR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception;
 }

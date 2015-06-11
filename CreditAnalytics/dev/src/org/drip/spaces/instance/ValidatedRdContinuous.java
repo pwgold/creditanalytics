@@ -29,7 +29,7 @@ package org.drip.spaces.instance;
  */
 
 /**
- * ValidatedContinuousR1 holds the Validated Continuous R^1 Vector Instance Sequence and the Corresponding
+ * ValidatedRdContinuous holds the Validated R^d Continuous Vector Instance Sequence and the Corresponding
  *  Generalized Vector Space Type.
  * 
  * The Reference we've used is:
@@ -40,27 +40,27 @@ package org.drip.spaces.instance;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ValidatedContinuousR1 extends org.drip.spaces.instance.ValidatedR1 {
+public class ValidatedRdContinuous extends org.drip.spaces.instance.ValidatedRd {
 
 	/**
-	 * ValidatedContinuousR1 Constructor
+	 * ValidatedRdContinuous Constructor
 	 * 
-	 * @param cvR1 The Continuous R^1 Tensor Space Type
-	 * @param adblInstance The Data Instance
+	 * @param cvRd The Continuous R^d Tensor Space Type
+	 * @param aadblInstance The Data Instance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public ValidatedContinuousR1 (
-		final org.drip.spaces.tensor.ContinuousVectorR1 cvR1,
-		final double[] adblInstance)
+	public ValidatedRdContinuous (
+		final org.drip.spaces.tensor.RdContinuousVector cvRd,
+		final double[][] aadblInstance)
 		throws java.lang.Exception
 	{
-		super (cvR1, adblInstance);
+		super (cvRd, aadblInstance);
 	}
 
-	@Override public org.drip.spaces.tensor.ContinuousVectorR1 tensorSpaceType()
+	@Override public org.drip.spaces.tensor.RdContinuousVector tensorSpaceType()
 	{
-		return (org.drip.spaces.tensor.ContinuousVectorR1) super.tensorSpaceType();
+		return (org.drip.spaces.tensor.RdContinuousVector) super.tensorSpaceType();
 	}
 }

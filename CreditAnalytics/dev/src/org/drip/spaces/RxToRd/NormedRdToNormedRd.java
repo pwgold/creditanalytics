@@ -101,7 +101,7 @@ public abstract class NormedRdToNormedRd extends org.drip.spaces.RxToRd.NormedRx
 	}
 
 	@Override public double[] sampleSupremumNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 	{
 		if (null == _funcRdToRd || null == gvvi || !gvvi.tensorSpaceType().match (_rdInput) || ! (gvvi
 			instanceof org.drip.spaces.instance.ValidatedRd))
@@ -140,7 +140,7 @@ public abstract class NormedRdToNormedRd extends org.drip.spaces.RxToRd.NormedRx
 	}
 
 	@Override public double[] sampleMetricNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 	{
 		int iPNorm = outputMetricVectorSpace().pNorm();
 

@@ -45,24 +45,24 @@ package org.drip.learning.kernel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MercerKernel extends org.drip.learning.kernel.SymmetricRxToNormedR1Kernel {
-	private org.drip.learning.kernel.IntegralOperatorEigenContainer _ioeoEigenComp = null;
+public class MercerKernel extends org.drip.learning.kernel.SymmetricRdToNormedR1Kernel {
+	private org.drip.learning.kernel.IntegralOperatorEigenContainer _ioeoContainer = null;
 
 	/**
 	 * MercerKernel Constructor
 	 * 
-	 * @param ioeoEigenComp The Suite of Eigen Components
+	 * @param ioeoContainer The Container of the Eigen Components
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public MercerKernel (
-		final org.drip.learning.kernel.IntegralOperatorEigenContainer ioeoEigenComp)
+		final org.drip.learning.kernel.IntegralOperatorEigenContainer ioeoContainer)
 		throws java.lang.Exception
 	{
-		super (ioeoEigenComp.input(), ioeoEigenComp.output());
+		super (ioeoContainer.inputMetricVectorSpace(), ioeoContainer.outputMetricVectorSpace());
 
-		_ioeoEigenComp = ioeoEigenComp;
+		_ioeoContainer = ioeoContainer;
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class MercerKernel extends org.drip.learning.kernel.SymmetricRxToNormedR1
 
 	public org.drip.learning.kernel.IntegralOperatorEigenContainer eigenComponentSuite()
 	{
-		return _ioeoEigenComp;
+		return _ioeoContainer;
 	}
 
 	@Override public double evaluate (
@@ -82,7 +82,7 @@ public class MercerKernel extends org.drip.learning.kernel.SymmetricRxToNormedR1
 		throws java.lang.Exception
 	{
 		org.drip.learning.kernel.IntegralOperatorEigenComponent[] aEigenComp =
-			_ioeoEigenComp.eigenComponents();
+			_ioeoContainer.eigenComponents();
 
 		double dblValue = 0.;
 		int iNumEigenComp = aEigenComp.length;

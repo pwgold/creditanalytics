@@ -1,5 +1,5 @@
 
-package org.drip.spaces.tensor;
+package org.drip.spaces.instance;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,21 +29,32 @@ package org.drip.spaces.tensor;
  */
 
 /**
- * GeneralizedVectorR1 exposes the basic Properties of the General R^1 Vector Space.
+ * ValidatedVectorInstance holds the Validated Vector Variate Instance Sequence and the Corresponding
+ *  Generalized Vector Space Type.
+ * 
+ * The Reference we've used is:
+ * 
+ * 	- Carl, B., and I. Stephani (1990): Entropy, Compactness, and Approximation of Operators, Cambridge
+ * 		University Press, Cambridge UK.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface GeneralizedVectorR1 extends org.drip.spaces.tensor.GeneralizedVector {
+public interface GeneralizedValidatedVector {
 
 	/**
-	 * Validate the Input Instance Ordinate
+	 * Retrieve the Generalized Tensor Space Type
 	 * 
-	 * @param dblInstance The Input Instance Ordinate
-	 * 
-	 * @return TRUE => Instance Ordinate is a Valid Entry in the Space
+	 * @return The Generalized Tensor Space Type
 	 */
 
-	public abstract boolean validateInstance (
-		final double dblInstance);
+	public abstract org.drip.spaces.tensor.GeneralizedVector tensorSpaceType();
+
+	/**
+	 * Retrieve the Sample Size
+	 * 
+	 * @return The Sample Size
+	 */
+
+	public abstract int sampleSize();
 }

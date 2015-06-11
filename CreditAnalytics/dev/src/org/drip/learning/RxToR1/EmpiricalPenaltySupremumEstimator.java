@@ -80,7 +80,7 @@ public class EmpiricalPenaltySupremumEstimator extends org.drip.sequence.functio
 	private org.drip.spaces.RxToR1.NormedR1ToNormedR1[] _aR1ToR1 = null;
 	private org.drip.spaces.RxToR1.NormedRdToNormedR1[] _aRdToR1 = null;
 	private org.drip.learning.RxToR1.EmpiricalLearningMetricEstimator _elme = null;
-	private org.drip.spaces.instance.GeneralizedValidatedVectorInstance _gvviY = null;
+	private org.drip.spaces.instance.GeneralizedValidatedVector _gvviY = null;
 
 	/**
 	 * EmpiricalPenaltySupremumEstimator Constructor
@@ -97,7 +97,7 @@ public class EmpiricalPenaltySupremumEstimator extends org.drip.sequence.functio
 	public EmpiricalPenaltySupremumEstimator (
 		final int iSupremumPenaltyLossMode,
 		final org.drip.learning.RxToR1.EmpiricalLearningMetricEstimator elme,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY,
 		final org.drip.measure.continuous.R1R1 distR1R1,
 		final org.drip.measure.continuous.RdR1 distRdR1)
 		throws java.lang.Exception
@@ -158,7 +158,7 @@ public class EmpiricalPenaltySupremumEstimator extends org.drip.sequence.functio
 	 * @return The Validated Outcome Instance
 	 */
 
-	public org.drip.spaces.instance.GeneralizedValidatedVectorInstance empiricalOutcomes()
+	public org.drip.spaces.instance.GeneralizedValidatedVector empiricalOutcomes()
 	{
 		return _gvviY;
 	}
@@ -172,7 +172,7 @@ public class EmpiricalPenaltySupremumEstimator extends org.drip.sequence.functio
 	 */
 
 	public org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumR1 (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX)
 	{
 		if (null == _aR1ToR1) return null;
 
@@ -231,7 +231,7 @@ public class EmpiricalPenaltySupremumEstimator extends org.drip.sequence.functio
 	 */
 
 	public org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremumRd (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX)
 	{
 		if (null == _aRdToR1) return null;
 
@@ -290,7 +290,7 @@ public class EmpiricalPenaltySupremumEstimator extends org.drip.sequence.functio
 	 */
 
 	public org.drip.learning.RxToR1.EmpiricalPenaltySupremum supremum (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX)
 	{
 		org.drip.learning.RxToR1.EmpiricalPenaltySupremum epsR1 = supremumR1 (gvviX);
 
@@ -312,7 +312,7 @@ public class EmpiricalPenaltySupremumEstimator extends org.drip.sequence.functio
 
 		try {
 			eps = supremumR1 (new org.drip.spaces.instance.ValidatedR1
-				(org.drip.spaces.tensor.ContinuousVectorR1.Standard(), adblX));
+				(org.drip.spaces.tensor.R1ContinuousVector.Standard(), adblX));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 
@@ -337,7 +337,7 @@ public class EmpiricalPenaltySupremumEstimator extends org.drip.sequence.functio
 
 		try {
 			eps = supremumRd (new org.drip.spaces.instance.ValidatedRd
-				(org.drip.spaces.tensor.ContinuousVectorRd.Standard (aadblX.length), aadblX));
+				(org.drip.spaces.tensor.RdContinuousVector.Standard (aadblX.length), aadblX));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 
@@ -352,7 +352,7 @@ public class EmpiricalPenaltySupremumEstimator extends org.drip.sequence.functio
 		throws java.lang.Exception
 	{
 		org.drip.learning.RxToR1.EmpiricalPenaltySupremum eps = supremumR1 (new
-			org.drip.spaces.instance.ValidatedR1 (org.drip.spaces.tensor.ContinuousVectorR1.Standard(),
+			org.drip.spaces.instance.ValidatedR1 (org.drip.spaces.tensor.R1ContinuousVector.Standard(),
 				adblX));
 
 		if (null == eps)
@@ -379,7 +379,7 @@ public class EmpiricalPenaltySupremumEstimator extends org.drip.sequence.functio
 			throw new java.lang.Exception ("EmpiricalPenaltySupremumEstimator::evaluate => Invalid Inputs");
 
 		org.drip.learning.RxToR1.EmpiricalPenaltySupremum eps = supremumRd (new
-			org.drip.spaces.instance.ValidatedRd (org.drip.spaces.tensor.ContinuousVectorRd.Standard
+			org.drip.spaces.instance.ValidatedRd (org.drip.spaces.tensor.RdContinuousVector.Standard
 				(aadblX.length), aadblX));
 
 		if (null == eps)

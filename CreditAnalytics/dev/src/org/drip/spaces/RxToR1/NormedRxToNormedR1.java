@@ -69,7 +69,7 @@ public abstract class NormedRxToNormedR1 {
 	 */
 
 	public abstract double sampleSupremumNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 		throws java.lang.Exception;
 
 	/**
@@ -83,7 +83,7 @@ public abstract class NormedRxToNormedR1 {
 	 */
 
 	public abstract double sampleMetricNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 		throws java.lang.Exception;
 
 	/**
@@ -98,7 +98,7 @@ public abstract class NormedRxToNormedR1 {
 	 */
 
 	public double sampleCoveringNumber (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final double dblCover)
 		throws java.lang.Exception
 	{
@@ -120,7 +120,7 @@ public abstract class NormedRxToNormedR1 {
 	 */
 
 	public double sampleSupremumCoveringNumber (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final double dblCover)
 		throws java.lang.Exception
 	{

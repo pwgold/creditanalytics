@@ -29,29 +29,29 @@ package org.drip.spaces.tensor;
  */
 
 /**
- * CombinatorialVectorR1 exposes the normed/non-normed Discrete Spaces with R^1 Combinatorial Vector
+ * R1CombinatorialVector exposes the normed/non-normed Discrete Spaces with R^1 Combinatorial Vector
  *  Elements.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class CombinatorialVectorR1 implements org.drip.spaces.tensor.GeneralizedVectorR1 {
+public class R1CombinatorialVector implements org.drip.spaces.tensor.R1GeneralizedVector {
 	private java.util.List<java.lang.Double> _lsElementSpace = new java.util.ArrayList<java.lang.Double>();
 
 	/**
-	 * CombinatorialVectorR1 Constructor
+	 * R1CombinatorialVector Constructor
 	 * 
 	 * @param lsElementSpace The List Space of Elements
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CombinatorialVectorR1 (
+	public R1CombinatorialVector (
 		final java.util.List<java.lang.Double> lsElementSpace)
 		throws java.lang.Exception
 	{
 		if (null == (_lsElementSpace = lsElementSpace) || 0 == _lsElementSpace.size())
-			throw new java.lang.Exception ("CombinatorialVectorR1 ctr: Invalid Inputs");
+			throw new java.lang.Exception ("R1CombinatorialVector ctr: Invalid Inputs");
 	}
 
 	/**
@@ -113,13 +113,13 @@ public class CombinatorialVectorR1 implements org.drip.spaces.tensor.Generalized
 	@Override public boolean match (
 		final org.drip.spaces.tensor.GeneralizedVector gvOther)
 	{
-		if (null == gvOther || !(gvOther instanceof CombinatorialVectorR1)) return false;
+		if (null == gvOther || !(gvOther instanceof R1CombinatorialVector)) return false;
 
-		CombinatorialVectorR1 cvR1Other = (CombinatorialVectorR1) gvOther;
+		R1CombinatorialVector r1cvOther = (R1CombinatorialVector) gvOther;
 
-		if (!cardinality().match (cvR1Other.cardinality())) return false;
+		if (!cardinality().match (r1cvOther.cardinality())) return false;
 
-		java.util.List<java.lang.Double> lsElementSpaceOther = cvR1Other.elementSpace();
+		java.util.List<java.lang.Double> lsElementSpaceOther = r1cvOther.elementSpace();
 
 		for (double dblElement : _lsElementSpace) {
 			if (!lsElementSpaceOther.contains (dblElement)) return false;
@@ -131,13 +131,13 @@ public class CombinatorialVectorR1 implements org.drip.spaces.tensor.Generalized
 	@Override public boolean subset (
 		final org.drip.spaces.tensor.GeneralizedVector gvOther)
 	{
-		if (null == gvOther || !(gvOther instanceof CombinatorialVectorR1)) return false;
+		if (null == gvOther || !(gvOther instanceof R1CombinatorialVector)) return false;
 
-		CombinatorialVectorR1 cvR1Other = (CombinatorialVectorR1) gvOther;
+		R1CombinatorialVector r1cvOther = (R1CombinatorialVector) gvOther;
 
-		if (cardinality().number() < cvR1Other.cardinality().number()) return false;
+		if (cardinality().number() < r1cvOther.cardinality().number()) return false;
 
-		java.util.List<java.lang.Double> lsElementSpaceOther = cvR1Other.elementSpace();
+		java.util.List<java.lang.Double> lsElementSpaceOther = r1cvOther.elementSpace();
 
 		for (double dblElement : _lsElementSpace) {
 			if (!lsElementSpaceOther.contains (dblElement)) return false;
@@ -156,7 +156,7 @@ public class CombinatorialVectorR1 implements org.drip.spaces.tensor.Generalized
 		throws java.lang.Exception
 	{
 		if (!isPredictorBounded())
-			throw new java.lang.Exception ("CombinatorialVectorR1::hyperVolume => Space not Bounded");
+			throw new java.lang.Exception ("R1CombinatorialVector::hyperVolume => Space not Bounded");
 
 		return rightEdge() - leftEdge();
 	}

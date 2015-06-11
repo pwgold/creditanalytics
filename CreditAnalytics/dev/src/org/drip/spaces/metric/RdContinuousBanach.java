@@ -39,7 +39,7 @@ package org.drip.spaces.metric;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RdContinuousBanach extends org.drip.spaces.tensor.ContinuousVectorRd implements
+public class RdContinuousBanach extends org.drip.spaces.tensor.RdContinuousVector implements
 	org.drip.spaces.metric.RdNormed {
 	private int _iPNorm = -1;
 	private org.drip.measure.continuous.Rd _distRd = null;
@@ -61,7 +61,7 @@ public class RdContinuousBanach extends org.drip.spaces.tensor.ContinuousVectorR
 	{
 		try {
 			return 0 >= iDimension ? null : new RdContinuousBanach (new
-				org.drip.spaces.tensor.ContinuousVectorR1[iDimension], distRd, iPNorm);
+				org.drip.spaces.tensor.R1ContinuousVector[iDimension], distRd, iPNorm);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -84,7 +84,7 @@ public class RdContinuousBanach extends org.drip.spaces.tensor.ContinuousVectorR
 	{
 		try {
 			return 0 >= iDimension ? null : new RdContinuousBanach (new
-				org.drip.spaces.tensor.ContinuousVectorR1[iDimension], distRd, java.lang.Integer.MAX_VALUE);
+				org.drip.spaces.tensor.R1ContinuousVector[iDimension], distRd, java.lang.Integer.MAX_VALUE);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -103,7 +103,7 @@ public class RdContinuousBanach extends org.drip.spaces.tensor.ContinuousVectorR
 	 */
 
 	public RdContinuousBanach (
-		final org.drip.spaces.tensor.ContinuousVectorR1[] aR1CV,
+		final org.drip.spaces.tensor.R1ContinuousVector[] aR1CV,
 		final org.drip.measure.continuous.Rd distRd,
 		final int iPNorm)
 		throws java.lang.Exception

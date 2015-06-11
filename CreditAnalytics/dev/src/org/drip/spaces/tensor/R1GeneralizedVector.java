@@ -1,5 +1,5 @@
 
-package org.drip.spaces.instance;
+package org.drip.spaces.tensor;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -29,38 +29,21 @@ package org.drip.spaces.instance;
  */
 
 /**
- * ValidatedCombinatorialR1 holds the Validated Combinatorial R^1 Vector Instance Sequence and the
- *  Corresponding Generalized Vector Space Type.
- * 
- * The Reference we've used is:
- * 
- * 	- Carl, B., and I. Stephani (1990): Entropy, Compactness, and Approximation of Operators, Cambridge
- * 		University Press, Cambridge UK.
+ * R1GeneralizedVector exposes the basic Properties of the General R^1 Vector Space.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ValidatedCombinatorialR1 extends org.drip.spaces.instance.ValidatedR1 {
+public interface R1GeneralizedVector extends org.drip.spaces.tensor.GeneralizedVector {
 
 	/**
-	 * ValidatedCombinatorialR1 Constructor
+	 * Validate the Input Instance Ordinate
 	 * 
-	 * @param cvR1 The Combinatorial R^1 Tensor Space Type
-	 * @param adblInstance The Data Instance
+	 * @param dblInstance The Input Instance Ordinate
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return TRUE => Instance Ordinate is a Valid Entry in the Space
 	 */
 
-	public ValidatedCombinatorialR1 (
-		final org.drip.spaces.tensor.CombinatorialVectorR1 cvR1,
-		final double[] adblInstance)
-		throws java.lang.Exception
-	{
-		super (cvR1, adblInstance);
-	}
-
-	@Override public org.drip.spaces.tensor.CombinatorialVectorR1 tensorSpaceType()
-	{
-		return (org.drip.spaces.tensor.CombinatorialVectorR1) super.tensorSpaceType();
-	}
+	public abstract boolean validateInstance (
+		final double dblInstance);
 }

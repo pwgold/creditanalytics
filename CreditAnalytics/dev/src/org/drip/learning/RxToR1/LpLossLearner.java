@@ -111,7 +111,7 @@ public class LpLossLearner extends org.drip.learning.RxToR1.GeneralizedLearner {
 	}
 
 	@Override public double lossSampleCoveringNumber (
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvvi,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
 		final double dblEpsilon,
 		final boolean bSupremum)
 		throws java.lang.Exception
@@ -133,8 +133,8 @@ public class LpLossLearner extends org.drip.learning.RxToR1.GeneralizedLearner {
 
 	@Override public double empiricalLoss (
 		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception
 	{
 		if (null == funcLearnerR1ToR1 || null == gvviX || !(gvviX instanceof
@@ -161,8 +161,8 @@ public class LpLossLearner extends org.drip.learning.RxToR1.GeneralizedLearner {
 
 	@Override public double empiricalLoss (
 		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception
 	{
 		if (null == funcLearnerRdToR1 || null == gvviX || !(gvviX instanceof
@@ -190,8 +190,8 @@ public class LpLossLearner extends org.drip.learning.RxToR1.GeneralizedLearner {
 	@Override public double empiricalRisk (
 		final org.drip.measure.continuous.R1R1 distR1R1,
 		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception
 	{
 		if (null == distR1R1 || null == funcLearnerR1ToR1 || null == gvviX || !(gvviX instanceof
@@ -225,8 +225,8 @@ public class LpLossLearner extends org.drip.learning.RxToR1.GeneralizedLearner {
 	@Override public double empiricalRisk (
 		final org.drip.measure.continuous.RdR1 distRdR1,
 		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviX,
-		final org.drip.spaces.instance.GeneralizedValidatedVectorInstance gvviY)
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
+		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 		throws java.lang.Exception
 	{
 		if (null == distRdR1 || null == funcLearnerRdToR1 || null == gvviX || !(gvviX instanceof
