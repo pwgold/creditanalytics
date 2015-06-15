@@ -29,8 +29,8 @@ package org.drip.learning.kernel;
  */
 
 /**
- * EigenFunction holds the Eigen-vector Function and its corresponding Space of the R^x L2 -> R^x L2 Kernel
- *  Linear Integral Operator defined by:
+ * EigEigenFunctionRdToR1enFunction holds the Eigen-vector Function and its corresponding Space of the R^d ->
+ *  R^1 Kernel Linear Integral Operator defined by:
  * 
  * 		T_k [f(.)] := Integral Over Input Space {k (., y) * f(y) * d[Prob(y)]}
  *  
@@ -47,10 +47,10 @@ package org.drip.learning.kernel;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class EigenFunction extends org.drip.spaces.RxToR1.NormedRdToNormedR1 {
+public abstract class EigenFunctionRdToR1 extends org.drip.spaces.RxToR1.NormedRdToNormedR1 {
 	private double _dblAgnosticUpperBound = java.lang.Double.NaN;
 
-	protected EigenFunction (
+	protected EigenFunctionRdToR1 (
 		final org.drip.spaces.metric.RdNormed rdContinuousInput,
 		final org.drip.spaces.metric.R1Normed r1ContinuousOutput,
 		final org.drip.function.definition.RdToR1 funcRdToR1,
@@ -60,7 +60,7 @@ public abstract class EigenFunction extends org.drip.spaces.RxToR1.NormedRdToNor
 		super (rdContinuousInput, r1ContinuousOutput, funcRdToR1);
 
 		if (!org.drip.quant.common.NumberUtil.IsValid (_dblAgnosticUpperBound = dblAgnosticUpperBound))
-			throw new java.lang.Exception ("EigenFunction ctr: Invalid Inputs");
+			throw new java.lang.Exception ("EigenFunctionRdToR1 ctr: Invalid Inputs");
 	}
 
 	/**

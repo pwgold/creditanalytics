@@ -39,27 +39,58 @@ package org.drip.spaces.cover;
  * @author Lakshmi Krishnamurthy
  */
 
+/**
+ * @author Spooky
+ *
+ */
 public interface OperatorClassCoveringBounds {
 
 	/**
-	 * Lower Bound of the Operator Covering Number
+	 * Lower Bound of the Operator Entropy Number
 	 * 
-	 * @return Lower Bound of the Operator Covering Number
+	 * @return Lower Bound of the Operator Entropy Number
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double lowerBound()
+	public abstract double entropyNumberLowerBound()
 		throws java.lang.Exception;
 
 	/**
-	 * Upper Bound of the Operator Covering Number
+	 * Upper Bound of the Operator Entropy Number
 	 * 
-	 * @return Upper Bound of the Operator Covering Number
+	 * @return Upper Bound of the Operator Entropy Number
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double upperBound()
+	public abstract double entropyNumberUpperBound()
 		throws java.lang.Exception;
+
+	/**
+	 * Compute the Entropy Number Index of the Operator
+	 * 
+	 * @return The Entropy Number Index of the Operator
+	 */
+
+	public abstract int entropyNumberIndex();
+
+	/**
+	 * Compute the Metric Norm of the Operator
+	 * 
+	 * @return The Metric Norm of the Operator
+	 * 
+	 * @throws java.lang.Exception Thrown if the Metric Norm cannot be computed
+	 */
+
+	public abstract double norm()
+		throws java.lang.Exception;
+
+	/**
+	 * Compute the Entropy Number Asymptotic Behavior
+	 * 
+	 * @return the Entropy Number Asymptote Instance
+	 */
+
+	public abstract org.drip.learning.bound.DiagonalOperatorCoveringBound entropyNumberAsymptote();
 }

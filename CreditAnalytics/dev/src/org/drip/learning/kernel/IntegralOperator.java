@@ -69,20 +69,14 @@ public abstract class IntegralOperator {
 		throws java.lang.Exception
 	{
 		if (null == (_kernel = kernel) || null == (_funcRdToR1 = funcRdToR1) || null == (_r1OperatorOutput =
-			r1OperatorOutput) || 2 != _r1OperatorOutput.pNorm())
-			throw new java.lang.Exception ("IntegralOperator ctr: Invalid Inputs");
-
-		org.drip.spaces.metric.RdNormed rmnsSymmetricKernelInput = _kernel.inputMetricVectorSpace();
-
-		if (2 != rmnsSymmetricKernelInput.pNorm() || null == (_distRd =
-			rmnsSymmetricKernelInput.borelSigmaMeasure()))
+			r1OperatorOutput) || null == (_distRd = _kernel.inputMetricVectorSpace().borelSigmaMeasure()))
 			throw new java.lang.Exception ("IntegralOperator ctr: Invalid Inputs");
 	}
 
 	/**
-	 * Retrieve the Mercer Kernel
+	 * Retrieve the Symmetric R^d -> R^1 Kernel
 	 * 
-	 * @return The Mercer Kernel
+	 * @return The Symmetric R^d -> R^1 Kernel
 	 */
 
 	public org.drip.learning.kernel.SymmetricRdToNormedR1Kernel kernel()

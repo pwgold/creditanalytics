@@ -37,13 +37,12 @@ package org.drip.learning.svm;
 
 public abstract class KernelRdDecisionFunction extends org.drip.learning.svm.RdDecisionFunction {
 	private double[][] _aadblKernelPredictorPivot = null;
-	private org.drip.learning.kernel.SymmetricRdToNormedR1Kernel _kernel = null;
+	private org.drip.learning.kernel.SymmetricRdToNormedRdKernel _kernel = null;
 
 	/**
 	 * KernelRdDecisionFunction Constructor
 	 * 
-	 * @param gmvsPredictor The R^d Metric Input Predictor Space
-	 * @param rmnsInverseMargin The Inverse Margin Weights R^d L2 Space
+	 * @param rdInverseMargin The Inverse Margin Weights R^d Space
 	 * @param adblInverseMarginWeight Array of Inverse Margin Weights
 	 * @param dblB The Kernel Offset
 	 * @param kernel The Kernel
@@ -53,15 +52,14 @@ public abstract class KernelRdDecisionFunction extends org.drip.learning.svm.RdD
 	 */
 
 	public KernelRdDecisionFunction (
-		final org.drip.spaces.tensor.RdGeneralizedVector gmvsPredictor,
-		final org.drip.spaces.metric.RdNormed rmnsInverseMargin,
+		final org.drip.spaces.metric.RdNormed rdInverseMargin,
 		final double[] adblInverseMarginWeight,
 		final double dblB,
-		final org.drip.learning.kernel.SymmetricRdToNormedR1Kernel kernel,
+		final org.drip.learning.kernel.SymmetricRdToNormedRdKernel kernel,
 		final double[][] aadblKernelPredictorPivot)
 		throws java.lang.Exception
 	{
-		super (gmvsPredictor, rmnsInverseMargin, adblInverseMarginWeight, dblB);
+		super (kernel.inputMetricVectorSpace(), rdInverseMargin, adblInverseMarginWeight, dblB);
 
 		if (null == (_kernel = kernel) || null == (_aadblKernelPredictorPivot = aadblKernelPredictorPivot))
 			throw new java.lang.Exception ("KernelRdDecisionFunction ctr: Invalid Inputs");
@@ -70,8 +68,7 @@ public abstract class KernelRdDecisionFunction extends org.drip.learning.svm.RdD
 
 		int iNumPredictorPivot = adblInverseMarginWeight.length;
 
-		if (0 == iNumPredictorPivot || iNumPredictorPivot != _aadblKernelPredictorPivot.length ||
-			gmvsPredictor.dimension() != iKernelInputDimension)
+		if (0 == iNumPredictorPivot || iNumPredictorPivot != _aadblKernelPredictorPivot.length)
 			throw new java.lang.Exception ("KernelRdDecisionFunction ctr: Invalid Inputs");
 
 		for (int i = 0; i < iNumPredictorPivot; ++i) {
@@ -81,13 +78,32 @@ public abstract class KernelRdDecisionFunction extends org.drip.learning.svm.RdD
 		}
 	}
 
+	@Override public double evaluate (
+		final double[] adblX)
+		throws java.lang.Exception
+	{
+		if (null == adblX || adblX.length != _kernel.inputMetricVectorSpace().dimension())
+			throw new java.lang.Exception ("KernelRdDecisionFunction::evaluate => Invalid Inputs");
+
+		double[] adblInverseMarginWeight = inverseMarginWeights();
+
+		double dblDotProduct = 0.;
+		int iNumPredictorPivot = adblInverseMarginWeight.length;
+
+		for (int i = 0; i < iNumPredictorPivot; ++i)
+			dblDotProduct += adblInverseMarginWeight[i] * _kernel.evaluate (_aadblKernelPredictorPivot[i],
+				adblX);
+
+		return dblDotProduct + offset();
+	}
+
 	/**
 	 * Retrieve the Decision Kernel
 	 * 
 	 * @return The Decision Kernel
 	 */
 
-	public org.drip.learning.kernel.SymmetricRdToNormedR1Kernel kernel()
+	public org.drip.learning.kernel.SymmetricRdToNormedRdKernel kernel()
 	{
 		return _kernel;
 	}
@@ -101,24 +117,5 @@ public abstract class KernelRdDecisionFunction extends org.drip.learning.svm.RdD
 	public double[][] kernelPredictorPivot()
 	{
 		return _aadblKernelPredictorPivot;
-	}
-
-	@Override public double evaluate (
-		final double[] adblX)
-		throws java.lang.Exception
-	{
-		if (null == adblX || adblX.length != predictorSpace().dimension())
-			throw new java.lang.Exception ("KernelRdDecisionFunction::evaluate => Invalid Inputs");
-
-		double[] adblInverseMarginWeight = inverseMarginWeights();
-
-		double dblDotProduct = 0.;
-		int iNumPredictorPivot = adblInverseMarginWeight.length;
-
-		for (int i = 0; i < iNumPredictorPivot; ++i)
-			dblDotProduct += adblInverseMarginWeight[i] * _kernel.evaluate (_aadblKernelPredictorPivot[i],
-				adblX);
-
-		return dblDotProduct + offset();
 	}
 }

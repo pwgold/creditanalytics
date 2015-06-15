@@ -49,14 +49,14 @@ package org.drip.learning.svm;
 public abstract class RdDecisionFunction extends org.drip.function.definition.RdToR1 {
 	private double _dblB = java.lang.Double.NaN;
 	private double[] _adblInverseMarginWeight = null;
-	private org.drip.spaces.metric.RdNormed _rmnsInverseMargin = null;
-	private org.drip.spaces.tensor.RdGeneralizedVector _gmvsPredictor = null;
+	private org.drip.spaces.metric.RdNormed _rdInverseMargin = null;
+	private org.drip.spaces.tensor.RdGeneralizedVector _rdPredictor = null;
 
 	/**
 	 * RdDecisionFunction Constructor
 	 * 
-	 * @param gmvsPredictor The R^d Metric Input Predictor Space
-	 * @param rmnsInverseMargin The Inverse Margin Weights R^d L2 Space
+	 * @param rdPredictor The R^d Metric Input Predictor Space
+	 * @param rdInverseMargin The Inverse Margin Weights R^d Space
 	 * @param adblInverseMarginWeight Array of Inverse Margin Weights
 	 * @param dblB The Kernel Offset
 	 * 
@@ -64,22 +64,22 @@ public abstract class RdDecisionFunction extends org.drip.function.definition.Rd
 	 */
 
 	public RdDecisionFunction (
-		final org.drip.spaces.tensor.RdGeneralizedVector gmvsPredictor,
-		final org.drip.spaces.metric.RdNormed rmnsInverseMargin,
+		final org.drip.spaces.tensor.RdGeneralizedVector rdPredictor,
+		final org.drip.spaces.metric.RdNormed rdInverseMargin,
 		final double[] adblInverseMarginWeight,
 		final double dblB)
 		throws java.lang.Exception
 	{
 		super (null);
 
-		if (null == (_gmvsPredictor = gmvsPredictor) || null == (_rmnsInverseMargin = rmnsInverseMargin) ||
-			null == (_adblInverseMarginWeight = adblInverseMarginWeight) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblB = dblB))
+		if (null == (_rdPredictor = rdPredictor) || null == (_rdInverseMargin = rdInverseMargin) || null ==
+			(_adblInverseMarginWeight = adblInverseMarginWeight) || !org.drip.quant.common.NumberUtil.IsValid
+				(_dblB = dblB))
 			throw new java.lang.Exception ("RdDecisionFunction ctr: Invalid Inputs");
 
 		int iNumMarginWeight = _adblInverseMarginWeight.length;
 
-		if (0 == iNumMarginWeight || iNumMarginWeight != _gmvsPredictor.dimension())
+		if (0 == iNumMarginWeight || iNumMarginWeight != _rdPredictor.dimension())
 			throw new java.lang.Exception ("RdDecisionFunction ctr: Invalid Inputs");
 	}
 
@@ -91,7 +91,7 @@ public abstract class RdDecisionFunction extends org.drip.function.definition.Rd
 
 	public org.drip.spaces.tensor.RdGeneralizedVector predictorSpace()
 	{
-		return _gmvsPredictor;
+		return _rdPredictor;
 	}
 
 	/**
@@ -102,7 +102,7 @@ public abstract class RdDecisionFunction extends org.drip.function.definition.Rd
 
 	public org.drip.spaces.metric.RdNormed inverseMarginSpace()
 	{
-		return _rmnsInverseMargin;
+		return _rdInverseMargin;
 	}
 
 	/**
@@ -160,6 +160,59 @@ public abstract class RdDecisionFunction extends org.drip.function.definition.Rd
 		throws java.lang.Exception
 	{
 		return evaluate (adblX);
+	}
+
+	/**
+	 * Compute the Entropy Number Upper Bounds Instance for the Specified Inputs
+	 * 
+	 * @param dsoFactorizer The Factorizing Diagonal Scaling Operator
+	 * @param dblFeatureSpaceMaureyConstant The Feature Space Maurey Constant
+	 * 
+	 * @return The Entropy Number Upper Bounds Instance
+	 */
+
+	public org.drip.learning.svm.DecisionFunctionOperatorBounds entropyNumberUpperBounds (
+		final org.drip.learning.kernel.DiagonalScalingOperator dsoFactorizer,
+		final double dblFeatureSpaceMaureyConstant)
+	{
+		try {
+			return new org.drip.learning.svm.DecisionFunctionOperatorBounds (dsoFactorizer,
+				inverseMarginSpace().populationMetricNorm(), dblFeatureSpaceMaureyConstant,
+					predictorSpace().dimension());
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Compute the Decision Function's Asymptotic Exponent for the Entropy Number
+	 * 
+	 * @param dsoFactorizer The Factorizing Diagonal Scaling Operator
+	 * 
+	 * @return The Decision Function's Asymptotic Exponent for the Entropy Number
+	 * 
+	 * @throws java.lang.Exception Thrown if the Asymptotoc Exponent cannot be computed
+	 */
+
+	public double logEntropyNumberAsymptote (
+		final org.drip.learning.kernel.DiagonalScalingOperator dsoFactorizer)
+		throws java.lang.Exception
+	{
+		if (null == dsoFactorizer)
+			throw new java.lang.Exception
+				("RdDecisionFunction::logEntropyNumberAsymptote => Invalid Inputs");
+
+		org.drip.learning.bound.DiagonalOperatorCoveringBound docb = dsoFactorizer.entropyNumberAsymptote();
+
+		if (null == docb)
+			throw new java.lang.Exception
+				("RdDecisionFunction::logEntropyNumberAsymptote => Cannot get Diagonal Operator Covering Bounds");
+
+		return org.drip.learning.bound.DiagonalOperatorCoveringBound.BASE_DIAGONAL_ENTROPY_ASYMPTOTE_EXPONENT
+			== docb.entropyNumberAsymptoteType() ? -1. * docb.entropyNumberAsymptoteExponent() - 0.5 :
+				-1. * docb.entropyNumberAsymptoteExponent();
 	}
 
 	/**

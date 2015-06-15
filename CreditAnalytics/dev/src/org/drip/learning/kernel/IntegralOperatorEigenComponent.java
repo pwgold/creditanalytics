@@ -49,28 +49,28 @@ package org.drip.learning.kernel;
 
 public class IntegralOperatorEigenComponent {
 	private double _dblEigenValue = java.lang.Double.NaN;
-	private org.drip.learning.kernel.EigenFunction _eigenFunction = null;
+	private org.drip.learning.kernel.EigenFunctionRdToR1 _efRdToR1 = null;
 	private org.drip.spaces.RxToR1.NormedRdToNormedR1 _rkhsFeatureMap = null;
 
 	/**
 	 * IntegralOperatorEigenComponent Constructor
 	 * 
-	 * @param eigenFunction Normed R^d -> Normed L2 R^1 Eigen-Function
+	 * @param efRdToR1 Normed R^d -> Normed R^1 Eigen-Function
 	 * @param dblEigenValue The Eigenvalue
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public IntegralOperatorEigenComponent (
-		final org.drip.learning.kernel.EigenFunction eigenFunction,
+		final org.drip.learning.kernel.EigenFunctionRdToR1 efRdToR1,
 		final double dblEigenValue)
 		throws java.lang.Exception
 	{
-		if (null == (_eigenFunction = eigenFunction) || !org.drip.quant.common.NumberUtil.IsValid
-			(_dblEigenValue = dblEigenValue))
+		if (null == (_efRdToR1 = efRdToR1) || !org.drip.quant.common.NumberUtil.IsValid (_dblEigenValue =
+			dblEigenValue))
 			throw new java.lang.Exception ("IntegralOperatorEigenComponent ctr: Invalid Inputs");
 
-		final org.drip.function.definition.RdToR1 eigenFuncRdToR1 = _eigenFunction.function();
+		final org.drip.function.definition.RdToR1 eigenFuncRdToR1 = _efRdToR1.function();
 
 		if (null != eigenFuncRdToR1) {
 			org.drip.function.definition.RdToR1 rkhsFeatureMapRdToR1 = new
@@ -83,9 +83,9 @@ public class IntegralOperatorEigenComponent {
 				}
 			};
 
-			org.drip.spaces.metric.RdNormed rdContinuousInput = _eigenFunction.inputMetricVectorSpace();
+			org.drip.spaces.metric.RdNormed rdContinuousInput = efRdToR1.inputMetricVectorSpace();
 
-			org.drip.spaces.metric.R1Normed r1ContinuousOutput = _eigenFunction.outputMetricVectorSpace();
+			org.drip.spaces.metric.R1Normed r1ContinuousOutput = efRdToR1.outputMetricVectorSpace();
 
 			org.drip.spaces.metric.R1Continuous r1Continuous = org.drip.spaces.metric.R1Continuous.Standard
 				(r1ContinuousOutput.leftEdge(), r1ContinuousOutput.rightEdge(),
@@ -106,9 +106,9 @@ public class IntegralOperatorEigenComponent {
 	 * @return The Eigen-Function
 	 */
 
-	public org.drip.learning.kernel.EigenFunction eigenFunction()
+	public org.drip.learning.kernel.EigenFunctionRdToR1 eigenFunction()
 	{
-		return _eigenFunction;
+		return _efRdToR1;
 	}
 
 	/**
@@ -141,7 +141,7 @@ public class IntegralOperatorEigenComponent {
 
 	public double rkhsFeatureParallelepipedLength()
 	{
-		return 2. * _eigenFunction.agnosticUpperBound() * java.lang.Math.sqrt (_dblEigenValue);
+		return 2. * _efRdToR1.agnosticUpperBound() * java.lang.Math.sqrt (_dblEigenValue);
 	}
 
 	/**
@@ -160,7 +160,7 @@ public class IntegralOperatorEigenComponent {
 		final double[] adblY)
 		throws java.lang.Exception
 	{
-		org.drip.function.definition.RdToR1 eigenFuncRdToR1 = _eigenFunction.function();
+		org.drip.function.definition.RdToR1 eigenFuncRdToR1 = _efRdToR1.function();
 
 		return eigenFuncRdToR1.evaluate (adblX) * eigenFuncRdToR1.evaluate (adblY) * _dblEigenValue;
 	}

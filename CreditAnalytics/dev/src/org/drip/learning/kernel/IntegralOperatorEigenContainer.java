@@ -100,8 +100,8 @@ public class IntegralOperatorEigenContainer {
 	}
 
 	/**
-	 * Generate the Diagonally Scaled Normed Vector Space of the RKHS Feature Space Bounds that result due to
-	 *  the Application of the Diagonal Scaling Operator
+	 * Generate the Diagonally Scaled Normed Vector Space of the RKHS Feature Space Bounds that results on
+	 *  applying the Diagonal Scaling Operator
 	 * 
 	 * @param adblDiagonalScalingOperator The Diagonal Scaling Operator
 	 * 
@@ -113,7 +113,7 @@ public class IntegralOperatorEigenContainer {
 	{
 		if (null == dso) return null;
 
-		double[] adblDiagonalScalingOperator = dso.multiplier();
+		double[] adblDiagonalScalingOperator = dso.scaler();
 
 		int iDimension = adblDiagonalScalingOperator.length;
 
@@ -121,7 +121,7 @@ public class IntegralOperatorEigenContainer {
 
 		java.util.List<java.lang.Double> lsElementSpace = new java.util.ArrayList<java.lang.Double>();
 
-		for (int i = 0;i < iDimension; ++i)
+		for (int i = 0; i < iDimension; ++i)
 			lsElementSpace.add (0.5 * _aIOEC[i].rkhsFeatureParallelepipedLength() /
 				adblDiagonalScalingOperator[i]);
 
@@ -135,8 +135,8 @@ public class IntegralOperatorEigenContainer {
 	}
 
 	/**
-	 * Generate the Operator Class Covering Number Bounds of the RKHS Feature Space Bounds that result due to
-	 *  the Application of the Diagonal Scaling Operator
+	 * Generate the Operator Class Covering Number Bounds of the RKHS Feature Space Bounds that result on the
+	 *  Application of the Diagonal Scaling Operator
 	 * 
 	 * @param adblDiagonalScalingOperator The Diagonal Scaling Operator
 	 * 
@@ -155,16 +155,33 @@ public class IntegralOperatorEigenContainer {
 
 			org.drip.spaces.cover.OperatorClassCoveringBounds occb = new
 				org.drip.spaces.cover.OperatorClassCoveringBounds() {
-				@Override public double lowerBound()
+				@Override public double entropyNumberLowerBound()
 					throws java.lang.Exception
 				{
-					return dso.lowerBound() * dblPopulationMetricNorm;
+					return dso.entropyNumberLowerBound() * dblPopulationMetricNorm;
 				}
 
-				@Override public double upperBound()
+				@Override public double entropyNumberUpperBound()
 					throws java.lang.Exception
 				{
-					return dso.upperBound() * dblPopulationMetricNorm;
+					return dso.entropyNumberUpperBound() * dblPopulationMetricNorm;
+				}
+
+				@Override public int entropyNumberIndex()
+				{
+					return dso.entropyNumberIndex();
+				}
+
+				@Override public double norm()
+					throws java.lang.Exception
+				{
+					return dso.norm() * dblPopulationMetricNorm;
+				}
+
+				@Override public org.drip.learning.bound.DiagonalOperatorCoveringBound
+					entropyNumberAsymptote()
+				{
+					return dso.entropyNumberAsymptote();
 				}
 			};
 

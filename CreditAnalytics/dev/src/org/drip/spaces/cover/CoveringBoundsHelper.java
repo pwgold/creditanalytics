@@ -30,7 +30,7 @@ package org.drip.spaces.cover;
 
 /**
  * CoveringBoundsHelper contains the assortment of Utilities used in the Computation of Upper Bounds for
- * 	Normed Single Function Spaces and Function Space Convolutions.
+ * 	Normed Single Function Spaces and Function Space Products.
  * 
  *  The References are:
  *  
@@ -69,21 +69,21 @@ public class CoveringBoundsHelper {
 	}
 
 	/**
-	 * Compute the Upper Bound for the Entropy Number of the Operator Custom Covering Number Metric
-	 * 	Convolution across both the Function Classes
+	 * Compute the Upper Bound for the Entropy Number of the Operator Custom Covering Number Metric Product
+	 *  across both the Function Classes
 	 * 
 	 * @param mocbA The Maurey Operator Covering Bounds for Class A
 	 * @param mocbB The Maurey Operator Covering Bounds for Class B
 	 * @param iEntropyNumberIndexA Entropy Number Index for Class A
 	 * @param iEntropyNumberIndexB Entropy Number Index for Class B
 	 * 
-	 * @return The Upper Bound for the Entropy Number of the Operator Custom Covering Number Metric
-	 * 	Convolution across both the Function Classes
+	 * @return The Upper Bound for the Entropy Number of the Operator Custom Covering Number Metric Product
+	 *  across both the Function Classes
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final double CarlStephaniConvolutionBound (
+	public static final double CarlStephaniProductBound (
 		final org.drip.spaces.cover.MaureyOperatorCoveringBounds mocbA,
 		final org.drip.spaces.cover.MaureyOperatorCoveringBounds mocbB,
 		final int iEntropyNumberIndexA,
@@ -92,15 +92,15 @@ public class CoveringBoundsHelper {
 	{
 		if (null == mocbA || null == mocbB)
 			throw new java.lang.Exception
-				("CoveringBoundsHelper::CarlStephaniConvolutionBound => Invalid Maurey Bounds for the Function Class");
+				("CoveringBoundsHelper::CarlStephaniProductBound => Invalid Maurey Bounds for the Function Class");
 
 		return mocbA.entropyNumberUpperBound (iEntropyNumberIndexA) * mocbB.entropyNumberUpperBound
 			(iEntropyNumberIndexB);
 	}
 
 	/**
-	 * Compute the Upper Bound for the Entropy Number of the Operator Custom Covering Number Metric
-	 * 	Convolution across both the Function Classes using the Function Class Norm
+	 * Compute the Upper Bound for the Entropy Number of the Operator Custom Covering Number Metric Product
+	 *  across both the Function Classes using the Function Class Norm
 	 * 
 	 * @param mocbA The Maurey Operator Covering Bounds for Class A
 	 * @param mocbB The Maurey Operator Covering Bounds for Class B
@@ -109,10 +109,10 @@ public class CoveringBoundsHelper {
 	 * @param iEntropyNumberIndex Entropy Number Index for either Class
 	 * 
 	 * @return The Upper Bound for the Entropy Number of the Operator Custom Covering Number Metric
-	 * 	Convolution across both the Function Classes using the Function Norm
+	 * 	Product across both the Function Classes using the Function Norm
 	 */
 
-	public static final org.drip.spaces.cover.CarlStephaniNormedBounds CarlStephaniConvolutionNorm (
+	public static final org.drip.spaces.cover.CarlStephaniNormedBounds CarlStephaniProductNorm (
 		final org.drip.spaces.cover.MaureyOperatorCoveringBounds mocbA,
 		final org.drip.spaces.cover.MaureyOperatorCoveringBounds mocbB,
 		final double dblNormA,

@@ -53,45 +53,47 @@ package org.drip.learning.kernel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class DiagonalScalingOperator implements org.drip.spaces.cover.OperatorClassCoveringBounds {
-	private double[] _adblMultiplier = null;
-	private double _dblSupremumBound = java.lang.Double.NaN;
+public abstract class DiagonalScalingOperator implements org.drip.spaces.cover.OperatorClassCoveringBounds {
+	private double[] _adblDiagonalScaler = null;
+	private double _dblScalingProductSupremumBound = java.lang.Double.NaN;
 
 	/**
 	 * DiagonalScalingOperator Constructor
 	 * 
-	 * @param adblMultiplier The Diagonal Scaling Multiplier Array
+	 * @param adblDiagonalScaler The Diagonal Scaling Multiplier Array
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public DiagonalScalingOperator (
-		final double[] adblMultiplier)
+		final double[] adblDiagonalScaler)
 		throws java.lang.Exception
 	{
-		if (null == (_adblMultiplier = adblMultiplier))
+		if (null == (_adblDiagonalScaler = adblDiagonalScaler))
 			throw new java.lang.Exception ("DiagonalScalingOperator Constructor: Invalid Inputs");
 
 		double dblScalingProduct = 1.;
-		int iScalingSize = _adblMultiplier.length;
+		int iScalingSize = _adblDiagonalScaler.length;
 
 		if (0 == iScalingSize)
 			throw new java.lang.Exception ("DiagonalScalingOperator Constructor: Invalid Inputs");
 
 		for (int i = 0; i < iScalingSize; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (_adblMultiplier[i]) || 0. > _adblMultiplier[i])
+			if (!org.drip.quant.common.NumberUtil.IsValid (_adblDiagonalScaler[i]) || 0. >
+				_adblDiagonalScaler[i])
 				throw new java.lang.Exception ("DiagonalScalingOperator Constructor: Invalid Inputs");
 
-			if (0 == i) _dblSupremumBound = _adblMultiplier[i];
+			if (0 == i) _dblScalingProductSupremumBound = _adblDiagonalScaler[i];
 
 			if (i > 0) {
-				if (_adblMultiplier[i - 1] < _adblMultiplier[i])
+				if (_adblDiagonalScaler[i - 1] < _adblDiagonalScaler[i])
 					throw new java.lang.Exception ("DiagonalScalingOperator Constructor: Invalid Inputs");
 
 				double dblCurrentSupremumBound = java.lang.Math.pow ((dblScalingProduct *=
-					_adblMultiplier[i]) / iScalingSize, 1. / i);
+					_adblDiagonalScaler[i]) / iScalingSize, 1. / i);
 
-				if (_dblSupremumBound < dblCurrentSupremumBound) _dblSupremumBound = dblCurrentSupremumBound;
+				if (_dblScalingProductSupremumBound < dblCurrentSupremumBound)
+					_dblScalingProductSupremumBound = dblCurrentSupremumBound;
 			}
 		}
 	}
@@ -102,18 +104,23 @@ public class DiagonalScalingOperator implements org.drip.spaces.cover.OperatorCl
 	 * @return The Diagonal Scaling Multiplier Array
 	 */
 
-	public double[] multiplier()
+	public double[] scaler()
 	{
-		return _adblMultiplier;
+		return _adblDiagonalScaler;
 	}
 
-	@Override public double lowerBound()
+	@Override public int entropyNumberIndex()
 	{
-		return _dblSupremumBound;
+		return _adblDiagonalScaler.length;
 	}
 
-	@Override public double upperBound()
+	@Override public double entropyNumberLowerBound()
 	{
-		return 6. * _dblSupremumBound;
+		return _dblScalingProductSupremumBound;
+	}
+
+	@Override public double entropyNumberUpperBound()
+	{
+		return 6. * _dblScalingProductSupremumBound;
 	}
 }

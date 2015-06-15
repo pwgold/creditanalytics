@@ -29,8 +29,8 @@ package org.drip.learning.kernel;
  */
 
 /**
- * SymmetricRdToNormedR1Kernel exposes the Functionality behind the Kernel that is Normed R^d X Normed R^d ->
- *  Supremum R^1, that is, a Kernel that symmetric in the Input Metric Vector Space in terms of both the
+ * SymmetricRdToNormedRdKernel exposes the Functionality behind the Kernel that is Normed R^d X Normed R^d ->
+ *  Normed R^d, that is, a Kernel that symmetric in the Input Metric Vector Space in terms of both the
  *  Metric and the Dimensionality.
  *  
  *  The References are:
@@ -46,26 +46,26 @@ package org.drip.learning.kernel;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class SymmetricRdToNormedR1Kernel {
+public abstract class SymmetricRdToNormedRdKernel {
 	private org.drip.spaces.metric.RdNormed _rdContinuousInput = null;
-	private org.drip.spaces.metric.R1Normed _r1ContinuousOutput = null;
+	private org.drip.spaces.metric.RdNormed _rdContinuousOutput = null;
 
 	/**
-	 * SymmetricRdToNormedR1Kernel Constructor
+	 * SymmetricRdToNormedRdKernel Constructor
 	 * 
 	 * @param rdContinuousInput The Symmetric Input R^d Metric Vector Space
-	 * @param r1ContinuousOutput The Output R^1 Metric Vector Space
+	 * @param rdContinuousOutput The Output R^d Metric Vector Space
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public SymmetricRdToNormedR1Kernel (
+	public SymmetricRdToNormedRdKernel (
 		final org.drip.spaces.metric.RdNormed rdContinuousInput,
-		final org.drip.spaces.metric.R1Normed r1ContinuousOutput)
+		final org.drip.spaces.metric.RdNormed rdContinuousOutput)
 		throws java.lang.Exception
 	{
-		if (null == (_rdContinuousInput = rdContinuousInput) || null == (_r1ContinuousOutput =
-			r1ContinuousOutput))
+		if (null == (_rdContinuousInput = rdContinuousInput) || null == (_rdContinuousOutput =
+			rdContinuousOutput))
 			throw new java.lang.Exception ("SymmetricRdToNormedR1Kernel ctr: Invalid Inputs");
 	}
 
@@ -81,14 +81,14 @@ public abstract class SymmetricRdToNormedR1Kernel {
 	}
 
 	/**
-	 * Retrieve the Output R^1 Metric Vector Space
+	 * Retrieve the Output R^d Metric Vector Space
 	 * 
-	 * @return The Output R^1 Metric Vector Space
+	 * @return The Output R^d Metric Vector Space
 	 */
 
-	public org.drip.spaces.metric.R1Normed outputMetricVectorSpace()
+	public org.drip.spaces.metric.RdNormed outputMetricVectorSpace()
 	{
-		return _r1ContinuousOutput;
+		return _rdContinuousOutput;
 	}
 
 	/**
@@ -99,16 +99,16 @@ public abstract class SymmetricRdToNormedR1Kernel {
 
 	public int featureSpaceDimension()
 	{
-		return _rdContinuousInput.dimension();
+		return _rdContinuousOutput.dimension();
 	}
 
 	/**
-	 * Compute the Kernel's R^d X R^d -> R^1 Value
+	 * Compute the Kernel's R^d X R^d -> R^1 Dot-Product Value
 	 * 
 	 * @param adblX Validated Vector Instance X
 	 * @param adblY Validated Vector Instance Y
 	 * 
-	 * @return The Kernel's R^d X R^d -> R^1 Value
+	 * @return The Kernel's R^d X R^d -> R^1 Dot-Product Value
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are invalid
 	 */
