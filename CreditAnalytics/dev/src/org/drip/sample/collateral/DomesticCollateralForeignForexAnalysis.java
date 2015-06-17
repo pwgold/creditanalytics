@@ -1,8 +1,7 @@
 
 package org.drip.sample.collateral;
 
-import org.drip.analytics.date.DateUtil;
-import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.date.*;
 import org.drip.analytics.rates.DiscountCurve;
 import org.drip.analytics.support.CaseInsensitiveTreeMap;
 import org.drip.function.R1ToR1.*;
@@ -77,7 +76,10 @@ public class DomesticCollateralForeignForexAnalysis {
 		DiscountCurve dcCcyDomesticCollatDomestic = DiscountCurveBuilder.CreateFromFlatRate (
 			dtToday,
 			strDomesticCurrency,
-			new CollateralizationParams ("OVERNIGHT_INDEX", strDomesticCurrency),
+			new CollateralizationParams (
+				"OVERNIGHT_INDEX",
+				strDomesticCurrency
+			),
 			dblDomesticCollateralRate
 		);
 
@@ -101,7 +103,15 @@ public class DomesticCollateralForeignForexAnalysis {
 			new FlatUnivariate (0.)
 		);
 
-		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (null, null, null, null, null, null, null);
+		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
 
 		mktParams.setPayCurrencyCollateralCurrencyCurve (
 			strForeignCurrency,
@@ -127,7 +137,11 @@ public class DomesticCollateralForeignForexAnalysis {
 		);
 
 		CaseInsensitiveTreeMap<Double> mapBaseValue = dcff.value (
-			new ValuationParams (dtToday, dtToday, strDomesticCurrency),
+			new ValuationParams (
+				dtToday,
+				dtToday,
+				strDomesticCurrency
+			),
 			null,
 			mktParams,
 			null
@@ -137,9 +151,15 @@ public class DomesticCollateralForeignForexAnalysis {
 
 		double dblBaselineParForward = mapBaseValue.get ("ParForward");
 
-		double[] adblForeignRatesVolatility = new double[] {0.1, 0.2, 0.3, 0.4, 0.5};
-		double[] adblFXVolatility = new double[] {0.10, 0.15, 0.20, 0.25, 0.30};
-		double[] adblFXForeignRatesCorrelation = new double[] {-0.99, -0.50, 0.00, 0.50, 0.99};
+		double[] adblForeignRatesVolatility = new double[] {
+			0.1, 0.2, 0.3, 0.4, 0.5
+		};
+		double[] adblFXVolatility = new double[] {
+			0.10, 0.15, 0.20, 0.25, 0.30
+		};
+		double[] adblFXForeignRatesCorrelation = new double[] {
+			-0.99, -0.50, 0.00, 0.50, 0.99
+		};
 
 		System.out.println ("\tPrinting the Domestic Collateralized Foreign Forex Output in Order (Left -> Right):");
 
@@ -164,7 +184,8 @@ public class DomesticCollateralForeignForexAnalysis {
 						auFX,
 						new FlatUnivariate (dblForeignRatesVolatility),
 						new FlatUnivariate (dblFXVolatility),
-						new FlatUnivariate (dblFXForeignRatesCorrelation));
+						new FlatUnivariate (dblFXForeignRatesCorrelation)
+					);
 
 					mktParams.setPayCurrencyCollateralCurrencyCurve (
 						strForeignCurrency,

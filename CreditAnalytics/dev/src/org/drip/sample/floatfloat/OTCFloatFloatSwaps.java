@@ -137,8 +137,14 @@ public class OTCFloatFloatSwaps {
 		for (int i = 0; i < aiDay.length; ++i)
 			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (
 				dtEffective,
-				dtEffective.addBusDays (aiDay[i], strCurrency),
-				ForwardLabel.Create (strCurrency, aiDay[i] + "D")
+				dtEffective.addBusDays (
+					aiDay[i],
+					strCurrency
+				),
+				ForwardLabel.Create (
+					strCurrency,
+					aiDay[i] + "D"
+				)
 			);
 
 		CalibratableFixedIncomeComponent[] aEDF = SingleStreamComponentBuilder.FuturesPack (
@@ -256,7 +262,11 @@ public class OTCFloatFloatSwaps {
 
 		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (
 			"KLK_HYPERBOLIC_SHAPE_TEMPLATE",
-			new ValuationParams (dtSpot, dtSpot, strCurrency),
+			new ValuationParams (
+				dtSpot,
+				dtSpot,
+				strCurrency
+			),
 			aDepositComp,
 			adblDepositQuote,
 			null,
@@ -413,7 +423,15 @@ public class OTCFloatFloatSwaps {
 		 * Set the discount curve based component market parameters.
 		 */
 
-		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (dc, null, null, null, null, null, null);
+		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (
+			dc,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
 
 		/*
 		 * Construct the shape preserving forward curve off of Quartic Polynomial Basis Spline.
@@ -421,7 +439,10 @@ public class OTCFloatFloatSwaps {
 
 		ForwardCurve fcxMQuartic = ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (
 			"QUARTIC_FWD" + strBasisTenor,
-			ForwardLabel.Create (strCurrency, strBasisTenor),
+			ForwardLabel.Create (
+				strCurrency,
+				strBasisTenor
+			),
 			valParams,
 			null,
 			mktParams,
@@ -471,7 +492,12 @@ public class OTCFloatFloatSwaps {
 
 				double dblFwdStartDate = dtSpot.addTenor (strMaturityTenor).subtractTenor (strBasisTenor).julian();
 
-				CaseInsensitiveTreeMap<Double> mapQuarticValue = ffc.value (valParams, null, mktParamsQuarticFwd, null);
+				CaseInsensitiveTreeMap<Double> mapQuarticValue = ffc.value (
+					valParams,
+					null,
+					mktParamsQuarticFwd,
+					null
+				);
 
 				System.out.println (" " + strMaturityTenor + " =>  " +
 					FormatUtil.FormatDouble (fcxMQuartic.forward (strMaturityTenor), 2, 2, 100.) + "  |  " +
@@ -557,7 +583,10 @@ public class OTCFloatFloatSwaps {
 			new org.drip.spline.params.SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (5),
-				org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2),
+				org.drip.spline.params.SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
 				new org.drip.spline.params.ResponseScalingShapeControl (
 					true,
 					new org.drip.function.R1ToR1.QuadraticRationalShapeControl (0.)
@@ -583,7 +612,10 @@ public class OTCFloatFloatSwaps {
 			null,
 			mktParams,
 			null,
-			dc.libor (dtSpot, iTenorInMonths + "M")
+			dc.libor (
+				dtSpot,
+				iTenorInMonths + "M"
+			)
 		);
 
 		/*

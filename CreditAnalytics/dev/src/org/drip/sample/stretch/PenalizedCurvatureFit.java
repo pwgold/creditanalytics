@@ -76,7 +76,8 @@ public class PenalizedCurvatureFit {
 			new PolynomialFunctionSetParams (iNumBasis),
 			sdic,
 			rssc,
-			null);
+			null
+		);
 	}
 
 	/*
@@ -114,7 +115,8 @@ public class PenalizedCurvatureFit {
 			aSCBC, // Basis Segment Builder parameters
 			sbfr, // Stretch Fitness Weighted Response
 			BoundarySettings.NaturalStandard(), // Boundary Condition - Natural
-			MultiSegmentSequence.CALIBRATE); // Calibrate the Stretch predictors to the responses
+			MultiSegmentSequence.CALIBRATE // Calibrate the Stretch predictors to the responses
+		);
 	}
 
 	/*
@@ -168,7 +170,8 @@ public class PenalizedCurvatureFit {
 
 		ResponseScalingShapeControl rssc = new ResponseScalingShapeControl (
 			false,
-			new QuadraticRationalShapeControl (dblShapeControllerTension));
+			new QuadraticRationalShapeControl (dblShapeControllerTension)
+		);
 
 		/*
 		 * Construct the segment inelastic parameter that is C2 (iK = 2 sets it to C2), with 2nd order
@@ -180,7 +183,8 @@ public class PenalizedCurvatureFit {
 
 		SegmentInelasticDesignControl sdic = SegmentInelasticDesignControl.Create (
 			iK,
-			iRoughnessPenaltyDerivativeOrder);
+			iRoughnessPenaltyDerivativeOrder
+		);
 
 		System.out.println (" \n--------------------------------------------------------------------------------------------------");
 
@@ -194,19 +198,42 @@ public class PenalizedCurvatureFit {
 		 * Construct the base, the base + 1 degree segment builder control
 		 */
 
-		SegmentCustomBuilderControl scbc1 = PolynomialSegmentControlParams (iPolyNumBasis, sdic, rssc);
+		SegmentCustomBuilderControl scbc1 = PolynomialSegmentControlParams (
+			iPolyNumBasis,
+			sdic,
+			rssc
+		);
 
-		SegmentCustomBuilderControl scbc2 = PolynomialSegmentControlParams (iPolyNumBasis + 1, sdic, rssc);
+		SegmentCustomBuilderControl scbc2 = PolynomialSegmentControlParams (
+			iPolyNumBasis + 1,
+			sdic,
+			rssc
+		);
 
 		/* 
 		 * Construct the base, the elevated, and the best fit basis spline stretches
 		 */
 
-		MultiSegmentSequence mssBase1 = BasisSplineStretchTest (adblX, adblY, scbc1, null);
+		MultiSegmentSequence mssBase1 = BasisSplineStretchTest (
+			adblX,
+			adblY,
+			scbc1,
+			null
+		);
 
-		MultiSegmentSequence mssBase2 = BasisSplineStretchTest (adblX, adblY, scbc2, null);
+		MultiSegmentSequence mssBase2 = BasisSplineStretchTest (
+			adblX,
+			adblY,
+			scbc2,
+			null
+		);
 
-		MultiSegmentSequence mssBestFit = BasisSplineStretchTest (adblX, adblY, scbc2, sbfr);
+		MultiSegmentSequence mssBestFit = BasisSplineStretchTest (
+			adblX,
+			adblY,
+			scbc2,
+			sbfr
+		);
 
 		/*
 		 * Compute the segment-by-segment monotonicity for all the three stretches

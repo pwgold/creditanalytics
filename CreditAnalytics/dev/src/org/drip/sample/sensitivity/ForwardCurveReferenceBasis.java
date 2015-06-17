@@ -140,8 +140,14 @@ public class ForwardCurveReferenceBasis {
 		for (int i = 0; i < aiDay.length; ++i)
 			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (
 				dtEffective,
-				dtEffective.addBusDays (aiDay[i], strCurrency),
-				ForwardLabel.Create (strCurrency, aiDay[i] + "D")
+				dtEffective.addBusDays (
+					aiDay[i],
+					strCurrency
+				),
+				ForwardLabel.Create (
+					strCurrency,
+					aiDay[i] + "D"
+				)
 			);
 
 		CalibratableFixedIncomeComponent[] aEDF = SingleStreamComponentBuilder.FuturesPack (
@@ -253,7 +259,11 @@ public class ForwardCurveReferenceBasis {
 
 		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (
 			"KLK_HYPERBOLIC_SHAPE_TEMPLATE",
-			new ValuationParams (dtSpot, dtSpot, "USD"),
+			new ValuationParams (
+				dtSpot,
+				dtSpot,
+				strCurrency
+			),
 			aDepositComp,
 			adblDepositQuote,
 			null,
@@ -391,7 +401,15 @@ public class ForwardCurveReferenceBasis {
 		 * Set the discount curve based component market parameters.
 		 */
 
-		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (dc, null, null, null, null, null, null);
+		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (
+			dc,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
 
 		Map<String, ForwardCurve> mapForward = new HashMap<String, ForwardCurve>();
 
@@ -401,7 +419,10 @@ public class ForwardCurveReferenceBasis {
 
 		ForwardCurve fcxMQuartic = ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (
 			"QUARTIC_FWD" + strBasisTenor,
-			ForwardLabel.Create (strCurrency, strBasisTenor),
+			ForwardLabel.Create (
+				strCurrency,
+				strBasisTenor
+			),
 			valParams,
 			null,
 			mktParams,
@@ -414,14 +435,25 @@ public class ForwardCurveReferenceBasis {
 			dblStartingFwd
 		);
 
-		mapForward.put (" QUARTIC_FWD" + strBasisTenor, fcxMQuartic);
+		mapForward.put (
+			" QUARTIC_FWD" + strBasisTenor,
+			fcxMQuartic
+		);
 
 		/*
 		 * Set the discount curve + quartic polynomial forward curve based component market parameters.
 		 */
 
-		CurveSurfaceQuoteSet mktParamsQuarticFwd = MarketParamsBuilder.Create
-			(dc, fcxMQuartic, null, null, null, null, null, null);
+		CurveSurfaceQuoteSet mktParamsQuarticFwd = MarketParamsBuilder.Create (
+			dc,
+			fcxMQuartic,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
 
 		int i = 0;
 		int iFreq = 12 / iTenorInMonths;
@@ -443,7 +475,12 @@ public class ForwardCurveReferenceBasis {
 
 			FloatFloatComponent ffc = aFFC[i++];
 
-			CaseInsensitiveTreeMap<Double> mapQuarticValue = ffc.value (valParams, null, mktParamsQuarticFwd, null);
+			CaseInsensitiveTreeMap<Double> mapQuarticValue = ffc.value (
+				valParams,
+				null,
+				mktParamsQuarticFwd,
+				null
+			);
 
 			System.out.println (" " + strMaturityTenor + " =>  " +
 				FormatUtil.FormatDouble (fcxMQuartic.forward (strMaturityTenor), 2, 2, 100.) + "  |  " +
@@ -486,7 +523,11 @@ public class ForwardCurveReferenceBasis {
 		 * Construct the Discount Curve using its instruments and quotes
 		 */
 
-		DiscountCurve dc = MakeDC (dtToday, strCurrency, 0.);
+		DiscountCurve dc = MakeDC (
+			dtToday,
+			strCurrency,
+			0.
+		);
 
 		System.out.println ("\n------------------------------------------------------------");
 
@@ -604,7 +645,10 @@ public class ForwardCurveReferenceBasis {
 
 		System.out.println ("--------------------------------------------------------------------------------------------------------------------------------------------\n");
 
-		ForwardJack (dtToday, mapForward1M6M);
+		ForwardJack (
+			dtToday,
+			mapForward1M6M
+		);
 
 		System.out.println ("\n--------------------------------------------------------------------------------------------------------------------------------------------");
 
@@ -612,7 +656,10 @@ public class ForwardCurveReferenceBasis {
 
 		System.out.println ("--------------------------------------------------------------------------------------------------------------------------------------------\n");
 
-		ForwardJack (dtToday, mapForward3M6M);
+		ForwardJack (
+			dtToday,
+			mapForward3M6M
+		);
 
 		System.out.println ("\n--------------------------------------------------------------------------------------------------------------------------------------------");
 
@@ -620,7 +667,10 @@ public class ForwardCurveReferenceBasis {
 
 		System.out.println ("--------------------------------------------------------------------------------------------------------------------------------------------\n");
 
-		ForwardJack (dtToday, mapForward12M6M);
+		ForwardJack (
+			dtToday,
+			mapForward12M6M
+		);
 	}
 
 	public static final void main (

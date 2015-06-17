@@ -154,9 +154,15 @@ public class UnitRandomSequenceBound {
 	{
 		CreditAnalytics.Init ("");
 
-		BoundedUniform uniformRandom = new BoundedUniform (0., 1.);
+		BoundedUniform uniformRandom = new BoundedUniform (
+			0.,
+			1.
+		);
 
-		R1Lebesgue uniformDistribution = new R1Lebesgue (0., 1.);
+		R1Lebesgue uniformDistribution = new R1Lebesgue (
+			0.,
+			1.
+		);
 
 		int[] aiSampleSize = new int[] {
 			10, 20, 50, 100, 250

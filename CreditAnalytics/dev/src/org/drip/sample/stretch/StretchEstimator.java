@@ -73,7 +73,8 @@ public class StretchEstimator {
 			new PolynomialFunctionSetParams (iNumBasis),
 			sdic,
 			rssc,
-			null);
+			null
+		);
 	}
 
 	/*
@@ -93,7 +94,8 @@ public class StretchEstimator {
 			new PolynomialFunctionSetParams (iNumBasis),
 			sdic,
 			rssc,
-			null);
+			null
+		);
 	}
 
 	/*
@@ -113,7 +115,8 @@ public class StretchEstimator {
 			new ExponentialTensionSetParams (dblTension),
 			sdic,
 			rssc,
-			null);
+			null
+		);
 	}
 
 	/*
@@ -133,7 +136,8 @@ public class StretchEstimator {
 			new ExponentialTensionSetParams (dblTension),
 			sdic,
 			rssc,
-			null);
+			null
+		);
 	}
 
 	/*
@@ -153,7 +157,8 @@ public class StretchEstimator {
 			new KaklisPandelisSetParams (iKPTensionDegree),
 			sdic,
 			rssc,
-			null);
+			null
+		);
 	}
 
 	/*
@@ -195,7 +200,8 @@ public class StretchEstimator {
 			aSCBC, // Basis Segment Builder parameters
 			null,  // NULL segment Best Fit Response
 			BoundarySettings.NaturalStandard(), // Boundary Condition - Natural
-			MultiSegmentSequence.CALIBRATE); // Calibrate the Stretch predictors to the responses
+			MultiSegmentSequence.CALIBRATE // Calibrate the Stretch predictors to the responses
+		);
 
 		/*
 		 * Estimate, compute the segment-by-segment monotonicity and the Stretch Jacobian
@@ -221,7 +227,8 @@ public class StretchEstimator {
 			9.,  								// Predictor Ordinate at which the Insertion is to be made
 			10., 								// Response Value to be inserted
 			BoundarySettings.NaturalStandard(), // Boundary Condition - Natural
-			MultiSegmentSequence.CALIBRATE); 	// Calibrate the Stretch predictors to the responses
+			MultiSegmentSequence.CALIBRATE 	// Calibrate the Stretch predictors to the responses
+		);
 
 		dblX = 1.;
 
@@ -292,7 +299,8 @@ public class StretchEstimator {
 
 		ResponseScalingShapeControl rssc = new ResponseScalingShapeControl (
 			true,
-			new QuadraticRationalShapeControl (dblShapeControllerTension));
+			new QuadraticRationalShapeControl (dblShapeControllerTension)
+		);
 
 		/*
 		 * Construct the segment inelastic parameter that is C2 (iK = 2 sets it to C2), with 2nd order
@@ -302,7 +310,10 @@ public class StretchEstimator {
 		int iK = 1;
 		int iRoughnessPenaltyDerivativeOrder = 2;
 
-		SegmentInelasticDesignControl sdic = SegmentInelasticDesignControl.Create (iK, iRoughnessPenaltyDerivativeOrder);
+		SegmentInelasticDesignControl sdic = SegmentInelasticDesignControl.Create (
+			iK,
+			iRoughnessPenaltyDerivativeOrder
+		);
 
 		/* 
 		 * Construct the C1 Hermite Polynomial Spline based Stretch Estimator by using the following steps:
@@ -317,7 +328,8 @@ public class StretchEstimator {
 			new PolynomialFunctionSetParams (iNumBasis),
 			sdic,
 			rssc,
-			null);
+			null
+		);
 
 		/*
 		 *	- 2a) Set the array of Segment Builder Parameters - one per segment
@@ -332,7 +344,11 @@ public class StretchEstimator {
 		 * - 2b) Construct the Stretch
 		 */
 
-		MultiSegmentSequence mss = MultiSegmentSequenceBuilder.CreateUncalibratedStretchEstimator ("SPLINE_STRETCH", adblX, aSCBC);
+		MultiSegmentSequence mss = MultiSegmentSequenceBuilder.CreateUncalibratedStretchEstimator (
+			"SPLINE_STRETCH",
+			adblX,
+			aSCBC
+		);
 
 		SegmentPredictorResponseDerivative[] aSPRDLeft = new SegmentPredictorResponseDerivative[adblY.length - 1];
 		SegmentPredictorResponseDerivative[] aSPRDRight = new SegmentPredictorResponseDerivative[adblY.length - 1];
@@ -351,7 +367,15 @@ public class StretchEstimator {
 		 * - 4) Calibrate the Stretch and compute the Jacobian
 		 */
 
-		System.out.println ("Stretch Setup Succeeded: " + mss.setupHermite (aSPRDLeft, aSPRDRight, null, null, MultiSegmentSequence.CALIBRATE));
+		System.out.println ("Stretch Setup Succeeded: " +
+			mss.setupHermite (
+				aSPRDLeft,
+				aSPRDRight,
+				null,
+				null,
+				MultiSegmentSequence.CALIBRATE
+			)
+		);
 
 		double dblX = 0.;
 		double dblXMax = 4.;
@@ -379,11 +403,22 @@ public class StretchEstimator {
 		 * - 3) Compute the Estimated segment value and the motonicity across a suitable variate range.
 		 */
 
-		SegmentPredictorResponseDerivative sprdLeftSegmentRightNode = new SegmentPredictorResponseDerivative (27.5, new double[] {25.5});
+		SegmentPredictorResponseDerivative sprdLeftSegmentRightNode = new SegmentPredictorResponseDerivative (
+			27.5,
+			new double[] {25.5}
+		);
 
-		SegmentPredictorResponseDerivative sprdRightSegmentLeftNode = new SegmentPredictorResponseDerivative (27.5, new double[] {25.5});
+		SegmentPredictorResponseDerivative sprdRightSegmentLeftNode = new SegmentPredictorResponseDerivative (
+			27.5,
+			new double[] {25.5}
+		);
 
-		MultiSegmentSequence mssInsert = MultiSegmentSequenceModifier.InsertKnot (mss, 2.5, sprdLeftSegmentRightNode, sprdRightSegmentLeftNode);
+		MultiSegmentSequence mssInsert = MultiSegmentSequenceModifier.InsertKnot (
+			mss,
+			2.5,
+			sprdLeftSegmentRightNode,
+			sprdRightSegmentLeftNode
+		);
 
 		dblX = 1.;
 
@@ -404,7 +439,11 @@ public class StretchEstimator {
 		 * - 3) Compute the Estimated segment value and the motonicity across a suitable variate range.
 		 */
 
-		MultiSegmentSequence mssCardinalInsert = MultiSegmentSequenceModifier.InsertCardinalKnot (mss, 2.5, 0.);
+		MultiSegmentSequence mssCardinalInsert = MultiSegmentSequenceModifier.InsertCardinalKnot (
+			mss,
+			2.5,
+			0.
+		);
 
 		dblX = 1.;
 
@@ -425,7 +464,10 @@ public class StretchEstimator {
 		 * - 3) Compute the Estimated segment value and the motonicity across a suitable variate range.
 		 */
 
-		MultiSegmentSequence mssCatmullRomInsert = MultiSegmentSequenceModifier.InsertCatmullRomKnot (mss, 2.5);
+		MultiSegmentSequence mssCatmullRomInsert = MultiSegmentSequenceModifier.InsertCatmullRomKnot (
+			mss,
+			2.5
+		);
 
 		dblX = 1.;
 
@@ -461,7 +503,8 @@ public class StretchEstimator {
 			new double[] {0.25, 0.25, 12.25, 42.25},	// Array of Segment Response Values
 			null, 										// Fitness Weighted Response
 			BoundarySettings.NaturalStandard(), 		// Boundary Condition - Natural
-			MultiSegmentSequence.CALIBRATE)); 			// Calibrate the Stretch predictors to the responses
+			MultiSegmentSequence.CALIBRATE) 			// Calibrate the Stretch predictors to the responses
+		);
 
 		System.out.println ("Value = " + sslp.responseValue (2.16));
 
@@ -498,7 +541,8 @@ public class StretchEstimator {
 			adblY,						// The Array of Response Value
 			strGeneratorType,			// The C1 Generator Type
 			bEliminateSpuriousExtrema,	// TRUE => Eliminate Spurious Extremum
-			bApplyMonotoneFilter);		// TRUE => Apply Monotone Filter
+			bApplyMonotoneFilter		// TRUE => Apply Monotone Filter
+		);
 
 		/*
 		 * Array of Segment Builder Parameters - one per segment
@@ -520,7 +564,8 @@ public class StretchEstimator {
 			lmcg.C1(),
 			aSCBC,
 			null,
-			MultiSegmentSequence.CALIBRATE);
+			MultiSegmentSequence.CALIBRATE
+		);
 	}
 
 	/*
@@ -567,7 +612,8 @@ public class StretchEstimator {
 			9.,  								// Predictor Ordinate at which the Insertion is to be made
 			10., 								// Response Value to be inserted
 			BoundarySettings.NaturalStandard(), // Boundary Condition - Natural
-			MultiSegmentSequence.CALIBRATE); 	// Calibrate the Stretch predictors to the responses
+			MultiSegmentSequence.CALIBRATE 	// Calibrate the Stretch predictors to the responses
+		);
 
 		dblX = 1.;
 
@@ -632,7 +678,8 @@ public class StretchEstimator {
 
 		ResponseScalingShapeControl rssc = new ResponseScalingShapeControl (
 			true,
-			new QuadraticRationalShapeControl (dblShapeControllerTension));
+			new QuadraticRationalShapeControl (dblShapeControllerTension)
+		);
 
 		/*
 		 * Construct the segment inelastic parameter that is C2 (iK = 2 sets it to C2), with 2nd order
@@ -642,7 +689,10 @@ public class StretchEstimator {
 		int iK = 2;
 		int iRoughnessPenaltyDerivativeOrder = 2;
 
-		SegmentInelasticDesignControl sdic = SegmentInelasticDesignControl.Create (iK, iRoughnessPenaltyDerivativeOrder);
+		SegmentInelasticDesignControl sdic = SegmentInelasticDesignControl.Create (
+			iK,
+			iRoughnessPenaltyDerivativeOrder
+		);
 
 		/*
 		 * Bernstein Polynomial Basis Spline Stretch Test
@@ -652,7 +702,15 @@ public class StretchEstimator {
 
 		int iBernPolyNumBasis = 4;
 
-		BasisSplineStretchTest (adblX, adblY, BernsteinPolynomialSegmentControlParams (iBernPolyNumBasis, sdic, rssc));
+		BasisSplineStretchTest (
+			adblX,
+			adblY,
+			BernsteinPolynomialSegmentControlParams (
+				iBernPolyNumBasis,
+				sdic,
+				rssc
+			)
+		);
 
 		/*
 		 * Regular Polynomial Basis Spline Stretch Test
@@ -662,7 +720,15 @@ public class StretchEstimator {
 
 		int iPolyNumBasis = 4;
 
-		BasisSplineStretchTest (adblX, adblY, PolynomialSegmentControlParams (iPolyNumBasis, sdic, rssc));
+		BasisSplineStretchTest (
+			adblX,
+			adblY,
+			PolynomialSegmentControlParams (
+				iPolyNumBasis,
+				sdic,
+				rssc
+			)
+		);
 
 		/*
 		 * Exponential Tension Basis Spline Stretch Test
@@ -672,7 +738,15 @@ public class StretchEstimator {
 
 		double dblTension = 1.;
 
-		BasisSplineStretchTest (adblX, adblY, ExponentialTensionSegmentControlParams (dblTension, sdic, rssc));
+		BasisSplineStretchTest (
+			adblX,
+			adblY,
+			ExponentialTensionSegmentControlParams (
+				dblTension,
+				sdic,
+				rssc
+			)
+		);
 
 		/*
 		 * Hyperbolic Tension Basis Spline Stretch Test
@@ -680,7 +754,15 @@ public class StretchEstimator {
 
 		System.out.println (" \n---------- \n HYPERBOLIC TENSION \n ---------- \n");
 
-		BasisSplineStretchTest (adblX, adblY, HyperbolicTensionSegmentControlParams (dblTension, sdic, rssc));
+		BasisSplineStretchTest (
+			adblX,
+			adblY,
+			HyperbolicTensionSegmentControlParams (
+				dblTension,
+				sdic,
+				rssc
+			)
+		);
 
 		/*
 		 * Kaklis-Pandelis Basis Spline Stretch Test
@@ -690,7 +772,15 @@ public class StretchEstimator {
 
 		int iKPTensionDegree = 2;
 
-		BasisSplineStretchTest (adblX, adblY, KaklisPandelisSegmentControlParams (iKPTensionDegree, sdic, rssc));
+		BasisSplineStretchTest (
+			adblX,
+			adblY,
+			KaklisPandelisSegmentControlParams (
+				iKPTensionDegree,
+				sdic,
+				rssc
+			)
+		);
 
 		/*
 		 * Catmull-Rom Cardinal Hermite Basis Spline Stretch Test
@@ -721,10 +811,15 @@ public class StretchEstimator {
 				adblX,
 				adblY,
 				LocalMonotoneCkGenerator.C1_AKIMA,
-				PolynomialSegmentControlParams (iPolyNumBasis, sdic, rssc),
+				PolynomialSegmentControlParams (
+					iPolyNumBasis,
+					sdic,
+					rssc
+				),
 				true,
-				true)
-			);
+				true
+			)
+		);
 
 		/*
 		 * Bessel/Hermite C1 Basis Spline Stretch Test
@@ -739,10 +834,15 @@ public class StretchEstimator {
 				adblX,
 				adblY,
 				LocalMonotoneCkGenerator.C1_BESSEL,
-				PolynomialSegmentControlParams (iPolyNumBasis, sdic, rssc),
+				PolynomialSegmentControlParams (
+					iPolyNumBasis,
+					sdic,
+					rssc
+				),
 				true,
-				true)
-			);
+				true
+			)
+		);
 
 		/*
 		 * Harmonic Monotone C1 Basis Spline Stretch Test with Filter
@@ -757,10 +857,15 @@ public class StretchEstimator {
 				adblX,
 				adblY,
 				LocalMonotoneCkGenerator.C1_HARMONIC,
-				PolynomialSegmentControlParams (iPolyNumBasis, sdic, rssc),
+				PolynomialSegmentControlParams (
+					iPolyNumBasis,
+					sdic,
+					rssc
+				),
 				true,
-				true)
-			);
+				true
+			)
+		);
 
 		/*
 		 * Harmonic Monotone C1 Basis Spline Stretch Test without Filter
@@ -775,10 +880,15 @@ public class StretchEstimator {
 				adblX,
 				adblY,
 				LocalMonotoneCkGenerator.C1_HARMONIC,
-				PolynomialSegmentControlParams (iPolyNumBasis, sdic, rssc),
+				PolynomialSegmentControlParams (
+					iPolyNumBasis,
+					sdic,
+					rssc
+				),
 				true,
-				false)
-			);
+				false
+			)
+		);
 
 		/*
 		 * Huynh-Le Floch Limiter Monotone C1 Basis Spline Stretch Test without Filter
@@ -793,10 +903,15 @@ public class StretchEstimator {
 				adblX,
 				adblY,
 				LocalMonotoneCkGenerator.C1_HUYNH_LE_FLOCH,
-				PolynomialSegmentControlParams (iPolyNumBasis, sdic, rssc),
+				PolynomialSegmentControlParams (
+					iPolyNumBasis,
+					sdic,
+					rssc
+				),
 				true,
-				true)
-			);
+				true
+			)
+		);
 
 		/*
 		 * 
@@ -812,10 +927,15 @@ public class StretchEstimator {
 				adblX,
 				adblY,
 				LocalMonotoneCkGenerator.C1_HYMAN83,
-				PolynomialSegmentControlParams (iPolyNumBasis, sdic, rssc),
+				PolynomialSegmentControlParams (
+					iPolyNumBasis,
+					sdic,
+					rssc
+				),
 				true,
-				true)
-			);
+				true
+			)
+		);
 
 		/*
 		 * Hyman 1989 Monotone C1 Basis Spline Stretch Test with Filter
@@ -830,10 +950,15 @@ public class StretchEstimator {
 				adblX,
 				adblY,
 				LocalMonotoneCkGenerator.C1_HYMAN89,
-				PolynomialSegmentControlParams (iPolyNumBasis, sdic, rssc),
+				PolynomialSegmentControlParams (
+					iPolyNumBasis,
+					sdic,
+					rssc
+				),
 				true,
-				true)
-			);
+				true
+			)
+		);
 
 		/*
 		 * Kruger C1 Basis Spline Stretch Test with Filter
@@ -848,10 +973,15 @@ public class StretchEstimator {
 				adblX,
 				adblY,
 				LocalMonotoneCkGenerator.C1_KRUGER,
-				PolynomialSegmentControlParams (iPolyNumBasis, sdic, rssc),
+				PolynomialSegmentControlParams (
+					iPolyNumBasis,
+					sdic,
+					rssc
+				),
 				true,
-				true)
-			);
+				true
+			)
+		);
 
 		/*
 		 * Van Leer Limiter Monotone C1 Basis Spline Stretch Test without Filter
@@ -866,10 +996,15 @@ public class StretchEstimator {
 				adblX,
 				adblY,
 				LocalMonotoneCkGenerator.C1_VAN_LEER,
-				PolynomialSegmentControlParams (iPolyNumBasis, sdic, rssc),
+				PolynomialSegmentControlParams (
+					iPolyNumBasis,
+					sdic,
+					rssc
+				),
 				true,
-				false)
-			);
+				false
+			)
+		);
 	}
 
 	public static final void main (

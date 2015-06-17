@@ -52,7 +52,10 @@ public class GlivenkoCantelliUniformBound {
 		SingleSequenceAgnosticMetrics[] aSSAM = new SingleSequenceAgnosticMetrics[iNumSample];
 
 		for (int i = 0; i < iNumSample; ++i)
-			aSSAM[i] = rsg.sequence (iNumSample, null);
+			aSSAM[i] = rsg.sequence (
+				iNumSample,
+				null
+			);
 
 		return aSSAM;
 	}
@@ -87,7 +90,10 @@ public class GlivenkoCantelliUniformBound {
 			);
 
 			EfronSteinMetrics esam = new EfronSteinMetrics (
-				GlivenkoCantelliFunction (binarySequenceGenerator, iNumSample),
+				GlivenkoCantelliFunction (
+					binarySequenceGenerator,
+					iNumSample
+				),
 				aSSAM
 			);
 
@@ -114,7 +120,10 @@ public class GlivenkoCantelliUniformBound {
 			);
 
 			EfronSteinMetrics esam = new EfronSteinMetrics (
-				GlivenkoCantelliFunction (binarySequenceGenerator, iNumSample),
+				GlivenkoCantelliFunction (
+					binarySequenceGenerator,
+					iNumSample
+				),
 				aSSAM
 			);
 
@@ -146,7 +155,10 @@ public class GlivenkoCantelliUniformBound {
 			);
 
 			EfronSteinMetrics esam = new EfronSteinMetrics (
-				GlivenkoCantelliFunction (binarySequenceGenerator, iNumSample),
+				GlivenkoCantelliFunction (
+					binarySequenceGenerator,
+					iNumSample
+				),
 				aSSAM
 			);
 
@@ -210,7 +222,10 @@ public class GlivenkoCantelliUniformBound {
 			);
 
 			EfronSteinMetrics esam = new EfronSteinMetrics (
-				GlivenkoCantelliFunction (binarySequenceGenerator, iNumSample),
+				GlivenkoCantelliFunction (
+					binarySequenceGenerator,
+					iNumSample
+				),
 				aSSAM
 			);
 

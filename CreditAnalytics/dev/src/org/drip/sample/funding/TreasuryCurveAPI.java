@@ -100,7 +100,12 @@ public class TreasuryCurveAPI {
 		Bond aTSYBond[] = new Bond[astrTSYBondName.length];
 
 		for (int i = 0; i < astrTSYBondName.length; ++i)
-			aTSYBond[i] = CreateTSYBond (astrTSYBondName[i], adblCoupon[i], dt, aiMaturityYear[i]);
+			aTSYBond[i] = CreateTSYBond (
+				astrTSYBondName[i],
+				adblCoupon[i],
+				dt,
+				aiMaturityYear[i]
+			);
 
 		return aTSYBond;
 	}
@@ -122,13 +127,15 @@ public class TreasuryCurveAPI {
 		for (int i = 0; i < aTSYBond.length; ++i)
 			astrCalibMeasure[i] = "Yield";
 
-		return ScenarioDiscountCurveBuilder.NonlinearBuild (dt,
+		return ScenarioDiscountCurveBuilder.NonlinearBuild (
+			dt,
 			"USD",
 			DiscountCurveBuilder.BOOTSTRAP_MODE_CONSTANT_FORWARD,
 			aTSYBond,
 			adblCalibYield,
 			astrCalibMeasure,
-			null);
+			null
+		);
 	}
 
 	/*
@@ -147,7 +154,11 @@ public class TreasuryCurveAPI {
 
 		for (int i = 0; i < aTSYBond.length; ++i) {
 			double dblPrice = aTSYBond[i].priceFromBumpedDC (
-				new ValuationParams (DateUtil.Today(), DateUtil.Today(), "USD"),
+				new ValuationParams (
+					DateUtil.Today(),
+					DateUtil.Today(),
+					"USD"
+				),
 				MarketParamsBuilder.Discount (dcTSY),
 				aTSYBond[i].maturityDate().julian(),
 				1.,
@@ -158,7 +169,11 @@ public class TreasuryCurveAPI {
 				FormatUtil.FormatDouble (dblPrice, 2, 3, 100.));
 
 			double dblYield = aTSYBond[i].yieldFromPrice (
-				new ValuationParams (DateUtil.Today(), DateUtil.Today(), "USD"),
+				new ValuationParams (
+					DateUtil.Today(),
+					DateUtil.Today(),
+					"USD"
+				),
 				MarketParamsBuilder.Discount (dcTSY),
 				null,
 				dblPrice
@@ -283,7 +298,11 @@ public class TreasuryCurveAPI {
 		 */
 
 		double dblPrice = bondOffTheRun.priceFromBumpedDC (
-			new ValuationParams (DateUtil.Today(), DateUtil.Today(), "USD"),
+			new ValuationParams (
+				DateUtil.Today(),
+				DateUtil.Today(),
+				"USD"
+			),
 			MarketParamsBuilder.Discount (dcTSY),
 			bondOffTheRun.maturityDate().julian(),
 			1.,
@@ -297,7 +316,11 @@ public class TreasuryCurveAPI {
 		 */
 
 		double dblYieldOffTheRun = bondOffTheRun.yieldFromPrice (
-			new ValuationParams (DateUtil.Today(), DateUtil.Today(), "USD"),
+			new ValuationParams (
+				DateUtil.Today(),
+				DateUtil.Today(),
+				"USD"
+			),
 			MarketParamsBuilder.Discount (dcTSY),
 			null,
 			dblPrice

@@ -153,15 +153,32 @@ public class BasisTensionSplineSet {
 		 * Construct the left and the right segments
 		 */
 
-		LatentStateResponseModel seg1 = LatentStateResponseModel.Create (1.0, 1.5, fs, rssc, segParams);
+		LatentStateResponseModel seg1 = LatentStateResponseModel.Create (
+			1.0,
+			1.5,
+			fs,
+			rssc,
+			segParams
+		);
 
-		LatentStateResponseModel seg2 = LatentStateResponseModel.Create (1.5, 2.0, fs, rssc, segParams);
+		LatentStateResponseModel seg2 = LatentStateResponseModel.Create (
+			1.5,
+			2.0,
+			fs,
+			rssc,
+			segParams
+		);
 
 		/*
 		 * Calibrate the left segment using the node values, and compute the segment Jacobian, the monotonicity, and the curvature penalty
 		 */
 
-		WengertJacobian wj1 = seg1.jackDCoeffDEdgeParams (25., 0., 20.25, null);
+		WengertJacobian wj1 = seg1.jackDCoeffDEdgeParams (
+			25.,
+			0.,
+			20.25,
+			null
+		);
 
 		System.out.println ("\tY[" + 1.0 + "]: " + seg1.responseValue (1.));
 
@@ -179,7 +196,14 @@ public class BasisTensionSplineSet {
 		 * Calibrate the right segment using the node values, and compute the segment Jacobian, the monotonicity, and the curvature penalty
 		 */
 
-		WengertJacobian wj2 = seg2.jackDCoeffDEdgeParams (seg1, "Default", 16., null, Double.NaN, null);
+		WengertJacobian wj2 = seg2.jackDCoeffDEdgeParams (
+			seg1,
+			"Default",
+			16.,
+			null,
+			Double.NaN,
+			null
+		);
 
 		System.out.println ("\tY[" + 1.5 + "]: " + seg2.responseValue (1.5));
 
@@ -197,7 +221,11 @@ public class BasisTensionSplineSet {
 		 * Re-calibrate Segment #2 with a different response value
 		 */
 
-		seg2.calibrate (seg1, 14., null);
+		seg2.calibrate (
+			seg1,
+			14.,
+			null
+		);
 
 		/*
 		 * Estimate the segment value at the given variate, and compute the corresponding Jacobian and the curvature penalty
@@ -237,7 +265,8 @@ public class BasisTensionSplineSet {
 
 		ResponseScalingShapeControl rssc = new ResponseScalingShapeControl (
 			true,
-			new QuadraticRationalShapeControl (dblShapeControllerTension));
+			new QuadraticRationalShapeControl (dblShapeControllerTension)
+		);
 
 		/*
 		 * Construct the segment inelastic parameter that is C2 (iK = 2 sets it to C2), with second order
@@ -249,7 +278,8 @@ public class BasisTensionSplineSet {
 
 		SegmentInelasticDesignControl segParams = SegmentInelasticDesignControl.Create (
 			iK,
-			iCurvaturePenaltyDerivativeOrder);
+			iCurvaturePenaltyDerivativeOrder
+		);
 
 		/*
 		 * Test the KLK Hyperbolic tension spline
@@ -257,7 +287,11 @@ public class BasisTensionSplineSet {
 
 		System.out.println ( " ----------- \n KLK HYPERBOLIC \n ----------- \n");
 
-		TestSpline (KLKHyperbolicTensionSpline(), rssc, segParams);
+		TestSpline (
+			KLKHyperbolicTensionSpline(),
+			rssc,
+			segParams
+		);
 
 		/*
 		 * Test the KLK Rational Linear tension spline
@@ -265,7 +299,11 @@ public class BasisTensionSplineSet {
 
 		System.out.println ( " ----------- \n KLK RATIONAL LINEAR \n ----------- \n");
 
-		TestSpline (KLKRationalLinearTensionSpline(), rssc, segParams);
+		TestSpline (
+			KLKRationalLinearTensionSpline(),
+			rssc,
+			segParams
+		);
 
 		/*
 		 * Test the KLK Rational Quadratic tension spline
@@ -273,7 +311,11 @@ public class BasisTensionSplineSet {
 
 		System.out.println ( " ----------- \n KLK RATIONAL QUADRATIC \n ----------- \n");
 
-		TestSpline (KLKRationalQuadraticTensionSpline(), rssc, segParams);
+		TestSpline (
+			KLKRationalQuadraticTensionSpline(),
+			rssc,
+			segParams
+		);
 
 		/*
 		 * Test the KLK Exponential tension spline
@@ -281,7 +323,11 @@ public class BasisTensionSplineSet {
 
 		System.out.println ( " ----------- \n KLK EXPONENTIAL \n ----------- \n");
 
-		TestSpline (KLKExponentialTensionSpline(), rssc, segParams);
+		TestSpline (
+			KLKExponentialTensionSpline(),
+			rssc,
+			segParams
+		);
 	}
 
 	public static final void main (

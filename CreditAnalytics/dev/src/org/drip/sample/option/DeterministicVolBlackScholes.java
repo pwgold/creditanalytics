@@ -95,8 +95,14 @@ public class DeterministicVolBlackScholes {
 		for (int i = 0; i < aiDay.length; ++i)
 			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (
 				dtEffective,
-				dtEffective.addBusDays (aiDay[i], strCurrency),
-				ForwardLabel.Create (strCurrency, "3M")
+				dtEffective.addBusDays (
+					aiDay[i],
+					strCurrency
+				),
+				ForwardLabel.Create (
+					strCurrency,
+					"3M"
+				)
 			);
 
 		CalibratableFixedIncomeComponent[] aEDF = SingleStreamComponentBuilder.FuturesPack (
@@ -162,7 +168,9 @@ public class DeterministicVolBlackScholes {
 
 		CalibratableFixedIncomeComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (
 			dtSpot,
-			new int[] {1, 2, 3, 7, 14, 21, 30, 60},
+			new int[] {
+				1, 2, 3, 7, 14, 21, 30, 60
+			},
 			0,
 			strCurrency
 		);
@@ -230,7 +238,11 @@ public class DeterministicVolBlackScholes {
 
 		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (
 			"KLK_HYPERBOLIC_SHAPE_TEMPLATE",
-			new ValuationParams (dtSpot, dtSpot, "USD"),
+			new ValuationParams (
+				dtSpot,
+				dtSpot,
+				strCurrency
+			),
 			aDepositComp,
 			adblDepositQuote,
 			astrDepositManifestMeasure,
@@ -253,13 +265,20 @@ public class DeterministicVolBlackScholes {
 
 		JulianDate dtToday = DateUtil.Today();
 
-		ValuationParams valParams = new ValuationParams (dtToday, dtToday, "USD");
+		ValuationParams valParams = new ValuationParams (
+			dtToday,
+			dtToday,
+			"USD"
+		);
 
 		/*
 		 * Construct the Discount Curve using its instruments and quotes
 		 */
 
-		DiscountCurve dc = MakeDC (dtToday, "USD");
+		DiscountCurve dc = MakeDC (
+			dtToday,
+			"USD"
+		);
 
 		JulianDate dtMaturity = dtToday.addTenor ("6M");
 
@@ -267,16 +286,18 @@ public class DeterministicVolBlackScholes {
 
 		EuropeanCallPut option = new EuropeanCallPut (
 			dtMaturity,
-			dblStrike);
+			dblStrike
+		);
 
 		double dblSpot = 1.;
 
 		SABRLIBORCapVolatility auSABRLIBORCapVol = new SABRLIBORCapVolatility (
-				dtToday.julian(),
-				0.2000,				// A
-				0.0005 / 365.25, 	// B
-				0.1000 / 365.25, 	// C
-				0.0050); 			// D
+			dtToday.julian(),
+			0.2000,				// A
+			0.0005 / 365.25, 	// B
+			0.1000 / 365.25, 	// C
+			0.0050   			// D
+		);
 
 		Map<String, Double> mapOptionCalc = option.value (
 			valParams,

@@ -98,7 +98,10 @@ public class IRSFutures {
 			"3M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
 			null,
-			ForwardLabel.Create (strCurrency, "3M"),
+			ForwardLabel.Create (
+				strCurrency,
+				"3M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -128,7 +131,10 @@ public class IRSFutures {
 					CompositePeriodBuilder.FloatingCompositeUnit (
 						CompositePeriodBuilder.EdgePair (
 							dtEffective,
-							dtEffective.addBusDays (aiDay[i], strCurrency)
+							dtEffective.addBusDays (
+								aiDay[i],
+								strCurrency
+							)
 						),
 						cps,
 						cfus
@@ -284,8 +290,14 @@ public class IRSFutures {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
 				null
 			),
 			BoundarySettings.NaturalStandard(),

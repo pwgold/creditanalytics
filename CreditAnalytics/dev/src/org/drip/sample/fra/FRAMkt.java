@@ -79,7 +79,10 @@ public class FRAMkt {
 			strTenor
 		);
 
-		ForwardLabel fri = ForwardLabel.Create (strCurrency, strTenor);
+		ForwardLabel fri = ForwardLabel.Create (
+			strCurrency,
+			strTenor
+		);
 
 		FundingLabel fundingLabel = FundingLabel.Standard (strCurrency);
 
@@ -124,7 +127,12 @@ public class FRAMkt {
 			new FlatUnivariate (dblEONIAEURIBOR6MCorrelation)
 		);
 
-		Map<String, Double> mapFRAOutput = fra.value (valParams, null, mktParams, null);
+		Map<String, Double> mapFRAOutput = fra.value (
+			valParams,
+			null,
+			mktParams,
+			null
+		);
 
 		for (Map.Entry<String, Double> me : mapFRAOutput.entrySet())
 			System.out.println ("\t" + me.getKey() + " => " + me.getValue());

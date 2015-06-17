@@ -63,32 +63,86 @@ public class IntegrandQuadrature {
 		int iRightDecimal = 8;
 
 		System.out.println ("\t\tActual      : " +
-			FormatUtil.FormatDouble (dblActual,
-			1, iRightDecimal, 1.));
+			FormatUtil.FormatDouble (dblActual, 1, iRightDecimal, 1.)
+		);
 
 		System.out.println ("\t\tLinear      : " +
-			FormatUtil.FormatDouble (R1ToR1Integrator.LinearQuadrature (au, dblStart, dblEnd),
-			1, iRightDecimal, 1.));
+			FormatUtil.FormatDouble (
+				R1ToR1Integrator.LinearQuadrature (
+					au,
+					dblStart,
+					dblEnd
+				),
+				1,
+				iRightDecimal,
+				1.
+			)
+		);
 
-		System.out.println ("\t\tMidPoint    : " +
-			FormatUtil.FormatDouble (R1ToR1Integrator.MidPoint (au, dblStart, dblEnd),
-			1, iRightDecimal, 1.));
+		System.out.println ("\t\tMidPoint     : " +
+			FormatUtil.FormatDouble (
+				R1ToR1Integrator.MidPoint (
+					au,
+					dblStart,
+					dblEnd
+				),
+				1,
+				iRightDecimal,
+				1.
+			)
+		);
 
-		System.out.println ("\t\tTrapezoidal : " +
-			FormatUtil.FormatDouble (R1ToR1Integrator.Trapezoidal (au, dblStart, dblEnd),
-			1, iRightDecimal, 1.));
+		System.out.println ("\t\tTrapezoidal  : " +
+			FormatUtil.FormatDouble (
+				R1ToR1Integrator.Trapezoidal (
+					au,
+					dblStart,
+					dblEnd
+				),
+				1,
+				iRightDecimal,
+				1.
+			)
+		);
 
-		System.out.println ("\t\tSimpson     : " +
-			FormatUtil.FormatDouble (R1ToR1Integrator.Simpson (au, dblStart, dblEnd),
-			1, iRightDecimal, 1.));
+		System.out.println ("\t\tSimpson      : " +
+			FormatUtil.FormatDouble (
+				R1ToR1Integrator.Simpson (
+					au,
+					dblStart,
+					dblEnd
+				),
+				1,
+				iRightDecimal,
+				1.
+			)
+		);
 
-		System.out.println ("\t\tSimpson 38  : " +
-			FormatUtil.FormatDouble (R1ToR1Integrator.Simpson (au, dblStart, dblEnd),
-			1, iRightDecimal, 1.));
+		System.out.println ("\t\tSimpson 38   : " +
+			FormatUtil.FormatDouble (
+				R1ToR1Integrator.Simpson38 (
+					au,
+					dblStart,
+					dblEnd
+				),
+				1,
+				iRightDecimal,
+				1.
+			)
+		);
 
-		System.out.println ("\t\tBoole       : " +
-			FormatUtil.FormatDouble (R1ToR1Integrator.Boole (au, dblStart, dblEnd),
-			1, iRightDecimal, 1.));
+		System.out.println ("\t\tBoole        : " +
+			FormatUtil.FormatDouble (
+				R1ToR1Integrator.Boole (
+					au,
+					dblStart,
+					dblEnd
+				),
+				1,
+				iRightDecimal,
+				1.
+			)
+		);
 	}
 
 	/*
@@ -103,7 +157,10 @@ public class IntegrandQuadrature {
 		double dblStart = 0.;
 		double dblEnd = 1.;
 
-		R1ToR1 auExp = new ExponentialTension (Math.E, 1.);
+		R1ToR1 auExp = new ExponentialTension (
+			Math.E,
+			1.
+		);
 
 		System.out.println ("\n\t-------------------------------------\n");
 
@@ -111,7 +168,8 @@ public class IntegrandQuadrature {
 			auExp,
 			auExp.evaluate (dblEnd) - auExp.evaluate (dblStart),
 			dblStart,
-			dblEnd);
+			dblEnd
+		);
 
 		System.out.println ("\n\t-------------------------------------\n");
 
@@ -128,7 +186,8 @@ public class IntegrandQuadrature {
 			au1,
 			Math.sin (dblEnd) - Math.sin (dblStart) - 0.25 * (dblEnd * dblEnd * dblEnd * dblEnd - dblStart * dblStart * dblStart * dblStart),
 			dblStart,
-			dblEnd);
+			dblEnd
+		);
 
 		System.out.println ("\n\t-------------------------------------\n");
 
@@ -147,7 +206,8 @@ public class IntegrandQuadrature {
 				(dblEnd * dblEnd * dblEnd - dblStart * dblStart * dblStart) +
 				(dblEnd * dblEnd - dblStart * dblStart),
 			dblStart,
-			dblEnd);
+			dblEnd
+		);
 
 		System.out.println ("\n\t-------------------------------------\n");
 	}

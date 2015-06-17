@@ -70,7 +70,10 @@ public class FloatFloatFloatFloatAnalysis {
 			iTenorInMonthsReference + "M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-			ForwardLabel.Create (strCouponCurrency, iTenorInMonthsReference + "M"),
+			ForwardLabel.Create (
+				strCouponCurrency,
+				iTenorInMonthsReference + "M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -79,7 +82,10 @@ public class FloatFloatFloatFloatAnalysis {
 			iTenorInMonthsDerived + "M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-			ForwardLabel.Create (strCouponCurrency, iTenorInMonthsDerived + "M"),
+			ForwardLabel.Create (
+				strCouponCurrency,
+				iTenorInMonthsDerived + "M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -184,35 +190,89 @@ public class FloatFloatFloatFloatAnalysis {
 		final double dblFundingFXCorr)
 		throws Exception
 	{
-		mktParams.setForwardCurveVolSurface (forwardReferenceLabel1, new FlatUnivariate (dblForwardReference1Vol));
+		mktParams.setForwardCurveVolSurface (
+			forwardReferenceLabel1,
+			new FlatUnivariate (dblForwardReference1Vol)
+		);
 
-		mktParams.setForwardCurveVolSurface (forwardReferenceLabel2, new FlatUnivariate (dblForwardReference2Vol));
+		mktParams.setForwardCurveVolSurface (
+			forwardReferenceLabel2,
+			new FlatUnivariate (dblForwardReference2Vol)
+		);
 
-		mktParams.setForwardCurveVolSurface (forwardDerivedLabel1, new FlatUnivariate (dblForwardDerived1Vol));
+		mktParams.setForwardCurveVolSurface (
+			forwardDerivedLabel1,
+			new FlatUnivariate (dblForwardDerived1Vol)
+		);
 
-		mktParams.setForwardCurveVolSurface (forwardDerivedLabel2, new FlatUnivariate (dblForwardDerived2Vol));
+		mktParams.setForwardCurveVolSurface (
+			forwardDerivedLabel2,
+			new FlatUnivariate (dblForwardDerived2Vol)
+		);
 
-		mktParams.setFundingCurveVolSurface (fundingLabel, new FlatUnivariate (dblFundingVol));
+		mktParams.setFundingCurveVolSurface (
+			fundingLabel,
+			new FlatUnivariate (dblFundingVol)
+		);
 
-		mktParams.setFXCurveVolSurface (fxLabel, new FlatUnivariate (dblFXVol));
+		mktParams.setFXCurveVolSurface (
+			fxLabel,
+			new FlatUnivariate (dblFXVol)
+		);
 
-		mktParams.setForwardFundingCorrSurface (forwardReferenceLabel1, fundingLabel, new FlatUnivariate (dblForwardReference1FundingCorr));
+		mktParams.setForwardFundingCorrSurface (
+			forwardReferenceLabel1,
+			fundingLabel,
+			new FlatUnivariate (dblForwardReference1FundingCorr)
+		);
 
-		mktParams.setForwardFundingCorrSurface (forwardReferenceLabel2, fundingLabel, new FlatUnivariate (dblForwardReference2FundingCorr));
+		mktParams.setForwardFundingCorrSurface (
+			forwardReferenceLabel2,
+			fundingLabel,
+			new FlatUnivariate (dblForwardReference2FundingCorr)
+		);
 
-		mktParams.setForwardFundingCorrSurface (forwardDerivedLabel1, fundingLabel, new FlatUnivariate (dblForwardDerived1FundingCorr));
+		mktParams.setForwardFundingCorrSurface (
+			forwardDerivedLabel1,
+			fundingLabel,
+			new FlatUnivariate (dblForwardDerived1FundingCorr)
+		);
 
-		mktParams.setForwardFundingCorrSurface (forwardDerivedLabel2, fundingLabel, new FlatUnivariate (dblForwardDerived2FundingCorr));
+		mktParams.setForwardFundingCorrSurface (
+			forwardDerivedLabel2,
+			fundingLabel,
+			new FlatUnivariate (dblForwardDerived2FundingCorr)
+		);
 
-		mktParams.setForwardFXCorrSurface (forwardReferenceLabel1, fxLabel, new FlatUnivariate (dblForwardReference1FXCorr));
+		mktParams.setForwardFXCorrSurface (
+			forwardReferenceLabel1,
+			fxLabel,
+			new FlatUnivariate (dblForwardReference1FXCorr)
+		);
 
-		mktParams.setForwardFXCorrSurface (forwardReferenceLabel2, fxLabel, new FlatUnivariate (dblForwardReference2FXCorr));
+		mktParams.setForwardFXCorrSurface (
+			forwardReferenceLabel2,
+			fxLabel,
+			new FlatUnivariate (dblForwardReference2FXCorr)
+		);
 
-		mktParams.setForwardFXCorrSurface (forwardDerivedLabel1, fxLabel, new FlatUnivariate (dblForwardDerived1FXCorr));
+		mktParams.setForwardFXCorrSurface (
+			forwardDerivedLabel1,
+			fxLabel,
+			new FlatUnivariate (dblForwardDerived1FXCorr)
+		);
 
-		mktParams.setForwardFXCorrSurface (forwardDerivedLabel2, fxLabel, new FlatUnivariate (dblForwardDerived2FXCorr));
+		mktParams.setForwardFXCorrSurface (
+			forwardDerivedLabel2,
+			fxLabel,
+			new FlatUnivariate (dblForwardDerived2FXCorr)
+		);
 
-		mktParams.setFundingFXCorrSurface (fundingLabel, fxLabel, new FlatUnivariate (dblFundingFXCorr));
+		mktParams.setFundingFXCorrSurface (
+			fundingLabel,
+			fxLabel,
+			new FlatUnivariate (dblFundingFXCorr)
+		);
 	}
 
 	private static final void VolCorrScenario (
@@ -285,7 +345,12 @@ public class FloatFloatFloatFloatAnalysis {
 			FormatUtil.FormatDouble (dblFundingFXCorr, 2, 0, 100.) + "%] = ";
 
 		for (int i = 0; i < aCP.length; ++i) {
-			CaseInsensitiveTreeMap<Double> mapOutput = aCP[i].value (valParams, null, mktParams, null);
+			CaseInsensitiveTreeMap<Double> mapOutput = aCP[i].value (
+				valParams,
+				null,
+				mktParams,
+				null
+			);
 
 			if (0 != i) strDump += " || ";
 
@@ -320,15 +385,31 @@ public class FloatFloatFloatFloatAnalysis {
 
 		JulianDate dtToday = org.drip.analytics.date.DateUtil.Today();
 
-		ValuationParams valParams = new ValuationParams (dtToday, dtToday, "USD");
+		ValuationParams valParams = new ValuationParams (
+			dtToday,
+			dtToday,
+			"USD"
+		);
 
-		ForwardLabel fri3MReference = ForwardLabel.Create (strReferenceCurrency, "3M");
+		ForwardLabel fri3MReference = ForwardLabel.Create (
+			strReferenceCurrency,
+			"3M"
+		);
 
-		ForwardLabel fri6MReference = ForwardLabel.Create (strReferenceCurrency, "6M");
+		ForwardLabel fri6MReference = ForwardLabel.Create (
+			strReferenceCurrency,
+			"6M"
+		);
 
-		ForwardLabel fri3MDerived = ForwardLabel.Create (strDerivedCurrency, "3M");
+		ForwardLabel fri3MDerived = ForwardLabel.Create (
+			strDerivedCurrency,
+			"3M"
+		);
 
-		ForwardLabel fri6MDerived = ForwardLabel.Create (strDerivedCurrency, "6M");
+		ForwardLabel fri6MDerived = ForwardLabel.Create (
+			strDerivedCurrency,
+			"6M"
+		);
 
 		FundingLabel fundingLabelReference = FundingLabel.Standard (strReferenceCurrency);
 
@@ -403,7 +484,10 @@ public class FloatFloatFloatFloatAnalysis {
 				dtToday,
 				fri3MReference,
 				dblReference3MForwardRate,
-				new CollateralizationParams ("OVERNIGHT_INDEX", strReferenceCurrency)
+				new CollateralizationParams (
+					"OVERNIGHT_INDEX",
+					strReferenceCurrency
+				)
 			)
 		);
 
@@ -412,7 +496,10 @@ public class FloatFloatFloatFloatAnalysis {
 				dtToday,
 				fri6MReference,
 				dblReference6MForwardRate,
-				new CollateralizationParams ("OVERNIGHT_INDEX", strReferenceCurrency)
+				new CollateralizationParams (
+					"OVERNIGHT_INDEX",
+					strReferenceCurrency
+				)
 			)
 		);
 
@@ -421,7 +508,10 @@ public class FloatFloatFloatFloatAnalysis {
 				dtToday,
 				fri3MDerived,
 				dblDerived3MForwardRate,
-				new CollateralizationParams ("OVERNIGHT_INDEX", strReferenceCurrency)
+				new CollateralizationParams (
+					"OVERNIGHT_INDEX",
+					strReferenceCurrency
+				)
 			)
 		);
 
@@ -430,7 +520,10 @@ public class FloatFloatFloatFloatAnalysis {
 				dtToday,
 				fri6MDerived,
 				dblDerived6MForwardRate,
-				new CollateralizationParams ("OVERNIGHT_INDEX", strReferenceCurrency)
+				new CollateralizationParams (
+					"OVERNIGHT_INDEX",
+					strReferenceCurrency
+				)
 			)
 		);
 
@@ -438,7 +531,10 @@ public class FloatFloatFloatFloatAnalysis {
 			DiscountCurveBuilder.CreateFromFlatRate (
 				dtToday,
 				strReferenceCurrency,
-				new CollateralizationParams ("OVERNIGHT_INDEX", strReferenceCurrency),
+				new CollateralizationParams (
+					"OVERNIGHT_INDEX",
+					strReferenceCurrency
+				),
 				dblReferenceFundingRate
 			)
 		);
@@ -448,24 +544,54 @@ public class FloatFloatFloatFloatAnalysis {
 			new FlatUnivariate (dblReferenceDerivedFXRate)
 		);
 
-		double[] adblReference3MForwardVol = new double[] {0.1, 0.4};
-		double[] adblReference6MForwardVol = new double[] {0.1, 0.4};
-		double[] adblDerived3MForwardVol = new double[] {0.1, 0.4};
-		double[] adblDerived6MForwardVol = new double[] {0.1, 0.4};
-		double[] adblReferenceFundingVol = new double[] {0.1, 0.4};
-		double[] adblReferenceDerivedFXVol = new double[] {0.1, 0.4};
+		double[] adblReference3MForwardVol = new double[] {
+			0.1, 0.4
+		};
+		double[] adblReference6MForwardVol = new double[] {
+			0.1, 0.4
+		};
+		double[] adblDerived3MForwardVol = new double[] {
+			0.1, 0.4
+		};
+		double[] adblDerived6MForwardVol = new double[] {
+			0.1, 0.4
+		};
+		double[] adblReferenceFundingVol = new double[] {
+			0.1, 0.4
+		};
+		double[] adblReferenceDerivedFXVol = new double[] {
+			0.1, 0.4
+		};
 
-		double[] adblReference3MForwardFundingCorr = new double[] {-0.1, 0.2};
-		double[] adblReference6MForwardFundingCorr = new double[] {-0.1, 0.2};
-		double[] adblDerived3MForwardFundingCorr = new double[] {-0.1, 0.2};
-		double[] adblDerived6MForwardFundingCorr = new double[] {-0.1, 0.2};
+		double[] adblReference3MForwardFundingCorr = new double[] {
+			-0.1, 0.2
+		};
+		double[] adblReference6MForwardFundingCorr = new double[] {
+			-0.1, 0.2
+		};
+		double[] adblDerived3MForwardFundingCorr = new double[] {
+			-0.1, 0.2
+		};
+		double[] adblDerived6MForwardFundingCorr = new double[] {
+			-0.1, 0.2
+		};
 
-		double[] adblReference3MForwardFXCorr = new double[] {-0.1, 0.2};
-		double[] adblReference6MForwardFXCorr = new double[] {-0.1, 0.2};
-		double[] adblDerived3MForwardFXCorr = new double[] {-0.1, 0.2};
-		double[] adblDerived6MForwardFXCorr = new double[] {-0.1, 0.2};
+		double[] adblReference3MForwardFXCorr = new double[] {
+			-0.1, 0.2
+		};
+		double[] adblReference6MForwardFXCorr = new double[] {
+			-0.1, 0.2
+		};
+		double[] adblDerived3MForwardFXCorr = new double[] {
+			-0.1, 0.2
+		};
+		double[] adblDerived6MForwardFXCorr = new double[] {
+			-0.1, 0.2
+		};
 
-		double[] adblFundingFXCorr = new double[] {-0.1, 0.2};
+		double[] adblFundingFXCorr = new double[] {
+			-0.1, 0.2
+		};
 
 		for (double dblReference3MForwardVol : adblReference3MForwardVol) {
 			for (double dblReference6MForwardVol : adblReference6MForwardVol) {
@@ -483,7 +609,10 @@ public class FloatFloatFloatFloatAnalysis {
 															for (double dblDerived6MForwardFXCorr : adblDerived6MForwardFXCorr) {
 																for (double dblFundingFXCorr : adblFundingFXCorr)
 																	VolCorrScenario (
-																		new ComponentPair[] {cpMTM, cpNonMTM},
+																		new ComponentPair[] {
+																			cpMTM,
+																			cpNonMTM
+																		},
 																		valParams,
 																		mktParams,
 																		fri3MReference,

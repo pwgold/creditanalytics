@@ -107,7 +107,10 @@ public class TemplatedFundingCurveBuilder {
 			"3M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
 			null,
-			ForwardLabel.Create (strCurrency, "3M"),
+			ForwardLabel.Create (
+				strCurrency,
+				"3M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -137,7 +140,10 @@ public class TemplatedFundingCurveBuilder {
 					CompositePeriodBuilder.FloatingCompositeUnit (
 						CompositePeriodBuilder.EdgePair (
 							dtEffective,
-							dtEffective.addBusDays (aiDay[i], strCurrency)
+							dtEffective.addBusDays (
+								aiDay[i],
+								strCurrency
+							)
 						),
 						cps,
 						cfus
@@ -198,7 +204,15 @@ public class TemplatedFundingCurveBuilder {
 		return comp.measureValue (
 			valParams,
 			null,
-			MarketParamsBuilder.Create (dc, null, null, null, null, null, null),
+			MarketParamsBuilder.Create (
+				dc,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null
+			),
 			null,
 			strMeasure
 		);
@@ -486,6 +500,9 @@ public class TemplatedFundingCurveBuilder {
 			strCurrency
 		);
 
-		TemplatedDiscountCurveBuilderSample (dtToday, strCurrency);
+		TemplatedDiscountCurveBuilderSample (
+			dtToday,
+			strCurrency
+		);
 	}
 }

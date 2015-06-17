@@ -9,8 +9,7 @@ import org.drip.analytics.rates.*;
 import org.drip.analytics.support.*;
 import org.drip.function.R1ToR1.*;
 import org.drip.market.definition.OvernightIndex;
-import org.drip.market.otc.FixedFloatSwapConvention;
-import org.drip.market.otc.OvernightFixedFloatContainer;
+import org.drip.market.otc.*;
 import org.drip.param.creator.*;
 import org.drip.param.market.*;
 import org.drip.param.period.*;
@@ -104,7 +103,10 @@ public class CrossOvernightFloatingStream {
 					aiDay[i],
 					strCurrency
 				),
-				ForwardLabel.Create (strCurrency, "ON")
+				ForwardLabel.Create (
+					strCurrency,
+					"ON"
+				)
 			);
 
 		return aDeposit;
@@ -245,8 +247,14 @@ public class CrossOvernightFloatingStream {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
 				null
 			),
 			BoundarySettings.NaturalStandard(),
@@ -263,7 +271,11 @@ public class CrossOvernightFloatingStream {
 		return ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (
 			lcc,
 			aStretchSpec,
-			new ValuationParams (dtSpot, dtSpot, strCurrency),
+			new ValuationParams (
+				dtSpot,
+				dtSpot,
+				strCurrency
+			),
 			null,
 			null,
 			null,
@@ -289,7 +301,11 @@ public class CrossOvernightFloatingStream {
 		JulianDate dt = dtStart.addDays (1);
 
 		while (dt.julian() <= dtEnd.julian()) {
-			lsfc.add (dt, fri, dblFlatFixing);
+			lsfc.add (
+				dt,
+				fri,
+				dblFlatFixing
+			);
 
 			if (dt.julian() <= dtValue.julian()) {
 				double dblAccrualFraction = Convention.YearFraction (
@@ -306,7 +322,10 @@ public class CrossOvernightFloatingStream {
 
 			dblPrevDate = dt.julian();
 
-			dt = dt.addBusDays (1, "USD");
+			dt = dt.addBusDays (
+				1,
+				"USD"
+			);
 		}
 
 		System.out.println ("\tManual Calc Float Accrued (Geometric Compounding): " + (dblAccount - 1.) * dblNotional);
@@ -364,7 +383,10 @@ public class CrossOvernightFloatingStream {
 
 		List<Double> lsFloatingStreamEdgeDate = CompositePeriodBuilder.OvernightEdgeDates (
 			dtCustomOISStart,
-			dtCustomOISStart.addTenorAndAdjust ("6M", strCurrency),
+			dtCustomOISStart.addTenorAndAdjust (
+				"6M",
+				strCurrency
+			),
 			strCurrency
 		);
 
@@ -475,9 +497,14 @@ public class CrossOvernightFloatingStream {
 
 			double dblArithmeticMeasure = mapArithmeticOutput.get (strKey);
 
-			String strMatch = NumberUtil.WithinTolerance (dblGeometricMeasure, dblArithmeticMeasure, 1.e-08, 1.e-04) ?
-				"MATCH " :
-				"DIFFER";
+			String strMatch = NumberUtil.WithinTolerance (
+				dblGeometricMeasure,
+				dblArithmeticMeasure,
+				1.e-08,
+				1.e-04
+			) ?
+			"MATCH " :
+			"DIFFER";
 
 			System.out.println ("\t" +
 				FormatUtil.FormatDouble (dblGeometricMeasure, 1, 8, 1.) + " | " +

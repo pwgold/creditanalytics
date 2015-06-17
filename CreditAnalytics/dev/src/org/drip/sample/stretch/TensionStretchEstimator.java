@@ -66,7 +66,8 @@ public class TensionStretchEstimator {
 			new ExponentialTensionSetParams (dblTension),
 			sdic,
 			rssc,
-			null);
+			null
+		);
 	}
 
 	/*
@@ -86,7 +87,8 @@ public class TensionStretchEstimator {
 			new ExponentialTensionSetParams (dblTension),
 			sdic,
 			rssc,
-			null);
+			null
+		);
 	}
 
 	/*
@@ -106,7 +108,8 @@ public class TensionStretchEstimator {
 			new ExponentialTensionSetParams (dblTension),
 			sdic,
 			rssc,
-			null);
+			null
+		);
 	}
 
 	/*
@@ -126,7 +129,8 @@ public class TensionStretchEstimator {
 			new ExponentialTensionSetParams (dblTension),
 			sdic,
 			rssc,
-			null);
+			null
+		);
 	}
 
 	/*
@@ -170,7 +174,8 @@ public class TensionStretchEstimator {
 			aSCBC, // Basis Segment Builder parameters
 			null, 
 			BoundarySettings.NaturalStandard(), // Boundary Condition - Natural
-			MultiSegmentSequence.CALIBRATE); // Calibrate the Stretch predictors to the responses
+			MultiSegmentSequence.CALIBRATE // Calibrate the Stretch predictors to the responses
+		);
 
 		/*
 		 * Estimate, compute the segment-by-segment monotonicity and the Stretch Jacobian
@@ -195,7 +200,8 @@ public class TensionStretchEstimator {
 			9.,
 			10.,
 			BoundarySettings.NaturalStandard(), // Boundary Condition - Natural
-			MultiSegmentSequence.CALIBRATE); // Calibrate the Stretch predictors to the responses
+			MultiSegmentSequence.CALIBRATE // Calibrate the Stretch predictors to the responses
+		);
 
 		dblX = 1.;
 
@@ -248,7 +254,8 @@ public class TensionStretchEstimator {
 
 		ResponseScalingShapeControl rssc = new ResponseScalingShapeControl (
 			false,
-			new LinearRationalShapeControl (dblShapeControllerTension));
+			new LinearRationalShapeControl (dblShapeControllerTension)
+		);
 
 		/*
 		 * Construct the Segment Inelastic Parameter that is C2 (iK = 2 sets it to C2), with Second Order
@@ -260,7 +267,8 @@ public class TensionStretchEstimator {
 
 		SegmentInelasticDesignControl segParams = SegmentInelasticDesignControl.Create (
 			iK,
-			iCurvaturePenaltyDerivativeOrder);
+			iCurvaturePenaltyDerivativeOrder
+		);
 
 		double dblKLKTension = 1.;
 
@@ -270,7 +278,15 @@ public class TensionStretchEstimator {
 
 		System.out.println (" \n---------- \n KLK HYPERBOLIC TENSION \n ---------- \n");
 
-		BasisSplineStretchTest (adblX, adblY, KLKHyperbolicTensionSegmentControlParams (dblKLKTension, segParams, rssc));
+		BasisSplineStretchTest (
+			adblX,
+			adblY,
+			KLKHyperbolicTensionSegmentControlParams (
+				dblKLKTension,
+				segParams,
+				rssc
+			)
+		);
 
 		/*
 		 * KLK Exponential Tension Basis Spline Stretch Test
@@ -278,7 +294,15 @@ public class TensionStretchEstimator {
 
 		System.out.println (" \n---------- \n KLK EXPONENTIAL TENSION \n ---------- \n");
 
-		BasisSplineStretchTest (adblX, adblY, KLKExponentialTensionSegmentControlParams (dblKLKTension, segParams, rssc));
+		BasisSplineStretchTest (
+			adblX,
+			adblY,
+			KLKExponentialTensionSegmentControlParams (
+				dblKLKTension,
+				segParams,
+				rssc
+			)
+		);
 
 		/*
 		 * KLK Rational Linear Tension Basis Spline Stretch Test
@@ -286,7 +310,15 @@ public class TensionStretchEstimator {
 
 		System.out.println (" \n---------- \n KLK RATIONAL LINEAR TENSION \n ---------- \n");
 
-		BasisSplineStretchTest (adblX, adblY, KLKRationalLinearTensionSegmentControlParams (dblKLKTension, segParams, rssc));
+		BasisSplineStretchTest (
+			adblX,
+			adblY,
+			KLKRationalLinearTensionSegmentControlParams (
+				dblKLKTension,
+				segParams,
+				rssc
+			)
+		);
 
 		/*
 		 * KLK Rational Quadratic Tension Basis Spline Stretch Test
@@ -294,7 +326,15 @@ public class TensionStretchEstimator {
 
 		System.out.println (" \n---------- \n KLK RATIONAL QUADRATIC TENSION \n ---------- \n");
 
-		BasisSplineStretchTest (adblX, adblY, KLKRationalQuadraticTensionSegmentControlParams (dblKLKTension, segParams, rssc));
+		BasisSplineStretchTest (
+			adblX,
+			adblY,
+			KLKRationalQuadraticTensionSegmentControlParams (
+				dblKLKTension,
+				segParams,
+				rssc
+			)
+		);
 	}
 
 	public static final void main (

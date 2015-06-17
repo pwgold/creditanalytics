@@ -52,7 +52,10 @@ public class MinimumBinPackingBound {
 		SingleSequenceAgnosticMetrics[] aSSAM = new SingleSequenceAgnosticMetrics[iNumSample];
 
 		for (int i = 0; i < iNumSample; ++i)
-			aSSAM[i] = rsg.sequence (iNumSample, null);
+			aSSAM[i] = rsg.sequence (
+				iNumSample,
+				null
+			);
 
 		return aSSAM;
 	}
@@ -219,7 +222,10 @@ public class MinimumBinPackingBound {
 			3, 10, 25
 		};
 
-		BoundedUniform bu = new BoundedUniform (0., 1.);
+		BoundedUniform bu = new BoundedUniform (
+			0.,
+			1.
+		);
 
 		MultivariateRandom func = BinPacking.MinimumNumberOfBins();
 

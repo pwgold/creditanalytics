@@ -62,7 +62,8 @@ public class AggregateSpanEstimator {
 			new PolynomialFunctionSetParams (iNumBasis),
 			sdic,
 			rssc,
-			null);
+			null
+		);
 	}
 
 	public static final void main (
@@ -76,7 +77,8 @@ public class AggregateSpanEstimator {
 		SegmentCustomBuilderControl scbc = PolynomialSegmentControlParams (
 			4,
 			SegmentInelasticDesignControl.Create (2, 2),
-			null);
+			null
+		);
 
 		SegmentCustomBuilderControl[] aSCBC = new SegmentCustomBuilderControl[adblX.length - 1]; 
 
@@ -90,7 +92,8 @@ public class AggregateSpanEstimator {
 			aSCBC, // Basis Segment Builder parameters
 			null,  // NULL segment Best Fit Response
 			BoundarySettings.NaturalStandard(), // Boundary Condition - Natural
-			MultiSegmentSequence.CALIBRATE); // Calibrate the Stretch predictors to the responses
+			MultiSegmentSequence.CALIBRATE // Calibrate the Stretch predictors to the responses
+		);
 
 		Span span1 = new OverlappingStretchSpan (mss1);
 
@@ -101,7 +104,8 @@ public class AggregateSpanEstimator {
 			aSCBC, // Basis Segment Builder parameters
 			null,  // NULL segment Best Fit Response
 			BoundarySettings.NaturalStandard(), // Boundary Condition - Natural
-			MultiSegmentSequence.CALIBRATE); // Calibrate the Stretch predictors to the responses
+			MultiSegmentSequence.CALIBRATE // Calibrate the Stretch predictors to the responses
+		);
 
 		Span span2 = new OverlappingStretchSpan (mss2);
 
@@ -117,7 +121,10 @@ public class AggregateSpanEstimator {
 
 		lsSpan.add (span2);
 
-		AggregatedSpan ass = new AggregatedSpan (lsSpan, lsWeight);
+		AggregatedSpan ass = new AggregatedSpan (
+			lsSpan,
+			lsWeight
+		);
 
 		double dblX = 1.;
 		double dblXMax = 10.;
@@ -125,8 +132,10 @@ public class AggregateSpanEstimator {
 		while (dblX <= dblXMax) {
 			double dblStretchResponse = 0.14 * mss1.responseValue (dblX) + 0.71 * mss2.responseValue (dblX);
 
-			System.out.println ("Y[" + dblX + "] " + FormatUtil.FormatDouble (ass.calcResponseValue (dblX), 2, 2, 1.) + " | " +
-				FormatUtil.FormatDouble (dblStretchResponse, 2, 2, 1.));
+			System.out.println ("Y[" + dblX + "] " +
+				FormatUtil.FormatDouble (ass.calcResponseValue (dblX), 2, 2, 1.) + " | " +
+				FormatUtil.FormatDouble (dblStretchResponse, 2, 2, 1.)
+			);
 
 			dblX += 1.;
 		}

@@ -175,7 +175,10 @@ public class ShapeOvernightZeroLocalSmooth {
 					aiDay[i],
 					strCurrency
 				),
-				ForwardLabel.Create (strCurrency, "ON")
+				ForwardLabel.Create (
+					strCurrency,
+					"ON"
+				)
 			);
 
 		return aDeposit;
@@ -228,7 +231,10 @@ public class ShapeOvernightZeroLocalSmooth {
 				"ON",
 				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT,
 				null,
-				ForwardLabel.Create (strCurrency, "ON"),
+				ForwardLabel.Create (
+					strCurrency,
+					"ON"
+				),
 				CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 				0.
 			);
@@ -604,9 +610,21 @@ public class ShapeOvernightZeroLocalSmooth {
 		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_EXPONENTIAL_MIXTURE,
-				new ExponentialMixtureSetParams (new double[] {0.01, 0.05, 0.25}),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+				new ExponentialMixtureSetParams (
+					new double[] {
+						0.01,
+						0.05,
+						0.25
+					}
+				),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
 				null
 			),
 			BoundarySettings.NaturalStandard(),
@@ -631,8 +649,14 @@ public class ShapeOvernightZeroLocalSmooth {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
 				null
 			),
 			MultiSegmentSequence.CALIBRATE,
@@ -659,8 +683,14 @@ public class ShapeOvernightZeroLocalSmooth {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
 				null
 			),
 			MultiSegmentSequence.CALIBRATE,
@@ -687,8 +717,14 @@ public class ShapeOvernightZeroLocalSmooth {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
 				null
 			),
 			MultiSegmentSequence.CALIBRATE,
@@ -715,8 +751,14 @@ public class ShapeOvernightZeroLocalSmooth {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
 				null
 			),
 			MultiSegmentSequence.CALIBRATE,
@@ -743,8 +785,14 @@ public class ShapeOvernightZeroLocalSmooth {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
 				null
 			),
 			MultiSegmentSequence.CALIBRATE,
@@ -770,8 +818,14 @@ public class ShapeOvernightZeroLocalSmooth {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
 				null
 			),
 			MultiSegmentSequence.CALIBRATE,
@@ -781,7 +835,11 @@ public class ShapeOvernightZeroLocalSmooth {
 			true
 		);
 
-		ValuationParams valParams = new ValuationParams (dtSpot, dtSpot, strCurrency);
+		ValuationParams valParams = new ValuationParams (
+			dtSpot,
+			dtSpot,
+			strCurrency
+		);
 
 		/*
 		 * Construct the Shape Preserving Discount Curve by applying the linear curve calibrator to the array
@@ -1188,8 +1246,12 @@ public class ShapeOvernightZeroLocalSmooth {
 
 		CalibratableFixedIncomeComponent[] aCC = OvernightIndexFromMaturityTenor (
 			dtSpot,
-			new java.lang.String[] {"3Y", "6Y", "9Y", "12Y", "15Y", "18Y", "21Y", "24Y", "27Y", "30Y"},
-			new double[] {0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01},
+			new java.lang.String[] {
+				"3Y", "6Y", "9Y", "12Y", "15Y", "18Y", "21Y", "24Y", "27Y", "30Y"
+			},
+			new double[] {
+				0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01
+			},
 			strCurrency
 		);
 

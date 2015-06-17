@@ -64,7 +64,11 @@ public class PrincipalComponent {
 		for (int i = 0; i < adblEigenvector.length; ++i)
 			strDump += FormatUtil.FormatDouble (adblEigenvector[i], 1, 4, 1.) + " | ";
 
-		System.out.println ("\t{" + FormatUtil.FormatDouble (dblCorr1, 1, 4, 1.) + " ||" + FormatUtil.FormatDouble (dblCorr2, 1, 4, 1.) + "} => " + strDump);
+		System.out.println (
+			"\t{" +
+			FormatUtil.FormatDouble (dblCorr1, 1, 4, 1.) + " ||" +
+			FormatUtil.FormatDouble (dblCorr2, 1, 4, 1.) + "} => " + strDump
+		);
 	}
 
 	public static final void main (

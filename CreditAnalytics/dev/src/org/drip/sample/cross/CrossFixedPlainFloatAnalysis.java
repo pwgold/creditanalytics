@@ -80,7 +80,10 @@ public class CrossFixedPlainFloatAnalysis {
 			iTenorInMonths + "M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-			ForwardLabel.Create (strPayCurrency, iTenorInMonths + "M"),
+			ForwardLabel.Create (
+				strPayCurrency,
+				iTenorInMonths + "M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -160,7 +163,11 @@ public class CrossFixedPlainFloatAnalysis {
 		FixFloatComponent fixFloat = new FixFloatComponent (
 			fixedStream,
 			floatingStream,
-			new CashSettleParams (0, strPayCurrency, 0)
+			new CashSettleParams (
+				0,
+				strPayCurrency,
+				0
+			)
 		);
 
 		return fixFloat;
@@ -179,17 +186,38 @@ public class CrossFixedPlainFloatAnalysis {
 		final double dblFundingFXCorr)
 		throws Exception
 	{
-		mktParams.setForwardCurveVolSurface (forwardLabel, new FlatUnivariate (dblForwardVol));
+		mktParams.setForwardCurveVolSurface (
+			forwardLabel,
+			new FlatUnivariate (dblForwardVol)
+		);
 
-		mktParams.setFundingCurveVolSurface (fundingLabel, new FlatUnivariate (dblFundingVol));
+		mktParams.setFundingCurveVolSurface (
+			fundingLabel,
+			new FlatUnivariate (dblFundingVol)
+		);
 
-		mktParams.setFXCurveVolSurface (fxLabel, new FlatUnivariate (dblFXVol));
+		mktParams.setFXCurveVolSurface (
+			fxLabel,
+			new FlatUnivariate (dblFXVol)
+		);
 
-		mktParams.setForwardFundingCorrSurface (forwardLabel, fundingLabel, new FlatUnivariate (dblForwardFundingCorr));
+		mktParams.setForwardFundingCorrSurface (
+			forwardLabel,
+			fundingLabel,
+			new FlatUnivariate (dblForwardFundingCorr)
+		);
 
-		mktParams.setForwardFXCorrSurface (forwardLabel, fxLabel, new FlatUnivariate (dblForwardFXCorr));
+		mktParams.setForwardFXCorrSurface (
+			forwardLabel,
+			fxLabel,
+			new FlatUnivariate (dblForwardFXCorr)
+		);
 
-		mktParams.setFundingFXCorrSurface (fundingLabel, fxLabel, new FlatUnivariate (dblFundingFXCorr));
+		mktParams.setFundingFXCorrSurface (
+			fundingLabel,
+			fxLabel,
+			new FlatUnivariate (dblFundingFXCorr)
+		);
 	}
 
 	private static final void VolCorrScenario (
@@ -259,21 +287,34 @@ public class CrossFixedPlainFloatAnalysis {
 
 		JulianDate dtToday = org.drip.analytics.date.DateUtil.Today();
 
-		ValuationParams valParams = new ValuationParams (dtToday, dtToday, "USD");
+		ValuationParams valParams = new ValuationParams (
+			dtToday,
+			dtToday,
+			"USD"
+		);
 
-		ForwardLabel fri3M = ForwardLabel.Create ("USD", "3M");
+		ForwardLabel fri3M = ForwardLabel.Create (
+			"USD",
+			"3M"
+		);
 
 		DiscountCurve dcUSDCollatDomestic = DiscountCurveBuilder.CreateFromFlatRate (
 			dtToday,
 			"USD",
-			new CollateralizationParams ("OVERNIGHT_INDEX", "USD"),
+			new CollateralizationParams (
+				"OVERNIGHT_INDEX",
+				"USD"
+			),
 			dblUSDCollateralRate
 		);
 
 		DiscountCurve dcEURCollatDomestic = DiscountCurveBuilder.CreateFromFlatRate (
 			dtToday,
 			"EUR",
-			new CollateralizationParams ("OVERNIGHT_INDEX", "EUR"),
+			new CollateralizationParams (
+				"OVERNIGHT_INDEX",
+				"EUR"
+			),
 			dblEURCollateralRate
 		);
 
@@ -281,7 +322,10 @@ public class CrossFixedPlainFloatAnalysis {
 			dtToday,
 			fri3M,
 			dblUSD3MForwardRate,
-			new CollateralizationParams ("OVERNIGHT_INDEX", "USD")
+			new CollateralizationParams (
+				"OVERNIGHT_INDEX",
+				"USD"
+			)
 		);
 
 		CurrencyPair cp = CurrencyPair.FromCode ("USD/EUR");
@@ -314,21 +358,40 @@ public class CrossFixedPlainFloatAnalysis {
 
 		mktParams.setFundingCurve (dcEURCollatDomestic);
 
-		mktParams.setFXCurve (fxLabel, new FlatUnivariate (dblUSDEURFXRate));
+		mktParams.setFXCurve (
+			fxLabel,
+			new FlatUnivariate (dblUSDEURFXRate)
+		);
 
-		mktParams.setFixing (dtToday, fxLabel, dblUSDEURFXRate);
+		mktParams.setFixing (
+			dtToday,
+			fxLabel,
+			dblUSDEURFXRate
+		);
 
-		double[] adblForwardVol = new double[] {0.1, 0.35, 0.60};
+		double[] adblForwardVol = new double[] {
+			0.1, 0.35, 0.60
+		};
 
-		double[] adblFundingVol = new double[] {0.1, 0.35, 0.60};
+		double[] adblFundingVol = new double[] {
+			0.1, 0.35, 0.60
+		};
 
-		double[] adblFXVol = new double[] {0.1, 0.35, 0.60};
+		double[] adblFXVol = new double[] {
+			0.1, 0.35, 0.60
+		};
 
-		double[] adblForwardFundingCorr = new double[] {-0.1, 0.35};
+		double[] adblForwardFundingCorr = new double[] {
+			-0.1, 0.35
+		};
 
-		double[] adblForwardFXCorr = new double[] {-0.1, 0.35};
+		double[] adblForwardFXCorr = new double[] {
+			-0.1, 0.35
+		};
 
-		double[] adblFundingFXCorr = new double[] {-0.1, 0.35};
+		double[] adblFundingFXCorr = new double[] {
+			-0.1, 0.35
+		};
 
 		for (double dblForwardVol : adblForwardVol) {
 			for (double dblFundingVol : adblFundingVol) {
@@ -337,7 +400,10 @@ public class CrossFixedPlainFloatAnalysis {
 						for (double dblForwardFXCorr : adblForwardFXCorr) {
 							for (double dblFundingFXCorr : adblFundingFXCorr)
 								VolCorrScenario (
-									new FixFloatComponent[] {fixMTMFloat, fixNonMTMFloat},
+									new FixFloatComponent[] {
+										fixMTMFloat,
+										fixNonMTMFloat
+									},
 									valParams,
 									mktParams,
 									fri3M,

@@ -3,8 +3,7 @@ package org.drip.sample.misc;
 
 import java.util.*;
 
-import org.drip.analytics.date.DateUtil;
-import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.date.*;
 import org.drip.analytics.daycount.Convention;
 import org.drip.service.api.CreditAnalytics;
 
@@ -70,7 +69,10 @@ public class CalendarAPI {
 		 * Get all the holidays in the year according the calendar set
 		 */
 
-		JulianDate[] adtHols = CreditAnalytics.GetHolsInYear ("USD,GBP", 2011);
+		JulianDate[] adtHols = CreditAnalytics.GetHolsInYear (
+			"USD,GBP",
+			2011
+		);
 
 		System.out.println ("USD,GBP has " + adtHols.length + " hols");
 
@@ -81,7 +83,10 @@ public class CalendarAPI {
 		 * Get all the week day holidays in the year according the calendar set
 		 */
 
-		JulianDate[] adtWeekDayHols = CreditAnalytics.GetWeekDayHolsInYear ("USD,GBP", 2011);
+		JulianDate[] adtWeekDayHols = CreditAnalytics.GetWeekDayHolsInYear (
+			"USD,GBP",
+			2011
+		);
 
 		System.out.println ("USD,GBP has " + adtWeekDayHols.length + " week day hols");
 
@@ -92,7 +97,10 @@ public class CalendarAPI {
 		 * Get all the weekend holidays in the year according the calendar set
 		 */
 
-		JulianDate[] adtWeekendHols = CreditAnalytics.GetWeekendHolsInYear ("USD,GBP", 2011);
+		JulianDate[] adtWeekendHols = CreditAnalytics.GetWeekendHolsInYear (
+			"USD,GBP",
+			2011
+		);
 
 		System.out.println ("USD,GBP has " + adtWeekendHols.length + " weekend hols");
 
@@ -114,7 +122,14 @@ public class CalendarAPI {
 		 * Check if the given day is a holiday
 		 */
 
-		boolean bIsHoliday = CreditAnalytics.IsHoliday ("USD,GBP", DateUtil.CreateFromYMD (2011, 12, 28));
+		boolean bIsHoliday = CreditAnalytics.IsHoliday (
+			"USD,GBP",
+			DateUtil.CreateFromYMD (
+				2011,
+				12,
+				28
+			)
+		);
 
 		System.out.println (DateUtil.CreateFromYMD (2011, 12, 28) + " is a USD,GBP holiday? " + bIsHoliday);
 

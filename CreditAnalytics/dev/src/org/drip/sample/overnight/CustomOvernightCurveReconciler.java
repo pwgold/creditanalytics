@@ -97,7 +97,10 @@ public class CustomOvernightCurveReconciler {
 					aiDay[i],
 					strCurrency
 				),
-				ForwardLabel.Create (strCurrency, "ON")
+				ForwardLabel.Create (
+					strCurrency,
+					"ON"
+				)
 			);
 
 		return aDeposit;
@@ -359,7 +362,11 @@ public class CustomOvernightCurveReconciler {
 		 *  of Deposit and Swap Stretches.
 		 */
 
-		ValuationParams valParams = new ValuationParams (dtSpot, dtSpot, strCurrency);
+		ValuationParams valParams = new ValuationParams (
+			dtSpot,
+			dtSpot,
+			strCurrency
+		);
 
 		/*
 		 * Calibrate over the instrument set to generate a new overlapping latent state span instance
@@ -403,7 +410,11 @@ public class CustomOvernightCurveReconciler {
 		 * 	non-overlapping stretch.
 		 */
 
-		DiscountCurve dfdc = new DiscountFactorDiscountCurve (strCurrency, null, ors);
+		DiscountCurve dfdc = new DiscountFactorDiscountCurve (
+			strCurrency,
+			null,
+			ors
+		);
 
 		/*
 		 * Compare the discount factors and their monotonicity emitted from the discount curve, the
@@ -581,10 +592,13 @@ public class CustomOvernightCurveReconciler {
 
 		TurnListDiscountFactor tldc = new TurnListDiscountFactor();
 
-		tldc.addTurn (new Turn (
-			dtSpot.addTenor ("5Y").julian(),
-			dtSpot.addTenor ("40Y").julian(),
-			0.001));
+		tldc.addTurn (
+			new Turn (
+				dtSpot.addTenor ("5Y").julian(),
+				dtSpot.addTenor ("40Y").julian(),
+				0.001
+			)
+		);
 
 		/*
 		 * Update the discount curve with the turn list.
@@ -630,8 +644,14 @@ public class CustomOvernightCurveReconciler {
 		SegmentCustomBuilderControl prbpPolynomial = new SegmentCustomBuilderControl (
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 			new PolynomialFunctionSetParams (4),
-			SegmentInelasticDesignControl.Create (2, 2),
-			new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+			SegmentInelasticDesignControl.Create (
+				2,
+				2
+			),
+			new ResponseScalingShapeControl (
+				true,
+				new QuadraticRationalShapeControl (0.)
+			),
 			null
 		);
 
@@ -643,6 +663,11 @@ public class CustomOvernightCurveReconciler {
 		 * Runs the full spline linear discount curve builder sample using the overnight index discount curve.
 		 */
 
-		SplineLinearOISDiscountCurve (dtToday, prbpPolynomial, "---- DISCOUNT CURVE WITH OVERNIGHT INDEX ---", strCurrency);
+		SplineLinearOISDiscountCurve (
+			dtToday,
+			prbpPolynomial,
+			"---- DISCOUNT CURVE WITH OVERNIGHT INDEX ---",
+			strCurrency
+		);
 	}
 }

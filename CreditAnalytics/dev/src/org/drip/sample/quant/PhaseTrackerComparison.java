@@ -67,7 +67,8 @@ public class PhaseTrackerComparison {
 			dblSigma,
 			dblTheta,
 			dblLambda,
-			iPhaseTrackerType);
+			iPhaseTrackerType
+		);
 
 		HestonStochasticVolatilityAlgorithm hsva = new HestonStochasticVolatilityAlgorithm (fphp);
 
@@ -77,7 +78,8 @@ public class PhaseTrackerComparison {
 			dblRiskFreeRate,
 			dblSpot,
 			dblSpotVolatility,
-			true);
+			true
+		);
 	}
 
 	public static final void main (
@@ -107,7 +109,8 @@ public class PhaseTrackerComparison {
 			dblRiskFreeRate,
 			dblSpot,
 			dblSpotVolatility,
-			PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_NONE);
+			PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_NONE
+		);
 
 		Map<Double, Double> mapFreqPhaseRotationCount = PhaseSet (
 			dblRho,
@@ -120,7 +123,8 @@ public class PhaseTrackerComparison {
 			dblRiskFreeRate,
 			dblSpot,
 			dblSpotVolatility,
-			PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT);
+			PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT
+		);
 
 		Map<Double, Double> mapFreqPhaseKahlJackel = PhaseSet (
 			dblRho,
@@ -133,7 +137,8 @@ public class PhaseTrackerComparison {
 			dblRiskFreeRate,
 			dblSpot,
 			dblSpotVolatility,
-			PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL);
+			PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL
+		);
 
 		System.out.println ("\t|--------------------------------------------|");
 

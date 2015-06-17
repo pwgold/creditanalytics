@@ -173,15 +173,32 @@ public class BasisSplineSet {
 		 * Construct the left and the right segments
 		 */
 
-		LatentStateResponseModel seg1 = LatentStateResponseModel.Create (1.0, 1.5, fs, rssc, segParams);
+		LatentStateResponseModel seg1 = LatentStateResponseModel.Create (
+			1.0,
+			1.5,
+			fs,
+			rssc,
+			segParams
+		);
 
-		LatentStateResponseModel seg2 = LatentStateResponseModel.Create (1.5, 2.0, fs, rssc, segParams);
+		LatentStateResponseModel seg2 = LatentStateResponseModel.Create (
+			1.5,
+			2.0,
+			fs,
+			rssc,
+			segParams
+		);
 
 		/*
 		 * Calibrate the left segment using the node values, and compute the segment Jacobian, monotonicity, and curvature penalty
 		 */
 
-		WengertJacobian wj1 = seg1.jackDCoeffDEdgeParams (25., 0., 20.25, null);
+		WengertJacobian wj1 = seg1.jackDCoeffDEdgeParams (
+			25.,
+			0.,
+			20.25,
+			null
+		);
 
 		System.out.println ("\tY[" + 1.0 + "]: " + seg1.responseValue (1.));
 
@@ -199,7 +216,14 @@ public class BasisSplineSet {
 		 * Calibrate the right segment using the node values, and compute the segment Jacobian, monotonicity, and curvature penalty
 		 */
 
-		WengertJacobian wj2 = seg2.jackDCoeffDEdgeParams (seg1, "Default", 16., null, Double.NaN, null);
+		WengertJacobian wj2 = seg2.jackDCoeffDEdgeParams (
+			seg1,
+			"Default",
+			16.,
+			null,
+			Double.NaN,
+			null
+		);
 
 		System.out.println ("\tY[" + 1.5 + "]: " + seg2.responseValue (1.5));
 
@@ -217,7 +241,11 @@ public class BasisSplineSet {
 		 * Re-calibrate Segment #2 with a different response value
 		 */
 
-		seg2.calibrate (seg1, 14., null);
+		seg2.calibrate (
+			seg1,
+			14.,
+			null
+		);
 
 		/*
 		 * Estimate the segment value at the given variate, and compute the corresponding Jacobian and curvature penalty
@@ -255,20 +283,34 @@ public class BasisSplineSet {
 		 * Construct the left and the right segments
 		 */
 
-		LatentStateResponseModel seg1 = LatentStateResponseModel.Create (0.0, 1.0, fs, sc, segParams);
+		LatentStateResponseModel seg1 = LatentStateResponseModel.Create (
+			0.0,
+			1.0,
+			fs,
+			sc,
+			segParams
+		);
 
-		LatentStateResponseModel seg2 = LatentStateResponseModel.Create (1.0, 2.0, fs, sc, segParams);
+		LatentStateResponseModel seg2 = LatentStateResponseModel.Create (
+			1.0,
+			2.0,
+			fs,
+			sc,
+			segParams
+		);
 
 		/*
 		 * Calibrate the left segment using the node values, and compute the segment Jacobian, monotonicity, and curvature penalty
 		 */
 
 		WengertJacobian wj1 = seg1.jackDCoeffDEdgeParams (
-				new double[] {0., 1.}, // Left/Right X
-				new double[] {1., 4.}, // Left/Right Y
-				new double[] {1.}, // Left Deriv
-				new double[] {6.}, // Right Deriv
-				null, null); // Constraints, Fitness Weighted Response
+			new double[] {0., 1.}, // Left/Right X
+			new double[] {1., 4.}, // Left/Right Y
+			new double[] {1.}, // Left Deriv
+			new double[] {6.}, // Right Deriv
+			null,
+			null // Constraints, Fitness Weighted Response
+		);
 
 		System.out.println ("\tY[" + 0.0 + "]: " + seg1.responseValue (0.0));
 
@@ -287,11 +329,13 @@ public class BasisSplineSet {
 		 */
 
 		WengertJacobian wj2 = seg2.jackDCoeffDEdgeParams (
-				new double[] {1., 2.}, // Left/Right X
-				new double[] {4., 15.}, // Left/Right Y
-				new double[] {6.}, // Left Deriv
-				new double[] {17.}, // Right Deriv
-				null, null); // Constraints and Fitness Weighted Responses
+			new double[] {1., 2.}, // Left/Right X
+			new double[] {4., 15.}, // Left/Right Y
+			new double[] {6.}, // Left Deriv
+			new double[] {17.}, // Right Deriv
+			null,
+			null // Constraints, Fitness Weighted Response
+		);
 
 		System.out.println ("\tY[" + 1.0 + "]: " + seg2.responseValue (1.0));
 
@@ -309,7 +353,11 @@ public class BasisSplineSet {
 		 * Re-calibrate Segment #2 with a different response value
 		 */
 
-		seg2.calibrate (seg1, 14., null);
+		seg2.calibrate (
+			seg1,
+			14.,
+			null
+		);
 
 		/*
 		 * Estimate the segment value at the given variate, and compute the corresponding Jacobian, monotonicity, and curvature penalty
@@ -351,7 +399,8 @@ public class BasisSplineSet {
 
 		ResponseScalingShapeControl rssc = new ResponseScalingShapeControl (
 			true,
-			new QuadraticRationalShapeControl (dblShapeControllerTension));
+			new QuadraticRationalShapeControl (dblShapeControllerTension)
+		);
 
 		/*
 		 * Construct the segment inelastic parameter that is C2 (iK = 2 sets it to C2), with second order
@@ -363,7 +412,8 @@ public class BasisSplineSet {
 
 		SegmentInelasticDesignControl segParams = SegmentInelasticDesignControl.Create (
 			iK,
-			iCurvaturePenaltyDerivativeOrder);
+			iCurvaturePenaltyDerivativeOrder
+		);
 
 		/*
 		 * Test the polynomial spline
@@ -371,7 +421,11 @@ public class BasisSplineSet {
 
 		System.out.println (" ---------- \n POLYNOMIAL \n ---------- \n");
 
-		TestSpline (CreatePolynomialSpline(), null, segParams);
+		TestSpline (
+			CreatePolynomialSpline(),
+			null,
+			segParams
+		);
 
 		/*
 		 * Test the Bernstein polynomial spline
@@ -379,7 +433,11 @@ public class BasisSplineSet {
 
 		System.out.println (" -------------------- \n BERNSTEINPOLYNOMIAL \n -------------------- \n");
 
-		TestSpline (CreateBernsteinPolynomialSpline(), rssc, segParams);
+		TestSpline (
+			CreateBernsteinPolynomialSpline(),
+			rssc,
+			segParams
+		);
 
 		/*
 		 * Test the exponential tension spline
@@ -387,7 +445,11 @@ public class BasisSplineSet {
 
 		System.out.println ( " ----------- \n EXPONENTIAL \n ----------- \n");
 
-		TestSpline (CreateExponentialTensionSpline(), rssc, segParams);
+		TestSpline (
+			CreateExponentialTensionSpline(),
+			rssc,
+			segParams
+		);
 
 		/*
 		 * Test the hyperbolic tension spline
@@ -395,7 +457,11 @@ public class BasisSplineSet {
 
 		System.out.println (" ---------- \n HYPERBOLIC \n ---------- \n");
 
-		TestSpline (CreateHyperbolicTensionSpline(), rssc, segParams);
+		TestSpline (
+			CreateHyperbolicTensionSpline(),
+			rssc,
+			segParams
+		);
 
 		/*
 		 * Test the Kaklis-Pandelis spline
@@ -403,7 +469,11 @@ public class BasisSplineSet {
 
 		System.out.println (" -------------------- \n KAKLISPANDELIS \n -------------------- \n");
 
-		TestSpline (CreateKaklisPandelisSpline(), rssc, segParams);
+		TestSpline (
+			CreateKaklisPandelisSpline(),
+			rssc,
+			segParams
+		);
 
 		/*
 		 * Test the C1 Hermite spline
@@ -414,7 +484,11 @@ public class BasisSplineSet {
 		TestC1HermiteSpline (
 			CreatePolynomialSpline(),
 			rssc,
-			SegmentInelasticDesignControl.Create (1, iCurvaturePenaltyDerivativeOrder));
+			SegmentInelasticDesignControl.Create (
+				1,
+				iCurvaturePenaltyDerivativeOrder
+			)
+		);
 	}
 
 	public static final void main (

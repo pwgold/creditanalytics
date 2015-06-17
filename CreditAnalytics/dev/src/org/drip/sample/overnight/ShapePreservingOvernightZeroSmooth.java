@@ -8,8 +8,7 @@ import org.drip.analytics.definition.LatentStateStatic;
 import org.drip.analytics.rates.*;
 import org.drip.analytics.support.*;
 import org.drip.function.R1ToR1.QuadraticRationalShapeControl;
-import org.drip.market.otc.FixedFloatSwapConvention;
-import org.drip.market.otc.OvernightFixedFloatContainer;
+import org.drip.market.otc.*;
 import org.drip.param.creator.*;
 import org.drip.param.period.*;
 import org.drip.param.valuation.*;
@@ -135,7 +134,10 @@ public class ShapePreservingOvernightZeroSmooth {
 					aiDay[i],
 					strCurrency
 				),
-				ForwardLabel.Create (strCurrency, "ON")
+				ForwardLabel.Create (
+					strCurrency,
+					"ON"
+				)
 			);
 
 		return aDeposit;
@@ -208,7 +210,10 @@ public class ShapePreservingOvernightZeroSmooth {
 				"ON",
 				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT,
 				null,
-				ForwardLabel.Create (strCurrency, "ON"),
+				ForwardLabel.Create (
+					strCurrency,
+					"ON"
+				),
 				CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 				0.
 			);
@@ -523,10 +528,23 @@ public class ShapePreservingOvernightZeroSmooth {
 		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_EXPONENTIAL_MIXTURE,
-				new ExponentialMixtureSetParams (new double[] {0.01, 0.05, 0.25}),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
-				null),
+				new ExponentialMixtureSetParams (
+					new double[] {
+						0.01,
+						0.05,
+						0.25
+					}
+				),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				null
+			),
 			BoundarySettings.NaturalStandard(),
 			MultiSegmentSequence.CALIBRATE,
 			null,
@@ -549,9 +567,16 @@ public class ShapePreservingOvernightZeroSmooth {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
-				null),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				null
+			),
 			MultiSegmentSequence.CALIBRATE,
 			null,
 			null,
@@ -567,7 +592,11 @@ public class ShapePreservingOvernightZeroSmooth {
 		DiscountCurve dcShapePreserving = ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (
 			lcc,
 			aStretchSpec,
-			new ValuationParams (dtSpot, dtSpot, strCurrency),
+			new ValuationParams (
+				dtSpot,
+				dtSpot,
+				strCurrency
+			),
 			null,
 			null,
 			null,
@@ -600,7 +629,11 @@ public class ShapePreservingOvernightZeroSmooth {
 			dcShapePreserving,
 			lcc,
 			lccp,
-			new ValuationParams (dtSpot, dtSpot, strCurrency),
+			new ValuationParams (
+				dtSpot,
+				dtSpot,
+				strCurrency
+			),
 			null,
 			null,
 			null
@@ -703,8 +736,12 @@ public class ShapePreservingOvernightZeroSmooth {
 
 		CalibratableFixedIncomeComponent[] aCC = OvernightIndexFromMaturityTenor (
 			dtSpot,
-			new java.lang.String[] {"3Y", "6Y", "9Y", "12Y", "15Y", "18Y", "21Y", "24Y", "27Y", "30Y"},
-			new double[] {0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01},
+			new java.lang.String[] {
+				"3Y", "6Y", "9Y", "12Y", "15Y", "18Y", "21Y", "24Y", "27Y", "30Y"
+			},
+			new double[] {
+				0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01
+			},
 			strCurrency
 		);
 

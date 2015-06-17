@@ -61,7 +61,8 @@ public class HestonImpliedVolatilitySurface {
 			dblSigma,
 			dblTheta,
 			dblLambda,
-			PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL);
+			PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL
+		);
 
 		HestonStochasticVolatilityAlgorithm hsva = new HestonStochasticVolatilityAlgorithm (fphp);
 
@@ -70,8 +71,15 @@ public class HestonImpliedVolatilitySurface {
 		double dblSpot = 1.;
 		double dblInitialVolatility = 0.1;
 
-		hsva.compute (dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblSpot, false, dblInitialVolatility,
-			false);
+		hsva.compute (
+			dblStrike,
+			dblTimeToExpiry,
+			dblRiskFreeRate,
+			dblSpot,
+			false,
+			dblInitialVolatility,
+			false
+		);
 
 		return hsva.callPrice();
 	}
@@ -80,8 +88,12 @@ public class HestonImpliedVolatilitySurface {
 		final String[] astrArgs)
 		throws Exception
 	{
-		double[] adblATMFactor = new double[] {0.8, 0.9, 1.0, 1.1, 1.2};
-		double[] adblTTE = new double[] {0.5, 1., 2., 3., 4., 5., 7., 10., 12., 15., 20., 25., 30.};
+		double[] adblATMFactor = new double[] {
+			0.8, 0.9, 1.0, 1.1, 1.2
+		};
+		double[] adblTTE = new double[] {
+			0.5, 1., 2., 3., 4., 5., 7., 10., 12., 15., 20., 25., 30.
+		};
 
 		System.out.println ("\n\t|------------------------------------------------------------------------------------------------------------------------------------|");
 

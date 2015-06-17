@@ -114,7 +114,10 @@ public class DiscountCurveQuoteSensitivity {
 					aiDay[i],
 					strCurrency
 				),
-				ForwardLabel.Create (strCurrency, "ON")
+				ForwardLabel.Create (
+					strCurrency,
+					"ON"
+				)
 			);
 
 		return aDeposit;
@@ -181,7 +184,12 @@ public class DiscountCurveQuoteSensitivity {
 	{
 		JulianDate dtBegin = dtStart.addTenor (strStartTenor);
 
-		WengertJacobian wjForwardRate = dc.jackDForwardDManifestMeasure (dtBegin, "6M", strManifestMeasure, 0.5);
+		WengertJacobian wjForwardRate = dc.jackDForwardDManifestMeasure (
+			dtBegin,
+			"6M",
+			strManifestMeasure,
+			0.5
+		);
 
 		System.out.println ("[" + dtBegin + " | 6M] => " + wjForwardRate.displayString());
 	}
@@ -224,7 +232,8 @@ public class DiscountCurveQuoteSensitivity {
 		);
 
 		double[] adblDepositQuote = new double[] {
-			0.0013, 0.0017, 0.0017, 0.0018, 0.0020, 0.0023}; // Cash Rate
+			0.0013, 0.0017, 0.0017, 0.0018, 0.0020, 0.0023
+		}; // Cash Rate
 
 		/*
 		 * Construct the Deposit Instrument Set Stretch Builder
@@ -308,9 +317,20 @@ public class DiscountCurveQuoteSensitivity {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
 				new ExponentialTensionSetParams (2.),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
-				new org.drip.spline.params.PreceedingManifestSensitivityControl (true, 1, null)),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				new org.drip.spline.params.PreceedingManifestSensitivityControl (
+					true,
+					1,
+					null
+				)
+			),
 			BoundarySettings.NaturalStandard(),
 			MultiSegmentSequence.CALIBRATE,
 			null,
@@ -331,9 +351,20 @@ public class DiscountCurveQuoteSensitivity {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
 				new ExponentialTensionSetParams (2.),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
-				new org.drip.spline.params.PreceedingManifestSensitivityControl (true, 1, null))
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				new org.drip.spline.params.PreceedingManifestSensitivityControl (
+					true,
+					1,
+					null
+				)
+			)
 		);
 
 		/*
@@ -350,9 +381,19 @@ public class DiscountCurveQuoteSensitivity {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
 				new ExponentialTensionSetParams (2.),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
-				new org.drip.spline.params.PreceedingManifestSensitivityControl (false, 1, null)
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				new org.drip.spline.params.PreceedingManifestSensitivityControl (
+					false,
+					1,
+					null
+				)
 			)
 		);
 
@@ -370,9 +411,20 @@ public class DiscountCurveQuoteSensitivity {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
 				new ExponentialTensionSetParams (2.),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
-				new org.drip.spline.params.PreceedingManifestSensitivityControl (true, 1, null))
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				new org.drip.spline.params.PreceedingManifestSensitivityControl (
+					true,
+					1,
+					null
+				)
+			)
 		);
 
 		ValuationParams valParams = new ValuationParams (
@@ -474,7 +526,10 @@ public class DiscountCurveQuoteSensitivity {
 		System.out.println ("\t----------------------------------------------------------------");
 
 		for (int i = 0; i < aEDFComp.length; ++i) {
-			org.drip.quant.calculus.WengertJacobian wj = dc.jackDDFDManifestMeasure (aEDFComp[i].maturityDate(), "PV");
+			org.drip.quant.calculus.WengertJacobian wj = dc.jackDDFDManifestMeasure (
+				aEDFComp[i].maturityDate(),
+				"PV"
+			);
 
 			System.out.println (aEDFComp[i].maturityDate() + " => " + wj.displayString());
 		}
@@ -490,7 +545,10 @@ public class DiscountCurveQuoteSensitivity {
 		System.out.println ("\t----------------------------------------------------------------");
 
 		for (int i = 0; i < aSwapComp.length; ++i) {
-			org.drip.quant.calculus.WengertJacobian wjDFQuote = dc.jackDDFDManifestMeasure (aSwapComp[i].maturityDate(), "PV");
+			org.drip.quant.calculus.WengertJacobian wjDFQuote = dc.jackDDFDManifestMeasure (
+				aSwapComp[i].maturityDate(),
+				"PV"
+			);
 
 			System.out.println (aSwapComp[i].maturityDate() + " => " + wjDFQuote.displayString());
 		}
@@ -521,7 +579,16 @@ public class DiscountCurveQuoteSensitivity {
 		WengertJacobian wjIRSBespokeQuoteJack = irs35Y.jackDDirtyPVDManifestMeasure (
 			valParams,
 			null,
-			MarketParamsBuilder.Create (dc, null, null, null, null, null, null, null),
+			MarketParamsBuilder.Create (
+				dc,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null
+			),
 			null
 		);
 
@@ -576,6 +643,9 @@ public class DiscountCurveQuoteSensitivity {
 
 		String strCurrency = "USD";
 
-		DiscountCurveQuoteSensitivitySample (DateUtil.Today(), strCurrency);
+		DiscountCurveQuoteSensitivitySample (
+			DateUtil.Today(),
+			strCurrency
+		);
 	}
 }

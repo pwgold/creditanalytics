@@ -118,7 +118,10 @@ public class OvernightFedFundLIBORSwap {
 					aiDay[i],
 					strCurrency
 				),
-				ForwardLabel.Create (strCurrency, "ON")
+				ForwardLabel.Create (
+					strCurrency,
+					"ON"
+				)
 			);
 
 		return aDeposit;
@@ -346,9 +349,16 @@ public class OvernightFedFundLIBORSwap {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
-				null),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				null
+			),
 			BoundarySettings.NaturalStandard(),
 			MultiSegmentSequence.CALIBRATE,
 			null,
@@ -360,7 +370,11 @@ public class OvernightFedFundLIBORSwap {
 		 *  of Deposit and Swap Stretches.
 		 */
 
-		ValuationParams valParams = new ValuationParams (dtSpot, dtSpot, strCurrency);
+		ValuationParams valParams = new ValuationParams (
+			dtSpot,
+			dtSpot,
+			strCurrency
+		);
 
 		DiscountCurve dc = ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (
 			lcc,
@@ -535,23 +549,43 @@ public class OvernightFedFundLIBORSwap {
 		 * Construct the 6M-xM float-float basis swap.
 		 */
 
-		FloatFloatComponent[] aFFC = MakexM6MBasisSwap (dtSpot, strCurrency, astrxM6MFwdTenor, iTenorInMonths);
+		FloatFloatComponent[] aFFC = MakexM6MBasisSwap (
+			dtSpot,
+			strCurrency,
+			astrxM6MFwdTenor,
+			iTenorInMonths
+		);
 
 		String strBasisTenor = iTenorInMonths + "M";
 
-		ValuationParams valParams = new ValuationParams (dtSpot, dtSpot, strCurrency);
+		ValuationParams valParams = new ValuationParams (
+			dtSpot,
+			dtSpot,
+			strCurrency
+		);
 
 		/*
 		 * Calculate the starting forward rate off of the discount curve.
 		 */
 
-		double dblStartingFwd = dc.forward (dtSpot.julian(), dtSpot.addTenor (strBasisTenor).julian());
+		double dblStartingFwd = dc.forward (
+			dtSpot.julian(),
+			dtSpot.addTenor (strBasisTenor).julian()
+		);
 
 		/*
 		 * Set the discount curve based component market parameters.
 		 */
 
-		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (dc, null, null, null, null, null, null);
+		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (
+			dc,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
 
 		/*
 		 * Construct the shape preserving forward curve off of Cubic Polynomial Basis Spline.
@@ -559,7 +593,10 @@ public class OvernightFedFundLIBORSwap {
 
 		return ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (
 			"CUBIC_FWD" + strBasisTenor,
-			ForwardLabel.Create (strCurrency, strBasisTenor),
+			ForwardLabel.Create (
+				strCurrency,
+				strBasisTenor
+			),
 			valParams,
 			null,
 			mktParams,
@@ -594,7 +631,10 @@ public class OvernightFedFundLIBORSwap {
 			"ON",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT,
 			null,
-			ForwardLabel.Create (strCurrency, "ON"),
+			ForwardLabel.Create (
+				strCurrency,
+				"ON"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -716,7 +756,10 @@ public class OvernightFedFundLIBORSwap {
 				"3M",
 				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 				null,
-				ForwardLabel.Create (strCurrency, "3M"),
+				ForwardLabel.Create (
+					strCurrency,
+					"3M"
+				),
 				CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 				0.
 			);
@@ -811,7 +854,11 @@ public class OvernightFedFundLIBORSwap {
 
 		String strCurrency = "USD";
 
-		JulianDate dtToday = DateUtil.CreateFromYMD (2012, DateUtil.DECEMBER, 11);
+		JulianDate dtToday = DateUtil.CreateFromYMD (
+			2012,
+			DateUtil.DECEMBER,
+			11
+		);
 
 		DiscountCurve dcOIS = OISDiscountCurve (
 			dtToday,

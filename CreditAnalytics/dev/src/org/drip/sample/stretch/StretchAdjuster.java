@@ -67,7 +67,8 @@ public class StretchAdjuster {
 			new PolynomialFunctionSetParams (iNumBasis),
 			sdic,
 			rssc,
-			null);
+			null
+		);
 	}
 
 	/*
@@ -104,7 +105,8 @@ public class StretchAdjuster {
 			aSCBC, // Basis Segment Builder parameters
 			null,
 			BoundarySettings.NaturalStandard(), // Boundary Condition - Natural
-			MultiSegmentSequence.CALIBRATE); // Calibrate the Stretch predictors to the responses
+			MultiSegmentSequence.CALIBRATE // Calibrate the Stretch predictors to the responses
+		);
 	}
 
 	/*
@@ -134,7 +136,8 @@ public class StretchAdjuster {
 
 		ResponseScalingShapeControl rssc = new ResponseScalingShapeControl (
 			false,
-			new QuadraticRationalShapeControl (dblShapeControllerTension));
+			new QuadraticRationalShapeControl (dblShapeControllerTension)
+		);
 
 		/*
 		 * Construct the segment inelastic parameter that is C2 (iK = 2 sets it to C2), with 2nd order
@@ -146,7 +149,8 @@ public class StretchAdjuster {
 
 		SegmentInelasticDesignControl sdic = SegmentInelasticDesignControl.Create (
 			iK,
-			iRoughnessPenaltyDerivativeOrder);
+			iRoughnessPenaltyDerivativeOrder
+		);
 
 		/*
 		 * Build the polynomial basis spline segment control parameters, and set up the stretch
@@ -156,9 +160,17 @@ public class StretchAdjuster {
 
 		int iPolyNumBasis = 4;
 
-		SegmentCustomBuilderControl scbc = PolynomialSegmentControlParams (iPolyNumBasis, sdic, rssc);
+		SegmentCustomBuilderControl scbc = PolynomialSegmentControlParams (
+			iPolyNumBasis,
+			sdic,
+			rssc
+		);
 
-		MultiSegmentSequence mssBase = BasisSplineStretchTest (adblX, adblY, scbc);
+		MultiSegmentSequence mssBase = BasisSplineStretchTest (
+			adblX,
+			adblY,
+			scbc
+		);
 
 		/*
 		 * Estimate, compute the segment-by-segment monotonicity and the Stretch Jacobian
@@ -185,7 +197,10 @@ public class StretchAdjuster {
 
 		System.out.println (" \n---------- \n LEFT CLIPPED \n ---------- \n");
 
-		MultiSegmentSequence mssLeftClipped = mssBase.clipLeft ("LEFT_CLIP", 1.66);
+		MultiSegmentSequence mssLeftClipped = mssBase.clipLeft (
+			"LEFT_CLIP",
+			1.66
+		);
 
 		dblX = mssBase.getLeftPredictorOrdinateEdge();
 
@@ -216,7 +231,10 @@ public class StretchAdjuster {
 
 		System.out.println (" \n---------- \n RIGHT CLIPPED \n ---------- \n");
 
-		MultiSegmentSequence mssRightClipped = mssBase.clipRight ("RIGHT_CLIP", 7.48);
+		MultiSegmentSequence mssRightClipped = mssBase.clipRight (
+			"RIGHT_CLIP",
+			7.48
+		);
 
 		/*
 		 * Estimate, compute the segment-by-segment monotonicity and the Stretch Jacobian of the right clipped stretch

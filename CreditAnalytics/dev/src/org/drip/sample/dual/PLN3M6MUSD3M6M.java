@@ -1,8 +1,7 @@
 
 package org.drip.sample.dual;
 
-import org.drip.analytics.date.DateUtil;
-import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.date.*;
 import org.drip.analytics.rates.*;
 import org.drip.function.R1ToR1.QuadraticRationalShapeControl;
 import org.drip.sample.forward.*;
@@ -574,7 +573,11 @@ public class PLN3M6MUSD3M6M {
 
 		CreditAnalytics.Init ("");
 
-		JulianDate dtValue = DateUtil.CreateFromYMD (2012, DateUtil.DECEMBER, 11);
+		JulianDate dtValue = DateUtil.CreateFromYMD (
+			2012,
+			DateUtil.DECEMBER,
+			11
+		);
 
 		String strReferenceCurrency = "USD";
 		String strDerivedCurrency = "PLN";
@@ -582,8 +585,14 @@ public class PLN3M6MUSD3M6M {
 		SegmentCustomBuilderControl scbcCubic = new SegmentCustomBuilderControl (
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 			new PolynomialFunctionSetParams (4),
-			SegmentInelasticDesignControl.Create (2, 2),
-			new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+			SegmentInelasticDesignControl.Create (
+				2,
+				2
+			),
+			new ResponseScalingShapeControl (
+				true,
+				new QuadraticRationalShapeControl (0.)
+			),
 			null
 		);
 
@@ -606,7 +615,10 @@ public class PLN3M6MUSD3M6M {
 		ForwardCurve fc6MReference = IBORCurve.CustomIBORBuilderSample (
 			dcReference,
 			null,
-			ForwardLabel.Create (strReferenceCurrency, "6M"),
+			ForwardLabel.Create (
+				strReferenceCurrency,
+				"6M"
+			),
 			scbcCubic,
 			s_astrUSD6MDepositTenor,
 			s_adblUSD6MDepositQuote,
@@ -630,7 +642,10 @@ public class PLN3M6MUSD3M6M {
 		ForwardCurve fc3MReference = IBORCurve.CustomIBORBuilderSample (
 			dcReference,
 			fc6MReference,
-			ForwardLabel.Create (strReferenceCurrency, "3M"),
+			ForwardLabel.Create (
+				strReferenceCurrency,
+				"3M"
+			),
 			scbcCubic,
 			s_astrUSD3MDepositTenor,
 			s_adblUSD3MDepositQuote,
@@ -670,7 +685,10 @@ public class PLN3M6MUSD3M6M {
 		ForwardCurve fc6MDerived = IBORCurve.CustomIBORBuilderSample (
 			dcDerived,
 			null,
-			ForwardLabel.Create (strDerivedCurrency, "6M"),
+			ForwardLabel.Create (
+				strDerivedCurrency,
+				"6M"
+			),
 			scbcCubic,
 			s_astrPLN6MDepositTenor,
 			s_adblPLN6MDepositQuote,

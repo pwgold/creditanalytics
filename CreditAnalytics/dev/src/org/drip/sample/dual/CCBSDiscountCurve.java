@@ -81,7 +81,10 @@ public class CCBSDiscountCurve {
 			"6M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-			ForwardLabel.Create (strCouponCurrency, "6M"),
+			ForwardLabel.Create (
+				strCouponCurrency,
+				"6M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -90,7 +93,10 @@ public class CCBSDiscountCurve {
 			iTenorInMonths + "M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-			ForwardLabel.Create (strCouponCurrency, iTenorInMonths + "M"),
+			ForwardLabel.Create (
+				strCouponCurrency,
+				iTenorInMonths + "M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -104,7 +110,11 @@ public class CCBSDiscountCurve {
 			null,
 			null,
 			strPayCurrency.equalsIgnoreCase (strCouponCurrency) ? null :
-				new FixingSetting (FixingSetting.FIXING_PRESET_STATIC, null, dtEffective.julian()),
+				new FixingSetting (
+					FixingSetting.FIXING_PRESET_STATIC,
+					null,
+					dtEffective.julian()
+				),
 			null
 		);
 
@@ -117,7 +127,11 @@ public class CCBSDiscountCurve {
 			null,
 			null,
 			strPayCurrency.equalsIgnoreCase (strCouponCurrency) ? null :
-				new FixingSetting (FixingSetting.FIXING_PRESET_STATIC, null, dtEffective.julian()),
+				new FixingSetting (
+					FixingSetting.FIXING_PRESET_STATIC,
+					null,
+					dtEffective.julian()
+				),
 			null
 		);
 
@@ -243,7 +257,12 @@ public class CCBSDiscountCurve {
 		ComponentPair[] aCCSP = new ComponentPair[astrTenor.length];
 
 		for (int i = 0; i < aCCSP.length; ++i)
-			aCCSP[i] = new ComponentPair ("EURUSD_" + astrTenor[i], aFFCReference[i], aIRS[i], null);
+			aCCSP[i] = new ComponentPair (
+				"EURUSD_" + astrTenor[i],
+				aFFCReference[i],
+				aIRS[i],
+				null
+			);
 
 		return aCCSP;
 	}
@@ -364,7 +383,12 @@ public class CCBSDiscountCurve {
 		for (int i = 0; i < aCCSP.length; ++i) {
 			CalibratableFixedIncomeComponent rcDerived = aCCSP[i].derivedComponent();
 
-			CaseInsensitiveTreeMap<Double> mapOP = aCCSP[i].value (valParams, null, mktParams, null);
+			CaseInsensitiveTreeMap<Double> mapOP = aCCSP[i].value (
+				valParams,
+				null, 
+				mktParams,
+				null
+			);
 
 			double dblCalibSwapRate = mapOP.get (rcDerived.name() + "[SwapRate]");
 

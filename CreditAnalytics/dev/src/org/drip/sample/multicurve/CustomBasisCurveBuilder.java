@@ -83,10 +83,19 @@ public class CustomBasisCurveBuilder {
 		BasisCurve bcCubicPolynomial = ScenarioBasisCurveBuilder.CubicPolynomialBasisCurve (
 			"USD3M6MBasis_CubicPolynomial",
 			dtToday,
-			ForwardLabel.Create ("USD", "6M"),
-			ForwardLabel.Create ("USD", "3M"),
+			ForwardLabel.Create (
+				"USD",
+				"6M"
+			),
+			ForwardLabel.Create (
+				"USD",
+				"3M"
+			),
 			false,
-			new CollateralizationParams ("OVERNIGHT", "USD"),
+			new CollateralizationParams (
+				"OVERNIGHT",
+				"USD"
+			),
 			astrTenor,
 			adblBasis
 		);
@@ -94,10 +103,19 @@ public class CustomBasisCurveBuilder {
 		BasisCurve bcQuinticPolynomial = ScenarioBasisCurveBuilder.QuarticPolynomialBasisCurve (
 			"USD3M6MBasis_QuinticPolynomial",
 			dtToday,
-			ForwardLabel.Create ("USD", "6M"),
-			ForwardLabel.Create ("USD", "3M"),
+			ForwardLabel.Create (
+				"USD",
+				"6M"
+			),
+			ForwardLabel.Create (
+				"USD",
+				"3M"
+			),
 			false,
-			new CollateralizationParams ("OVERNIGHT", "USD"),
+			new CollateralizationParams (
+				"OVERNIGHT",
+				"USD"
+			),
 			astrTenor,
 			adblBasis
 		);
@@ -105,10 +123,19 @@ public class CustomBasisCurveBuilder {
 		BasisCurve bcKaklisPandelis = ScenarioBasisCurveBuilder.KaklisPandelisBasisCurve (
 			"USD3M6MBasis_KaklisPandelis",
 			dtToday,
-			ForwardLabel.Create ("USD", "6M"),
-			ForwardLabel.Create ("USD", "3M"),
+			ForwardLabel.Create (
+				"USD",
+				"6M"
+			),
+			ForwardLabel.Create (
+				"USD",
+				"3M"
+			),
 			false,
-			new CollateralizationParams ("OVERNIGHT", "USD"),
+			new CollateralizationParams (
+				"OVERNIGHT",
+				"USD"
+			),
 			astrTenor,
 			adblBasis
 		);
@@ -116,10 +143,19 @@ public class CustomBasisCurveBuilder {
 		BasisCurve bcKLKHyperbolic = ScenarioBasisCurveBuilder.KLKHyperbolicBasisCurve (
 			"USD3M6MBasis_KLKHyperbolic",
 			dtToday,
-			ForwardLabel.Create ("USD", "6M"),
-			ForwardLabel.Create ("USD", "3M"),
+			ForwardLabel.Create (
+				"USD",
+				"6M"
+			),
+			ForwardLabel.Create (
+				"USD",
+				"3M"
+			),
 			false,
-			new CollateralizationParams ("OVERNIGHT", "USD"),
+			new CollateralizationParams (
+				"OVERNIGHT",
+				"USD"
+			),
 			astrTenor,
 			adblBasis,
 			1.
@@ -128,10 +164,19 @@ public class CustomBasisCurveBuilder {
 		BasisCurve bcKLKRationalLinear = ScenarioBasisCurveBuilder.KLKRationalLinearBasisCurve (
 			"USD3M6MBasis_KLKRationalLinear",
 			dtToday,
-			ForwardLabel.Create ("USD", "6M"),
-			ForwardLabel.Create ("USD", "3M"),
+			ForwardLabel.Create (
+				"USD",
+				"6M"
+			),
+			ForwardLabel.Create (
+				"USD",
+				"3M"
+			),
 			false,
-			new CollateralizationParams ("OVERNIGHT", "USD"),
+			new CollateralizationParams (
+				"OVERNIGHT",
+				"USD"
+			),
 			astrTenor,
 			adblBasis,
 			0.1
@@ -140,10 +185,19 @@ public class CustomBasisCurveBuilder {
 		BasisCurve bcKLKRationalQuadratic = ScenarioBasisCurveBuilder.KLKRationalLinearBasisCurve (
 			"USD3M6MBasis_KLKRationalQuadratic",
 			dtToday,
-			ForwardLabel.Create ("USD", "6M"),
-			ForwardLabel.Create ("USD", "3M"),
+			ForwardLabel.Create (
+				"USD",
+				"6M"
+			),
+			ForwardLabel.Create (
+				"USD",
+				"3M"
+			),
 			false,
-			new CollateralizationParams ("OVERNIGHT", "USD"),
+			new CollateralizationParams (
+				"OVERNIGHT",
+				"USD"
+			),
 			astrTenor,
 			adblBasis,
 			2.

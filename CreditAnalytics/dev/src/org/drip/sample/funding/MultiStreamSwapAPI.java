@@ -109,7 +109,10 @@ public class MultiStreamSwapAPI {
 			"3M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
 			null,
-			ForwardLabel.Create (strCurrency, "3M"),
+			ForwardLabel.Create (
+				strCurrency,
+				"3M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -307,7 +310,10 @@ public class MultiStreamSwapAPI {
 			"3M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
 			null,
-			ForwardLabel.Create ("USD", "3M"),
+			ForwardLabel.Create (
+				"USD",
+				"3M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.03
 		);
@@ -316,7 +322,10 @@ public class MultiStreamSwapAPI {
 			"3M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
 			null,
-			ForwardLabel.Create ("USD", "3M"),
+			ForwardLabel.Create (
+				"USD",
+				"3M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.05
 		);
@@ -325,7 +334,10 @@ public class MultiStreamSwapAPI {
 			"3M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
 			null,
-			ForwardLabel.Create ("USD", "3M"),
+			ForwardLabel.Create (
+				"USD",
+				"3M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.07
 		);
@@ -385,7 +397,11 @@ public class MultiStreamSwapAPI {
 		 * Create a Rates Basket instance containing the fixed and floating streams
 		 */
 
-		return new RatesBasket ("RATESBASKET", aFixedStream, aFloatStream);
+		return new RatesBasket (
+			"RATESBASKET",
+			aFixedStream,
+			aFloatStream
+		);
 	}
 
 	/*
@@ -452,7 +468,12 @@ public class MultiStreamSwapAPI {
 		 * Value the Rates Basket
 		 */
 
-		CaseInsensitiveTreeMap<Double> mapRBResults = rb.value (valParams, null, mktParams, null);
+		CaseInsensitiveTreeMap<Double> mapRBResults = rb.value (
+			valParams,
+			null,
+			mktParams,
+			null
+		);
 
 		System.out.println (mapRBResults);
 	}

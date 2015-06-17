@@ -76,7 +76,10 @@ public class InArrearsSwap {
 			"3M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
 			null,
-			ForwardLabel.Create (strCurrency, "3M"),
+			ForwardLabel.Create (
+				strCurrency,
+				"3M"
+			),
 			iRefPeriodType,
 			0.
 		);
@@ -106,7 +109,10 @@ public class InArrearsSwap {
 					CompositePeriodBuilder.FloatingCompositeUnit (
 						CompositePeriodBuilder.EdgePair (
 							dtEffective,
-							dtEffective.addBusDays (aiDay[i], strCurrency)
+							dtEffective.addBusDays (
+								aiDay[i],
+								strCurrency
+							)
 						),
 						cps,
 						cfus
@@ -151,7 +157,10 @@ public class InArrearsSwap {
 			"6M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-			ForwardLabel.Create (strCurrency, "6M"),
+			ForwardLabel.Create (
+				strCurrency,
+				"6M"
+			),
 			iRefPeriodType,
 			0.
 		);
@@ -358,7 +367,11 @@ public class InArrearsSwap {
 			adblSwapQuote
 		);
 
-		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {depositStretch, edfStretch, swapStretch};
+		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {
+			depositStretch,
+			edfStretch,
+			swapStretch
+		};
 
 		/*
 		 * Set up the Linear Curve Calibrator using the following parameters:
@@ -372,8 +385,14 @@ public class InArrearsSwap {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
 				null
 			),
 			BoundarySettings.NaturalStandard(),
@@ -403,7 +422,15 @@ public class InArrearsSwap {
 			1.
 		);
 
-		CurveSurfaceQuoteSet csqs = MarketParamsBuilder.Create (dc, null, null, null, null, null, null);
+		CurveSurfaceQuoteSet csqs = MarketParamsBuilder.Create (
+			dc,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
 
 		/*
 		 * Cross-Comparison of the In-Advance/Arrears Swap "Rate" metric across the different curve
@@ -433,7 +460,13 @@ public class InArrearsSwap {
 		System.out.println ("\t-------------------------------------------------------------------------------");
 
 		for (int i = 0; i < aSwapInAdvance.length; ++i) {
-			double dblInArrearsFairPremium = aSwapInArrears[i].measureValue (valParams, null, csqs, null, "FairPremium");
+			double dblInArrearsFairPremium = aSwapInArrears[i].measureValue (
+				valParams,
+				null,
+				csqs,
+				null,
+				"FairPremium"
+			);
 
 			System.out.println ("\t[" + aSwapInAdvance[i].maturityDate() + "] = " +
 				FormatUtil.FormatDouble (aSwapInAdvance[i].measureValue (valParams, null, csqs, null, "CalibSwapRate"), 1, 4, 100.) + "% | " +
@@ -463,9 +496,21 @@ public class InArrearsSwap {
 		System.out.println ("\t-------------------------------------------------------------------------------");
 
 		for (int i = 0; i < aSwapInAdvance.length; ++i) {
-			double dblInAdvanceDV01 = aSwapInAdvance[i].measureValue (valParams, null, csqs, null, "FixedDV01");
+			double dblInAdvanceDV01 = aSwapInAdvance[i].measureValue (
+				valParams,
+				null,
+				csqs,
+				null,
+				"FixedDV01"
+			);
 
-			double dblInArrearsDV01 = aSwapInArrears[i].measureValue (valParams, null, csqs, null, "FixedDV01");
+			double dblInArrearsDV01 = aSwapInArrears[i].measureValue (
+				valParams,
+				null,
+				csqs,
+				null,
+				"FixedDV01"
+			);
 
 			System.out.println ("\t[" + aSwapInAdvance[i].maturityDate() + "] = " +
 				FormatUtil.FormatDouble (dblInAdvanceDV01, 2, 1, 10000.) + " | " +
@@ -491,6 +536,9 @@ public class InArrearsSwap {
 
 		String strCurrency = "USD";
 
-		CustomDiscountCurveBuilderSample (dtToday, strCurrency);
+		CustomDiscountCurveBuilderSample (
+			dtToday,
+			strCurrency
+		);
 	}
 }

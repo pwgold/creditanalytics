@@ -58,7 +58,10 @@ public class MarketSurfaceTermStructure {
 		return new SegmentCustomBuilderControl (
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 			new PolynomialFunctionSetParams (4),
-			SegmentInelasticDesignControl.Create (2, 2),
+			SegmentInelasticDesignControl.Create (
+				2,
+				2
+			),
 			null,
 			null
 		);
@@ -165,8 +168,12 @@ public class MarketSurfaceTermStructure {
 	{
 		JulianDate dtStart = DateUtil.Today();
 
-		double[] adblStrikeATMFactorCalib = new double[] {0.8, 0.9, 1.0, 1.1, 1.2};
-		String[] astrMaturityTenorCalib = new String[] {"12M", "24M", "36M", "48M", "60M"};
+		double[] adblStrikeATMFactorCalib = new double[] {
+			0.8, 0.9, 1.0, 1.1, 1.2
+		};
+		String[] astrMaturityTenorCalib = new String[] {
+			"12M", "24M", "36M", "48M", "60M"
+		};
 
 		double dblRho = 0.3;
 		double dblKappa = 1.;
@@ -192,7 +199,10 @@ public class MarketSurfaceTermStructure {
 			1.,
 			false,
 			0.20,
-			new CollateralizationParams ("OVERNIGHT_INDEX", "USD"),
+			new CollateralizationParams (
+				"OVERNIGHT_INDEX",
+				"USD"
+			),
 			adblStrikeATMFactorCalib,
 			astrMaturityTenorCalib,
 			hopp,

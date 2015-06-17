@@ -78,7 +78,8 @@ public class CustomCurveBuilder {
 			new ResponseScalingShapeControl (
 				true,
 				new QuadraticRationalShapeControl (0.0)), // Univariate Rational Shape Controller
-			null);
+			null
+		);
 	}
 
 	/*
@@ -98,7 +99,8 @@ public class CustomCurveBuilder {
 			new ResponseScalingShapeControl (
 				true,
 				new QuadraticRationalShapeControl (0.0)), // Univariate Rational Shape Controller
-			null);
+			null
+		);
 	}
 
 	/*
@@ -119,7 +121,8 @@ public class CustomCurveBuilder {
 				new ResponseScalingShapeControl (
 					true,
 					new QuadraticRationalShapeControl (0.0)), // Univariate Rational Shape Controller
-				null);
+				null
+			);
 
 		if (strBasisSpline.equalsIgnoreCase (MultiSegmentSequenceBuilder.BASIS_SPLINE_EXPONENTIAL_TENSION)) // Exponential Tension Basis Spline
 			return new SegmentCustomBuilderControl (
@@ -129,7 +132,8 @@ public class CustomCurveBuilder {
 				new ResponseScalingShapeControl (
 					true,
 					new QuadraticRationalShapeControl (0.0)), // Univariate Rational Shape Controller
-				null);
+				null
+			);
 
 		return null;
 	}
@@ -149,11 +153,20 @@ public class CustomCurveBuilder {
 		TreeMap<Double, Double> mapCF = new TreeMap<Double, Double>();
 
 		for (double dblCFDate = 1. / iFreq; dblCFDate < dblTenorInYears; dblCFDate += 1. / iFreq)
-			mapCF.put (dblCFDate, dblCoupon / iFreq);
+			mapCF.put (
+				dblCFDate,
+				dblCoupon / iFreq
+			);
 
-		mapCF.put (0., -1.);
+		mapCF.put (
+			0.,
+			-1.
+		);
 
-		mapCF.put (1. * dblTenorInYears, 1. + dblCoupon / iFreq);
+		mapCF.put (
+			1. * dblTenorInYears,
+			1. + dblCoupon / iFreq
+		);
 
 		return mapCF;
 	}
@@ -199,7 +212,11 @@ public class CustomCurveBuilder {
 			adblNodeWeight[i] = lsWeight.get (i);
 		}
 
-		return new SegmentResponseValueConstraint (adblNode, adblNodeWeight, -dblValue);
+		return new SegmentResponseValueConstraint (
+			adblNode,
+			adblNodeWeight,
+			-dblValue
+		);
 	}
 
 	/**
@@ -278,13 +295,20 @@ public class CustomCurveBuilder {
 			 * Generate the Cash flow for the swap Instrument
 			 */
 
-			TreeMap<Double, Double> mapCF = SwapCashFlow (dblQuote, 2, dblTenorInYears);
+			TreeMap<Double, Double> mapCF = SwapCashFlow (
+				dblQuote,
+				2,
+				dblTenorInYears
+			);
 
 			/*
 			 * Convert the Cash flow into a DRIP segment constraint using the "prior" curve stretch
 			 */
 
-			SegmentResponseValueConstraint srvc = GenerateSegmentConstraint (mapCF, mss);
+			SegmentResponseValueConstraint srvc = GenerateSegmentConstraint (
+				mapCF,
+				mss
+			);
 
 			/*
 			 * If it is the head segment, create a stretch instance for the discount curve.
@@ -301,19 +325,23 @@ public class CustomCurveBuilder {
 				 * Start off with a single segment stretch, with the corresponding Builder Parameters
 				 */
 
-				mss = MultiSegmentSequenceBuilder.CreateUncalibratedStretchEstimator ("SWAP",
+				mss = MultiSegmentSequenceBuilder.CreateUncalibratedStretchEstimator (
+					"SWAP",
 					new double[] {0., dblTenorInYears},
-					new SegmentCustomBuilderControl[] {scbc});
+					new SegmentCustomBuilderControl[] {scbc}
+				);
 
 				/*
 				 * Set the stretch up by carrying out a "Natural Boundary" Spline Calibration
 				 */
 
-				mss.setup (1.,
+				mss.setup (
+					1.,
 					new SegmentResponseValueConstraint[] {srvc},
 					null,
 					bs,
-					iCalibrationDetail);
+					iCalibrationDetail
+				);
 			} else {
 				/*
 				 * The Segment Builder Parameters shown here illustrate using an exponential/hyperbolic
@@ -343,7 +371,8 @@ public class CustomCurveBuilder {
 					srvc,
 					scbcLocal,
 					bs,
-					iCalibrationDetail);
+					iCalibrationDetail
+				);
 			}
 		}
 
@@ -416,7 +445,9 @@ public class CustomCurveBuilder {
 				MakeKLKTensionSCBC (1.)
 			}, // Exponential Tension Basis Spline
 			null,
-			bs, iCalibrationDetail); // "Natural" Spline Boundary Condition + Calibrate the full stretch
+			bs,
+			iCalibrationDetail // "Natural" Spline Boundary Condition + Calibrate the full stretch
+		);
 
 		/*
 		 * Construct the discount curve by iterating through the cash instruments and their discount
@@ -432,7 +463,13 @@ public class CustomCurveBuilder {
 			 * Insert the instrument/quote as a "knot" entity into the stretch. Given the "natural" spline
 			 */
 
-			mssCash = MultiSegmentSequenceModifier.InsertKnot (mssCash, dblTenorInYears, dblDF, bs, iCalibrationDetail);
+			mssCash = MultiSegmentSequenceModifier.InsertKnot (
+				mssCash,
+				dblTenorInYears,
+				dblDF,
+				bs,
+				iCalibrationDetail
+			);
 		}
 
 		return mssCash;
@@ -459,7 +496,8 @@ public class CustomCurveBuilder {
 
 		MultiSegmentSequence mssNaturalCash = BuildCashCurve (
 			BoundarySettings.NaturalStandard(),
-			MultiSegmentSequence.CALIBRATE);
+			MultiSegmentSequence.CALIBRATE
+		);
 
 		/*
 		 * Construct the Cash Curve Sequence with the Standard Financial Boundary Condition
@@ -467,7 +505,8 @@ public class CustomCurveBuilder {
 
 		MultiSegmentSequence mssFinancialCash = BuildCashCurve (
 			BoundarySettings.FinancialStandard(),
-			MultiSegmentSequence.CALIBRATE);
+			MultiSegmentSequence.CALIBRATE
+		);
 
 		/*
 		 * Construct the Cash Curve Sequence with the Standard Not-A-Knot Boundary Condition
@@ -475,7 +514,8 @@ public class CustomCurveBuilder {
 
 		MultiSegmentSequence mssNotAKnotCash = BuildCashCurve (
 			BoundarySettings.NotAKnotStandard (1, 1),
-			MultiSegmentSequence.CALIBRATE);
+			MultiSegmentSequence.CALIBRATE
+		);
 
 		double dblXShift = 0.1 * (mssNaturalCash.getRightPredictorOrdinateEdge() - mssNaturalCash.getLeftPredictorOrdinateEdge());
 
@@ -508,7 +548,8 @@ public class CustomCurveBuilder {
 		MultiSegmentSequence mssNaturalSwap = BuildSwapCurve (
 			mssNaturalCash,
 			BoundarySettings.NaturalStandard(),
-			MultiSegmentSequence.CALIBRATE);
+			MultiSegmentSequence.CALIBRATE
+		);
 
 		/*
 		 * Construct the Swap Curve Sequence with the Standard Financial Boundary Condition
@@ -517,7 +558,8 @@ public class CustomCurveBuilder {
 		MultiSegmentSequence mssFinancialSwap = BuildSwapCurve (
 			mssFinancialCash,
 			BoundarySettings.FinancialStandard(),
-			MultiSegmentSequence.CALIBRATE);
+			MultiSegmentSequence.CALIBRATE
+		);
 
 		/*
 		 * Construct the Swap Curve Sequence with the Standard Not-A-Knot Boundary Condition
@@ -526,7 +568,8 @@ public class CustomCurveBuilder {
 		MultiSegmentSequence mssNotAKnotSwap = BuildSwapCurve (
 			mssNotAKnotCash,
 			BoundarySettings.NotAKnotStandard (1, 1),
-			MultiSegmentSequence.CALIBRATE);
+			MultiSegmentSequence.CALIBRATE
+		);
 
 		/*
 		 * Display the DF and the monotonicity for the swaps.
@@ -535,14 +578,16 @@ public class CustomCurveBuilder {
 		dblXShift = 0.05 * (mssNaturalSwap.getRightPredictorOrdinateEdge() - mssNaturalSwap.getLeftPredictorOrdinateEdge());
 
 		for (double dblX = mssNaturalSwap.getLeftPredictorOrdinateEdge(); dblX <= mssNaturalSwap.getRightPredictorOrdinateEdge(); dblX = dblX + dblXShift)
-			System.out.println ("Swap DF   [" +
+			System.out.println (
+				"Swap DF   [" +
 				FormatUtil.FormatDouble (dblX, 2, 0, 1.) + "Y] => " +
 				FormatUtil.FormatDouble (mssNaturalSwap.responseValue (dblX), 1, 6, 1.) + " | " +
 				mssNaturalSwap.monotoneType (dblX) + "  <====>  " +
 				FormatUtil.FormatDouble (mssNotAKnotSwap.responseValue (dblX), 1, 6, 1.) + " | " +
 				mssNotAKnotSwap.monotoneType (dblX) + "  <====>  " +
 				FormatUtil.FormatDouble (mssFinancialSwap.responseValue (dblX), 1, 6, 1.) + " | " +
-				mssFinancialSwap.monotoneType (dblX));
+				mssFinancialSwap.monotoneType (dblX)
+			);
 	}
 
 	public static final void main (

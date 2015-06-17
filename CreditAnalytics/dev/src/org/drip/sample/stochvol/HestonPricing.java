@@ -3,14 +3,13 @@ package org.drip.sample.stochvol;
 
 import org.drip.analytics.date.*;
 import org.drip.analytics.rates.DiscountCurve;
-import org.drip.analytics.support.*;
 import org.drip.function.R1ToR1.FlatUnivariate;
 import org.drip.market.otc.*;
 import org.drip.param.creator.ScenarioDiscountCurveBuilder;
-import org.drip.param.period.*;
 import org.drip.param.pricer.HestonOptionPricerParams;
 import org.drip.param.valuation.*;
 import org.drip.pricer.option.*;
+import org.drip.product.creator.SingleStreamComponentBuilder;
 import org.drip.product.definition.CalibratableFixedIncomeComponent;
 import org.drip.product.option.EuropeanCallPut;
 import org.drip.product.rates.*;
@@ -83,61 +82,38 @@ public class HestonPricing {
 	 *  	USE WITH CARE: This sample ignores errors and does not handle exceptions.
 	 */
 
-	private static final SingleStreamComponent[] DepositInstrumentsFromMaturityDays (
+	private static final CalibratableFixedIncomeComponent[] DepositInstrumentsFromMaturityDays (
 		final JulianDate dtEffective,
-		final String strCurrency,
-		final int[] aiDay)
+		final int[] aiDay,
+		final int iNumFutures,
+		final String strCurrency)
 		throws Exception
 	{
-		SingleStreamComponent[] aDeposit = new SingleStreamComponent[aiDay.length];
+		CalibratableFixedIncomeComponent[] aCalibComp = new CalibratableFixedIncomeComponent[aiDay.length + iNumFutures];
 
-		ComposableFloatingUnitSetting cfus = new ComposableFloatingUnitSetting (
-			"3M",
-			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
-			null,
-			ForwardLabel.Create (strCurrency, "3M"),
-			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
-			0.
-		);
-
-		CompositePeriodSetting cps = new CompositePeriodSetting (
-			4,
-			"3M",
-			strCurrency,
-			null,
-			1.,
-			null,
-			null,
-			null,
-			null
-		);
-
-		CashSettleParams csp = new CashSettleParams (
-			0,
-			strCurrency,
-			0
-		);
-
-		for (int i = 0; i < aiDay.length; ++i) {
-			aDeposit[i] = new SingleStreamComponent (
-				"DEPOSIT_" + aiDay[i],
-				new Stream (
-					CompositePeriodBuilder.FloatingCompositeUnit (
-						CompositePeriodBuilder.EdgePair (
-							dtEffective,
-							dtEffective.addBusDays (aiDay[i], strCurrency)
-						),
-						cps,
-						cfus
-					)
+		for (int i = 0; i < aiDay.length; ++i)
+			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (
+				dtEffective,
+				dtEffective.addBusDays (
+					aiDay[i],
+					strCurrency
 				),
-				csp
+				ForwardLabel.Create (
+					strCurrency,
+					"3M"
+				)
 			);
 
-			aDeposit[i].setPrimaryCode (aiDay[i] + "D");
-		}
+		CalibratableFixedIncomeComponent[] aEDF = SingleStreamComponentBuilder.FuturesPack (
+			dtEffective,
+			iNumFutures,
+			strCurrency
+		);
 
-		return aDeposit;
+		for (int i = aiDay.length; i < aiDay.length + iNumFutures; ++i)
+			aCalibComp[i] = aEDF[i - aiDay.length];
+
+		return aCalibComp;
 	}
 
 	/*
@@ -191,8 +167,11 @@ public class HestonPricing {
 
 		CalibratableFixedIncomeComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (
 			dtSpot,
-			strCurrency,
-			new int[] {1, 2, 3, 7, 14, 21, 30, 60}
+			new int[] {
+				1, 2, 3, 7, 14, 21, 30, 60
+			},
+			0,
+			strCurrency
 		);
 
 		double[] adblDepositQuote = new double[] {
@@ -258,7 +237,11 @@ public class HestonPricing {
 
 		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (
 			"KLK_HYPERBOLIC_SHAPE_TEMPLATE",
-			new ValuationParams (dtSpot, dtSpot, "USD"),
+			new ValuationParams (
+				dtSpot,
+				dtSpot,
+				strCurrency
+			),
 			aDepositComp,
 			adblDepositQuote,
 			astrDepositManifestMeasure,
@@ -281,13 +264,20 @@ public class HestonPricing {
 
 		JulianDate dtToday = DateUtil.Today();
 
-		ValuationParams valParams = new ValuationParams (dtToday, dtToday, "USD");
+		ValuationParams valParams = new ValuationParams (
+			dtToday,
+			dtToday,
+			"USD"
+		);
 
 		/*
 		 * Construct the Discount Curve using its instruments and quotes
 		 */
 
-		DiscountCurve dc = MakeDC (dtToday, "USD");
+		DiscountCurve dc = MakeDC (
+			dtToday,
+			"USD"
+		);
 
 		JulianDate dtMaturity = dtToday.addTenor ("6M");
 
@@ -295,7 +285,8 @@ public class HestonPricing {
 
 		EuropeanCallPut option = new EuropeanCallPut (
 			dtMaturity,
-			dblStrike);
+			dblStrike
+		);
 
 		double dblSpot = 1.;
 
@@ -313,10 +304,12 @@ public class HestonPricing {
 			dblSigma,			// Sigma
 			dblTheta,			// Theta
 			dblLambda,			// Lambda
-			PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL); // Indicates Apply Phase Tracking Adjustment for Log + Power
+			PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL // Indicates Apply Phase Tracking Adjustment for Log + Power
+		);
 
 		FokkerPlanckGenerator fpg = new HestonStochasticVolatilityAlgorithm (
-			fphp);				// FP Heston Parameters
+			fphp				// FP Heston Parameters
+		);
 
 		System.out.println (
 			option.value (

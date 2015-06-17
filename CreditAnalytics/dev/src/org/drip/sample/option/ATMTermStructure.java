@@ -96,8 +96,14 @@ public class ATMTermStructure {
 		for (int i = 0; i < aiDay.length; ++i)
 			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (
 				dtEffective,
-				dtEffective.addBusDays (aiDay[i], strCurrency),
-				ForwardLabel.Create (strCurrency, "3M")
+				dtEffective.addBusDays (
+					aiDay[i],
+					strCurrency
+				),
+				ForwardLabel.Create (
+					strCurrency,
+					"3M"
+				)
 			);
 
 		CalibratableFixedIncomeComponent[] aEDF = SingleStreamComponentBuilder.FuturesPack (
@@ -163,7 +169,9 @@ public class ATMTermStructure {
 
 		CalibratableFixedIncomeComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (
 			dtSpot,
-			new int[] {1, 2, 3, 7, 14, 21, 30, 60},
+			new int[] {
+				1, 2, 3, 7, 14, 21, 30, 60
+			},
 			0,
 			strCurrency
 		);
@@ -231,7 +239,11 @@ public class ATMTermStructure {
 
 		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (
 			"KLK_HYPERBOLIC_SHAPE_TEMPLATE",
-			new ValuationParams (dtSpot, dtSpot, "USD"),
+			new ValuationParams (
+				dtSpot,
+				dtSpot,
+				strCurrency
+			),
 			aDepositComp,
 			adblDepositQuote,
 			astrDepositManifestMeasure,
@@ -324,16 +336,27 @@ public class ATMTermStructure {
 
 		JulianDate dtToday = DateUtil.Today();
 
-		ValuationParams valParams = new ValuationParams (dtToday, dtToday, "USD");
+		ValuationParams valParams = new ValuationParams (
+			dtToday,
+			dtToday,
+			"USD"
+		);
 
 		/*
 		 * Construct the Discount Curve using its instruments and quotes
 		 */
 
-		DiscountCurve dc = MakeDC (dtToday, "USD");
+		DiscountCurve dc = MakeDC (
+			dtToday,
+			"USD"
+		);
 
-		String[] astrMaturityTenor = new String[] {"06M", "01Y", "02Y", "03Y", "04Y", "05Y", "07Y", "10Y", "15Y", "20Y"};
-		double[] adblVolatility = new double[] {0.20, 0.23, 0.27, 0.30, 0.33, 0.35, 0.34, 0.29, 0.26, 0.19};
+		String[] astrMaturityTenor = new String[] {
+			"06M", "01Y", "02Y", "03Y", "04Y", "05Y", "07Y", "10Y", "15Y", "20Y"
+		};
+		double[] adblVolatility = new double[] {
+			0.20, 0.23, 0.27, 0.30, 0.33, 0.35, 0.34, 0.29, 0.26, 0.19
+		};
 		double[] adblCallPrice = new double[adblVolatility.length];
 		double[] adblImpliedCallVolatility = new double[adblVolatility.length];
 
@@ -359,7 +382,8 @@ public class ATMTermStructure {
 			"USD",
 			null,
 			astrMaturityTenor,
-			adblCallPrice);
+			adblCallPrice
+		);
 
 		TermStructure tsCallPriceQuarticPoly = ScenarioTermStructureBuilder.QuarticPolynomialTermStructure (
 			"QUARTIC_POLY_CALLPRICE_TERMSTRUCTURE",
@@ -367,7 +391,8 @@ public class ATMTermStructure {
 			"USD",
 			null,
 			astrMaturityTenor,
-			adblCallPrice);
+			adblCallPrice
+		);
 
 		TermStructure tsCallPriceKaklisPandelis = ScenarioTermStructureBuilder.KaklisPandelisTermStructure (
 			"KAKLIS_PANDELIS_CALLPRICE_TERMSTRUCTURE",
@@ -375,7 +400,8 @@ public class ATMTermStructure {
 			"USD",
 			null,
 			astrMaturityTenor,
-			adblCallPrice);
+			adblCallPrice
+		);
 
 		TermStructure tsCallPriceKLKHyperbolic = ScenarioTermStructureBuilder.KLKHyperbolicTermStructure (
 			"KLK_HYPERBOLIC_CALLPRICE_TERMSTRUCTURE",
@@ -384,7 +410,8 @@ public class ATMTermStructure {
 			null,
 			astrMaturityTenor,
 			adblCallPrice,
-			1.);
+			1.
+		);
 
 		TermStructure tsCallPriceKLKRationalLinear = ScenarioTermStructureBuilder.KLKRationalLinearTermStructure (
 			"KLK_RATIONAL_LINEAR_CALLPRICE_TERMSTRUCTURE",
@@ -393,7 +420,8 @@ public class ATMTermStructure {
 			null,
 			astrMaturityTenor,
 			adblCallPrice,
-			1.);
+			1.
+		);
 
 		TermStructure tsCallPriceKLKRationalQuadratic = ScenarioTermStructureBuilder.KLKRationalQuadraticTermStructure (
 			"KLK_RATIONAL_QUADRATIC_CALLPRICE_TERMSTRUCTURE",
@@ -402,9 +430,14 @@ public class ATMTermStructure {
 			null,
 			astrMaturityTenor,
 			adblCallPrice,
-			0.0001);
+			0.0001
+		);
 
-		InputNodeReplicator (tsCallPriceCubicPoly, astrMaturityTenor, adblCallPrice);
+		InputNodeReplicator (
+			tsCallPriceCubicPoly,
+			astrMaturityTenor,
+			adblCallPrice
+		);
 
 		TermStructure tsCallVolatilityCubicPoly = ScenarioTermStructureBuilder.CubicPolynomialTermStructure (
 			"CUBIC_POLY_CALLVOL_TERMSTRUCTURE",
@@ -412,7 +445,8 @@ public class ATMTermStructure {
 			"USD",
 			null,
 			astrMaturityTenor,
-			adblImpliedCallVolatility);
+			adblImpliedCallVolatility
+		);
 
 		TermStructure tsCallVolatilityQuarticPoly = ScenarioTermStructureBuilder.QuarticPolynomialTermStructure (
 			"QUARTIC_POLY_CALLVOL_TERMSTRUCTURE",
@@ -420,7 +454,8 @@ public class ATMTermStructure {
 			"USD",
 			null,
 			astrMaturityTenor,
-			adblImpliedCallVolatility);
+			adblImpliedCallVolatility
+		);
 
 		TermStructure tsCallVolatilityKaklisPandelis = ScenarioTermStructureBuilder.KaklisPandelisTermStructure (
 			"KAKLIS_PANDELIS_CALLVOL_TERMSTRUCTURE",
@@ -428,7 +463,8 @@ public class ATMTermStructure {
 			"USD",
 			null,
 			astrMaturityTenor,
-			adblImpliedCallVolatility);
+			adblImpliedCallVolatility
+		);
 
 		TermStructure tsCallVolatilityKLKHyperbolic = ScenarioTermStructureBuilder.KLKHyperbolicTermStructure (
 			"KLK_HYPERBOLIC_CALLVOL_TERMSTRUCTURE",
@@ -437,7 +473,8 @@ public class ATMTermStructure {
 			null,
 			astrMaturityTenor,
 			adblImpliedCallVolatility,
-			1.);
+			1.
+		);
 
 		TermStructure tsCallVolatilityKLKRationalLinear = ScenarioTermStructureBuilder.KLKRationalLinearTermStructure (
 			"KLK_RATIONAL_LINEAR_CALLVOL_TERMSTRUCTURE",
@@ -446,7 +483,8 @@ public class ATMTermStructure {
 			null,
 			astrMaturityTenor,
 			adblImpliedCallVolatility,
-			1.);
+			1.
+		);
 
 		TermStructure tsCallVolatilityKLKRationalQuadratic = ScenarioTermStructureBuilder.KLKRationalQuadraticTermStructure (
 			"KLK_RATIONAL_QUADRATIC_CALLVOL_TERMSTRUCTURE",
@@ -455,32 +493,49 @@ public class ATMTermStructure {
 			null,
 			astrMaturityTenor,
 			adblImpliedCallVolatility,
-			0.0001);
+			0.0001
+		);
 
-		InputNodeReplicator (tsCallVolatilityCubicPoly, astrMaturityTenor, adblImpliedCallVolatility);
+		InputNodeReplicator (
+			tsCallVolatilityCubicPoly,
+			astrMaturityTenor,
+			adblImpliedCallVolatility
+		);
 
-		String[] astrOffGridTenor = new String[] {"03M", "09M", "18M", "30Y", "42M", "54M", "06Y", "09Y", "12Y", "18Y", "25Y"};
+		String[] astrOffGridTenor = new String[] {
+			"03M", "09M", "18M", "30Y", "42M", "54M", "06Y", "09Y", "12Y", "18Y", "25Y"
+		};
 
-		OffGrid ("ATM_CALLPRICE_TERM_STRUCTURE",
-			new String[] {"Cubic Poly", "Quart Poly", "KaklisPand", "KLKHyperbl", "KLKRatlLin", "KLKRatlQua"},
+		OffGrid (
+			"ATM_CALLPRICE_TERM_STRUCTURE",
+			new String[] {
+				"Cubic Poly", "Quart Poly", "KaklisPand", "KLKHyperbl", "KLKRatlLin", "KLKRatlQua"
+			},
 			new TermStructure[] {
 				tsCallPriceCubicPoly,
 				tsCallPriceQuarticPoly,
 				tsCallPriceKaklisPandelis,
 				tsCallPriceKLKHyperbolic,
 				tsCallPriceKLKRationalLinear,
-				tsCallPriceKLKRationalQuadratic},
-			astrOffGridTenor);
+				tsCallPriceKLKRationalQuadratic
+			},
+			astrOffGridTenor
+		);
 
-		OffGrid ("ATM_CALLVOL_TERM_STRUCTURE",
-			new String[] {"Cubic Poly", "Quart Poly", "KaklisPand", "KLKHyperbl", "KLKRatlLin", "KLKRatlQua"},
+		OffGrid (
+			"ATM_CALLVOL_TERM_STRUCTURE",
+			new String[] {
+				"Cubic Poly", "Quart Poly", "KaklisPand", "KLKHyperbl", "KLKRatlLin", "KLKRatlQua"
+			},
 			new TermStructure[] {
 				tsCallVolatilityCubicPoly,
 				tsCallVolatilityQuarticPoly,
 				tsCallVolatilityKaklisPandelis,
 				tsCallVolatilityKLKHyperbolic,
 				tsCallVolatilityKLKRationalLinear,
-				tsCallVolatilityKLKRationalQuadratic},
-			astrOffGridTenor);
+				tsCallVolatilityKLKRationalQuadratic
+			},
+			astrOffGridTenor
+		);
 	}
 }

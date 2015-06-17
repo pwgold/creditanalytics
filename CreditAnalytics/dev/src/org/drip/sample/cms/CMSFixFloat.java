@@ -88,8 +88,14 @@ public class CMSFixFloat {
 		for (int i = 0; i < aiDay.length; ++i)
 			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (
 				dtEffective,
-				dtEffective.addBusDays (aiDay[i], strCurrency),
-				ForwardLabel.Create (strCurrency, "3M")
+				dtEffective.addBusDays (
+					aiDay[i],
+					strCurrency
+				),
+				ForwardLabel.Create (
+					strCurrency,
+					"3M"
+				)
 			);
 
 		CalibratableFixedIncomeComponent[] aEDF = SingleStreamComponentBuilder.FuturesPack (
@@ -312,7 +318,11 @@ public class CMSFixFloat {
 		FixFloatComponent fixFloat = new FixFloatComponent (
 			fixedStream,
 			floatingStream,
-			new CashSettleParams (0, strCurrency, 0)
+			new CashSettleParams (
+				0,
+				strCurrency,
+				0
+			)
 		);
 
 		return fixFloat;
@@ -403,7 +413,7 @@ public class CMSFixFloat {
 					mktParams
 				);
 
-				strDump += FormatUtil.FormatDouble(dblFairPremium, 1, 2, 100) + "% | ";
+				strDump += FormatUtil.FormatDouble (dblFairPremium, 1, 2, 100) + "% | ";
 			}
 
 			System.out.println (strDump);
@@ -434,7 +444,7 @@ public class CMSFixFloat {
 					mktParams
 				);
 
-				strDump += FormatUtil.FormatDouble(dblFairPremium, 1, 2, 100) + "% | ";
+				strDump += FormatUtil.FormatDouble (dblFairPremium, 1, 2, 100) + "% | ";
 			}
 
 			System.out.println (strDump);

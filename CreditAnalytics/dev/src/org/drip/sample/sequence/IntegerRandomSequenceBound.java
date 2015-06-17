@@ -5,8 +5,7 @@ import org.drip.measure.continuous.R1;
 import org.drip.measure.discrete.*;
 import org.drip.quant.common.FormatUtil;
 import org.drip.sequence.metrics.*;
-import org.drip.sequence.random.BoundedUniformInteger;
-import org.drip.sequence.random.UnivariateSequenceGenerator;
+import org.drip.sequence.random.*;
 import org.drip.service.api.CreditAnalytics;
 
 /*
@@ -59,7 +58,8 @@ public class IntegerRandomSequenceBound {
 
 			String strDump = "\t| " + FormatUtil.FormatDouble (iSampleSize, 3, 0, 1) + " => ";
 
-			strDump += FormatUtil.FormatDouble (ssamDist.probGreaterThanZeroUpperBound(), 1, 9, 1.) + " | " +
+			strDump +=
+				FormatUtil.FormatDouble (ssamDist.probGreaterThanZeroUpperBound(), 1, 9, 1.) + " | " +
 				FormatUtil.FormatDouble (ssamDist.probEqualToZeroUpperBound(), 1, 9, 1.) + " | ";
 
 			System.out.println (strDump);
@@ -72,9 +72,15 @@ public class IntegerRandomSequenceBound {
 	{
 		CreditAnalytics.Init ("");
 
-		BoundedUniformInteger bui = new BoundedUniformInteger (0, 100);
+		BoundedUniformInteger bui = new BoundedUniformInteger (
+			0,
+			100
+		);
 
-		UnivariateBoundedUniformInteger integerDistribution = new UnivariateBoundedUniformInteger (0, 100);
+		UnivariateBoundedUniformInteger integerDistribution = new UnivariateBoundedUniformInteger (
+			0,
+			100
+		);
 
 		int[] aiSampleSize = new int[] {
 			10, 20, 50, 100, 250

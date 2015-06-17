@@ -1,8 +1,7 @@
 
 package org.drip.sample.collateral;
 
-import org.drip.analytics.date.DateUtil;
-import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.date.*;
 import org.drip.analytics.rates.DiscountCurve;
 import org.drip.function.R1ToR1.*;
 import org.drip.function.definition.R1ToR1;
@@ -74,14 +73,20 @@ public class DeterministicCollateralChoiceZeroCoupon {
 		DiscountCurve dcCcyDomesticCollatDomestic = DiscountCurveBuilder.CreateFromFlatRate (
 			dtToday,
 			strDomesticCurrency,
-			new CollateralizationParams ("OVERNIGHT_INDEX", strDomesticCurrency),
+			new CollateralizationParams (
+				"OVERNIGHT_INDEX",
+				strDomesticCurrency
+			),
 			dblDomesticCollateralRate
 		);
 
 		DiscountCurve dcCcyForeignCollatForeign = DiscountCurveBuilder.CreateFromFlatRate (
 			dtToday,
 			strForeignCurrency,
-			new CollateralizationParams ("OVERNIGHT_INDEX", strForeignCurrency),
+			new CollateralizationParams (
+				"OVERNIGHT_INDEX",
+				strForeignCurrency
+			),
 			dblForeignCollateralRate
 		);
 

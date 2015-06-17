@@ -1,8 +1,7 @@
 
 package org.drip.sample.forward;
 
-import org.drip.analytics.date.DateUtil;
-import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.date.*;
 import org.drip.analytics.rates.*;
 import org.drip.function.R1ToR1.QuadraticRationalShapeControl;
 import org.drip.service.api.CreditAnalytics;
@@ -58,7 +57,10 @@ public class IBOR3MCubicPolyVanilla {
 		final boolean bPrintMetric)
 		throws Exception
 	{
-		ForwardLabel fri = ForwardLabel.Create (strCurrency, strTenor);
+		ForwardLabel fri = ForwardLabel.Create (
+			strCurrency,
+			strTenor
+		);
 
 		/*
 		 * Construct the Array of Deposit Instruments and their Quotes from the given set of parameters
@@ -198,7 +200,11 @@ public class IBOR3MCubicPolyVanilla {
 
 		CreditAnalytics.Init ("");
 
-		JulianDate dtValue = DateUtil.CreateFromYMD (2012, DateUtil.DECEMBER, 11);
+		JulianDate dtValue = DateUtil.CreateFromYMD (
+			2012,
+			DateUtil.DECEMBER,
+			11
+		);
 
 		String strTenor = "3M";
 		String strCurrency = "USD";
@@ -218,7 +224,10 @@ public class IBOR3MCubicPolyVanilla {
 		SegmentCustomBuilderControl scbcCubic = new SegmentCustomBuilderControl (
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 			new PolynomialFunctionSetParams (4),
-			SegmentInelasticDesignControl.Create (2, 2),
+			SegmentInelasticDesignControl.Create (
+				2,
+				2
+			),
 			new ResponseScalingShapeControl (
 				true,
 				new QuadraticRationalShapeControl (0.)

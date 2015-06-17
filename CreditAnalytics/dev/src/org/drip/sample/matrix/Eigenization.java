@@ -59,7 +59,11 @@ public class Eigenization {
 
 		System.out.println ("\n\t|----------------------------------------|");
 
-		System.out.println ("\t|-----------" + FormatUtil.FormatDouble (dblCorr1, 1, 4, 1.) + " ||| " + FormatUtil.FormatDouble (dblCorr2, 1, 4, 1.) + " ---------|");
+		System.out.println (
+			"\t|-----------" +
+			FormatUtil.FormatDouble (dblCorr1, 1, 4, 1.) + " ||| " +
+			FormatUtil.FormatDouble (dblCorr2, 1, 4, 1.) + " ---------|"
+		);
 
 		System.out.println ("\t|----------------------------------------|");
 

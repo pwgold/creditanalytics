@@ -5,8 +5,7 @@ import java.util.List;
 
 import org.drip.analytics.date.*;
 import org.drip.analytics.rates.DiscountCurve;
-import org.drip.analytics.support.CaseInsensitiveTreeMap;
-import org.drip.analytics.support.CompositePeriodBuilder;
+import org.drip.analytics.support.*;
 import org.drip.market.otc.*;
 import org.drip.param.creator.ScenarioDiscountCurveBuilder;
 import org.drip.param.market.CurveSurfaceQuoteSet;
@@ -89,8 +88,14 @@ public class CMSFloatFloat {
 		for (int i = 0; i < aiDay.length; ++i)
 			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (
 				dtEffective,
-				dtEffective.addBusDays (aiDay[i], strCurrency),
-				ForwardLabel.Create (strCurrency, "3M")
+				dtEffective.addBusDays (
+					aiDay[i],
+					strCurrency
+				),
+				ForwardLabel.Create (
+					strCurrency,
+					"3M"
+				)
 			);
 
 		CalibratableFixedIncomeComponent[] aEDF = SingleStreamComponentBuilder.FuturesPack (

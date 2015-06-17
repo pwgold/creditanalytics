@@ -52,7 +52,10 @@ public class CustomVolSurfaceBuilder {
 		return new SegmentCustomBuilderControl (
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 			new PolynomialFunctionSetParams (4),
-			SegmentInelasticDesignControl.Create (2, 2),
+			SegmentInelasticDesignControl.Create (
+				2,
+				2
+			),
 			null,
 			null
 		);
@@ -64,7 +67,10 @@ public class CustomVolSurfaceBuilder {
 		return new SegmentCustomBuilderControl (
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 			new PolynomialFunctionSetParams (5),
-			SegmentInelasticDesignControl.Create (2, 2),
+			SegmentInelasticDesignControl.Create (
+				2,
+				2
+			),
 			null,
 			null
 		);
@@ -76,7 +82,10 @@ public class CustomVolSurfaceBuilder {
 		return new SegmentCustomBuilderControl (
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_KAKLIS_PANDELIS,
 			new KaklisPandelisSetParams (2),
-			SegmentInelasticDesignControl.Create (2, 2),
+			SegmentInelasticDesignControl.Create (
+				2,
+				2
+			),
 			null,
 			null
 		);
@@ -89,7 +98,10 @@ public class CustomVolSurfaceBuilder {
 		return new SegmentCustomBuilderControl (
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
 			new ExponentialTensionSetParams (dblTension),
-			SegmentInelasticDesignControl.Create (2, 2),
+			SegmentInelasticDesignControl.Create (
+				2,
+				2
+			),
 			null,
 			null
 		);
@@ -102,7 +114,10 @@ public class CustomVolSurfaceBuilder {
 		return new SegmentCustomBuilderControl (
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_LINEAR_TENSION,
 			new ExponentialTensionSetParams (dblTension),
-			SegmentInelasticDesignControl.Create (2, 2),
+			SegmentInelasticDesignControl.Create (
+				2,
+				2
+			),
 			null,
 			null
 		);
@@ -115,7 +130,10 @@ public class CustomVolSurfaceBuilder {
 		return new SegmentCustomBuilderControl (
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_RATIONAL_QUADRATIC_TENSION,
 			new ExponentialTensionSetParams (dblTension),
-			SegmentInelasticDesignControl.Create (2, 2),
+			SegmentInelasticDesignControl.Create (
+				2,
+				2
+			),
 			null,
 			null
 		);
@@ -154,8 +172,12 @@ public class CustomVolSurfaceBuilder {
 	{
 		JulianDate dtStart = DateUtil.Today();
 
-		double[] adblStrikeATMFactorCalib = new double[] {0.8, 0.9, 1.0, 1.1, 1.2};
-		String[] astrMaturityTenorCalib = new String[] {"1Y", "2Y", "3Y", "4Y", "5Y"};
+		double[] adblStrikeATMFactorCalib = new double[] {
+			0.8, 0.9, 1.0, 1.1, 1.2
+		};
+		String[] astrMaturityTenorCalib = new String[] {
+			"1Y", "2Y", "3Y", "4Y", "5Y"
+		};
 
 		double[][] aadblImpliedVolatility = new double[][] {
 			{0.44, 0.38, 0.33, 0.27, 0.25},
@@ -165,18 +187,26 @@ public class CustomVolSurfaceBuilder {
 			{0.43, 0.46, 0.48, 0.52, 0.57}
 		};
 
-		double[] adblStrikeATMFactorCalc = new double[] {0.700, 0.850, 1.000, 1.150, 1.300};
-		String[] astrMaturityTenorCalc = new String[] {"06M", "21M", "36M", "51M", "66M"};
+		double[] adblStrikeATMFactorCalc = new double[] {
+			0.700, 0.850, 1.000, 1.150, 1.300
+		};
+		String[] astrMaturityTenorCalc = new String[] {
+			"06M", "21M", "36M", "51M", "66M"
+		};
 
 		EvaluateSplineSurface (
 			ScenarioMarketSurfaceBuilder.CubicPolynomialWireSurface (
 				"CUBIC_POLY_VOL_SURFACE",
 				dtStart,
 				"USD",
-				new CollateralizationParams ("OVERNIGHT_INDEX", "USD"),
+				new CollateralizationParams (
+					"OVERNIGHT_INDEX",
+					"USD"
+				),
 				adblStrikeATMFactorCalib,
 				astrMaturityTenorCalib,
-				aadblImpliedVolatility),
+				aadblImpliedVolatility
+			),
 			adblStrikeATMFactorCalc,
 			astrMaturityTenorCalc
 		);
@@ -186,10 +216,14 @@ public class CustomVolSurfaceBuilder {
 				"QUARTIC_POLY_VOL_SURFACE",
 				dtStart,
 				"USD",
-				new CollateralizationParams ("OVERNIGHT_INDEX", "USD"),
+				new CollateralizationParams (
+					"OVERNIGHT_INDEX",
+					"USD"
+				),
 				adblStrikeATMFactorCalib,
 				astrMaturityTenorCalib,
-				aadblImpliedVolatility),
+				aadblImpliedVolatility
+			),
 			adblStrikeATMFactorCalc,
 			astrMaturityTenorCalc
 		);
@@ -199,10 +233,14 @@ public class CustomVolSurfaceBuilder {
 				"KAKLIS_PANDELIS_VOL_SURFACE",
 				dtStart,
 				"USD",
-				new CollateralizationParams ("OVERNIGHT_INDEX", "USD"),
+				new CollateralizationParams (
+					"OVERNIGHT_INDEX",
+					"USD"
+				),
 				adblStrikeATMFactorCalib,
 				astrMaturityTenorCalib,
-				aadblImpliedVolatility),
+				aadblImpliedVolatility
+			),
 			adblStrikeATMFactorCalc,
 			astrMaturityTenorCalc
 		);
@@ -212,11 +250,15 @@ public class CustomVolSurfaceBuilder {
 				"KLK_HYPERBOLIC_VOL_SURFACE",
 				dtStart,
 				"USD",
-				new CollateralizationParams ("OVERNIGHT_INDEX", "USD"),
+				new CollateralizationParams (
+					"OVERNIGHT_INDEX",
+					"USD"
+				),
 				adblStrikeATMFactorCalib,
 				astrMaturityTenorCalib,
 				aadblImpliedVolatility,
-				1.),
+				1.
+			),
 			adblStrikeATMFactorCalc,
 			astrMaturityTenorCalc
 		);
@@ -226,11 +268,15 @@ public class CustomVolSurfaceBuilder {
 				"KLK_RATIONAL_LINEAR_VOL_SURFACE",
 				dtStart,
 				"USD",
-				new CollateralizationParams ("OVERNIGHT_INDEX", "USD"),
+				new CollateralizationParams (
+					"OVERNIGHT_INDEX",
+					"USD"
+				),
 				adblStrikeATMFactorCalib,
 				astrMaturityTenorCalib,
 				aadblImpliedVolatility,
-				1.),
+				1.
+			),
 			adblStrikeATMFactorCalc,
 			astrMaturityTenorCalc
 		);
@@ -240,11 +286,15 @@ public class CustomVolSurfaceBuilder {
 				"KLK_RATIONAL_QUADRATIC_VOL_SURFACE",
 				dtStart,
 				"USD",
-				new CollateralizationParams ("OVERNIGHT_INDEX", "USD"),
+				new CollateralizationParams (
+					"OVERNIGHT_INDEX",
+					"USD"
+				),
 				adblStrikeATMFactorCalib,
 				astrMaturityTenorCalib,
 				aadblImpliedVolatility,
-				1.),
+				1.
+			),
 			adblStrikeATMFactorCalc,
 			astrMaturityTenorCalc
 		);
@@ -254,12 +304,16 @@ public class CustomVolSurfaceBuilder {
 				"CUBIC_WIRESPAN_QUARTIC_SURFACE_VOL_SURFACE",
 				dtStart,
 				"USD",
-				new CollateralizationParams ("OVERNIGHT_INDEX", "USD"),
+				new CollateralizationParams (
+					"OVERNIGHT_INDEX",
+					"USD"
+				),
 				adblStrikeATMFactorCalib,
 				astrMaturityTenorCalib,
 				aadblImpliedVolatility,
 				CubicPolySCBC(),
-				QuarticPolySCBC()),
+				QuarticPolySCBC()
+			),
 			adblStrikeATMFactorCalc,
 			astrMaturityTenorCalc
 		);
@@ -269,12 +323,16 @@ public class CustomVolSurfaceBuilder {
 				"KAKLISPANDELIS_WIRESPAN_KLKHYPERBOLIC_SURFACE_VOL_SURFACE",
 				dtStart,
 				"USD",
-				new CollateralizationParams ("OVERNIGHT_INDEX", "USD"),
+				new CollateralizationParams (
+					"OVERNIGHT_INDEX",
+					"USD"
+				),
 				adblStrikeATMFactorCalib,
 				astrMaturityTenorCalib,
 				aadblImpliedVolatility,
 				KaklisPandelisSCBC(),
-				KLKHyperbolicSCBC (2.)),
+				KLKHyperbolicSCBC (2.)
+			),
 			adblStrikeATMFactorCalc,
 			astrMaturityTenorCalc
 		);
@@ -284,12 +342,16 @@ public class CustomVolSurfaceBuilder {
 				"KLKRATIONALLINEAR_WIRESPAN_KLKRATIONALQUADRATIC_SURFACE_VOL_SURFACE",
 				dtStart,
 				"USD",
-				new CollateralizationParams ("OVERNIGHT_INDEX", "USD"),
+				new CollateralizationParams (
+					"OVERNIGHT_INDEX",
+					"USD"
+				),
 				adblStrikeATMFactorCalib,
 				astrMaturityTenorCalib,
 				aadblImpliedVolatility,
 				KLKRationalLinearSCBC (3.),
-				KLKRationalQuadraticSCBC (1.)),
+				KLKRationalQuadraticSCBC (1.)
+			),
 			adblStrikeATMFactorCalc,
 			astrMaturityTenorCalc
 		);

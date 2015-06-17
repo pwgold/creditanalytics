@@ -80,7 +80,10 @@ public class CCBSForwardCurve {
 			"6M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-			ForwardLabel.Create (strCouponCurrency, "6M"),
+			ForwardLabel.Create (
+				strCouponCurrency,
+				"6M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -89,7 +92,10 @@ public class CCBSForwardCurve {
 			iTenorInMonths + "M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-			ForwardLabel.Create (strCouponCurrency, iTenorInMonths + "M"),
+			ForwardLabel.Create (
+				strCouponCurrency,
+				iTenorInMonths + "M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -103,7 +109,11 @@ public class CCBSForwardCurve {
 			null,
 			null,
 			strPayCurrency.equalsIgnoreCase (strCouponCurrency) ? null :
-				new FixingSetting (FixingSetting.FIXING_PRESET_STATIC, null, dtEffective.julian()),
+				new FixingSetting (
+					FixingSetting.FIXING_PRESET_STATIC,
+					null,
+					dtEffective.julian()
+				),
 			null
 		);
 
@@ -116,7 +126,11 @@ public class CCBSForwardCurve {
 			null,
 			null,
 			strPayCurrency.equalsIgnoreCase (strCouponCurrency) ? null :
-				new FixingSetting (FixingSetting.FIXING_PRESET_STATIC, null, dtEffective.julian()),
+				new FixingSetting (
+					FixingSetting.FIXING_PRESET_STATIC,
+					null,
+					dtEffective.julian()
+				),
 			null
 		);
 
@@ -158,7 +172,11 @@ public class CCBSForwardCurve {
 			aFFC[i] = new FloatFloatComponent (
 				referenceStream,
 				derivedStream,
-				new CashSettleParams (0, strPayCurrency, 0)
+				new CashSettleParams (
+					0,
+					strPayCurrency,
+					0
+				)
 			);
 
 			aFFC[i].setPrimaryCode (referenceStream.name() + "||" + derivedStream.name());
@@ -284,7 +302,10 @@ public class CCBSForwardCurve {
 		ForwardCurve fc3MDerived = ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (
 			llsc,
 			new LatentStateStretchSpec[] {stretchSpec},
-			ForwardLabel.Create (strDerivedCurrency, "3M"),
+			ForwardLabel.Create (
+				strDerivedCurrency,
+				"3M"
+			),
 			valParams,
 			null,
 			MarketParamsBuilder.Create (

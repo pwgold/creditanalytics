@@ -74,7 +74,8 @@ public class BSplineSequence {
 				"\t\tResponse[" + FormatUtil.FormatDouble (dblX, 1, 3, 1.) + "] : " +
 				FormatUtil.FormatDouble (me.evaluate (dblX), 1, 5, 1.) + " | " +
 				FormatUtil.FormatDouble (me.normalizedCumulative (dblX), 1, 5, 1.) + " | " +
-				FormatUtil.FormatDouble (me.derivative (dblX, iOrder), 1, 5, 1.));
+				FormatUtil.FormatDouble (me.derivative (dblX, iOrder), 1, 5, 1.)
+			);
 
 			dblX += dblXIncrement;
 		}
@@ -93,7 +94,9 @@ public class BSplineSequence {
 	private static final void BSplineSequenceSample()
 		throws Exception
 	{
-		double[] adblPredictorOrdinate = new double[] {1., 2., 3., 4., 5., 6.};
+		double[] adblPredictorOrdinate = new double[] {
+			1., 2., 3., 4., 5., 6.
+		};
 
 		/*
 		 * Construct the Array of Hyperbolic Rational Linear Monic Segment Basis Functions. 
@@ -104,7 +107,8 @@ public class BSplineSequence {
 			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_LINEAR,
 			adblPredictorOrdinate,
 			0,
-			1.);
+			1.
+		);
 
 		/*
 		 * Display the response value, the normalized cumulative, and the ordered derivative of the Monic
@@ -112,7 +116,10 @@ public class BSplineSequence {
 		 */
 
 		for (int i = 0; i < aMonic.length; ++i)
-			ComputeResponseMetric (aMonic[i], "   MONIC   ");
+			ComputeResponseMetric (
+				aMonic[i],
+				"   MONIC   "
+			);
 
 		/*
 		 * Construct the array of multic basis functions of 3rd degree (i.e., quadratic).
@@ -120,7 +127,8 @@ public class BSplineSequence {
 
 		SegmentBasisFunction[] aQuadratic = SegmentBasisFunctionGenerator.MulticSequence (
 			3,
-			aMonic);
+			aMonic
+		);
 
 		/*
 		 * Display the response value, the normalized cumulative, and the ordered derivative of the Quadratic
@@ -128,7 +136,10 @@ public class BSplineSequence {
 		 */
 
 		for (int i = 0; i < aQuadratic.length; ++i)
-			ComputeResponseMetric (aQuadratic[i], " QUADRATIC ");
+			ComputeResponseMetric (
+				aQuadratic[i],
+				" QUADRATIC "
+			);
 
 		/*
 		 * Construct the array of multic basis functions of 4th degree (i.e., cubic).
@@ -136,7 +147,8 @@ public class BSplineSequence {
 
 		SegmentBasisFunction[] aCubic = SegmentBasisFunctionGenerator.MulticSequence (
 			4,
-			aQuadratic);
+			aQuadratic
+		);
 
 		/*
 		 * Display the response value, the normalized cumulative, and the ordered derivative of the Cubic
@@ -144,7 +156,10 @@ public class BSplineSequence {
 		 */
 
 		for (int i = 0; i < aCubic.length; ++i)
-			ComputeResponseMetric (aCubic[i], "   CUBIC   ");
+			ComputeResponseMetric (
+				aCubic[i],
+				"   CUBIC   "
+			);
 
 		/*
 		 * Construct the array of multic basis functions of 5th degree (i.e., quartic).
@@ -152,7 +167,8 @@ public class BSplineSequence {
 
 		SegmentBasisFunction[] aQuartic = SegmentBasisFunctionGenerator.MulticSequence (
 			5,
-			aCubic);
+			aCubic
+		);
 
 		/*
 		 * Display the response value, the normalized cumulative, and the ordered derivative of the Quartic
@@ -160,7 +176,10 @@ public class BSplineSequence {
 		 */
 
 		for (int i = 0; i < aQuartic.length; ++i)
-			ComputeResponseMetric (aQuartic[i], "  QUARTIC  ");
+			ComputeResponseMetric (
+				aQuartic[i],
+				"  QUARTIC  "
+			);
 	}
 
 	public static final void main (

@@ -76,7 +76,10 @@ public class StepUpStepDown {
 			"3M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
 			null,
-			ForwardLabel.Create (strCurrency, "3M"),
+			ForwardLabel.Create (
+				strCurrency,
+				"3M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -106,7 +109,10 @@ public class StepUpStepDown {
 					CompositePeriodBuilder.FloatingCompositeUnit (
 						CompositePeriodBuilder.EdgePair (
 							dtEffective,
-							dtEffective.addBusDays (aiDay[i], strCurrency)
+							dtEffective.addBusDays (
+								aiDay[i],
+								strCurrency
+							)
 						),
 						cps,
 						cfus
@@ -151,7 +157,10 @@ public class StepUpStepDown {
 			"6M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-			ForwardLabel.Create (strCurrency, "6M"),
+			ForwardLabel.Create (
+				strCurrency,
+				"6M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -424,7 +433,11 @@ public class StepUpStepDown {
 			adblSwapQuote
 		);
 
-		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {depositStretch, edfStretch, swapStretch};
+		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {
+			depositStretch,
+			edfStretch,
+			swapStretch
+		};
 
 		/*
 		 * Set up the Linear Curve Calibrator using the following parameters:
@@ -438,8 +451,14 @@ public class StepUpStepDown {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
 				null
 			),
 			BoundarySettings.NaturalStandard(),
@@ -469,7 +488,15 @@ public class StepUpStepDown {
 			1.
 		);
 
-		CurveSurfaceQuoteSet csqs = MarketParamsBuilder.Create (dc, null, null, null, null, null, null);
+		CurveSurfaceQuoteSet csqs = MarketParamsBuilder.Create (
+			dc,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
 
 		/*
 		 * Cross-Comparison of the In-Advance/Arrears Swap "Rate" metric across the different curve
@@ -503,9 +530,21 @@ public class StepUpStepDown {
 		System.out.println ("\t-------------------------------------------------------------------------------");
 
 		for (int i = 0; i < aSwapInAdvance.length; ++i) {
-			double dblInAdvanceStepUpFairPremium = aSwapInAdvanceStepUp[i].measureValue (valParams, null, csqs, null, "FairPremium");
+			double dblInAdvanceStepUpFairPremium = aSwapInAdvanceStepUp[i].measureValue (
+				valParams,
+				null,
+				csqs,
+				null,
+				"FairPremium"
+			);
 
-			double dblInAdvanceStepDownFairPremium = aSwapInAdvanceStepDown[i].measureValue (valParams, null, csqs, null, "FairPremium");
+			double dblInAdvanceStepDownFairPremium = aSwapInAdvanceStepDown[i].measureValue (
+				valParams,
+				null,
+				csqs,
+				null,
+				"FairPremium"
+			);
 
 			System.out.println ("\t[" + aSwapInAdvance[i].maturityDate() + "] = " +
 				FormatUtil.FormatDouble (aSwapInAdvance[i].measureValue (valParams, null, csqs, null, "CalibSwapRate"), 1, 4, 100.) + "% | " +
@@ -541,11 +580,29 @@ public class StepUpStepDown {
 		System.out.println ("\t-------------------------------------------------------------------------------");
 
 		for (int i = 0; i < aSwapInAdvance.length; ++i) {
-			double dblInAdvanceDV01 = aSwapInAdvance[i].measureValue (valParams, null, csqs, null, "FixedDV01");
+			double dblInAdvanceDV01 = aSwapInAdvance[i].measureValue (
+				valParams,
+				null,
+				csqs,
+				null,
+				"FixedDV01"
+			);
 
-			double dblInAdvanceStepUpDV01 = aSwapInAdvanceStepUp[i].measureValue (valParams, null, csqs, null, "FixedDV01");
+			double dblInAdvanceStepUpDV01 = aSwapInAdvanceStepUp[i].measureValue (
+				valParams,
+				null,
+				csqs,
+				null,
+				"FixedDV01"
+			);
 
-			double dblInAdvanceStepDownDV01 = aSwapInAdvanceStepDown[i].measureValue (valParams, null, csqs, null, "FixedDV01");
+			double dblInAdvanceStepDownDV01 = aSwapInAdvanceStepDown[i].measureValue (
+				valParams,
+				null,
+				csqs,
+				null,
+				"FixedDV01"
+			);
 
 			System.out.println ("\t[" + aSwapInAdvance[i].maturityDate() + "] = " +
 				FormatUtil.FormatDouble (dblInAdvanceDV01, 2, 1, 10000.) + " | " +
@@ -573,6 +630,9 @@ public class StepUpStepDown {
 
 		String strCurrency = "USD";
 
-		CustomDiscountCurveBuilderSample (dtToday, strCurrency);
+		CustomDiscountCurveBuilderSample (
+			dtToday,
+			strCurrency
+		);
 	}
 }

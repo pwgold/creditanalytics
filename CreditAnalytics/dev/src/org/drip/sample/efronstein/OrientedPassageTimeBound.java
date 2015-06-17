@@ -52,7 +52,10 @@ public class OrientedPassageTimeBound {
 		SingleSequenceAgnosticMetrics[] aSSAM = new SingleSequenceAgnosticMetrics[iNumSample];
 
 		for (int i = 0; i < iNumSample; ++i)
-			aSSAM[i] = rsg.sequence (iNumSample, null);
+			aSSAM[i] = rsg.sequence (
+				iNumSample,
+				null
+			);
 
 		return aSSAM;
 	}
@@ -219,9 +222,15 @@ public class OrientedPassageTimeBound {
 			3, 10, 25
 		};
 
-		BoundedUniform bu = new BoundedUniform (0., 1.);
+		BoundedUniform bu = new BoundedUniform (
+			0.,
+			1.
+		);
 
-		MultivariateRandom func = new OrientedPercolationFirstPassage (0.5, 1.0);
+		MultivariateRandom func = new OrientedPercolationFirstPassage (
+			0.5,
+			1.0
+		);
 
 		System.out.println ("\n\t|-----------------------------------------------|");
 

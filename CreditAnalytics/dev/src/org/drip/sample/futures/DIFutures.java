@@ -61,7 +61,10 @@ public class DIFutures {
 
 		String strCurrency = "BRL";
 
-		JulianDate dtToday = DateUtil.Today().addBusDays (0, strCurrency);
+		JulianDate dtToday = DateUtil.Today().addBusDays (
+			0,
+			strCurrency
+		);
 
 		DiscountCurve dcOIS = OvernightIndexCurve.MakeDC (
 			dtToday,
@@ -70,8 +73,14 @@ public class DIFutures {
 
 		SingleStreamComponent diFutures = SingleStreamComponentBuilder.Deposit (
 			dtToday,
-			dtToday.addTenorAndAdjust ("1M", strCurrency),
-			ForwardLabel.Create (strCurrency, "ON")
+			dtToday.addTenorAndAdjust (
+				"1M",
+				strCurrency
+			),
+			ForwardLabel.Create (
+				strCurrency,
+				"ON"
+			)
 		);
 
 		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (

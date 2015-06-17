@@ -71,7 +71,10 @@ public class CrossFloatCrossFloatAnalysis {
 			iTenorInMonthsReference + "M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-			ForwardLabel.Create (strCouponCurrency, iTenorInMonthsReference + "M"),
+			ForwardLabel.Create (
+				strCouponCurrency,
+				iTenorInMonthsReference + "M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -80,7 +83,10 @@ public class CrossFloatCrossFloatAnalysis {
 			iTenorInMonthsDerived + "M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-			ForwardLabel.Create (strCouponCurrency, iTenorInMonthsDerived + "M"),
+			ForwardLabel.Create (
+				strCouponCurrency,
+				iTenorInMonthsDerived + "M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -177,23 +183,55 @@ public class CrossFloatCrossFloatAnalysis {
 		final double dblFundingFXCorr)
 		throws Exception
 	{
-		mktParams.setForwardCurveVolSurface (forwardLabel1, new FlatUnivariate (dblForward1Vol));
+		mktParams.setForwardCurveVolSurface (
+			forwardLabel1,
+			new FlatUnivariate (dblForward1Vol)
+		);
 
-		mktParams.setForwardCurveVolSurface (forwardLabel2, new FlatUnivariate (dblForward2Vol));
+		mktParams.setForwardCurveVolSurface (
+			forwardLabel2,
+			new FlatUnivariate (dblForward2Vol)
+		);
 
-		mktParams.setFundingCurveVolSurface (fundingLabel, new FlatUnivariate (dblFundingVol));
+		mktParams.setFundingCurveVolSurface (
+			fundingLabel,
+			new FlatUnivariate (dblFundingVol)
+		);
 
-		mktParams.setFXCurveVolSurface (fxLabel, new FlatUnivariate (dblFXVol));
+		mktParams.setFXCurveVolSurface (
+			fxLabel,
+			new FlatUnivariate (dblFXVol)
+		);
 
-		mktParams.setForwardFundingCorrSurface (forwardLabel1, fundingLabel, new FlatUnivariate (dblForward1FundingCorr));
+		mktParams.setForwardFundingCorrSurface (
+			forwardLabel1,
+			fundingLabel,
+			new FlatUnivariate (dblForward1FundingCorr)
+		);
 
-		mktParams.setForwardFundingCorrSurface (forwardLabel2, fundingLabel, new FlatUnivariate (dblForward2FundingCorr));
+		mktParams.setForwardFundingCorrSurface (
+			forwardLabel2,
+			fundingLabel,
+			new FlatUnivariate (dblForward2FundingCorr)
+		);
 
-		mktParams.setForwardFXCorrSurface (forwardLabel1, fxLabel, new FlatUnivariate (dblForward1FXCorr));
+		mktParams.setForwardFXCorrSurface (
+			forwardLabel1,
+			fxLabel,
+			new FlatUnivariate (dblForward1FXCorr)
+		);
 
-		mktParams.setForwardFXCorrSurface (forwardLabel2, fxLabel, new FlatUnivariate (dblForward2FXCorr));
+		mktParams.setForwardFXCorrSurface (
+			forwardLabel2,
+			fxLabel,
+			new FlatUnivariate (dblForward2FXCorr)
+		);
 
-		mktParams.setFundingFXCorrSurface (fundingLabel, fxLabel, new FlatUnivariate (dblFundingFXCorr));
+		mktParams.setFundingFXCorrSurface (
+			fundingLabel,
+			fxLabel,
+			new FlatUnivariate (dblFundingFXCorr)
+		);
 	}
 
 	private static final void VolCorrScenario (
@@ -244,7 +282,12 @@ public class CrossFloatCrossFloatAnalysis {
 			FormatUtil.FormatDouble (dblFundingFXCorr, 2, 0, 100.) + "%] = ";
 
 		for (int i = 0; i < aFloatFloat.length; ++i) {
-			CaseInsensitiveTreeMap<Double> mapOutput = aFloatFloat[i].value (valParams, null, mktParams, null);
+			CaseInsensitiveTreeMap<Double> mapOutput = aFloatFloat[i].value (
+				valParams,
+				null,
+				mktParams,
+				null
+			);
 
 			if (0 != i) strDump += " || ";
 
@@ -274,16 +317,26 @@ public class CrossFloatCrossFloatAnalysis {
 
 		JulianDate dtToday = org.drip.analytics.date.DateUtil.Today();
 
-		ValuationParams valParams = new ValuationParams (dtToday, dtToday, "EUR");
+		ValuationParams valParams = new ValuationParams (
+			dtToday,
+			dtToday,
+			"EUR"
+		);
 
 		DiscountCurve dcUSDFunding = DiscountCurveBuilder.CreateFromFlatRate (
 			dtToday,
 			"USD",
-			new CollateralizationParams ("OVERNIGHT_INDEX", "USD"),
+			new CollateralizationParams (
+				"OVERNIGHT_INDEX",
+				"USD"
+			),
 			dblUSDFundingRate
 		);
 
-		ForwardLabel friEUR3M = ForwardLabel.Create ("EUR", "3M");
+		ForwardLabel friEUR3M = ForwardLabel.Create (
+			"EUR",
+			"3M"
+		);
 
 		ForwardCurve fcEUR3M = ScenarioForwardCurveBuilder.FlatForwardForwardCurve (
 			dtToday,
@@ -295,7 +348,10 @@ public class CrossFloatCrossFloatAnalysis {
 			)
 		);
 
-		ForwardLabel friEUR6M = ForwardLabel.Create ("EUR", "6M");
+		ForwardLabel friEUR6M = ForwardLabel.Create (
+			"EUR",
+			"6M"
+		);
 
 		ForwardCurve fcEUR6M = ScenarioForwardCurveBuilder.FlatForwardForwardCurve (
 			dtToday,
@@ -349,25 +405,46 @@ public class CrossFloatCrossFloatAnalysis {
 
 		mktParams.setFundingCurve (dcUSDFunding);
 
-		mktParams.setFXCurve (fxLabel, new FlatUnivariate (dblUSDEURFXRate));
+		mktParams.setFXCurve (
+			fxLabel,
+			new FlatUnivariate (dblUSDEURFXRate)
+		);
 
-		double[] adblEURForward3MVol = new double[] {0.1, 0.3, 0.5};
+		double[] adblEURForward3MVol = new double[] {
+			0.1, 0.3, 0.5
+		};
 
-		double[] adblEURForward6MVol = new double[] {0.1, 0.3, 0.5};
+		double[] adblEURForward6MVol = new double[] {
+			0.1, 0.3, 0.5
+		};
 
-		double[] adblUSDFundingVol = new double[] {0.1, 0.3, 0.5};
+		double[] adblUSDFundingVol = new double[] {
+			0.1, 0.3, 0.5
+		};
 
-		double[] adblUSDEURFXVol = new double[] {0.1, 0.3, 0.5};
+		double[] adblUSDEURFXVol = new double[] {
+			0.1, 0.3, 0.5
+		};
 
-		double[] adblEUR3MUSDFundingCorr = new double[] {-0.2, 0.25};
+		double[] adblEUR3MUSDFundingCorr = new double[] {
+			-0.2, 0.25
+		};
 
-		double[] adblEUR6MUSDFundingCorr = new double[] {-0.2, 0.25};
+		double[] adblEUR6MUSDFundingCorr = new double[] {
+			-0.2, 0.25
+		};
 
-		double[] adblEUR3MUSDEURFXCorr = new double[] {-0.2, 0.25};
+		double[] adblEUR3MUSDEURFXCorr = new double[] {
+			-0.2, 0.25
+		};
 
-		double[] adblEUR6MUSDEURFXCorr = new double[] {-0.2, 0.25};
+		double[] adblEUR6MUSDEURFXCorr = new double[] {
+			-0.2, 0.25
+		};
 
-		double[] adblUSDFundingUSDEURFXCorr = new double[] {-0.2, 0.25};
+		double[] adblUSDFundingUSDEURFXCorr = new double[] {
+			-0.2, 0.25
+		};
 
 		for (double dblEURForward3MVol : adblEURForward3MVol) {
 			for (double dblEURForward6MVol : adblEURForward6MVol) {
@@ -379,7 +456,10 @@ public class CrossFloatCrossFloatAnalysis {
 									for (double dblEUR6MUSDEURFXCorr : adblEUR6MUSDEURFXCorr) {
 										for (double dblUSDFundingUSDEURFXCorr : adblUSDFundingUSDEURFXCorr)
 											VolCorrScenario (
-												new FloatFloatComponent[] {floatFloatMTM, floatFloatNonMTM},
+												new FloatFloatComponent[] {
+													floatFloatMTM,
+													floatFloatNonMTM
+												},
 												valParams,
 												mktParams,
 												friEUR3M,

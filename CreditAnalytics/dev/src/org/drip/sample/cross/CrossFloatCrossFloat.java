@@ -70,7 +70,10 @@ public class CrossFloatCrossFloat {
 			iTenorInMonthsReference + "M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-			ForwardLabel.Create (strCouponCurrency, iTenorInMonthsReference + "M"),
+			ForwardLabel.Create (
+				strCouponCurrency,
+				iTenorInMonthsReference + "M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -79,7 +82,10 @@ public class CrossFloatCrossFloat {
 			iTenorInMonthsDerived + "M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-			ForwardLabel.Create (strCouponCurrency, iTenorInMonthsDerived + "M"),
+			ForwardLabel.Create (
+				strCouponCurrency,
+				iTenorInMonthsDerived + "M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -196,11 +202,17 @@ public class CrossFloatCrossFloat {
 		DiscountCurve dcUSDFunding = DiscountCurveBuilder.CreateFromFlatRate (
 			dtToday,
 			"USD",
-			new CollateralizationParams ("OVERNIGHT_INDEX", "USD"),
+			new CollateralizationParams (
+				"OVERNIGHT_INDEX",
+				"USD"
+			),
 			dblUSDFundingRate
 		);
 
-		ForwardLabel friEUR3M = ForwardLabel.Create ("EUR", "3M");
+		ForwardLabel friEUR3M = ForwardLabel.Create (
+			"EUR",
+			"3M"
+		);
 
 		ForwardCurve fcEUR3M = ScenarioForwardCurveBuilder.FlatForwardForwardCurve (
 			dtToday,
@@ -212,7 +224,10 @@ public class CrossFloatCrossFloat {
 			)
 		);
 
-		ForwardLabel friEUR6M = ForwardLabel.Create ("EUR", "6M");
+		ForwardLabel friEUR6M = ForwardLabel.Create (
+			"EUR",
+			"6M"
+		);
 
 		ForwardCurve fcEUR6M = ScenarioForwardCurveBuilder.FlatForwardForwardCurve (
 			dtToday,
@@ -268,29 +283,74 @@ public class CrossFloatCrossFloat {
 
 		mktParams.setFundingCurve (dcUSDFunding);
 
-		mktParams.setFXCurve (fxLabel, new FlatUnivariate (dblUSDEURFXRate));
+		mktParams.setFXCurve (
+			fxLabel,
+			new FlatUnivariate (dblUSDEURFXRate)
+		);
 
-		mktParams.setForwardCurveVolSurface (friEUR3M, new FlatUnivariate (dblEURForward3MVol));
+		mktParams.setForwardCurveVolSurface (
+			friEUR3M,
+			new FlatUnivariate (dblEURForward3MVol)
+		);
 
-		mktParams.setForwardCurveVolSurface (friEUR6M, new FlatUnivariate (dblEURForward6MVol));
+		mktParams.setForwardCurveVolSurface (
+			friEUR6M,
+			new FlatUnivariate (dblEURForward6MVol)
+		);
 
-		mktParams.setFundingCurveVolSurface (fundingLabelUSD, new FlatUnivariate (dblUSDFundingVol));
+		mktParams.setFundingCurveVolSurface (
+			fundingLabelUSD,
+			new FlatUnivariate (dblUSDFundingVol)
+		);
 
-		mktParams.setFXCurveVolSurface (fxLabel, new FlatUnivariate (dblUSDEURFXVol));
+		mktParams.setFXCurveVolSurface (
+			fxLabel,
+			new FlatUnivariate (dblUSDEURFXVol)
+		);
 
-		mktParams.setForwardFundingCorrSurface (friEUR3M, fundingLabelUSD, new FlatUnivariate (dblUSDFundingEUR3MCorr));
+		mktParams.setForwardFundingCorrSurface (
+			friEUR3M,
+			fundingLabelUSD,
+			new FlatUnivariate (dblUSDFundingEUR3MCorr)
+		);
 
-		mktParams.setForwardFundingCorrSurface (friEUR6M, fundingLabelUSD, new FlatUnivariate (dblUSDFundingEUR6MCorr));
+		mktParams.setForwardFundingCorrSurface (
+			friEUR6M,
+			fundingLabelUSD,
+			new FlatUnivariate (dblUSDFundingEUR6MCorr)
+		);
 
-		mktParams.setForwardFXCorrSurface (friEUR3M, fxLabel, new FlatUnivariate (dblEUR3MUSDEURFXCorr));
+		mktParams.setForwardFXCorrSurface (
+			friEUR3M,
+			fxLabel,
+			new FlatUnivariate (dblEUR3MUSDEURFXCorr)
+		);
 
-		mktParams.setForwardFXCorrSurface (friEUR6M, fxLabel, new FlatUnivariate (dblEUR6MUSDEURFXCorr));
+		mktParams.setForwardFXCorrSurface (
+			friEUR6M,
+			fxLabel,
+			new FlatUnivariate (dblEUR6MUSDEURFXCorr)
+		);
 
-		mktParams.setFundingFXCorrSurface (fundingLabelUSD, fxLabel, new FlatUnivariate (dblUSDFundingUSDEURFXCorr));
+		mktParams.setFundingFXCorrSurface (
+			fundingLabelUSD,
+			fxLabel,
+			new FlatUnivariate (dblUSDFundingUSDEURFXCorr)
+		);
 
-		CaseInsensitiveTreeMap<Double> mapMTMOutput = floatFloatMTM.value (valParams, null, mktParams, null);
+		CaseInsensitiveTreeMap<Double> mapMTMOutput = floatFloatMTM.value (
+			valParams,
+			null,
+			mktParams,
+			null
+		);
 
-		CaseInsensitiveTreeMap<Double> mapNonMTMOutput = floatFloatNonMTM.value (valParams, null, mktParams, null);
+		CaseInsensitiveTreeMap<Double> mapNonMTMOutput = floatFloatNonMTM.value (
+			valParams,
+			null,
+			mktParams,
+			null
+		);
 
 		for (Map.Entry<String, Double> me : mapMTMOutput.entrySet()) {
 			String strKey = me.getKey();
@@ -300,9 +360,12 @@ public class CrossFloatCrossFloat {
 
 				double dblNonMTMMeasure = mapNonMTMOutput.get (strKey);
 
-				String strReconcile = NumberUtil.WithinTolerance (dblMTMMeasure, dblNonMTMMeasure, 1.e-08, 1.e-04) ?
-					"RECONCILES" :
-					"DOES NOT RECONCILE";
+				String strReconcile = NumberUtil.WithinTolerance (
+					dblMTMMeasure,
+					dblNonMTMMeasure,
+					1.e-08,
+					1.e-04
+				) ? "RECONCILES" : "DOES NOT RECONCILE";
 
 				System.out.println ("\t" +
 					FormatUtil.FormatDouble (dblMTMMeasure, 1, 8, 1.) + " | " +

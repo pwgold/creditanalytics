@@ -83,7 +83,8 @@ public class HaganWestForwardInterpolator {
 			System.out.println ("\t\tResponse[" +
 				FormatUtil.FormatDouble (dblTime, 2, 2, 1.) + "]: " +
 				FormatUtil.FormatDouble (mchw.evaluate (dblTime), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (mss.responseValue (dblTime), 1, 6, 1.));
+				FormatUtil.FormatDouble (mss.responseValue (dblTime), 1, 6, 1.)
+			);
 
 			dblTime += dblTimeDelta;
 		}
@@ -109,7 +110,8 @@ public class HaganWestForwardInterpolator {
 			System.out.println ("\t\tPositivity Enforced Response[" +
 				FormatUtil.FormatDouble (dblTime, 2, 2, 1.) + "]: " +
 				FormatUtil.FormatDouble (mchw.evaluate (dblTime), 1, 6, 1.) + " | " +
-				FormatUtil.FormatDouble (mss.responseValue (dblTime), 1, 6, 1.));
+				FormatUtil.FormatDouble (mss.responseValue (dblTime), 1, 6, 1.)
+			);
 
 			dblTime += dblTimeDelta;
 		}
@@ -140,8 +142,12 @@ public class HaganWestForwardInterpolator {
 		 * Set up the Predictor ordinates and the response values.
 		 */
 
-		double[] adblTime = new double[] {0., 0.10, 1.0, 4.0, 9.0, 20.0, 30.0};
-		double[] adblForwardRate = new double[] {1.008, 1.073, 1.221, 1.878, 2.226, 2.460};
+		double[] adblTime = new double[] {
+			0., 0.10, 1.0, 4.0, 9.0, 20.0, 30.0
+		};
+		double[] adblForwardRate = new double[] {
+			1.008, 1.073, 1.221, 1.878, 2.226, 2.460
+		};
 
 		/*
 		 * Construct the rational linear shape control with the specified tension.
@@ -151,7 +157,8 @@ public class HaganWestForwardInterpolator {
 
 		ResponseScalingShapeControl rssc = new ResponseScalingShapeControl (
 			false,
-			new LinearRationalShapeControl (dblShapeControllerTension));
+			new LinearRationalShapeControl (dblShapeControllerTension)
+		);
 
 		int iK = 2;
 		int iCurvaturePenaltyDerivativeOrder = 2;
@@ -162,7 +169,8 @@ public class HaganWestForwardInterpolator {
 
 		SegmentInelasticDesignControl sdic = SegmentInelasticDesignControl.Create (
 			iK,
-			iCurvaturePenaltyDerivativeOrder);
+			iCurvaturePenaltyDerivativeOrder
+		);
 
 		/*
 		 * Build the Array of Segment Custom Builder Control Parameters of the KLK Hyperbolic Tension Basis
@@ -172,11 +180,12 @@ public class HaganWestForwardInterpolator {
 		double dblKLKTension = 1.;
 
 		SegmentCustomBuilderControl scbc = new SegmentCustomBuilderControl (
-				MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
-				new ExponentialTensionSetParams (dblKLKTension),
-				sdic,
-				rssc,
-				null);
+			MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
+			new ExponentialTensionSetParams (dblKLKTension),
+			sdic,
+			rssc,
+			null
+		);
 
 		SegmentCustomBuilderControl[] aSCBC = new SegmentCustomBuilderControl[adblForwardRate.length];
 
@@ -197,7 +206,8 @@ public class HaganWestForwardInterpolator {
 			MultiSegmentSequence.CALIBRATE,
 			false,
 			false,
-			false);
+			false
+		);
 
 		/*
 		 * Setup the monotone convex stretch using the above settings, and with linear inference, no
@@ -213,7 +223,8 @@ public class HaganWestForwardInterpolator {
 			MultiSegmentSequence.CALIBRATE,
 			true,
 			false,
-			false);
+			false
+		);
 
 		/*
 		 * Compute and display the monotone convex output with the linear forward state.
@@ -229,7 +240,15 @@ public class HaganWestForwardInterpolator {
 		 * Compute and display the monotone convex output with the harmonic forward state.
 		 */
 
-		DisplayOP (MonotoneConvexHaganWest.Create (adblTime, adblForwardRate, false), mssLinear, adblTime);
+		DisplayOP (
+			MonotoneConvexHaganWest.Create (
+				adblTime,
+				adblForwardRate,
+				false
+			),
+			mssLinear,
+			adblTime
+		);
 
 		System.out.println ("\n\n\t----------------------------------------------------------------");
 
@@ -237,7 +256,15 @@ public class HaganWestForwardInterpolator {
 
 		System.out.println ("\t----------------------------------------------------------------");
 
-		DisplayOP (MonotoneConvexHaganWest.Create (adblTime, adblForwardRate, true), mssHarmonic, adblTime);
+		DisplayOP (
+			MonotoneConvexHaganWest.Create (
+				adblTime,
+				adblForwardRate,
+				true
+			),
+			mssHarmonic,
+			adblTime
+		);
 	}
 
 	public static final void main (

@@ -101,7 +101,11 @@ public class RatesAnalyticsAPI {
 		double adblCompCalibValue[] = new double[NUM_DC_INSTR];
 		CalibratableFixedIncomeComponent aCompCalib[] = new CalibratableFixedIncomeComponent[NUM_DC_INSTR];
 
-		JulianDate dtStart = org.drip.analytics.date.DateUtil.CreateFromYMD (2011, 4, 6);
+		JulianDate dtStart = org.drip.analytics.date.DateUtil.CreateFromYMD (
+			2011,
+			4,
+			6
+		);
 
 		// First 7 instruments - cash calibration
 
@@ -137,7 +141,10 @@ public class RatesAnalyticsAPI {
 			"3M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
 			null,
-			ForwardLabel.Create ("USD", "3M"),
+			ForwardLabel.Create (
+				"USD",
+				"3M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -166,8 +173,14 @@ public class RatesAnalyticsAPI {
 
 			aCompCalib[i] = SingleStreamComponentBuilder.Deposit (
 				dtCashEffective, // Effective
-				new JulianDate (adblMaturity[i]).addBusDays (2, "USD"), // Maturity
-				ForwardLabel.Create ("USD", "3M")
+				new JulianDate (adblMaturity[i]).addBusDays (
+					2,
+					"USD"
+				), // Maturity
+				ForwardLabel.Create (
+					"USD",
+					"3M"
+				)
 			);
 
 			aCompCalib[i] = new SingleStreamComponent (
@@ -176,7 +189,10 @@ public class RatesAnalyticsAPI {
 					CompositePeriodBuilder.FloatingCompositeUnit (
 						CompositePeriodBuilder.EdgePair (
 							dtStart,
-							new JulianDate (adblMaturity[i]).addBusDays (2, "USD")
+							new JulianDate (adblMaturity[i]).addBusDays (
+								2,
+								"USD"
+							)
 						),
 						cps,
 						cfus
@@ -211,7 +227,10 @@ public class RatesAnalyticsAPI {
 
 		// Final 15 instruments - IRS calibration
 
-		JulianDate dtIRSEffective = dtStart.addBusDays (2, "USD");
+		JulianDate dtIRSEffective = dtStart.addBusDays (
+			2,
+			"USD"
+		);
 
 		String[] astrIRSTenor = new String[] {
 			"4Y",
@@ -315,9 +334,21 @@ public class RatesAnalyticsAPI {
 
 		for (int i = 0; i < aCompCalib.length; ++i) {
 			WengertJacobian wjComp = aCompCalib[i].jackDDirtyPVDManifestMeasure (
-				new ValuationParams (dtStart, dtStart, "USD"),
+				new ValuationParams (
+					dtStart,
+					dtStart,
+					"USD"
+				),
 				null,
-				MarketParamsBuilder.Create (dc, null, null, null, null, null, null),
+				MarketParamsBuilder.Create (
+					dc,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null
+				),
 				null
 			);
 

@@ -60,7 +60,8 @@ public class RegressionSplineEstimator {
 			new PolynomialFunctionSetParams (iNumBasis),
 			sdic,
 			null,
-			null);
+			null
+		);
 	}
 
 	/*
@@ -101,7 +102,8 @@ public class RegressionSplineEstimator {
 			aSCBC, // Basis Segment Builder parameters
 			sbfr, 
 			BoundarySettings.NaturalStandard(), // Boundary Condition - Natural
-			MultiSegmentSequence.CALIBRATE); // Calibrate the Stretch predictors to the responses
+			MultiSegmentSequence.CALIBRATE // Calibrate the Stretch predictors to the responses
+		);
 
 		/*
 		 * Estimate, compute the segment-by-segment monotonicity and the Stretch Jacobian
@@ -163,7 +165,10 @@ public class RegressionSplineEstimator {
 		int iK = 2;
 		int iRoughnessPenaltyDerivativeOrder = 2;
 
-		SegmentInelasticDesignControl sdic = SegmentInelasticDesignControl.Create (iK, iRoughnessPenaltyDerivativeOrder);
+		SegmentInelasticDesignControl sdic = SegmentInelasticDesignControl.Create (
+			iK,
+			iRoughnessPenaltyDerivativeOrder
+		);
 
 		int iPolyNumBasis = 4;
 
@@ -171,7 +176,14 @@ public class RegressionSplineEstimator {
 		 * Basis Spline Stretch Test Using the Segment Best Fit Response
 		 */
 
-		BasisSplineStretchTest (adblX, PolynomialSegmentControlParams (iPolyNumBasis, sdic), sbfr);
+		BasisSplineStretchTest (
+			adblX,
+			PolynomialSegmentControlParams (
+				iPolyNumBasis,
+				sdic
+			),
+			sbfr
+		);
 	}
 
 	public static final void main (

@@ -140,8 +140,14 @@ public class FloatFloatForwardCurve {
 		for (int i = 0; i < aiDay.length; ++i)
 			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (
 				dtEffective,
-				dtEffective.addBusDays (aiDay[i], strCurrency),
-				ForwardLabel.Create (strCurrency, "3M")
+				dtEffective.addBusDays (
+					aiDay[i],
+					strCurrency
+				),
+				ForwardLabel.Create (
+					strCurrency,
+					"3M"
+				)
 			);
 
 		CalibratableFixedIncomeComponent[] aEDF = SingleStreamComponentBuilder.FuturesPack (
@@ -242,7 +248,9 @@ public class FloatFloatForwardCurve {
 			dtSpot,
 			strCurrency,
 			// new java.lang.String[] {"6M", "9M", "1Y", "18M", "2Y", "3Y", "4Y", "5Y", "10Y"},
-			new java.lang.String[] {"9M", "1Y", "18M", "2Y", "3Y", "4Y", "5Y", "10Y"},
+			new java.lang.String[] {
+				"9M", "1Y", "18M", "2Y", "3Y", "4Y", "5Y", "10Y"
+			},
 			adblSwapQuote
 		);
 
@@ -252,7 +260,11 @@ public class FloatFloatForwardCurve {
 
 		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (
 			"KLK_HYPERBOLIC_SHAPE_TEMPLATE",
-			new ValuationParams (dtSpot, dtSpot, "USD"),
+			new ValuationParams (
+				dtSpot,
+				dtSpot,
+				"USD"
+			),
 			aDepositComp,
 			adblDepositQuote,
 			null,
@@ -335,23 +347,43 @@ public class FloatFloatForwardCurve {
 		 * Construct the 6M-xM float-float basis swap.
 		 */
 
-		FloatFloatComponent[] aFFC = MakexM6MBasisSwap (dtSpot, strCurrency, astrxM6MFwdTenor, iTenorInMonths);
+		FloatFloatComponent[] aFFC = MakexM6MBasisSwap (
+			dtSpot,
+			strCurrency,
+			astrxM6MFwdTenor,
+			iTenorInMonths
+		);
 
 		String strBasisTenor = iTenorInMonths + "M";
 
-		ValuationParams valParams = new ValuationParams (dtSpot, dtSpot, strCurrency);
+		ValuationParams valParams = new ValuationParams (
+			dtSpot,
+			dtSpot,
+			strCurrency
+		);
 
 		/*
 		 * Calculate the starting forward rate off of the discount curve.
 		 */
 
-		double dblStartingFwd = dc.forward (dtSpot.julian(), dtSpot.addTenor (strBasisTenor).julian());
+		double dblStartingFwd = dc.forward (
+			dtSpot.julian(),
+			dtSpot.addTenor (strBasisTenor).julian()
+		);
 
 		/*
 		 * Set the discount curve based component market parameters.
 		 */
 
-		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (dc, null, null, null, null, null, null);
+		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (
+			dc,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
 
 		Map<String, ForwardCurve> mapForward = new HashMap<String, ForwardCurve>();
 
@@ -361,7 +393,10 @@ public class FloatFloatForwardCurve {
 
 		ForwardCurve fcxMCubic = ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (
 			"CUBIC_FWD" + strBasisTenor,
-			ForwardLabel.Create (strCurrency, strBasisTenor),
+			ForwardLabel.Create (
+				strCurrency,
+				strBasisTenor
+			),
 			valParams,
 			null,
 			mktParams,
@@ -374,14 +409,25 @@ public class FloatFloatForwardCurve {
 			dblStartingFwd
 		);
 
-		mapForward.put ("   CUBIC_FWD" + strBasisTenor, fcxMCubic);
+		mapForward.put (
+			"   CUBIC_FWD" + strBasisTenor,
+			fcxMCubic
+		);
 
 		/*
 		 * Set the discount curve + cubic polynomial forward curve based component market parameters.
 		 */
 
-		CurveSurfaceQuoteSet mktParamsCubicFwd = MarketParamsBuilder.Create
-			(dc, fcxMCubic, null, null, null, null, null, null);
+		CurveSurfaceQuoteSet mktParamsCubicFwd = MarketParamsBuilder.Create (
+			dc,
+			fcxMCubic,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
 
 		/*
 		 * Construct the shape preserving forward curve off of Quartic Polynomial Basis Spline.
@@ -389,7 +435,10 @@ public class FloatFloatForwardCurve {
 
 		ForwardCurve fcxMQuartic = ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (
 			"QUARTIC_FWD" + strBasisTenor,
-			ForwardLabel.Create (strCurrency, strBasisTenor),
+			ForwardLabel.Create (
+				strCurrency,
+				strBasisTenor
+			),
 			valParams,
 			null,
 			mktParams,
@@ -402,14 +451,25 @@ public class FloatFloatForwardCurve {
 			dblStartingFwd
 		);
 
-		mapForward.put (" QUARTIC_FWD" + strBasisTenor, fcxMQuartic);
+		mapForward.put (
+			" QUARTIC_FWD" + strBasisTenor,
+			fcxMQuartic
+		);
 
 		/*
 		 * Set the discount curve + quartic polynomial forward curve based component market parameters.
 		 */
 
-		CurveSurfaceQuoteSet mktParamsQuarticFwd = MarketParamsBuilder.Create
-			(dc, fcxMQuartic, null, null, null,  null, null, null);
+		CurveSurfaceQuoteSet mktParamsQuarticFwd = MarketParamsBuilder.Create (
+			dc,
+			fcxMQuartic,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
 
 		/*
 		 * Construct the shape preserving forward curve off of Hyperbolic Tension Based Basis Spline.
@@ -417,7 +477,10 @@ public class FloatFloatForwardCurve {
 
 		ForwardCurve fcxMKLKHyper = ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (
 			"KLKHYPER_FWD" + strBasisTenor,
-			ForwardLabel.Create (strCurrency, strBasisTenor),
+			ForwardLabel.Create (
+				strCurrency,
+				strBasisTenor
+			),
 			valParams,
 			null,
 			mktParams,
@@ -430,14 +493,25 @@ public class FloatFloatForwardCurve {
 			dblStartingFwd
 		);
 
-		mapForward.put ("KLKHYPER_FWD" + strBasisTenor, fcxMKLKHyper);
+		mapForward.put (
+			"KLKHYPER_FWD" + strBasisTenor,
+			fcxMKLKHyper
+		);
 
 		/*
 		 * Set the discount curve + hyperbolic tension forward curve based component market parameters.
 		 */
 
-		CurveSurfaceQuoteSet mktParamsKLKHyperFwd = MarketParamsBuilder.Create
-			(dc, fcxMKLKHyper, null, null, null, null, null, null);
+		CurveSurfaceQuoteSet mktParamsKLKHyperFwd = MarketParamsBuilder.Create (
+			dc,
+			fcxMKLKHyper,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
 
 		int i = 0;
 		int iFreq = 12 / iTenorInMonths;
@@ -459,11 +533,26 @@ public class FloatFloatForwardCurve {
 
 			FloatFloatComponent ffc = aFFC[i++];
 
-			CaseInsensitiveTreeMap<Double> mapCubicValue = ffc.value (valParams, null, mktParamsCubicFwd, null);
+			CaseInsensitiveTreeMap<Double> mapCubicValue = ffc.value (
+				valParams,
+				null,
+				mktParamsCubicFwd,
+				null
+			);
 
-			CaseInsensitiveTreeMap<Double> mapQuarticValue = ffc.value (valParams, null, mktParamsQuarticFwd, null);
+			CaseInsensitiveTreeMap<Double> mapQuarticValue = ffc.value (
+				valParams,
+				null,
+				mktParamsQuarticFwd,
+				null
+			);
 
-			CaseInsensitiveTreeMap<Double> mapKLKHyperValue = ffc.value (valParams, null, mktParamsKLKHyperFwd, null);
+			CaseInsensitiveTreeMap<Double> mapKLKHyperValue = ffc.value (
+				valParams,
+				null,
+				mktParamsKLKHyperFwd,
+				null
+			);
 
 			System.out.println (" " + strMaturityTenor + " =>  " +
 				FormatUtil.FormatDouble (fcxMCubic.forward (dblFwdEndDate), 2, 2, 100.) + "  |  " +
@@ -506,7 +595,11 @@ public class FloatFloatForwardCurve {
 		 * Construct the Discount Curve using its instruments and quotes
 		 */
 
-		DiscountCurve dc = MakeDC (dtToday, strCurrency, 0.);
+		DiscountCurve dc = MakeDC (
+			dtToday,
+			strCurrency,
+			0.
+		);
 
 		System.out.println ("\n-----------------------------------------------------------------------------------------------------------------------------");
 
@@ -521,7 +614,9 @@ public class FloatFloatForwardCurve {
 			strCurrency,
 			dc,
 			1,
-			new String[] {"1Y", "2Y", "3Y", "4Y", "5Y", "6Y", "7Y", "8Y", "9Y", "10Y", "11Y", "12Y", "15Y", "20Y", "25Y", "30Y"},
+			new String[] {
+				"1Y", "2Y", "3Y", "4Y", "5Y", "6Y", "7Y", "8Y", "9Y", "10Y", "11Y", "12Y", "15Y", "20Y", "25Y", "30Y"
+			},
 			strManifestMeasure,
 			new double[] {
 				0.00551,    //  1Y
@@ -556,7 +651,9 @@ public class FloatFloatForwardCurve {
 			strCurrency,
 			dc,
 			3,
-			new String[] {"1Y", "2Y", "3Y", "4Y", "5Y", "6Y", "7Y", "8Y", "9Y", "10Y", "11Y", "12Y", "15Y", "20Y", "25Y", "30Y"},
+			new String[] {
+				"1Y", "2Y", "3Y", "4Y", "5Y", "6Y", "7Y", "8Y", "9Y", "10Y", "11Y", "12Y", "15Y", "20Y", "25Y", "30Y"
+			},
 			strManifestMeasure,
 			new double[] {
 				0.00186,    //  1Y
@@ -591,8 +688,10 @@ public class FloatFloatForwardCurve {
 			strCurrency,
 			dc,
 			12,
-			new String[] {"1Y", "2Y", "3Y", "4Y", "5Y", "6Y", "7Y", "8Y", "9Y", "10Y", "11Y", "12Y", "15Y", "20Y", "25Y", "30Y",
-				"35Y", "40Y"}, // Extrapolated
+			new String[] {
+				"1Y", "2Y", "3Y", "4Y", "5Y", "6Y", "7Y", "8Y", "9Y", "10Y", "11Y", "12Y", "15Y", "20Y", "25Y", "30Y",
+				"35Y", "40Y" // Extrapolated
+			},
 			strManifestMeasure,
 			new double[] {
 				-0.00212,    //  1Y

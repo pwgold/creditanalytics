@@ -114,8 +114,14 @@ public class FRAStdOption {
 		for (int i = 0; i < aiDay.length; ++i)
 			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (
 				dtEffective,
-				dtEffective.addBusDays (aiDay[i], strCurrency),
-				ForwardLabel.Create (strCurrency, "3M")
+				dtEffective.addBusDays (
+					aiDay[i],
+					strCurrency
+				),
+				ForwardLabel.Create (
+					strCurrency,
+					"3M"
+				)
 			);
 
 		CalibratableFixedIncomeComponent[] aEDF = SingleStreamComponentBuilder.FuturesPack (
@@ -253,7 +259,11 @@ public class FRAStdOption {
 
 		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (
 			"KLK_HYPERBOLIC_SHAPE_TEMPLATE",
-			new ValuationParams (dtSpot, dtSpot, "USD"),
+			new ValuationParams (
+				dtSpot,
+				dtSpot,
+				strCurrency
+			),
 			aDepositComp,
 			adblDepositQuote,
 			astrDepositManifestMeasure,
@@ -332,7 +342,15 @@ public class FRAStdOption {
 		 * Set the discount curve based component market parameters.
 		 */
 
-		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (dc, null, null, null, null, null, null);
+		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (
+			dc,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
 
 		/*
 		 * Construct the shape preserving forward curve off of Quartic Polynomial Basis Spline.
@@ -340,7 +358,10 @@ public class FRAStdOption {
 
 		return ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (
 			"QUARTIC_FWD" + strBasisTenor,
-			ForwardLabel.Create (strCurrency, strBasisTenor),
+			ForwardLabel.Create (
+				strCurrency,
+				strBasisTenor
+			),
 			valParams,
 			null,
 			mktParams,
@@ -394,7 +415,10 @@ public class FRAStdOption {
 			}
 		);
 
-		mapFC.put ("1M", fc1M);
+		mapFC.put (
+			"1M",
+			fc1M
+		);
 
 		/*
 		 * Build and run the sampling for the 3M-6M Tenor Basis Swap from its instruments and quotes.
@@ -428,7 +452,10 @@ public class FRAStdOption {
 			}
 		);
 
-		mapFC.put ("3M", fc3M);
+		mapFC.put (
+			"3M",
+			fc3M
+		);
 
 		/*
 		 * Build and run the sampling for the 12M-6M Tenor Basis Swap from its instruments and quotes.
@@ -464,7 +491,10 @@ public class FRAStdOption {
 			}
 		);
 
-		mapFC.put ("12M", fc12M);
+		mapFC.put (
+			"12M",
+			fc12M
+		);
 
 		return mapFC;
 	}
@@ -493,11 +523,21 @@ public class FRAStdOption {
 		 * Construct the Discount Curve using its instruments and quotes
 		 */
 
-		DiscountCurve dc = MakeDC (dtToday, strCurrency);
+		DiscountCurve dc = MakeDC (
+			dtToday,
+			strCurrency
+		);
 
-		Map<String, ForwardCurve> mapFC = MakeFC (dtToday, strCurrency, dc);
+		Map<String, ForwardCurve> mapFC = MakeFC (
+			dtToday,
+			strCurrency,
+			dc
+		);
 
-		ForwardLabel fri = ForwardLabel.Create (strCurrency, strTenor);
+		ForwardLabel fri = ForwardLabel.Create (
+			strCurrency,
+			strTenor
+		);
 
 		JulianDate dtForwardStart = dtToday.addTenor (strTenor);
 
@@ -507,9 +547,22 @@ public class FRAStdOption {
 			0.006
 		);
 
-		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (dc, mapFC.get (strTenor), null, null, null, null, null, null);
+		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (
+			dc,
+			mapFC.get (strTenor),
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
 
-		ValuationParams valParams = new ValuationParams (dtToday, dtToday, strCurrency);
+		ValuationParams valParams = new ValuationParams (
+			dtToday,
+			dtToday,
+			strCurrency
+		);
 
 		FundingLabel fundingLabel = FundingLabel.Standard (fri.currency());
 
@@ -587,7 +640,12 @@ public class FRAStdOption {
 			strCurrency
 		);
 
-		Map<String, Double> mapFRAFloorletOutput = fraFloorlet.value (valParams, null, mktParams, null);
+		Map<String, Double> mapFRAFloorletOutput = fraFloorlet.value (
+			valParams,
+			null,
+			mktParams,
+			null
+		);
 
 		for (Map.Entry<String, Double> me : mapFRAFloorletOutput.entrySet())
 			System.out.println ("\t" + me.getKey() + " => " + me.getValue());

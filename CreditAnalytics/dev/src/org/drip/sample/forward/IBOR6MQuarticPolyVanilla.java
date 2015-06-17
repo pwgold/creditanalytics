@@ -1,8 +1,7 @@
 
 package org.drip.sample.forward;
 
-import org.drip.analytics.date.DateUtil;
-import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.date.*;
 import org.drip.analytics.rates.*;
 import org.drip.function.R1ToR1.QuadraticRationalShapeControl;
 import org.drip.service.api.CreditAnalytics;
@@ -63,7 +62,10 @@ public class IBOR6MQuarticPolyVanilla {
 		SegmentCustomBuilderControl scbcQuartic = new SegmentCustomBuilderControl (
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 			new PolynomialFunctionSetParams (5),
-			SegmentInelasticDesignControl.Create (2, 2),
+			SegmentInelasticDesignControl.Create (
+				2,
+				2
+			),
 			new ResponseScalingShapeControl (
 				true,
 				new QuadraticRationalShapeControl (0.)
@@ -235,6 +237,14 @@ public class IBOR6MQuarticPolyVanilla {
 
 		CreditAnalytics.Init ("");
 
-		Make6MForward (DateUtil.CreateFromYMD (2012, DateUtil.DECEMBER, 11), "EUR", "6M");
+		Make6MForward (
+			DateUtil.CreateFromYMD (
+				2012,
+				DateUtil.DECEMBER,
+				11
+			),
+			"EUR",
+			"6M"
+		);
 	}
 }

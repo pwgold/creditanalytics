@@ -1,8 +1,7 @@
 
 package org.drip.sample.option;
 
-import org.drip.analytics.date.DateUtil;
-import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.date.*;
 import org.drip.analytics.definition.VolatilityTermStructure;
 import org.drip.param.creator.*;
 import org.drip.quant.common.FormatUtil;
@@ -107,8 +106,12 @@ public class DeterministicVolTermStructure {
 
 		JulianDate dtToday = DateUtil.Today();
 
-		String[] astrMaturityTenor = new String[] {"01Y", "02Y", "03Y", "04Y", "05Y", "06Y", "07Y", "08Y", "09Y"};
-		double[] adblImpliedCallVolatility = new double[] {0.700, 0.672, 0.661, 0.596, 0.551, 0.518, 0.492, 0.471, 0.452};
+		String[] astrMaturityTenor = new String[] {
+			"01Y", "02Y", "03Y", "04Y", "05Y", "06Y", "07Y", "08Y", "09Y"
+		};
+		double[] adblImpliedCallVolatility = new double[] {
+			0.700, 0.672, 0.661, 0.596, 0.551, 0.518, 0.492, 0.471, 0.452
+		};
 
 		VolatilityTermStructure tsCallVolatilityCubicPoly =
 			ScenarioDeterministicVolatilityBuilder.CubicPolynomialTermStructure (
@@ -179,17 +182,23 @@ public class DeterministicVolTermStructure {
 			adblImpliedCallVolatility
 		);
 
-		String[] astrOffGridTenor = new String[] {"18M", "30M", "42M", "54M", "06Y", "09Y"};
+		String[] astrOffGridTenor = new String[] {
+			"18M", "30M", "42M", "54M", "06Y", "09Y"
+		};
 
-		OffGrid ("ATM_CALLVOL_TERM_STRUCTURE",
-			new String[] {"Cubic Poly", "Quart Poly", "KaklisPand", "KLKHyperbl", "KLKRatlLin", "KLKRatlQua"},
+		OffGrid (
+			"ATM_CALLVOL_TERM_STRUCTURE",
+			new String[] {
+				"Cubic Poly", "Quart Poly", "KaklisPand", "KLKHyperbl", "KLKRatlLin", "KLKRatlQua"
+			},
 			new VolatilityTermStructure[] {
 				tsCallVolatilityCubicPoly,
 				tsCallVolatilityQuarticPoly,
 				tsCallVolatilityKaklisPandelis,
 				tsCallVolatilityKLKHyperbolic,
 				tsCallVolatilityKLKRationalLinear,
-				tsCallVolatilityKLKRationalQuadratic},
+				tsCallVolatilityKLKRationalQuadratic
+			},
 			astrOffGridTenor
 		);
 	}

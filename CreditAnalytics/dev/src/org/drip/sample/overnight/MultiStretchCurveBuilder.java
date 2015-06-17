@@ -101,7 +101,10 @@ public class MultiStretchCurveBuilder {
 					aiDay[i],
 					strCurrency
 				),
-				ForwardLabel.Create (strCurrency, "ON")
+				ForwardLabel.Create (
+					strCurrency,
+					"ON"
+				)
 			);
 
 		return aDeposit;
@@ -386,8 +389,14 @@ public class MultiStretchCurveBuilder {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
 				null
 			),
 			BoundarySettings.NaturalStandard(),
@@ -401,7 +410,11 @@ public class MultiStretchCurveBuilder {
 		 *  of Deposit and Swap Stretches.
 		 */
 
-		ValuationParams valParams = new ValuationParams (dtSpot, dtSpot, strCurrency);
+		ValuationParams valParams = new ValuationParams (
+			dtSpot,
+			dtSpot,
+			strCurrency
+		);
 
 		DiscountCurve dc = ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (
 			lcc,
@@ -503,7 +516,11 @@ public class MultiStretchCurveBuilder {
 
 		String strCurrency = "EUR";
 
-		JulianDate dtToday = DateUtil.CreateFromYMD (2012, DateUtil.DECEMBER, 11);
+		JulianDate dtToday = DateUtil.CreateFromYMD (
+			2012,
+			DateUtil.DECEMBER,
+			11
+		);
 
 		CustomOISCurveBuilderSample (
 			dtToday,

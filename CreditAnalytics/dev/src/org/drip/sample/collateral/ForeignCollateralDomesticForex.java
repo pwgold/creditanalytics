@@ -3,8 +3,7 @@ package org.drip.sample.collateral;
 
 import java.util.Map;
 
-import org.drip.analytics.date.DateUtil;
-import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.date.*;
 import org.drip.analytics.rates.DiscountCurve;
 import org.drip.analytics.support.CaseInsensitiveTreeMap;
 import org.drip.function.R1ToR1.*;
@@ -82,7 +81,10 @@ public class ForeignCollateralDomesticForex {
 		DiscountCurve dcCcyForeignCollatForeign = DiscountCurveBuilder.CreateFromFlatRate (
 			dtToday,
 			strForeignCurrency,
-			new CollateralizationParams ("OVERNIGHT_INDEX", strForeignCurrency),
+			new CollateralizationParams (
+				"OVERNIGHT_INDEX",
+				strForeignCurrency
+			),
 			dblForeignCollateralRate
 		);
 
@@ -100,7 +102,15 @@ public class ForeignCollateralDomesticForex {
 			new FlatUnivariate (dblFXForeignRatesCorrelation)
 		);
 
-		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (null, null, null, null, null, null, null);
+		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
 
 		mktParams.setPayCurrencyCollateralCurrencyCurve (
 			strDomesticCurrency,
@@ -126,7 +136,11 @@ public class ForeignCollateralDomesticForex {
 		);
 
 		CaseInsensitiveTreeMap<Double> mapFCFF = fcff.value (
-			new ValuationParams (dtToday, dtToday, strDomesticCurrency),
+			new ValuationParams (
+				dtToday,
+				dtToday,
+				strDomesticCurrency
+			),
 			null,
 			mktParams,
 			null

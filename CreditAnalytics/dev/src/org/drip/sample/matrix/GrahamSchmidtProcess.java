@@ -1,8 +1,7 @@
 
 package org.drip.sample.matrix;
 
-import org.drip.quant.common.FormatUtil;
-import org.drip.quant.common.NumberUtil;
+import org.drip.quant.common.*;
 import org.drip.quant.linearalgebra.Matrix;
 import org.drip.service.api.CreditAnalytics;
 
@@ -56,7 +55,10 @@ public class GrahamSchmidtProcess {
 
 		double[][] aadblUOrthogonal = Matrix.GrahamSchmidtOrthogonalization (aadblV);
 
-		NumberUtil.PrintMatrix ("ORTHOGONAL", aadblUOrthogonal);
+		NumberUtil.PrintMatrix (
+			"ORTHOGONAL",
+			aadblUOrthogonal
+		);
 
 		System.out.println (
 			"ORTHOGONAL TEST: " +
@@ -65,13 +67,16 @@ public class GrahamSchmidtProcess {
 					aadblUOrthogonal[0],
 					aadblUOrthogonal[1]
 				),
-			1, 1, 1.
+				1, 1, 1.
 			)
 		);
 
 		double[][] aadblUOrthonormal = Matrix.GrahamSchmidtOrthonormalization (aadblV);
 
-		NumberUtil.PrintMatrix ("ORTHONORMAL", aadblUOrthonormal);
+		NumberUtil.PrintMatrix (
+			"ORTHONORMAL",
+			aadblUOrthonormal
+		);
 
 		System.out.println (
 			"ORTHONORMAL TEST: " +
@@ -80,7 +85,7 @@ public class GrahamSchmidtProcess {
 					aadblUOrthonormal[0],
 					aadblUOrthonormal[1]
 				),
-			1, 1, 1.
+				1, 1, 1.
 			)
 		);
 	}

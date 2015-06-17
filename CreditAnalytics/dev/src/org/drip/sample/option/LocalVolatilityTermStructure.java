@@ -52,7 +52,10 @@ public class LocalVolatilityTermStructure {
 		return new SegmentCustomBuilderControl (
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 			new PolynomialFunctionSetParams (4),
-			SegmentInelasticDesignControl.Create (2, 2),
+			SegmentInelasticDesignControl.Create (
+				2,
+				2
+			),
 			null,
 			null
 		);
@@ -106,8 +109,12 @@ public class LocalVolatilityTermStructure {
 	{
 		JulianDate dtStart = DateUtil.Today();
 
-		double[] adblStrikeATMFactorCalib = new double[] {0.8, 0.9, 1.0, 1.1, 1.2};
-		String[] astrMaturityTenorCalib = new String[] {"12M", "24M", "36M", "48M", "60M"};
+		double[] adblStrikeATMFactorCalib = new double[] {
+			0.8, 0.9, 1.0, 1.1, 1.2
+		};
+		String[] astrMaturityTenorCalib = new String[] {
+			"12M", "24M", "36M", "48M", "60M"
+		};
 		double[][] aadblVol = new double[][] {
 			{0.171, 0.169, 0.168, 0.168, 0.168},
 			{0.159, 0.161, 0.161, 0.162, 0.164},
@@ -120,7 +127,10 @@ public class LocalVolatilityTermStructure {
 			"HESTON1993_CUBICPOLY_CALLPRICE_SURFACE",
 			dtStart,
 			"USD",
-			new CollateralizationParams ("OVERNIGHT_INDEX", "USD"),
+			new CollateralizationParams (
+				"OVERNIGHT_INDEX",
+				"USD"
+			),
 			adblStrikeATMFactorCalib,
 			astrMaturityTenorCalib,
 			aadblVol,
@@ -128,8 +138,12 @@ public class LocalVolatilityTermStructure {
 			scbc()
 		);
 
-		double[] adblStrikeATMFactor = new double[] {0.850, 0.925, 1.000, 1.075, 1.150};
-		String[] astrMaturityTenor = new String[] {"18M", "27M", "36M", "45M", "54M"};
+		double[] adblStrikeATMFactor = new double[] {
+			0.850, 0.925, 1.000, 1.075, 1.150
+		};
+		String[] astrMaturityTenor = new String[] {
+			"18M", "27M", "36M", "45M", "54M"
+		};
 
 		TermStructure[] aTSMaturityAnchor = new TermStructure[astrMaturityTenor.length];
 

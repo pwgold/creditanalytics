@@ -157,9 +157,15 @@ public class IIDSequenceSumBound {
 	{
 		CreditAnalytics.Init ("");
 
-		BoundedUniform uniformRandom = new BoundedUniform (0., 1.);
+		BoundedUniform uniformRandom = new BoundedUniform (
+			0.,
+			1.
+		);
 
-		R1Lebesgue uniformDistribution = new R1Lebesgue (0., 1.);
+		R1Lebesgue uniformDistribution = new R1Lebesgue (
+			0.,
+			1.
+		);
 
 		int[] aiSampleSize = new int[] {
 			50, 500, 5000, 50000, 500000, 5000000, 50000000

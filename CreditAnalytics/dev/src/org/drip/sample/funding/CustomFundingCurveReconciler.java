@@ -100,7 +100,10 @@ public class CustomFundingCurveReconciler {
 			"3M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
 			null,
-			ForwardLabel.Create (strCurrency, "3M"),
+			ForwardLabel.Create (
+				strCurrency,
+				"3M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -130,7 +133,10 @@ public class CustomFundingCurveReconciler {
 					CompositePeriodBuilder.FloatingCompositeUnit (
 						CompositePeriodBuilder.EdgePair (
 							dtEffective,
-							dtEffective.addBusDays (aiDay[i], strCurrency)
+							dtEffective.addBusDays (
+								aiDay[i],
+								strCurrency
+							)
 						),
 						cps,
 						cfus
@@ -174,7 +180,10 @@ public class CustomFundingCurveReconciler {
 			"6M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-			ForwardLabel.Create (strCurrency, "6M"),
+			ForwardLabel.Create (
+				strCurrency,
+				"6M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -413,7 +422,8 @@ public class CustomFundingCurveReconciler {
 			valParams,
 			null,
 			null,
-			null);
+			null
+		);
 
 		/*
 		 * Retrieve the "Deposit" stretch from the span
@@ -432,7 +442,11 @@ public class CustomFundingCurveReconciler {
 		 * 	non-overlapping stretch.
 		 */
 
-		DiscountCurve dfdc = new DiscountFactorDiscountCurve (strCurrency, null, ors);
+		DiscountCurve dfdc = new DiscountFactorDiscountCurve (
+			strCurrency,
+			null,
+			ors
+		);
 
 		/*
 		 * Compare the discount factors and their monotonicity emitted from the discount curve, the
@@ -521,10 +535,13 @@ public class CustomFundingCurveReconciler {
 
 		TurnListDiscountFactor tldc = new TurnListDiscountFactor();
 
-		tldc.addTurn (new Turn (
-			dtSpot.addTenor ("5Y").julian(),
-			dtSpot.addTenor ("40Y").julian(),
-			0.001));
+		tldc.addTurn (
+			new Turn (
+				dtSpot.addTenor ("5Y").julian(),
+				dtSpot.addTenor ("40Y").julian(),
+				0.001
+			)
+		);
 
 		/*
 		 * Update the discount curve with the turn list.
@@ -570,8 +587,14 @@ public class CustomFundingCurveReconciler {
 		SegmentCustomBuilderControl prbpPolynomial = new SegmentCustomBuilderControl (
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 			new PolynomialFunctionSetParams (4),
-			SegmentInelasticDesignControl.Create (2, 2),
-			new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+			SegmentInelasticDesignControl.Create (
+				2,
+				2
+			),
+			new ResponseScalingShapeControl (
+				true,
+				new QuadraticRationalShapeControl (0.)
+			),
 			null
 		);
 

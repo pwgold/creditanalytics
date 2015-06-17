@@ -115,8 +115,14 @@ public class FRAStdOptionAnalysis {
 		for (int i = 0; i < aiDay.length; ++i)
 			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (
 				dtEffective,
-				dtEffective.addBusDays (aiDay[i], strCurrency),
-				ForwardLabel.Create (strCurrency, "3M")
+				dtEffective.addBusDays (
+					aiDay[i],
+					strCurrency
+				),
+				ForwardLabel.Create (
+					strCurrency,
+					"3M"
+				)
 			);
 
 		CalibratableFixedIncomeComponent[] aEDF = SingleStreamComponentBuilder.FuturesPack (
@@ -254,7 +260,11 @@ public class FRAStdOptionAnalysis {
 
 		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (
 			"KLK_HYPERBOLIC_SHAPE_TEMPLATE",
-			new ValuationParams (dtSpot, dtSpot, "USD"),
+			new ValuationParams (
+				dtSpot,
+				dtSpot,
+				strCurrency
+			),
 			aDepositComp,
 			adblDepositQuote,
 			astrDepositManifestMeasure,
@@ -341,7 +351,10 @@ public class FRAStdOptionAnalysis {
 
 		return ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (
 			"QUARTIC_FWD" + strBasisTenor,
-			ForwardLabel.Create (strCurrency, strBasisTenor),
+			ForwardLabel.Create (
+				strCurrency,
+				strBasisTenor
+			),
 			valParams,
 			null,
 			mktParams,
@@ -395,7 +408,10 @@ public class FRAStdOptionAnalysis {
 			}
 		);
 
-		mapFC.put ("1M", fc1M);
+		mapFC.put (
+			"1M",
+			fc1M
+		);
 
 		/*
 		 * Build and run the sampling for the 3M-6M Tenor Basis Swap from its instruments and quotes.
@@ -429,7 +445,10 @@ public class FRAStdOptionAnalysis {
 			}
 		);
 
-		mapFC.put ("3M", fc3M);
+		mapFC.put (
+			"3M",
+			fc3M
+		);
 
 		/*
 		 * Build and run the sampling for the 12M-6M Tenor Basis Swap from its instruments and quotes.
@@ -465,7 +484,10 @@ public class FRAStdOptionAnalysis {
 			}
 		);
 
-		mapFC.put ("12M", fc12M);
+		mapFC.put (
+			"12M",
+			fc12M
+		);
 
 		return mapFC;
 	}
@@ -510,7 +532,11 @@ public class FRAStdOptionAnalysis {
 			true,
 			dblStrike,
 			1.,
-			new LastTradingDateSetting (LastTradingDateSetting.MID_CURVE_OPTION_QUARTERLY, "", Double.NaN),
+			new LastTradingDateSetting (
+				LastTradingDateSetting.MID_CURVE_OPTION_QUARTERLY,
+				"",
+				Double.NaN
+			),
 			strCurrency,
 			strCurrency
 		);
@@ -521,14 +547,28 @@ public class FRAStdOptionAnalysis {
 			false,
 			dblStrike,
 			1.,
-			new LastTradingDateSetting (LastTradingDateSetting.MID_CURVE_OPTION_QUARTERLY, "", Double.NaN),
+			new LastTradingDateSetting (
+				LastTradingDateSetting.MID_CURVE_OPTION_QUARTERLY,
+				"",
+				Double.NaN
+			),
 			strCurrency,
 			strCurrency
 		);
 
-		Map<String, Double> mapFRACapletOutput = fraCaplet.value (valParams, null, mktParams, null);
+		Map<String, Double> mapFRACapletOutput = fraCaplet.value (
+			valParams,
+			null,
+			mktParams,
+			null
+		);
 
-		Map<String, Double> mapFRAFloorletOutput = fraFloorlet.value (valParams, null, mktParams, null);
+		Map<String, Double> mapFRAFloorletOutput = fraFloorlet.value (
+			valParams,
+			null,
+			mktParams,
+			null
+		);
 
 		double dblATMFRA = mapFRACapletOutput.get ("ATMFRA");
 
@@ -576,9 +616,16 @@ public class FRAStdOptionAnalysis {
 		 * Construct the Discount Curve using its instruments and quotes
 		 */
 
-		DiscountCurve dc = MakeDC (dtToday, strCurrency);
+		DiscountCurve dc = MakeDC (
+			dtToday,
+			strCurrency
+		);
 
-		Map<String, ForwardCurve> mapFC = MakeFC (dtToday, strCurrency, dc);
+		Map<String, ForwardCurve> mapFC = MakeFC (
+			dtToday,
+			strCurrency,
+			dc
+		);
 
 		ForwardLabel fri = ForwardLabel.Create (strCurrency, strTenor);
 
@@ -590,9 +637,22 @@ public class FRAStdOptionAnalysis {
 			0.006
 		);
 
-		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (dc, mapFC.get (strTenor), null, null, null, null, null, null);
+		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (
+			dc,
+			mapFC.get (strTenor),
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
 
-		ValuationParams valParams = new ValuationParams (dtToday, dtToday, strCurrency);
+		ValuationParams valParams = new ValuationParams (
+			dtToday,
+			dtToday,
+			strCurrency
+		);
 
 		double[] adblSigmaFwd = new double[] {0.1, 0.2, 0.3, 0.4, 0.5};
 		double[] adblSigmaFwd2DomX = new double[] {0.10, 0.15, 0.20, 0.25, 0.30};

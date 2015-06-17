@@ -72,7 +72,10 @@ public class FedFundFutures {
 		SingleStreamComponent fedFundFutures = SingleStreamComponentBuilder.Deposit (
 			dtToday,
 			dtToday.addTenor ("1M"),
-			ForwardLabel.Create (strCurrency, "ON")
+			ForwardLabel.Create (
+				strCurrency,
+				"ON"
+			)
 		);
 
 		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (

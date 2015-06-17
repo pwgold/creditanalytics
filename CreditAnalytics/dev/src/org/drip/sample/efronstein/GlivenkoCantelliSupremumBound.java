@@ -55,7 +55,10 @@ public class GlivenkoCantelliSupremumBound {
 		SingleSequenceAgnosticMetrics[] aSSAM = new SingleSequenceAgnosticMetrics[iNumSample];
 
 		for (int i = 0; i < iNumSample; ++i)
-			aSSAM[i] = rsg.sequence (iNumSample, null);
+			aSSAM[i] = rsg.sequence (
+				iNumSample,
+				null
+			);
 
 		return aSSAM;
 	}

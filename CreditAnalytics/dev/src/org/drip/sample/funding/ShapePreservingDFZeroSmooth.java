@@ -129,8 +129,14 @@ public class ShapePreservingDFZeroSmooth {
 		for (int i = 0; i < aiDay.length; ++i)
 			aDeposit[i] = SingleStreamComponentBuilder.Deposit (
 				dtEffective,
-				dtEffective.addBusDays (aiDay[i], strCurrency),
-				ForwardLabel.Create (strCurrency, "3M")
+				dtEffective.addBusDays (
+					aiDay[i],
+					strCurrency
+				),
+				ForwardLabel.Create (
+					"USD",
+					"3M"
+				)
 			);
 
 		return aDeposit;
@@ -217,7 +223,9 @@ public class ShapePreservingDFZeroSmooth {
 		SingleStreamComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (
 			dtSpot,
 			strCurrency,
-			new int[] {1, 2, 7, 14, 30, 60}
+			new int[] {
+				1, 2, 7, 14, 30, 60
+			}
 		);
 
 		double[] adblDepositQuote = new double[] {
@@ -300,10 +308,23 @@ public class ShapePreservingDFZeroSmooth {
 		LinearLatentStateCalibrator lcc = new LinearLatentStateCalibrator (
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_EXPONENTIAL_MIXTURE,
-				new ExponentialMixtureSetParams (new double[] {0.01, 0.05, 0.25}),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
-				null),
+				new ExponentialMixtureSetParams (
+					new double[] {
+						0.01,
+						0.05,
+						0.25
+					}
+				),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				null
+			),
 			BoundarySettings.NaturalStandard(),
 			MultiSegmentSequence.CALIBRATE,
 			null,
@@ -324,9 +345,16 @@ public class ShapePreservingDFZeroSmooth {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
-				null),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				null
+			),
 			BoundarySettings.NaturalStandard(),
 			MultiSegmentSequence.CALIBRATE,
 			null,
@@ -349,9 +377,16 @@ public class ShapePreservingDFZeroSmooth {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
-				null),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				null
+			),
 			MultiSegmentSequence.CALIBRATE,
 			null,
 			null,
@@ -577,6 +612,9 @@ public class ShapePreservingDFZeroSmooth {
 
 		String strCurrency = "USD";
 
-		ShapePreservingDFZeroSmoothSample (dtToday, strCurrency);
+		ShapePreservingDFZeroSmoothSample (
+			dtToday,
+			strCurrency
+		);
 	}
 }

@@ -82,7 +82,12 @@ public class FXAPI {
 		 * Create a currency pair
 		 */
 
-		CurrencyPair cp = new CurrencyPair ("EUR", "USD", "USD", 10000.);
+		CurrencyPair cp = new CurrencyPair (
+			"EUR",
+			"USD",
+			"USD",
+			10000.
+		);
 
 		Random rand = new Random();
 
@@ -90,9 +95,19 @@ public class FXAPI {
 		 * Create a the USD and EUR discount curves
 		 */
 
-		ExplicitBootDiscountCurve dcUSD = DiscountCurveBuilder.CreateFromFlatRate (DateUtil.Today(), "USD", null, 0.05);
+		ExplicitBootDiscountCurve dcUSD = DiscountCurveBuilder.CreateFromFlatRate (
+			DateUtil.Today(),
+			"USD",
+			null,
+			0.05
+		);
 
-		ExplicitBootDiscountCurve dcEUR = DiscountCurveBuilder.CreateFromFlatRate (DateUtil.Today(), "EUR", null, 0.04);
+		ExplicitBootDiscountCurve dcEUR = DiscountCurveBuilder.CreateFromFlatRate (
+			DateUtil.Today(),
+			"EUR",
+			null,
+			0.04
+		);
 
 		double dblFXSpot = 1.40;
 		double dblFXFwdMarket = 1.40;
@@ -121,13 +136,23 @@ public class FXAPI {
 		 * Create the FX forward instrument
 		 */
 
-		FXForward fxfwd = FXForwardBuilder.CreateFXForward (cp, DateUtil.Today(), "1Y");
+		FXForward fxfwd = FXForwardBuilder.CreateFXForward (
+			cp,
+			DateUtil.Today(),
+			"1Y"
+		);
 
 		/*
 		 * Calculate the FX forward outright
 		 */
 
-		double dblFXFwd = fxfwd.imply (valParams, dcEUR, dcUSD, 1.4, false);
+		double dblFXFwd = fxfwd.imply (
+			valParams,
+			dcEUR,
+			dcUSD,
+			1.4,
+			false
+		);
 
 		System.out.println (cp.code() + "[1Y]= " + dblFXFwd);
 
@@ -135,7 +160,13 @@ public class FXAPI {
 		 * Calculate the FX forward PIP
 		 */
 
-		double dblFXFwdPIP = fxfwd.imply (valParams, dcEUR, dcUSD, 1.4, true);
+		double dblFXFwdPIP = fxfwd.imply (
+			valParams,
+			dcEUR,
+			dcUSD,
+			1.4,
+			true
+		);
 
 		System.out.println (cp.code() + "[1Y](pip)= " + FormatUtil.FormatDouble (dblFXFwdPIP, 1, 3, 100.));
 
@@ -143,7 +174,14 @@ public class FXAPI {
 		 * Calculate the DC Basis on the EUR curve
 		 */
 
-		double dblDCEURBasis = fxfwd.discountCurveBasis (valParams, dcEUR, dcUSD, dblFXSpot, dblFXFwdMarket, false);
+		double dblDCEURBasis = fxfwd.discountCurveBasis (
+			valParams,
+			dcEUR,
+			dcUSD,
+			dblFXSpot,
+			dblFXFwdMarket,
+			false
+		);
 
 		System.out.println ("EUR Basis bp for " + cp.code() + "[1Y] = " + dblFXFwdMarket + ": " +
 			FormatUtil.FormatDouble (dblDCEURBasis, 1, 3, 100.));
@@ -152,7 +190,14 @@ public class FXAPI {
 		 * Calculate the DC Basis on the USD curve
 		 */
 
-		double dblDCUSDBasis = fxfwd.discountCurveBasis (valParams, dcEUR, dcUSD, dblFXSpot, dblFXFwdMarket, true);
+		double dblDCUSDBasis = fxfwd.discountCurveBasis (
+			valParams,
+			dcEUR,
+			dcUSD,
+			dblFXSpot,
+			dblFXFwdMarket,
+			true
+		);
 
 		System.out.println ("USD Basis bp for " + cp.code() + "[1Y] = " + dblFXFwdMarket + ": " +
 			FormatUtil.FormatDouble (dblDCUSDBasis, 1, 3, 100.));
@@ -161,14 +206,25 @@ public class FXAPI {
 		 * Create an FX curve from the spot, and the array of nodes, FX forward, as well as the PIP indicator
 		 */
 
-		FXForwardCurve fxCurve = FXForwardCurveBuilder.CreateFXForwardCurve
-			(cp, DateUtil.Today(), dblFXSpot, adblNodes, adblFXFwd, abIsPIP);
+		FXForwardCurve fxCurve = FXForwardCurveBuilder.CreateFXForwardCurve (
+			cp,
+			DateUtil.Today(),
+			dblFXSpot,
+			adblNodes,
+			adblFXFwd,
+			abIsPIP
+		);
 
 		/*
 		 * Calculate the array of the USD basis
 		 */
 
-		double[] adblFullUSDBasis = fxCurve.zeroBasis (valParams, dcEUR, dcUSD, true);
+		double[] adblFullUSDBasis = fxCurve.zeroBasis (
+			valParams,
+			dcEUR,
+			dcUSD,
+			true
+		);
 
 		for (int i = 0; i < adblFullUSDBasis.length; ++i)
 			System.out.println ("FullUSDBasis[" + (i + 1) + "Y]=" +
@@ -178,7 +234,12 @@ public class FXAPI {
 		 * Calculate the array of the EUR basis
 		 */
 
-		double[] adblFullEURBasis = fxCurve.zeroBasis (valParams, dcEUR, dcUSD, false);
+		double[] adblFullEURBasis = fxCurve.zeroBasis (
+			valParams,
+			dcEUR,
+			dcUSD,
+			false
+		);
 
 		for (int i = 0; i < adblFullEURBasis.length; ++i)
 			System.out.println ("FullEURBasis[" + (i + 1) + "Y]=" +
@@ -188,7 +249,12 @@ public class FXAPI {
 		 * Calculate the array of bootstrapped USD basis
 		 */
 
-		double[] adblBootstrappedUSDBasis = fxCurve.bootstrapBasis (valParams, dcEUR, dcUSD, true);
+		double[] adblBootstrappedUSDBasis = fxCurve.bootstrapBasis (
+			valParams,
+			dcEUR,
+			dcUSD,
+			true
+		);
 
 		for (int i = 0; i < adblBootstrappedUSDBasis.length; ++i)
 			System.out.println ("Bootstrapped USDBasis from FX fwd for " + cp.code() + "[" + (i + 1) + "Y]=" +
@@ -198,7 +264,12 @@ public class FXAPI {
 		 * Calculate the array of bootstrapped EUR basis
 		 */
 
-		double[] adblBootstrappedEURBasis = fxCurve.bootstrapBasis (valParams, dcEUR, dcUSD, false);
+		double[] adblBootstrappedEURBasis = fxCurve.bootstrapBasis (
+			valParams,
+			dcEUR,
+			dcUSD,
+			false
+		);
 
 		for (int i = 0; i < adblBootstrappedEURBasis.length; ++i)
 			System.out.println ("Bootstrapped EURBasis from FX fwd for " + cp.code() + "[" + (i + 1) + "Y]=" +
@@ -208,14 +279,26 @@ public class FXAPI {
 		 * Create an USD FX Basis Curve from the spot, and the array of nodes, FX Basis
 		 */
 
-		FXBasisCurve fxUSDBasisCurve = FXBasisCurveBuilder.CreateFXBasisCurve
-			(cp, DateUtil.Today(), dblFXSpot, adblNodes, adblFullUSDBasis, false);
+		FXBasisCurve fxUSDBasisCurve = FXBasisCurveBuilder.CreateFXBasisCurve (
+			cp,
+			DateUtil.Today(),
+			dblFXSpot,
+			adblNodes,
+			adblFullUSDBasis,
+			false
+		);
 
 		/*
 		 * Re-calculate the array of FX Forward from USD Basis Curve
 		 */
 
-		double[] adblFXFwdFromUSDBasis = fxUSDBasisCurve.fxForward (valParams, dcEUR, dcUSD, true, false);
+		double[] adblFXFwdFromUSDBasis = fxUSDBasisCurve.fxForward (
+			valParams,
+			dcEUR,
+			dcUSD,
+			true,
+			false
+		);
 
 		for (int i = 0; i < adblFXFwdFromUSDBasis.length; ++i)
 			System.out.println ("FX Fwd from Bootstrapped USD Basis: " + cp.code() + "[" + (i + 1) + "Y]=" +
@@ -225,14 +308,26 @@ public class FXAPI {
 		 * Create an EUR FX Basis Curve from the spot, and the array of nodes, FX Basis
 		 */
 
-		FXBasisCurve fxEURBasisCurve = FXBasisCurveBuilder.CreateFXBasisCurve
-			(cp, DateUtil.Today(), dblFXSpot, adblNodes, adblFullEURBasis, false);
+		FXBasisCurve fxEURBasisCurve = FXBasisCurveBuilder.CreateFXBasisCurve (
+			cp,
+			DateUtil.Today(),
+			dblFXSpot,
+			adblNodes,
+			adblFullEURBasis,
+			false
+		);
 
 		/*
 		 * Re-calculate the array of FX Forward from EUR Basis Curve
 		 */
 
-		double[] adblFXFwdFromEURBasis = fxEURBasisCurve.fxForward (valParams, dcEUR, dcUSD, false, false);
+		double[] adblFXFwdFromEURBasis = fxEURBasisCurve.fxForward (
+			valParams,
+			dcEUR,
+			dcUSD,
+			false,
+			false
+		);
 
 		for (int i = 0; i < adblFXFwdFromEURBasis.length; ++i)
 			System.out.println ("FX Fwd from Bootstrapped EUR Basis: " + cp.code() + "[" + (i + 1) + "Y]=" +

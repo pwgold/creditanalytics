@@ -62,7 +62,8 @@ public class HestonPayoffTransform {
 			dblSigma,
 			dblTheta,
 			dblLambda,
-			PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL);
+			PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL
+		);
 
 		HestonStochasticVolatilityAlgorithm hsva = new HestonStochasticVolatilityAlgorithm (fphp);
 
@@ -71,7 +72,15 @@ public class HestonPayoffTransform {
 		double dblSpot = 1.;
 		double dblSpotVolatility = 0.1;
 
-		hsva.compute (dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblSpot, false, dblSpotVolatility, false);
+		hsva.compute (
+			dblStrike,
+			dblTimeToExpiry,
+			dblRiskFreeRate,
+			dblSpot,
+			false,
+			dblSpotVolatility,
+			false
+		);
 
 		return bProb1 ? hsva.callProb1() : hsva.callProb2();
 	}
@@ -80,7 +89,9 @@ public class HestonPayoffTransform {
 		final String[] astrArgs)
 		throws Exception
 	{
-		double[] adblTTE = new double[] {0.5, 1., 2., 3., 4., 5., 7., 10., 12., 15., 20., 25., 30.};
+		double[] adblTTE = new double[] {
+			0.5, 1., 2., 3., 4., 5., 7., 10., 12., 15., 20., 25., 30.
+		};
 
 		System.out.println ("\n\t|---------------------------|");
 

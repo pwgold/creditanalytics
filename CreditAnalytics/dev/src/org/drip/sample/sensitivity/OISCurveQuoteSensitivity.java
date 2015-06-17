@@ -92,7 +92,10 @@ public class OISCurveQuoteSensitivity {
 					aiDay[i],
 					strCurrency
 				),
-				ForwardLabel.Create (strCurrency, "ON")
+				ForwardLabel.Create (
+					strCurrency,
+					"ON"
+				)
 			);
 
 		return aDeposit;
@@ -145,7 +148,10 @@ public class OISCurveQuoteSensitivity {
 				"ON",
 				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT,
 				null,
-				ForwardLabel.Create (strCurrency, "ON"),
+				ForwardLabel.Create (
+					strCurrency,
+					"ON"
+				),
 				CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 				0.
 			);
@@ -287,7 +293,10 @@ public class OISCurveQuoteSensitivity {
 				"ON",
 				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT,
 				null,
-				ForwardLabel.Create (strCurrency, "ON"),
+				ForwardLabel.Create (
+					strCurrency,
+					"ON"
+				),
 				CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 				0.
 			);
@@ -550,9 +559,19 @@ public class OISCurveQuoteSensitivity {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
 				new ExponentialTensionSetParams (2.),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
-				new org.drip.spline.params.PreceedingManifestSensitivityControl (true, 1, null)
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				new org.drip.spline.params.PreceedingManifestSensitivityControl (
+					true,
+					1,
+					null
+				)
 			),
 			BoundarySettings.NaturalStandard(),
 			MultiSegmentSequence.CALIBRATE,
@@ -574,8 +593,14 @@ public class OISCurveQuoteSensitivity {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
 				new ExponentialTensionSetParams (2.),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
 				new org.drip.spline.params.PreceedingManifestSensitivityControl (
 					true,
 					1,
@@ -598,8 +623,14 @@ public class OISCurveQuoteSensitivity {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
 				new ExponentialTensionSetParams (2.),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
 				new org.drip.spline.params.PreceedingManifestSensitivityControl (
 					true,
 					1,
@@ -622,8 +653,14 @@ public class OISCurveQuoteSensitivity {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
 				new ExponentialTensionSetParams (2.),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
 				new org.drip.spline.params.PreceedingManifestSensitivityControl (
 					true,
 					1,
@@ -632,7 +669,11 @@ public class OISCurveQuoteSensitivity {
 			)
 		);
 
-		ValuationParams valParams = new ValuationParams (dtSpot, dtSpot, strCurrency);
+		ValuationParams valParams = new ValuationParams (
+			dtSpot,
+			dtSpot,
+			strCurrency
+		);
 
 		/*
 		 * Construct the Shape Preserving Discount Curve by applying the linear curve calibrator to the array
@@ -728,7 +769,10 @@ public class OISCurveQuoteSensitivity {
 		System.out.println ("\t----------------------------------------------------------------");
 
 		for (int i = 0; i < aDepositComp.length; ++i) {
-			org.drip.quant.calculus.WengertJacobian wj = dc.jackDDFDManifestMeasure (aDepositComp[i].maturityDate(), "PV");
+			org.drip.quant.calculus.WengertJacobian wj = dc.jackDDFDManifestMeasure (
+				aDepositComp[i].maturityDate(),
+				"PV"
+			);
 
 			System.out.println (aDepositComp[i].maturityDate() + " => " + wj.displayString());
 		}
@@ -744,7 +788,10 @@ public class OISCurveQuoteSensitivity {
 		System.out.println ("\t----------------------------------------------------------------");
 
 		for (int i = 0; i < aShortEndOISComp.length; ++i) {
-			org.drip.quant.calculus.WengertJacobian wjDFQuote = dc.jackDDFDManifestMeasure (aShortEndOISComp[i].maturityDate(), "PV");
+			org.drip.quant.calculus.WengertJacobian wjDFQuote = dc.jackDDFDManifestMeasure (
+				aShortEndOISComp[i].maturityDate(),
+				"PV"
+			);
 
 			System.out.println (aShortEndOISComp[i].maturityDate() + " => " + wjDFQuote.displayString());
 		}
@@ -760,7 +807,10 @@ public class OISCurveQuoteSensitivity {
 		System.out.println ("\t----------------------------------------------------------------");
 
 		for (int i = 0; i < aOISFutureComp.length; ++i) {
-			org.drip.quant.calculus.WengertJacobian wjDFQuote = dc.jackDDFDManifestMeasure (aOISFutureComp[i].maturityDate(), "PV");
+			org.drip.quant.calculus.WengertJacobian wjDFQuote = dc.jackDDFDManifestMeasure (
+				aOISFutureComp[i].maturityDate(),
+				"PV"
+			);
 
 			System.out.println (aOISFutureComp[i].maturityDate() + " => " + wjDFQuote.displayString());
 		}
@@ -776,7 +826,10 @@ public class OISCurveQuoteSensitivity {
 		System.out.println ("\t----------------------------------------------------------------");
 
 		for (int i = 0; i < aLongEndOISComp.length; ++i) {
-			org.drip.quant.calculus.WengertJacobian wjDFQuote = dc.jackDDFDManifestMeasure (aLongEndOISComp[i].maturityDate(), "PV");
+			org.drip.quant.calculus.WengertJacobian wjDFQuote = dc.jackDDFDManifestMeasure (
+				aLongEndOISComp[i].maturityDate(),
+				"PV"
+			);
 
 			System.out.println (aLongEndOISComp[i].maturityDate() + " => " + wjDFQuote.displayString());
 		}

@@ -13,8 +13,7 @@ import org.drip.param.period.*;
 import org.drip.param.valuation.*;
 import org.drip.product.creator.*;
 import org.drip.product.rates.*;
-import org.drip.quant.common.Array2D;
-import org.drip.quant.common.FormatUtil;
+import org.drip.quant.common.*;
 import org.drip.service.api.CreditAnalytics;
 import org.drip.spline.basis.PolynomialFunctionSetParams;
 import org.drip.spline.params.*;
@@ -76,7 +75,10 @@ public class RollerCoasterSwap {
 			"3M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
 			null,
-			ForwardLabel.Create (strCurrency, "3M"),
+			ForwardLabel.Create (
+				strCurrency,
+				"3M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -106,7 +108,10 @@ public class RollerCoasterSwap {
 					CompositePeriodBuilder.FloatingCompositeUnit (
 						CompositePeriodBuilder.EdgePair (
 							dtEffective,
-							dtEffective.addBusDays (aiDay[i], strCurrency)
+							dtEffective.addBusDays (
+								aiDay[i],
+								strCurrency
+							)
 						),
 						cps,
 						cfus
@@ -151,7 +156,10 @@ public class RollerCoasterSwap {
 			"6M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-			ForwardLabel.Create (strCurrency, "6M"),
+			ForwardLabel.Create (
+				strCurrency,
+				"6M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -424,7 +432,11 @@ public class RollerCoasterSwap {
 			adblSwapQuote
 		);
 
-		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {depositStretch, edfStretch, swapStretch};
+		LatentStateStretchSpec[] aStretchSpec = new LatentStateStretchSpec[] {
+			depositStretch,
+			edfStretch,
+			swapStretch
+		};
 
 		/*
 		 * Set up the Linear Curve Calibrator using the following parameters:
@@ -438,8 +450,14 @@ public class RollerCoasterSwap {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
 				null
 			),
 			BoundarySettings.NaturalStandard(),
@@ -469,7 +487,15 @@ public class RollerCoasterSwap {
 			1.
 		);
 
-		CurveSurfaceQuoteSet csqs = MarketParamsBuilder.Create (dc, null, null, null, null, null, null);
+		CurveSurfaceQuoteSet csqs = MarketParamsBuilder.Create (
+			dc,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
 
 		/*
 		 * Cross-Comparison of the In-Advance/Arrears Swap "Rate" metric across the different curve
@@ -503,9 +529,21 @@ public class RollerCoasterSwap {
 		System.out.println ("\t-------------------------------------------------------------------------------");
 
 		for (int i = 0; i < aSwapInAdvance.length; ++i) {
-			double dblInAdvanceRollerCoaster1FairPremium = aSwapInAdvanceRollerCoaster1[i].measureValue (valParams, null, csqs, null, "FairPremium");
+			double dblInAdvanceRollerCoaster1FairPremium = aSwapInAdvanceRollerCoaster1[i].measureValue (
+				valParams,
+				null,
+				csqs,
+				null,
+				"FairPremium"
+			);
 
-			double dblInAdvanceRollerCoaster2FairPremium = aSwapInAdvanceRollerCoaster2[i].measureValue (valParams, null, csqs, null, "FairPremium");
+			double dblInAdvanceRollerCoaster2FairPremium = aSwapInAdvanceRollerCoaster2[i].measureValue (
+				valParams,
+				null,
+				csqs,
+				null,
+				"FairPremium"
+			);
 
 			System.out.println ("\t[" + aSwapInAdvance[i].maturityDate() + "] = " +
 				FormatUtil.FormatDouble (aSwapInAdvance[i].measureValue (valParams, null, csqs, null, "CalibSwapRate"), 1, 4, 100.) + "% | " +
@@ -541,11 +579,29 @@ public class RollerCoasterSwap {
 		System.out.println ("\t-------------------------------------------------------------------------------");
 
 		for (int i = 0; i < aSwapInAdvance.length; ++i) {
-			double dblInAdvanceDV01 = aSwapInAdvance[i].measureValue (valParams, null, csqs, null, "FixedDV01");
+			double dblInAdvanceDV01 = aSwapInAdvance[i].measureValue (
+				valParams,
+				null,
+				csqs,
+				null,
+				"FixedDV01"
+			);
 
-			double dblInAdvanceRollerCoaster1DV01 = aSwapInAdvanceRollerCoaster1[i].measureValue (valParams, null, csqs, null, "FixedDV01");
+			double dblInAdvanceRollerCoaster1DV01 = aSwapInAdvanceRollerCoaster1[i].measureValue (
+				valParams,
+				null,
+				csqs,
+				null,
+				"FixedDV01"
+			);
 
-			double dblInAdvanceRollerCoaster2DV01 = aSwapInAdvanceRollerCoaster2[i].measureValue (valParams, null, csqs, null, "FixedDV01");
+			double dblInAdvanceRollerCoaster2DV01 = aSwapInAdvanceRollerCoaster2[i].measureValue (
+				valParams,
+				null,
+				csqs,
+				null,
+				"FixedDV01"
+			);
 
 			System.out.println ("\t[" + aSwapInAdvance[i].maturityDate() + "] = " +
 				FormatUtil.FormatDouble (dblInAdvanceDV01, 2, 1, 10000.) + " | " +
@@ -573,6 +629,9 @@ public class RollerCoasterSwap {
 
 		String strCurrency = "USD";
 
-		CustomDiscountCurveBuilderSample (dtToday, strCurrency);
+		CustomDiscountCurveBuilderSample (
+			dtToday,
+			strCurrency
+		);
 	}
 }

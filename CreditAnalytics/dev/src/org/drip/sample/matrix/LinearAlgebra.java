@@ -67,7 +67,10 @@ public class LinearAlgebra {
 			"PRODUCT" + strLabel,
 			aadblA,
 			aadblAInv,
-			Matrix.Product (aadblA, aadblAInv),
+			Matrix.Product (
+				aadblA,
+				aadblAInv
+			),
 			false
 		);
 
@@ -145,7 +148,11 @@ public class LinearAlgebra {
 		};
 		double[] adblB = new double[] {0.02, 0.026, 0., 0., 0., 0.};
 
-		org.drip.quant.common.NumberUtil.Print2DArray ("\tCOEFF", aadblA, false);
+		org.drip.quant.common.NumberUtil.Print2DArray (
+			"\tCOEFF",
+			aadblA,
+			false
+		);
 
 		/*
 		 * Solve the Linear System using Gaussian Elimination

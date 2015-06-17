@@ -67,13 +67,26 @@ public class BasisBSplineSet {
 		 * Construct the left and the right segments
 		 */
 
-		LatentStateResponseModel seg1 = LatentStateResponseModel.Create (1.0, 1.5, fs, rssc, segParams);
+		LatentStateResponseModel seg1 = LatentStateResponseModel.Create (
+			1.0,
+			1.5,
+			fs,
+			rssc,
+			segParams
+		);
 
 		/*
 		 * Calibrate the left segment using the node values, and compute the segment Jacobian
 		 */
 
-		System.out.println (seg1.calibrate (25., 0., 20.25, null));
+		System.out.println (
+			seg1.calibrate (
+				25.,
+				0.,
+				20.25,
+				null
+			)
+		);
 
 		System.out.println ("\tY[" + 1.0 + "]: " + seg1.responseValue (1.));
 
@@ -125,13 +138,18 @@ public class BasisBSplineSet {
 
 		SegmentInelasticDesignControl segParams = SegmentInelasticDesignControl.Create (
 			iK,
-			iCurvaturePenaltyDerivativeOrder);
+			iCurvaturePenaltyDerivativeOrder
+		);
 
 		/*
 		 * Construct and Evaluate the B Spline
 		 */
 
-		TestSpline (fsBSS, null, segParams);
+		TestSpline (
+			fsBSS,
+			null,
+			segParams
+		);
 	}
 
 	public static final void main (

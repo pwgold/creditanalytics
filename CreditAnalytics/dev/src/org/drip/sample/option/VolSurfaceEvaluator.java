@@ -49,8 +49,12 @@ public class VolSurfaceEvaluator {
 	{
 		JulianDate dtStart = DateUtil.Today();
 
-		double[] adblStrikeATMFactor = new double[] {0.8, 0.9, 1.0, 1.1, 1.2};
-		String[] astrMaturityTenor = new String[] {"1Y", "2Y", "3Y", "4Y", "5Y"};
+		double[] adblStrikeATMFactor = new double[] {
+			0.8, 0.9, 1.0, 1.1, 1.2
+		};
+		String[] astrMaturityTenor = new String[] {
+			"1Y", "2Y", "3Y", "4Y", "5Y"
+		};
 
 		double[][] aadblImpliedVolatility = new double[][] {
 			{0.44, 0.38, 0.33, 0.27, 0.25},
@@ -64,10 +68,14 @@ public class VolSurfaceEvaluator {
 			"SAMPLE_VOL_SURFACE",
 			dtStart,
 			"USD",
-			new CollateralizationParams ("OVERNIGHT_INDEX", "USD"),
+			new CollateralizationParams (
+				"OVERNIGHT_INDEX",
+				"USD"
+			),
 			adblStrikeATMFactor,
 			astrMaturityTenor,
-			aadblImpliedVolatility);
+			aadblImpliedVolatility
+		);
 
 		System.out.println ("\n\t|------------------------------------------------------------|");
 
@@ -91,8 +99,12 @@ public class VolSurfaceEvaluator {
 
 		System.out.println ("\t|------------------------------------------------------------|");
 
-		adblStrikeATMFactor = new double[] {0.850, 0.925, 1.000, 1.075, 1.15};
-		astrMaturityTenor = new String[] {"18M", "27M", "36M", "45M", "54M"};
+		adblStrikeATMFactor = new double[] {
+			0.850, 0.925, 1.000, 1.075, 1.15
+		};
+		astrMaturityTenor = new String[] {
+			"18M", "27M", "36M", "45M", "54M"
+		};
 
 		System.out.println ("\n\t|------------------------------------------------------------|");
 
@@ -116,8 +128,12 @@ public class VolSurfaceEvaluator {
 
 		System.out.println ("\t|------------------------------------------------------------|");
 
-		adblStrikeATMFactor = new double[] {0.700, 0.850, 1.000, 1.150, 1.300};
-		astrMaturityTenor = new String[] {"06M", "21M", "36M", "51M", "66M"};
+		adblStrikeATMFactor = new double[] {
+			0.700, 0.850, 1.000, 1.150, 1.300
+		};
+		astrMaturityTenor = new String[] {
+			"06M", "21M", "36M", "51M", "66M"
+		};
 
 		System.out.println ("\n\t|------------------------------------------------------------|");
 

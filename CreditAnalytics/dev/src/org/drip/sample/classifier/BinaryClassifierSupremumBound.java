@@ -171,7 +171,7 @@ public class BinaryClassifierSupremumBound {
 
 			EmpiricalPenaltySupremumMetrics eslm = new EmpiricalPenaltySupremumMetrics (
 				EmpiricalLossSupremumFunction (
-						adblEmpiricalOutcome
+					adblEmpiricalOutcome
 				),
 				aSSAM,
 				null

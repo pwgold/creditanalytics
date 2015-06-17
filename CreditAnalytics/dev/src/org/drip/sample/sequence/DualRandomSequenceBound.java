@@ -50,9 +50,21 @@ public class DualRandomSequenceBound {
 		final double dblRight2)
 		throws Exception
 	{
-		SingleSequenceAgnosticMetrics ssam1 = new BoundedUniform (dblLeft1, dblRight1).sequence (50000, null);
+		SingleSequenceAgnosticMetrics ssam1 = new BoundedUniform (
+			dblLeft1,
+			dblRight1
+		).sequence (
+			50000,
+			null
+		);
 
-		SingleSequenceAgnosticMetrics ssam2 = new BoundedUniform (dblLeft2, dblRight2).sequence (50000, null);
+		SingleSequenceAgnosticMetrics ssam2 = new BoundedUniform (
+			dblLeft2,
+			dblRight2
+		).sequence (
+			50000,
+			null
+		);
 
 		DualSequenceAgnosticMetrics dsam = new DualSequenceAgnosticMetrics (
 			ssam1,

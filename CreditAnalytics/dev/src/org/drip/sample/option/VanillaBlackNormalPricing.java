@@ -95,8 +95,14 @@ public class VanillaBlackNormalPricing {
 		for (int i = 0; i < aiDay.length; ++i)
 			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (
 				dtEffective,
-				dtEffective.addBusDays (aiDay[i], strCurrency),
-				ForwardLabel.Create (strCurrency, "3M")
+				dtEffective.addBusDays (
+					aiDay[i],
+					strCurrency
+				),
+				ForwardLabel.Create (
+					strCurrency,
+					"3M"
+				)
 			);
 
 		CalibratableFixedIncomeComponent[] aEDF = SingleStreamComponentBuilder.FuturesPack (
@@ -162,7 +168,9 @@ public class VanillaBlackNormalPricing {
 
 		CalibratableFixedIncomeComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (
 			dtSpot,
-			new int[] {1, 2, 3, 7, 14, 21, 30, 60},
+			new int[] {
+				1, 2, 3, 7, 14, 21, 30, 60
+			},
 			0,
 			strCurrency
 		);
@@ -230,7 +238,11 @@ public class VanillaBlackNormalPricing {
 
 		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (
 			"KLK_HYPERBOLIC_SHAPE_TEMPLATE",
-			new ValuationParams (dtSpot, dtSpot, "USD"),
+			new ValuationParams (
+				dtSpot,
+				dtSpot,
+				strCurrency
+			),
 			aDepositComp,
 			adblDepositQuote,
 			astrDepositManifestMeasure,
@@ -253,7 +265,11 @@ public class VanillaBlackNormalPricing {
 
 		JulianDate dtToday = DateUtil.Today();
 
-		ValuationParams valParams = new ValuationParams (dtToday, dtToday, "USD");
+		ValuationParams valParams = new ValuationParams (
+			dtToday,
+			dtToday,
+			"USD"
+		);
 
 		/*
 		 * Construct the Discount Curve using its instruments and quotes
@@ -278,7 +294,8 @@ public class VanillaBlackNormalPricing {
 			false,
 			dc,
 			new FlatUnivariate (dblVolatility),
-			new BlackNormalAlgorithm());
+			new BlackNormalAlgorithm()
+		);
 
 		for (Map.Entry<String, Double> me : mapOptionCalc.entrySet())
 			System.out.println ("\t" + me.getKey() + " => " + me.getValue());
@@ -288,6 +305,7 @@ public class VanillaBlackNormalPricing {
 			dblSpot,
 			false,
 			dc,
-			mapOptionCalc.get ("CallPrice")), 2, 2, 100.) + "%");
+			mapOptionCalc.get ("CallPrice")), 2, 2, 100.) + "%"
+		);
 	}
 }

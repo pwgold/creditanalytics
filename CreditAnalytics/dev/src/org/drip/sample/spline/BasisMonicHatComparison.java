@@ -76,34 +76,53 @@ public class BasisMonicHatComparison {
 		 *  tension.
 		 */
 
-		CubicRationalLeftRaw crlr = new CubicRationalLeftRaw (1., 2., strShapeController, dblTension);
+		CubicRationalLeftRaw crlr = new CubicRationalLeftRaw (
+			1.,
+			2.,
+			strShapeController,
+			dblTension
+		);
 
 		/*
 		 * Construct the Raw Cubic rational right Tension Basis using the specified shape controller and
 		 * 	tension.
 		 */
 
-		CubicRationalRightRaw crrr = new CubicRationalRightRaw (2., 3., strShapeController, dblTension);
+		CubicRationalRightRaw crrr = new CubicRationalRightRaw (
+			2.,
+			3.,
+			strShapeController,
+			dblTension
+		);
 
 		/*
 		 * Construct the processed Cubic rational left Tension Basis using the Raw Cubic rational left
 		 * 	Tension Basis.
 		 */
 
-		TensionProcessedBasisHat tpbhLeft = new TensionProcessedBasisHat (crlr, 2);
+		TensionProcessedBasisHat tpbhLeft = new TensionProcessedBasisHat (
+			crlr,
+			2
+		);
 
 		/*
 		 * Construct the processed Cubic rational right Tension Basis using the Raw Cubic rational Right
 		 * 	Tension Basis.
 		 */
 
-		TensionProcessedBasisHat tpbhRight = new TensionProcessedBasisHat (crrr, 2);
+		TensionProcessedBasisHat tpbhRight = new TensionProcessedBasisHat (
+			crrr,
+			2
+		);
 
 		/*
 		 * Construct the Segment Monic Basis Function using the left and the right processed hat functions.
 		 */
 
-		SegmentMonicBasisFunction smbf = new SegmentMonicBasisFunction (tpbhLeft, tpbhRight);
+		SegmentMonicBasisFunction smbf = new SegmentMonicBasisFunction (
+			tpbhLeft,
+			tpbhRight
+		);
 
 		/*
 		 * Display the response and the derivatives for the left/right cubic rational, and their
@@ -156,7 +175,10 @@ public class BasisMonicHatComparison {
 
 		System.out.println ("-------------------------------------------------------------------");
 
-		ShapeControllerTest (BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_LINEAR, 0.);
+		ShapeControllerTest (
+			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_LINEAR,
+			0.
+		);
 
 		/*
 		 * Test Rational Linear Shape Control with 1.0 Tension Parameter
@@ -168,7 +190,10 @@ public class BasisMonicHatComparison {
 
 		System.out.println ("-------------------------------------------------------------------");
 
-		ShapeControllerTest (BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_LINEAR, 1.);
+		ShapeControllerTest (
+			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_LINEAR,
+			1.
+		);
 
 		/*
 		 * Test Rational Quadratic Shape Control with 1.0 Tension Parameter
@@ -180,7 +205,10 @@ public class BasisMonicHatComparison {
 
 		System.out.println ("-------------------------------------------------------------------");
 
-		ShapeControllerTest (BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_QUADRATIC, 1.);
+		ShapeControllerTest (
+			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_QUADRATIC,
+			1.
+		);
 
 		/*
 		 * Test Exponential Shape Control with 1.0 Tension Parameter
@@ -192,7 +220,10 @@ public class BasisMonicHatComparison {
 
 		System.out.println ("-------------------------------------------------------------------");
 
-		ShapeControllerTest (BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_EXPONENTIAL, 1.);
+		ShapeControllerTest (
+			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_EXPONENTIAL,
+			1.
+		);
 	}
 
 	public static final void main (

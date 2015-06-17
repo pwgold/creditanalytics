@@ -8,8 +8,7 @@ import org.drip.analytics.rates.*;
 import org.drip.analytics.support.*;
 import org.drip.function.R1ToR1.QuadraticRationalShapeControl;
 import org.drip.market.definition.FloaterIndex;
-import org.drip.market.otc.FixedFloatSwapConvention;
-import org.drip.market.otc.OvernightFixedFloatContainer;
+import org.drip.market.otc.*;
 import org.drip.param.creator.*;
 import org.drip.param.period.*;
 import org.drip.param.valuation.*;
@@ -81,7 +80,13 @@ public class OvernightIndexCurve {
 					aiDay[i],
 					strCurrency
 				),
-				null == fi ? ForwardLabel.Create (strCurrency, "ON") : ForwardLabel.Create (fi, "ON")
+				null == fi ? ForwardLabel.Create (
+					strCurrency,
+					"ON"
+				) : ForwardLabel.Create (
+					fi,
+					"ON"
+				)
 			);
 
 		return aDeposit;
@@ -176,7 +181,13 @@ public class OvernightIndexCurve {
 				"ON",
 				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT,
 				null,
-				null == fi ? ForwardLabel.Create (strCurrency, "ON") : ForwardLabel.Create (fi, "ON"),
+				null == fi ? ForwardLabel.Create (
+					strCurrency,
+					"ON"
+				) : ForwardLabel.Create (
+					fi,
+					"ON"
+				),
 				CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 				0.
 			);
@@ -342,7 +353,13 @@ public class OvernightIndexCurve {
 				"ON",
 				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT,
 				null,
-				null == fi ? ForwardLabel.Create (strCurrency, "ON") : ForwardLabel.Create (fi, "ON"),
+				null == fi ? ForwardLabel.Create (
+					strCurrency,
+					"ON"
+				) : ForwardLabel.Create (
+					fi,
+					"ON"
+				),
 				CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 				0.
 			);
@@ -584,7 +601,11 @@ public class OvernightIndexCurve {
 		return ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (
 			lcc,
 			aStretchSpec,
-			new ValuationParams (dtSpot, dtSpot, strCurrency),
+			new ValuationParams (
+				dtSpot,
+				dtSpot,
+				strCurrency
+			),
 			null,
 			null,
 			null,
@@ -719,8 +740,14 @@ public class OvernightIndexCurve {
 		SegmentCustomBuilderControl scbcCubic = new SegmentCustomBuilderControl (
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 			new PolynomialFunctionSetParams (4),
-			SegmentInelasticDesignControl.Create (2, 2),
-			new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+			SegmentInelasticDesignControl.Create (
+				2,
+				2
+			),
+			new ResponseScalingShapeControl (
+				true,
+				new QuadraticRationalShapeControl (0.)
+			),
 			null
 		);
 

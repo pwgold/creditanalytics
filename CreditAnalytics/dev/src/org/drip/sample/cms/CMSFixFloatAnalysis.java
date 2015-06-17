@@ -89,8 +89,14 @@ public class CMSFixFloatAnalysis {
 		for (int i = 0; i < aiDay.length; ++i)
 			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (
 				dtEffective,
-				dtEffective.addBusDays (aiDay[i], strCurrency),
-				ForwardLabel.Create (strCurrency, "3M")
+				dtEffective.addBusDays (
+					aiDay[i],
+					strCurrency
+				),
+				ForwardLabel.Create (
+					strCurrency,
+					"3M"
+				)
 			);
 
 		CalibratableFixedIncomeComponent[] aEDF = SingleStreamComponentBuilder.FuturesPack (
@@ -310,7 +316,11 @@ public class CMSFixFloatAnalysis {
 		FixFloatComponent fixFloat = new FixFloatComponent (
 			fixedStream,
 			floatingStream,
-			new CashSettleParams (0, strCurrency, 0)
+			new CashSettleParams (
+				0,
+				strCurrency,
+				0
+			)
 		);
 
 		return fixFloat;
@@ -451,7 +461,9 @@ public class CMSFixFloatAnalysis {
 
 		double[] adblFundingVol = new double[] {0.10, 0.30, 0.50};
 
-		double[] adblForwardFundingCorr = new double[] {-0.10, 0.25};
+		double[] adblForwardFundingCorr = new double[] {
+			-0.10, 0.25
+		};
 
 		System.out.println ("\n\t|-----------------------------------------------|");
 
@@ -493,7 +505,10 @@ public class CMSFixFloatAnalysis {
 			for (double dblFundingVol : adblFundingVol) {
 				for (double dblForwardFundingCorr : adblForwardFundingCorr) {
 					VolCorrScenario (
-						new FixFloatComponent[] {cmsInAdvance, cmsInArrears},
+						new FixFloatComponent[] {
+							cmsInAdvance,
+							cmsInArrears
+						},
 						valParams,
 						mktParams,
 						forwardLabel,

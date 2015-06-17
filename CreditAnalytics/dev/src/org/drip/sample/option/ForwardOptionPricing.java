@@ -94,8 +94,14 @@ public class ForwardOptionPricing {
 		for (int i = 0; i < aiDay.length; ++i)
 			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (
 				dtEffective,
-				dtEffective.addBusDays (aiDay[i], strCurrency),
-				ForwardLabel.Create (strCurrency, "3M")
+				dtEffective.addBusDays (
+					aiDay[i],
+					strCurrency
+				),
+				ForwardLabel.Create (
+					strCurrency,
+					"3M"
+				)
 			);
 
 		CalibratableFixedIncomeComponent[] aEDF = SingleStreamComponentBuilder.FuturesPack (
@@ -161,7 +167,9 @@ public class ForwardOptionPricing {
 
 		CalibratableFixedIncomeComponent[] aDepositComp = DepositInstrumentsFromMaturityDays (
 			dtSpot,
-			new int[] {1, 2, 3, 7, 14, 21, 30, 60},
+			new int[] {
+				1, 2, 3, 7, 14, 21, 30, 60
+			},
 			0,
 			strCurrency
 		);
@@ -229,7 +237,11 @@ public class ForwardOptionPricing {
 
 		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (
 			"KLK_HYPERBOLIC_SHAPE_TEMPLATE",
-			new ValuationParams (dtSpot, dtSpot, "USD"),
+			new ValuationParams (
+				dtSpot,
+				dtSpot,
+				strCurrency
+			),
 			aDepositComp,
 			adblDepositQuote,
 			astrDepositManifestMeasure,
@@ -252,13 +264,20 @@ public class ForwardOptionPricing {
 
 		JulianDate dtToday = DateUtil.Today();
 
-		ValuationParams valParams = new ValuationParams (dtToday, dtToday, "USD");
+		ValuationParams valParams = new ValuationParams (
+			dtToday,
+			dtToday,
+			"USD"
+		);
 
 		/*
 		 * Construct the Discount Curve using its instruments and quotes
 		 */
 
-		DiscountCurve dc = MakeDC (dtToday, "USD");
+		DiscountCurve dc = MakeDC (
+			dtToday,
+			"USD"
+		);
 
 		JulianDate dtMaturity = dtToday.addTenor ("6M");
 
@@ -266,7 +285,8 @@ public class ForwardOptionPricing {
 
 		EuropeanCallPut option = new EuropeanCallPut (
 			dtMaturity,
-			dblStrike);
+			dblStrike
+		);
 
 		double dblSpot = 1.;
 
@@ -284,10 +304,12 @@ public class ForwardOptionPricing {
 			dblSigma,			// Sigma
 			dblTheta,			// Theta
 			dblLambda,			// Lambda
-			PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL); // Indicates Apply Phase Tracking Adjustment for Log + Power
+			PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL // Indicates Apply Phase Tracking Adjustment for Log + Power
+		);
 
 		FokkerPlanckGenerator fpg = new HestonStochasticVolatilityAlgorithm (
-			fphp);				// FP Heston Parameters
+			fphp				// FP Heston Parameters
+		);
 
 		System.out.println ("---------------------------------------------------------");
 
@@ -303,8 +325,8 @@ public class ForwardOptionPricing {
 				dc,
 				new FlatUnivariate (dblSpotVolatility),
 				fpg
-				)
-			);
+			)
+		);
 
 		System.out.println ("---------------------------------------------------------");
 
@@ -319,8 +341,9 @@ public class ForwardOptionPricing {
 				true,
 				dc,
 				new FlatUnivariate (dblSpotVolatility),
-				fpg)
-			);
+				fpg
+			)
+		);
 
 		System.out.println ("---------------------------------------------------------");
 
@@ -335,8 +358,9 @@ public class ForwardOptionPricing {
 				false,
 				dc,
 				new FlatUnivariate (dblSpotVolatility),
-				new BlackScholesAlgorithm())
-			);
+				new BlackScholesAlgorithm()
+			)
+		);
 
 		System.out.println ("---------------------------------------------------------");
 
@@ -351,7 +375,8 @@ public class ForwardOptionPricing {
 				true,
 				dc,
 				new FlatUnivariate (dblSpotVolatility),
-				new BlackScholesAlgorithm())
-			);
+				new BlackScholesAlgorithm()
+			)
+		);
 	}
 }

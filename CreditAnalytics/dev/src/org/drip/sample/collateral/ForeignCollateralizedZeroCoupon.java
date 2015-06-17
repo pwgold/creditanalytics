@@ -1,8 +1,7 @@
 
 package org.drip.sample.collateral;
 
-import org.drip.analytics.date.DateUtil;
-import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.date.*;
 import org.drip.analytics.rates.DiscountCurve;
 import org.drip.function.R1ToR1.*;
 import org.drip.function.definition.R1ToR1;
@@ -103,7 +102,10 @@ public class ForeignCollateralizedZeroCoupon {
 		DiscountCurve dcCcyForeignCollatForeign = DiscountCurveBuilder.CreateFromFlatRate (
 			dtToday,
 			strForeignCurrency,
-			new CollateralizationParams ("OVERNIGHT_INDEX", strForeignCurrency),
+			new CollateralizationParams (
+				"OVERNIGHT_INDEX",
+				strForeignCurrency
+			),
 			dblForeignCollateralRate
 		);
 
@@ -123,9 +125,15 @@ public class ForeignCollateralizedZeroCoupon {
 			0.
 		);
 
-		double[] adblForeignRatesVol = new double[] {0.1, 0.2, 0.3, 0.4, 0.5};
-		double[] adblFXVol = new double[] {0.10, 0.15, 0.20, 0.25, 0.30};
-		double[] adblForeignRatesFXCorr = new double[] {-0.99, -0.50, 0.00, 0.50, 0.99};
+		double[] adblForeignRatesVol = new double[] {
+			0.1, 0.2, 0.3, 0.4, 0.5
+		};
+		double[] adblFXVol = new double[] {
+			0.10, 0.15, 0.20, 0.25, 0.30
+		};
+		double[] adblForeignRatesFXCorr = new double[] {
+			-0.99, -0.50, 0.00, 0.50, 0.99
+		};
 
 		System.out.println ("\tPrinting the Zero Coupon Bond Price in Order (Left -> Right):");
 

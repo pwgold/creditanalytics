@@ -97,8 +97,14 @@ public class FixFloatForwardCurve {
 		for (int i = 0; i < aiDay.length; ++i)
 			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (
 				dtEffective,
-				dtEffective.addBusDays (aiDay[i], strCurrency),
-				ForwardLabel.Create (strCurrency, "3M")
+				dtEffective.addBusDays (
+					aiDay[i],
+					strCurrency
+				),
+				ForwardLabel.Create (
+					strCurrency,
+					"3M"
+				)
 			);
 
 		CalibratableFixedIncomeComponent[] aEDF = SingleStreamComponentBuilder.FuturesPack (
@@ -210,7 +216,11 @@ public class FixFloatForwardCurve {
 
 		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (
 			"KLK_HYPERBOLIC_SHAPE_TEMPLATE",
-			new ValuationParams (dtSpot, dtSpot, "USD"),
+			new ValuationParams (
+				dtSpot,
+				dtSpot,
+				"USD"
+			),
 			aDepositComp,
 			adblDepositQuote,
 			null,
@@ -252,7 +262,10 @@ public class FixFloatForwardCurve {
 			iTenorInMonths + "M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-			ForwardLabel.Create (strCurrency, iTenorInMonths + "M"),
+			ForwardLabel.Create (
+				strCurrency,
+				iTenorInMonths + "M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -373,7 +386,11 @@ public class FixFloatForwardCurve {
 
 		String strBasisTenor = iTenorInMonths + "M";
 
-		ValuationParams valParams = new ValuationParams (dtSpot, dtSpot, strCurrency);
+		ValuationParams valParams = new ValuationParams (
+			dtSpot,
+			dtSpot,
+			strCurrency
+		);
 
 		/*
 		 * Calculate the starting forward rate off of the discount curve.
@@ -388,7 +405,15 @@ public class FixFloatForwardCurve {
 		 * Set the discount curve based component market parameters.
 		 */
 
-		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (dc, null, null, null, null, null, null);
+		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (
+			dc,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
 
 		Map<String, ForwardCurve> mapForward = new HashMap<String, ForwardCurve>();
 
@@ -398,7 +423,10 @@ public class FixFloatForwardCurve {
 
 		ForwardCurve fcxMCubic = ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (
 			"CUBIC_FWD" + strBasisTenor,
-			ForwardLabel.Create (strCurrency, strBasisTenor),
+			ForwardLabel.Create (
+				strCurrency,
+				strBasisTenor
+			),
 			valParams,
 			null,
 			mktParams,
@@ -411,7 +439,10 @@ public class FixFloatForwardCurve {
 			dblStartingFwd
 		);
 
-		mapForward.put ("   CUBIC_FWD" + strBasisTenor, fcxMCubic);
+		mapForward.put (
+			"   CUBIC_FWD" + strBasisTenor,
+			fcxMCubic
+		);
 
 		/*
 		 * Set the discount curve + cubic polynomial forward curve based component market parameters.
@@ -434,7 +465,10 @@ public class FixFloatForwardCurve {
 
 		ForwardCurve fcxMQuartic = ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (
 			"QUARTIC_FWD" + strBasisTenor,
-			ForwardLabel.Create (strCurrency, strBasisTenor),
+			ForwardLabel.Create (
+				strCurrency,
+				strBasisTenor
+			),
 			valParams,
 			null,
 			mktParams,
@@ -447,7 +481,10 @@ public class FixFloatForwardCurve {
 			dblStartingFwd
 		);
 
-		mapForward.put (" QUARTIC_FWD" + strBasisTenor, fcxMQuartic);
+		mapForward.put (
+			" QUARTIC_FWD" + strBasisTenor,
+			fcxMQuartic
+		);
 
 		/*
 		 * Set the discount curve + quartic polynomial forward curve based component market parameters.
@@ -470,7 +507,10 @@ public class FixFloatForwardCurve {
 
 		ForwardCurve fcxMKLKHyper = ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (
 			"KLKHYPER_FWD" + strBasisTenor,
-			ForwardLabel.Create (strCurrency, strBasisTenor),
+			ForwardLabel.Create (
+				strCurrency,
+				strBasisTenor
+			),
 			valParams,
 			null,
 			mktParams,
@@ -483,7 +523,10 @@ public class FixFloatForwardCurve {
 			dblStartingFwd
 		);
 
-		mapForward.put ("KLKHYPER_FWD" + strBasisTenor, fcxMKLKHyper);
+		mapForward.put (
+			"KLKHYPER_FWD" + strBasisTenor,
+			fcxMKLKHyper
+		);
 
 		/*
 		 * Set the discount curve + hyperbolic tension forward curve based component market parameters.
@@ -520,11 +563,26 @@ public class FixFloatForwardCurve {
 
 			FixFloatComponent ffc = aFFC[i++];
 
-			CaseInsensitiveTreeMap<Double> mapCubicValue = ffc.value (valParams, null, mktParamsCubicFwd, null);
+			CaseInsensitiveTreeMap<Double> mapCubicValue = ffc.value (
+				valParams,
+				null,
+				mktParamsCubicFwd,
+				null
+			);
 
-			CaseInsensitiveTreeMap<Double> mapQuarticValue = ffc.value (valParams, null, mktParamsQuarticFwd, null);
+			CaseInsensitiveTreeMap<Double> mapQuarticValue = ffc.value (
+				valParams,
+				null,
+				mktParamsQuarticFwd,
+				null
+			);
 
-			CaseInsensitiveTreeMap<Double> mapKLKHyperValue = ffc.value (valParams, null, mktParamsKLKHyperFwd, null);
+			CaseInsensitiveTreeMap<Double> mapKLKHyperValue = ffc.value (
+				valParams,
+				null,
+				mktParamsKLKHyperFwd,
+				null
+			);
 
 			System.out.println (" " + strMaturityTenor + " =>  " +
 				FormatUtil.FormatDouble (fcxMCubic.forward (dblFwdStartDate), 2, 2, 100.) + "  |  " +
@@ -557,7 +615,9 @@ public class FixFloatForwardCurve {
 			"USD",
 			dc,
 			iTenorInMonths,
-			new java.lang.String[] {"4Y", "5Y", "6Y", "7Y", "8Y", "9Y", "10Y", "11Y", "12Y", "15Y", "20Y", "25Y", "30Y", "40Y", "50Y"},
+			new java.lang.String[] {
+				"4Y", "5Y", "6Y", "7Y", "8Y", "9Y", "10Y", "11Y", "12Y", "15Y", "20Y", "25Y", "30Y", "40Y", "50Y"
+			},
 			strCalibMeasure,
 			new double[] {
 				0.0005,    //  4Y
@@ -614,7 +674,11 @@ public class FixFloatForwardCurve {
 		 * Construct the Discount Curve using its instruments and quotes
 		 */
 
-		DiscountCurve dc = MakeDC (dtToday, strCurrency, 0.);
+		DiscountCurve dc = MakeDC (
+			dtToday,
+			strCurrency,
+			0.
+		);
 
 		CustomFixFloatForwardCurveSample (
 			dtToday,

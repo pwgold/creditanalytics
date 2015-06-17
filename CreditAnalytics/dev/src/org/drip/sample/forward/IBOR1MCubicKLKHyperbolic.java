@@ -1,8 +1,7 @@
 
 package org.drip.sample.forward;
 
-import org.drip.analytics.date.DateUtil;
-import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.date.*;
 import org.drip.analytics.rates.*;
 import org.drip.function.R1ToR1.QuadraticRationalShapeControl;
 import org.drip.service.api.CreditAnalytics;
@@ -57,12 +56,19 @@ public class IBOR1MCubicKLKHyperbolic {
 
 		CreditAnalytics.Init ("");
 
-		JulianDate dtValue = DateUtil.CreateFromYMD (2012, DateUtil.DECEMBER, 11);
+		JulianDate dtValue = DateUtil.CreateFromYMD (
+			2012,
+			DateUtil.DECEMBER,
+			11
+		);
 
 		String strTenor = "1M";
 		String strCurrency = "USD";
 
-		ForwardLabel fri = ForwardLabel.Create (strCurrency, strTenor);
+		ForwardLabel fri = ForwardLabel.Create (
+			strCurrency,
+			strTenor
+		);
 
 		DiscountCurve dcEONIA = OvernightIndexCurve.MakeDC (
 			dtValue,
@@ -72,7 +78,10 @@ public class IBOR1MCubicKLKHyperbolic {
 		SegmentCustomBuilderControl scbcCubicKLKHyperbolic = new SegmentCustomBuilderControl (
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
 			new ExponentialTensionSetParams (1.),
-			SegmentInelasticDesignControl.Create (2, 2),
+			SegmentInelasticDesignControl.Create (
+				2,
+				2
+			),
 			new ResponseScalingShapeControl (
 				true,
 				new QuadraticRationalShapeControl (0.)

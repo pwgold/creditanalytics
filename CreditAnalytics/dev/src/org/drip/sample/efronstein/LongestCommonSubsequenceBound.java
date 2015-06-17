@@ -53,7 +53,10 @@ public class LongestCommonSubsequenceBound {
 		SingleSequenceAgnosticMetrics[] aSSAM = new SingleSequenceAgnosticMetrics[iNumSample];
 
 		for (int i = 0; i < iNumSample; ++i)
-			aSSAM[i] = rsg.sequence (iNumSample, null);
+			aSSAM[i] = rsg.sequence (
+				iNumSample,
+				null
+			);
 
 		return aSSAM;
 	}
@@ -220,7 +223,10 @@ public class LongestCommonSubsequenceBound {
 			3, 10, 25
 		};
 
-		BoundedUniform bu = new BoundedUniform (0., 1.);
+		BoundedUniform bu = new BoundedUniform (
+			0.,
+			1.
+		);
 
 		MultivariateRandom func = new LongestCommonSubsequence();
 

@@ -74,8 +74,12 @@ public class BasisMulticBSpline {
 		final int iMulticBSplineOrder)
 		throws Exception
 	{
-		double[] adblPredictorOrdinateLeft = new double[] {1., 2., 3.};
-		double[] adblPredictorOrdinateRight = new double[] {2., 3., 4.};
+		double[] adblPredictorOrdinateLeft = new double[] {
+			1., 2., 3.
+		};
+		double[] adblPredictorOrdinateRight = new double[] {
+			2., 3., 4.
+		};
 
 		/*
 		 * Construct the hyperbolic tension basis hat pair using the left predictor ordinates and the
@@ -86,7 +90,8 @@ public class BasisMulticBSpline {
 			adblPredictorOrdinateLeft[0],
 			adblPredictorOrdinateLeft[1],
 			adblPredictorOrdinateLeft[2],
-			dblTension);
+			dblTension
+		);
 
 		/*
 		 * Construct the hyperbolic tension basis hat pair using the right predictor ordinates and the
@@ -97,7 +102,8 @@ public class BasisMulticBSpline {
 			adblPredictorOrdinateRight[0],
 			adblPredictorOrdinateRight[1],
 			adblPredictorOrdinateRight[2],
-			dblTension);
+			dblTension
+		);
 
 		/*
 		 * Generate the left monic basis function from the hat type, left predictor ordinates, shape control,
@@ -109,7 +115,8 @@ public class BasisMulticBSpline {
 			strShapeControlType,
 			adblPredictorOrdinateLeft,
 			2,
-			dblTension);
+			dblTension
+		);
 
 		/*
 		 * Generate the right monic basis function from the hat type, right predictor ordinates, shape
@@ -121,7 +128,8 @@ public class BasisMulticBSpline {
 			strShapeControlType,
 			adblPredictorOrdinateRight,
 			2,
-			dblTension);
+			dblTension
+		);
 
 		/*
 		 * Run a response value calculation comparison across the predictor ordinates for each of the left
@@ -142,7 +150,8 @@ public class BasisMulticBSpline {
 				"\tResponse[" + FormatUtil.FormatDouble (dblX, 1, 3, 1.) + "] : " +
 				FormatUtil.FormatDouble (aTBHLeft[0].evaluate (dblX), 1, 5, 1.) + " | " +
 				FormatUtil.FormatDouble (aTBHLeft[1].evaluate (dblX), 1, 5, 1.) + " | " +
-				FormatUtil.FormatDouble (sbfMonicLeft.evaluate (dblX), 1, 5, 1.));
+				FormatUtil.FormatDouble (sbfMonicLeft.evaluate (dblX), 1, 5, 1.)
+			);
 
 			dblX += dblXIncrement;
 		}
@@ -165,7 +174,8 @@ public class BasisMulticBSpline {
 				"\tResponse[" + FormatUtil.FormatDouble (dblX, 1, 3, 1.) + "] : " +
 				FormatUtil.FormatDouble (aTBHRight[0].evaluate (dblX), 1, 5, 1.) + " | " +
 				FormatUtil.FormatDouble (aTBHRight[1].evaluate (dblX), 1, 5, 1.) + " | " +
-				FormatUtil.FormatDouble (sbfMonicRight.evaluate (dblX), 1, 5, 1.));
+				FormatUtil.FormatDouble (sbfMonicRight.evaluate (dblX), 1, 5, 1.)
+			);
 
 			dblX += dblXIncrement;
 		}
@@ -177,7 +187,11 @@ public class BasisMulticBSpline {
 
 		SegmentBasisFunction[] sbfMultic = SegmentBasisFunctionGenerator.MulticSequence (
 			iMulticBSplineOrder,
-			new SegmentBasisFunction[] {sbfMonicLeft, sbfMonicRight});
+			new SegmentBasisFunction[] {
+				sbfMonicLeft,
+				sbfMonicRight
+			}
+		);
 
 		/*
 		 * Display the multic Basis Function response as well as normalized Cumulative across the specified
@@ -197,7 +211,8 @@ public class BasisMulticBSpline {
 			System.out.println (
 				"\t\tMultic[" + FormatUtil.FormatDouble (dblX, 1, 3, 1.) + "] : " +
 				FormatUtil.FormatDouble (sbfMultic[0].evaluate (dblX), 1, 5, 1.) + " | " +
-				FormatUtil.FormatDouble (sbfMultic[0].normalizedCumulative (dblX), 1, 5, 1.));
+				FormatUtil.FormatDouble (sbfMultic[0].normalizedCumulative (dblX), 1, 5, 1.)
+			);
 
 			dblX += dblXIncrement;
 		}
@@ -238,7 +253,8 @@ public class BasisMulticBSpline {
 			BasisHatPairGenerator.RAW_TENSION_HYPERBOLIC,
 			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_LINEAR,
 			1.,
-			3);
+			3
+		);
 
 		/*
 		 * Creation and usage of Multic B Spline built off of processed hyperbolic tension basis function,
@@ -251,7 +267,8 @@ public class BasisMulticBSpline {
 			BasisHatPairGenerator.PROCESSED_TENSION_HYPERBOLIC,
 			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_LINEAR,
 			1.,
-			3);
+			3
+		);
 
 		/*
 		 * Creation and usage of Multic B Spline built off of raw cubic tension basis function, rational
@@ -264,7 +281,8 @@ public class BasisMulticBSpline {
 			BasisHatPairGenerator.PROCESSED_CUBIC_RATIONAL,
 			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_LINEAR,
 			0.,
-			3);
+			3
+		);
 
 		/*
 		 * Creation and usage of Multic B Spline built off of raw cubic tension basis function, rational
@@ -277,7 +295,8 @@ public class BasisMulticBSpline {
 			BasisHatPairGenerator.PROCESSED_CUBIC_RATIONAL,
 			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_LINEAR,
 			1.,
-			3);
+			3
+		);
 
 		/*
 		 * Creation and usage of Multic B Spline built off of raw cubic tension basis function, rational
@@ -290,7 +309,8 @@ public class BasisMulticBSpline {
 			BasisHatPairGenerator.PROCESSED_CUBIC_RATIONAL,
 			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_QUADRATIC,
 			1.,
-			3);
+			3
+		);
 
 		/*
 		 * Creation and usage of Multic B Spline built off of raw cubic tension basis function, rational
@@ -303,7 +323,8 @@ public class BasisMulticBSpline {
 			BasisHatPairGenerator.PROCESSED_CUBIC_RATIONAL,
 			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_EXPONENTIAL,
 			1.,
-			3);
+			3
+		);
 	}
 
 	public static final void main (

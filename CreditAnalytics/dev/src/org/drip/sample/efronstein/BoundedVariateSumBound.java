@@ -54,7 +54,10 @@ public class BoundedVariateSumBound {
 		SingleSequenceAgnosticMetrics[] aSSAM = new SingleSequenceAgnosticMetrics[iNumSample];
 
 		for (int i = 0; i < iNumSample; ++i)
-			aSSAM[i] = rsg.sequence (iNumSample, null);
+			aSSAM[i] = rsg.sequence (
+				iNumSample,
+				null
+			);
 
 		return aSSAM;
 	}
@@ -94,7 +97,10 @@ public class BoundedVariateSumBound {
 			);
 
 			EfronSteinMetrics esam = new EfronSteinMetrics (
-				BoundedSumFunction (bu, iNumSample),
+				BoundedSumFunction (
+					bu,
+					iNumSample
+				),
 				aSSAM
 			);
 
@@ -121,7 +127,10 @@ public class BoundedVariateSumBound {
 			);
 
 			EfronSteinMetrics esam = new EfronSteinMetrics (
-				BoundedSumFunction (bu, iNumSample),
+				BoundedSumFunction (
+					bu,
+					iNumSample
+				),
 				aSSAM
 			);
 
@@ -153,7 +162,10 @@ public class BoundedVariateSumBound {
 			);
 
 			EfronSteinMetrics esam = new EfronSteinMetrics (
-				BoundedSumFunction (bu, iNumSample),
+				BoundedSumFunction (
+					bu,
+					iNumSample
+				),
 				aSSAM
 			);
 
@@ -184,7 +196,10 @@ public class BoundedVariateSumBound {
 				iNumSample
 			);
 
-			MultivariateRandom func = BoundedSumFunction (bu, iNumSample);
+			MultivariateRandom func = BoundedSumFunction (
+				bu,
+				iNumSample
+			);
 
 			EfronSteinMetrics esam = new EfronSteinMetrics (
 				func,
@@ -214,7 +229,10 @@ public class BoundedVariateSumBound {
 			);
 
 			EfronSteinMetrics esam = new EfronSteinMetrics (
-				BoundedSumFunction (bu, iNumSample),
+				BoundedSumFunction (
+					bu,
+					iNumSample
+				),
 				aSSAM
 			);
 
@@ -238,7 +256,10 @@ public class BoundedVariateSumBound {
 			3, 10, 25, 50
 		};
 
-		BoundedUniform bu = new BoundedUniform (0., 1.);
+		BoundedUniform bu = new BoundedUniform (
+			0.,
+			1.
+		);
 
 		System.out.println ("\n\t|-----------------------------------------------|");
 

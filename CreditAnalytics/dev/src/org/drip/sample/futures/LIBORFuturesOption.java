@@ -142,7 +142,15 @@ public class LIBORFuturesOption {
 		 * Set the discount curve based component market parameters.
 		 */
 
-		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (dc, null, null, null, null, null, null);
+		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (
+			dc,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
 
 		/*
 		 * Construct the shape preserving forward curve off of Quartic Polynomial Basis Spline.
@@ -150,7 +158,10 @@ public class LIBORFuturesOption {
 
 		return ScenarioForwardCurveBuilder.ShapePreservingForwardCurve (
 			"QUARTIC_FWD" + strBasisTenor,
-			ForwardLabel.Create (strCurrency, strBasisTenor),
+			ForwardLabel.Create (
+				strCurrency,
+				strBasisTenor
+			),
 			valParams,
 			null,
 			mktParams,
@@ -181,7 +192,9 @@ public class LIBORFuturesOption {
 			strCurrency,
 			dc,
 			1,
-			new String[] {"1Y", "2Y", "3Y", "4Y", "5Y", "6Y", "7Y", "8Y", "9Y", "10Y", "11Y", "12Y", "15Y", "20Y", "25Y", "30Y"},
+			new String[] {
+				"1Y", "2Y", "3Y", "4Y", "5Y", "6Y", "7Y", "8Y", "9Y", "10Y", "11Y", "12Y", "15Y", "20Y", "25Y", "30Y"
+			},
 			new double[] {
 				0.00551,    //  1Y
 				0.00387,    //  2Y
@@ -199,10 +212,13 @@ public class LIBORFuturesOption {
 				0.00079,    // 20Y
 				0.00069,    // 25Y
 				0.00062     // 30Y
-			}
-		);
+				}
+			);
 
-		mapFC.put ("1M", fc1M);
+		mapFC.put (
+			"1M",
+			fc1M
+		);
 
 		/*
 		 * Build and run the sampling for the 3M-6M Tenor Basis Swap from its instruments and quotes.
@@ -213,7 +229,9 @@ public class LIBORFuturesOption {
 			strCurrency,
 			dc,
 			3,
-			new String[] {"1Y", "2Y", "3Y", "4Y", "5Y", "6Y", "7Y", "8Y", "9Y", "10Y", "11Y", "12Y", "15Y", "20Y", "25Y", "30Y"},
+			new String[] {
+				"1Y", "2Y", "3Y", "4Y", "5Y", "6Y", "7Y", "8Y", "9Y", "10Y", "11Y", "12Y", "15Y", "20Y", "25Y", "30Y"
+			},
 			new double[] {
 				0.00186,    //  1Y
 				0.00127,    //  2Y
@@ -231,10 +249,13 @@ public class LIBORFuturesOption {
 				0.00022,    // 20Y
 				0.00020,    // 25Y
 				0.00018     // 30Y
-			}
-		);
+				}
+			);
 
-		mapFC.put ("3M", fc3M);
+		mapFC.put (
+			"3M",
+			fc3M
+		);
 
 		/*
 		 * Build and run the sampling for the 12M-6M Tenor Basis Swap from its instruments and quotes.
@@ -245,8 +266,10 @@ public class LIBORFuturesOption {
 			strCurrency,
 			dc,
 			12,
-			new String[] {"1Y", "2Y", "3Y", "4Y", "5Y", "6Y", "7Y", "8Y", "9Y", "10Y", "11Y", "12Y", "15Y", "20Y", "25Y", "30Y",
-				"35Y", "40Y"}, // Extrapolated
+			new String[] {
+				"1Y", "2Y", "3Y", "4Y", "5Y", "6Y", "7Y", "8Y", "9Y", "10Y", "11Y", "12Y", "15Y", "20Y", "25Y", "30Y",
+				"35Y", "40Y" // Extrapolated
+			},
 			new double[] {
 				-0.00212,    //  1Y
 				-0.00152,    //  2Y
@@ -266,10 +289,13 @@ public class LIBORFuturesOption {
 				-0.00022,    // 30Y
 				-0.00022,    // 35Y Extrapolated
 				-0.00022,    // 40Y Extrapolated
-			}
-		);
+				}
+			);
 
-		mapFC.put ("12M", fc12M);
+		mapFC.put (
+			"12M",
+			fc12M
+		);
 
 		return mapFC;
 	}
@@ -314,7 +340,10 @@ public class LIBORFuturesOption {
 			strCurrency
 		);
 
-		ForwardLabel forwardLabel = ForwardLabel.Create (strCurrency, strTenor);
+		ForwardLabel forwardLabel = ForwardLabel.Create (
+			strCurrency,
+			strTenor
+		);
 
 		Map<String, ForwardCurve> mapFC = MakeFC (
 			dtSpot,

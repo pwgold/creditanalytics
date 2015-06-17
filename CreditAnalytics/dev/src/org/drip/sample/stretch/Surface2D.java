@@ -50,8 +50,12 @@ public class Surface2D {
 		final String[] astrArgs)
 		throws Exception
 	{
-		double[] adblATMFactor = new double[] {0.8, 0.9, 1.0, 1.1, 1.2};
-		double[] adblTTE = new double[] {1., 2., 3., 4., 5.};
+		double[] adblATMFactor = new double[] {
+			0.8, 0.9, 1.0, 1.1, 1.2
+		};
+		double[] adblTTE = new double[] {
+			1., 2., 3., 4., 5.
+		};
 
 		double[][] aadblImpliedVolatility = new double[][] {
 			{0.44, 0.38, 0.33, 0.27, 0.25},
@@ -64,9 +68,13 @@ public class Surface2D {
 		SegmentCustomBuilderControl scbcSpan = new SegmentCustomBuilderControl (
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 			new PolynomialFunctionSetParams (4),
-			SegmentInelasticDesignControl.Create (2, 2),
+			SegmentInelasticDesignControl.Create (
+				2,
+				2
+			),
 			null,
-			null);
+			null
+		);
 
 		TreeMap<Double, Span> mapSpan = new TreeMap<Double, Span>();
 
@@ -84,19 +92,27 @@ public class Surface2D {
 					aSCBCSpan,
 					null,
 					BoundarySettings.NaturalStandard(),
-					MultiSegmentSequence.CALIBRATE)));
+					MultiSegmentSequence.CALIBRATE
+				)
+			)
+		);
 
 		SegmentCustomBuilderControl scbcSurface = new SegmentCustomBuilderControl (
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 			new PolynomialFunctionSetParams (4),
-			SegmentInelasticDesignControl.Create (2, 2),
+			SegmentInelasticDesignControl.Create (
+				2,
+				2
+			),
 			null,
-			null);
+			null
+		);
 
 		WireSurfaceStretch ss = new WireSurfaceStretch (
 			"SurfaceStretch@" + org.drip.quant.common.StringUtil.GUID(),
 			scbcSurface,
-			mapSpan);
+			mapSpan
+		);
 
 		System.out.println ("\n\t|------------------------------------------------------------|");
 
@@ -113,15 +129,23 @@ public class Surface2D {
 			System.out.print ("\t|  " + FormatUtil.FormatDouble (dblATMFactor, 1, 2, 1.) + "    =>");
 
 			for (double dblTTE : adblTTE)
-				System.out.print ("  " + FormatUtil.FormatDouble (ss.responseValue (dblATMFactor, dblTTE), 2, 2, 100.) + "%");
+				System.out.print ("  " +
+					FormatUtil.FormatDouble (ss.responseValue (
+						dblATMFactor,
+						dblTTE
+					), 2, 2, 100.) + "%");
 
 			System.out.print ("  |\n");
 		}
 
 		System.out.println ("\t|------------------------------------------------------------|");
 
-		adblATMFactor = new double[] {0.850, 0.925, 1.000, 1.075, 1.15};
-		adblTTE = new double[] {1.50, 2.25, 3., 3.75, 4.50};
+		adblATMFactor = new double[] {
+			0.850, 0.925, 1.000, 1.075, 1.15
+		};
+		adblTTE = new double[] {
+			1.50, 2.25, 3., 3.75, 4.50
+		};
 
 		System.out.println ("\n\t|------------------------------------------------------------|");
 
@@ -138,15 +162,24 @@ public class Surface2D {
 			System.out.print ("\t|  " + FormatUtil.FormatDouble (dblATMFactor, 1, 2, 1.) + "    =>");
 
 			for (double dblTTE : adblTTE)
-				System.out.print ("  " + FormatUtil.FormatDouble (ss.responseValue (dblATMFactor, dblTTE), 2, 2, 100.) + "%");
+				System.out.print ("  " +
+					FormatUtil.FormatDouble (
+						ss.responseValue (
+							dblATMFactor,
+							dblTTE
+						), 2, 2, 100.) + "%");
 
 			System.out.print ("  |\n");
 		}
 
 		System.out.println ("\t|------------------------------------------------------------|");
 
-		adblATMFactor = new double[] {0.70, 0.85, 1.00, 1.15, 1.30};
-		adblTTE = new double[] {0.50, 1.75, 3.00, 4.25, 5.50};
+		adblATMFactor = new double[] {
+			0.70, 0.85, 1.00, 1.15, 1.30
+		};
+		adblTTE = new double[] {
+			0.50, 1.75, 3.00, 4.25, 5.50
+		};
 
 		System.out.println ("\n\t|------------------------------------------------------------|");
 
@@ -163,7 +196,11 @@ public class Surface2D {
 			System.out.print ("\t|  " + FormatUtil.FormatDouble (dblATMFactor, 1, 2, 1.) + "    =>");
 
 			for (double dblTTE : adblTTE)
-				System.out.print ("  " + FormatUtil.FormatDouble (ss.responseValue (dblATMFactor, dblTTE), 2, 2, 100.) + "%");
+				System.out.print ("  " + FormatUtil.FormatDouble (
+					ss.responseValue (
+						dblATMFactor,
+						dblTTE
+					), 2, 2, 100.) + "%");
 
 			System.out.print ("  |\n");
 		}

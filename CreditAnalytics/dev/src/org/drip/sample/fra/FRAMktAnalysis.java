@@ -84,7 +84,10 @@ public class FRAMktAnalysis {
 		SegmentCustomBuilderControl scbc = new SegmentCustomBuilderControl (
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_HYPERBOLIC_TENSION,
 			new ExponentialTensionSetParams (1.),
-			SegmentInelasticDesignControl.Create (2, 2),
+			SegmentInelasticDesignControl.Create (
+				2,
+				2
+			),
 			null,
 			null
 		);
@@ -121,7 +124,10 @@ public class FRAMktAnalysis {
 		String strTenor = "6M";
 		String strCurrency = "USD";
 
-		ForwardLabel fri = ForwardLabel.Create (strCurrency, strTenor);
+		ForwardLabel fri = ForwardLabel.Create (
+			strCurrency,
+			strTenor
+		);
 
 		FundingLabel fundingLabel = FundingLabel.Standard (strCurrency);
 
@@ -133,10 +139,22 @@ public class FRAMktAnalysis {
 			0.006
 		);
 
-		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create
-			(dcEONIA, fcEURIBOR6M, null, null, null, null, null, null);
+		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (
+			dcEONIA,
+			fcEURIBOR6M,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
 
-		ValuationParams valParams = new ValuationParams (dtValue, dtValue, strCurrency);
+		ValuationParams valParams = new ValuationParams (
+			dtValue,
+			dtValue,
+			strCurrency
+		);
 
 		mktParams.setForwardCurveVolSurface (
 			fri,
@@ -154,7 +172,12 @@ public class FRAMktAnalysis {
 			new FlatUnivariate (dblEONIAEURIBOR6MCorrelation)
 		);
 
-		Map<String, Double> mapFRAOutput = fra.value (valParams, null, mktParams, null);
+		Map<String, Double> mapFRAOutput = fra.value (
+			valParams,
+			null,
+			mktParams,
+			null
+		);
 
 		return new FRAMktConvexityCorrection (
 			mapFRAOutput.get ("shiftedlognormalparmarketfra"),

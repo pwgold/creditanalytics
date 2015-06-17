@@ -53,7 +53,10 @@ public class BinaryVariateSumBound {
 		SingleSequenceAgnosticMetrics[] aSSAM = new SingleSequenceAgnosticMetrics[iNumSample];
 
 		for (int i = 0; i < iNumSample; ++i)
-			aSSAM[i] = rsg.sequence (iNumSample, null);
+			aSSAM[i] = rsg.sequence (
+				iNumSample,
+				null
+			);
 
 		return aSSAM;
 	}
@@ -94,7 +97,10 @@ public class BinaryVariateSumBound {
 			);
 
 			EfronSteinMetrics esam = new EfronSteinMetrics (
-				BinarySumFunction (binarySequenceGenerator, iNumSample),
+				BinarySumFunction (
+					binarySequenceGenerator,
+					iNumSample
+				),
 				aSSAM
 			);
 
@@ -121,7 +127,10 @@ public class BinaryVariateSumBound {
 			);
 
 			EfronSteinMetrics esam = new EfronSteinMetrics (
-				BinarySumFunction (binarySequenceGenerator, iNumSample),
+				BinarySumFunction (
+					binarySequenceGenerator,
+					iNumSample
+				),
 				aSSAM
 			);
 
@@ -153,7 +162,10 @@ public class BinaryVariateSumBound {
 			);
 
 			EfronSteinMetrics esam = new EfronSteinMetrics (
-				BinarySumFunction (binarySequenceGenerator, iNumSample),
+				BinarySumFunction (
+					binarySequenceGenerator,
+					iNumSample
+				),
 				aSSAM
 			);
 
@@ -217,7 +229,10 @@ public class BinaryVariateSumBound {
 			);
 
 			EfronSteinMetrics esam = new EfronSteinMetrics (
-				BinarySumFunction (binarySequenceGenerator, iNumSample),
+				BinarySumFunction (
+					binarySequenceGenerator,
+					iNumSample
+				),
 				aSSAM
 			);
 

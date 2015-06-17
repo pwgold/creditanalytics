@@ -69,7 +69,10 @@ public class FloatFloatFloatFloat {
 			iTenorInMonthsReference + "M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-			ForwardLabel.Create (strCouponCurrency, iTenorInMonthsReference + "M"),
+			ForwardLabel.Create (
+				strCouponCurrency,
+				iTenorInMonthsReference + "M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -78,7 +81,10 @@ public class FloatFloatFloatFloat {
 			iTenorInMonthsDerived + "M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-			ForwardLabel.Create (strCouponCurrency, iTenorInMonthsDerived + "M"),
+			ForwardLabel.Create (
+				strCouponCurrency,
+				iTenorInMonthsDerived + "M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -199,15 +205,31 @@ public class FloatFloatFloatFloat {
 
 		JulianDate dtToday = org.drip.analytics.date.DateUtil.Today();
 
-		ValuationParams valParams = new ValuationParams (dtToday, dtToday, strReferenceCurrency);
+		ValuationParams valParams = new ValuationParams (
+			dtToday,
+			dtToday,
+			strReferenceCurrency
+		);
 
-		ForwardLabel fri3MReference = ForwardLabel.Create (strReferenceCurrency, "3M");
+		ForwardLabel fri3MReference = ForwardLabel.Create (
+			strReferenceCurrency,
+			"3M"
+		);
 
-		ForwardLabel fri6MReference = ForwardLabel.Create (strReferenceCurrency, "6M");
+		ForwardLabel fri6MReference = ForwardLabel.Create (
+			strReferenceCurrency,
+			"6M"
+		);
 
-		ForwardLabel fri3MDerived = ForwardLabel.Create (strDerivedCurrency, "3M");
+		ForwardLabel fri3MDerived = ForwardLabel.Create (
+			strDerivedCurrency,
+			"3M"
+		);
 
-		ForwardLabel fri6MDerived = ForwardLabel.Create (strDerivedCurrency, "6M");
+		ForwardLabel fri6MDerived = ForwardLabel.Create (
+			strDerivedCurrency,
+			"6M"
+		);
 
 		FundingLabel fundingLabelReference = FundingLabel.Standard (strReferenceCurrency);
 
@@ -282,7 +304,10 @@ public class FloatFloatFloatFloat {
 				dtToday,
 				fri3MReference,
 				dblReference3MForwardRate,
-				new CollateralizationParams ("OVERNIGHT_INDEX", strReferenceCurrency)
+				new CollateralizationParams (
+					"OVERNIGHT_INDEX",
+					strReferenceCurrency
+				)
 			)
 		);
 
@@ -291,7 +316,10 @@ public class FloatFloatFloatFloat {
 				dtToday,
 				fri6MReference,
 				dblReference6MForwardRate,
-				new CollateralizationParams ("OVERNIGHT_INDEX", strReferenceCurrency)
+				new CollateralizationParams (
+					"OVERNIGHT_INDEX",
+					strReferenceCurrency
+				)
 			)
 		);
 
@@ -300,7 +328,10 @@ public class FloatFloatFloatFloat {
 				dtToday,
 				fri3MDerived,
 				dblDerived3MForwardRate,
-				new CollateralizationParams ("OVERNIGHT_INDEX", strReferenceCurrency)
+				new CollateralizationParams (
+					"OVERNIGHT_INDEX",
+					strReferenceCurrency
+				)
 			)
 		);
 
@@ -309,7 +340,10 @@ public class FloatFloatFloatFloat {
 				dtToday,
 				fri6MDerived,
 				dblDerived6MForwardRate,
-				new CollateralizationParams ("OVERNIGHT_INDEX", strReferenceCurrency)
+				new CollateralizationParams (
+					"OVERNIGHT_INDEX",
+					strReferenceCurrency
+				)
 			)
 		);
 
@@ -317,7 +351,10 @@ public class FloatFloatFloatFloat {
 			DiscountCurveBuilder.CreateFromFlatRate (
 				dtToday,
 				strReferenceCurrency,
-				new CollateralizationParams ("OVERNIGHT_INDEX", strReferenceCurrency),
+				new CollateralizationParams (
+					"OVERNIGHT_INDEX",
+					strReferenceCurrency
+				),
 				dblReferenceFundingRate
 			)
 		);
@@ -327,39 +364,103 @@ public class FloatFloatFloatFloat {
 			new FlatUnivariate (dblReferenceDerivedFXRate)
 		);
 
-		mktParams.setForwardCurveVolSurface (fri3MReference, new FlatUnivariate (dblReference3MForwardVol));
+		mktParams.setForwardCurveVolSurface (
+			fri3MReference,
+			new FlatUnivariate (dblReference3MForwardVol)
+		);
 
-		mktParams.setForwardCurveVolSurface (fri6MReference, new FlatUnivariate (dblReference6MForwardVol));
+		mktParams.setForwardCurveVolSurface (
+			fri6MReference,
+			new FlatUnivariate (dblReference6MForwardVol)
+		);
 
-		mktParams.setForwardCurveVolSurface (fri3MDerived, new FlatUnivariate (dblDerived3MForwardVol));
+		mktParams.setForwardCurveVolSurface (
+			fri3MDerived,
+			new FlatUnivariate (dblDerived3MForwardVol)
+		);
 
-		mktParams.setForwardCurveVolSurface (fri6MDerived, new FlatUnivariate (dblDerived6MForwardVol));
+		mktParams.setForwardCurveVolSurface (
+			fri6MDerived,
+			new FlatUnivariate (dblDerived6MForwardVol)
+		);
 
-		mktParams.setFundingCurveVolSurface (fundingLabelReference, new FlatUnivariate (dblReferenceFundingVol));
+		mktParams.setFundingCurveVolSurface (
+			fundingLabelReference,
+			new FlatUnivariate (dblReferenceFundingVol)
+		);
 
-		mktParams.setFXCurveVolSurface (fxLabel, new FlatUnivariate (dblReferenceDerivedFXVol));
+		mktParams.setFXCurveVolSurface (
+			fxLabel,
+			new FlatUnivariate (dblReferenceDerivedFXVol)
+		);
 
-		mktParams.setForwardFundingCorrSurface (fri3MReference, fundingLabelReference, new FlatUnivariate (dblReference3MForwardFundingCorr));
+		mktParams.setForwardFundingCorrSurface (
+			fri3MReference,
+			fundingLabelReference,
+			new FlatUnivariate (dblReference3MForwardFundingCorr)
+		);
 
-		mktParams.setForwardFundingCorrSurface (fri6MReference, fundingLabelReference, new FlatUnivariate (dblReference6MForwardFundingCorr));
+		mktParams.setForwardFundingCorrSurface (
+			fri6MReference,
+			fundingLabelReference,
+			new FlatUnivariate (dblReference6MForwardFundingCorr)
+		);
 
-		mktParams.setForwardFundingCorrSurface (fri3MDerived, fundingLabelReference, new FlatUnivariate (dblDerived3MForwardFundingCorr));
+		mktParams.setForwardFundingCorrSurface (
+			fri3MDerived,
+			fundingLabelReference,
+			new FlatUnivariate (dblDerived3MForwardFundingCorr)
+		);
 
-		mktParams.setForwardFundingCorrSurface (fri6MDerived, fundingLabelReference, new FlatUnivariate (dblDerived6MForwardFundingCorr));
+		mktParams.setForwardFundingCorrSurface (
+			fri6MDerived,
+			fundingLabelReference,
+			new FlatUnivariate (dblDerived6MForwardFundingCorr)
+		);
 
-		mktParams.setForwardFXCorrSurface (fri3MReference, fxLabel, new FlatUnivariate (dblReference3MForwardFXCorr));
+		mktParams.setForwardFXCorrSurface (
+			fri3MReference,
+			fxLabel,
+			new FlatUnivariate (dblReference3MForwardFXCorr)
+		);
 
-		mktParams.setForwardFXCorrSurface (fri6MReference, fxLabel, new FlatUnivariate (dblReference6MForwardFXCorr));
+		mktParams.setForwardFXCorrSurface (
+			fri6MReference,
+			fxLabel,
+			new FlatUnivariate (dblReference6MForwardFXCorr)
+		);
 
-		mktParams.setForwardFXCorrSurface (fri3MDerived, fxLabel, new FlatUnivariate (dblDerived3MForwardFXCorr));
+		mktParams.setForwardFXCorrSurface (
+			fri3MDerived,
+			fxLabel,
+			new FlatUnivariate (dblDerived3MForwardFXCorr)
+		);
 
-		mktParams.setForwardFXCorrSurface (fri6MDerived, fxLabel, new FlatUnivariate (dblDerived6MForwardFXCorr));
+		mktParams.setForwardFXCorrSurface (
+			fri6MDerived,
+			fxLabel,
+			new FlatUnivariate (dblDerived6MForwardFXCorr)
+		);
 
-		mktParams.setFundingFXCorrSurface (fundingLabelReference, fxLabel, new FlatUnivariate (dblFundingFXCorr));
+		mktParams.setFundingFXCorrSurface (
+			fundingLabelReference,
+			fxLabel,
+			new FlatUnivariate (dblFundingFXCorr)
+		);
 
-		CaseInsensitiveTreeMap<Double> mapMTMOutput = cpMTM.value (valParams, null, mktParams, null);
+		CaseInsensitiveTreeMap<Double> mapMTMOutput = cpMTM.value (
+			valParams,
+			null,
+			mktParams,
+			null
+		);
 
-		CaseInsensitiveTreeMap<Double> mapNonMTMOutput = cpNonMTM.value (valParams, null, mktParams, null);
+		CaseInsensitiveTreeMap<Double> mapNonMTMOutput = cpNonMTM.value (
+			valParams,
+			null,
+			mktParams,
+			null
+		);
 
 		for (Map.Entry<String, Double> me : mapMTMOutput.entrySet()) {
 			String strKey = me.getKey();
@@ -369,9 +470,12 @@ public class FloatFloatFloatFloat {
 
 				double dblNonMTMMeasure = mapNonMTMOutput.get (strKey);
 
-				String strReconcile = NumberUtil.WithinTolerance (dblMTMMeasure, dblNonMTMMeasure, 1.e-08, 1.e-04) ?
-					"RECONCILES" :
-					"DOES NOT RECONCILE";
+				String strReconcile = NumberUtil.WithinTolerance (
+					dblMTMMeasure,
+					dblNonMTMMeasure,
+					1.e-08,
+					1.e-04
+				) ? "RECONCILES" : "DOES NOT RECONCILE";
 
 				System.out.println ("\t" +
 					FormatUtil.FormatDouble (dblMTMMeasure, 1, 8, 1.) + " | " +

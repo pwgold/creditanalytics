@@ -58,7 +58,10 @@ public class CallPriceSurface {
 		return new SegmentCustomBuilderControl (
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 			new PolynomialFunctionSetParams (4),
-			SegmentInelasticDesignControl.Create (2, 2),
+			SegmentInelasticDesignControl.Create (
+				2,
+				2
+			),
 			null,
 			null
 		);
@@ -71,9 +74,13 @@ public class CallPriceSurface {
 		return new SegmentCustomBuilderControl (
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_KLK_HYPERBOLIC_TENSION,
 			new ExponentialTensionSetParams (dblTension),
-			SegmentInelasticDesignControl.Create (2, 2),
+			SegmentInelasticDesignControl.Create (
+				2,
+				2
+			),
 			null,
-			null);
+			null
+		);
 	}
 
 	private static final void EvaluateSplineSurface (
@@ -109,8 +116,12 @@ public class CallPriceSurface {
 	{
 		JulianDate dtStart = DateUtil.Today();
 
-		double[] adblStrikeATMFactorCalib = new double[] {0.8, 0.9, 1.0, 1.1, 1.2};
-		String[] astrMaturityTenorCalib = new String[] {"12M", "24M", "36M", "48M", "60M"};
+		double[] adblStrikeATMFactorCalib = new double[] {
+			0.8, 0.9, 1.0, 1.1, 1.2
+		};
+		String[] astrMaturityTenorCalib = new String[] {
+			"12M", "24M", "36M", "48M", "60M"
+		};
 
 		double dblRho = 0.3;
 		double dblKappa = 1.;
@@ -136,7 +147,10 @@ public class CallPriceSurface {
 			1.,
 			false,
 			0.20,
-			new CollateralizationParams ("OVERNIGHT_INDEX", "USD"),
+			new CollateralizationParams (
+				"OVERNIGHT_INDEX",
+				"USD"
+			),
 			adblStrikeATMFactorCalib,
 			astrMaturityTenorCalib,
 			hopp,
@@ -165,7 +179,10 @@ public class CallPriceSurface {
 			1.,
 			false,
 			0.20,
-			new CollateralizationParams ("OVERNIGHT_INDEX", "USD"),
+			new CollateralizationParams (
+				"OVERNIGHT_INDEX",
+				"USD"
+			),
 			adblStrikeATMFactorCalib,
 			astrMaturityTenorCalib,
 			hopp,
@@ -182,8 +199,12 @@ public class CallPriceSurface {
 
 		EvaluateSplineSurface (
 			priceSurfKLKHyper,
-			new double[] {0.500, 0.700, 0.850, 1.000, 1.150, 1.300, 1.500},
-			new String[] {"06M", "21M", "36M", "51M", "66M"}
+			new double[] {
+				0.500, 0.700, 0.850, 1.000, 1.150, 1.300, 1.500
+			},
+			new String[] {
+				"06M", "21M", "36M", "51M", "66M"
+			}
 		);
 	}
 }

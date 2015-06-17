@@ -80,7 +80,10 @@ public class CrossFixedPlainFloat {
 			iTenorInMonths + "M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-			ForwardLabel.Create (strPayCurrency, iTenorInMonths + "M"),
+			ForwardLabel.Create (
+				strPayCurrency,
+				iTenorInMonths + "M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -160,7 +163,11 @@ public class CrossFixedPlainFloat {
 		FixFloatComponent fixFloat = new FixFloatComponent (
 			fixedStream,
 			floatingStream,
-			new CashSettleParams (0, strPayCurrency, 0)
+			new CashSettleParams (
+				0,
+				strPayCurrency,
+				0
+			)
 		);
 
 		return fixFloat;
@@ -191,21 +198,34 @@ public class CrossFixedPlainFloat {
 
 		JulianDate dtToday = org.drip.analytics.date.DateUtil.Today();
 
-		ValuationParams valParams = new ValuationParams (dtToday, dtToday, "USD");
+		ValuationParams valParams = new ValuationParams (
+			dtToday,
+			dtToday,
+			"USD"
+		);
 
-		ForwardLabel fri3MUSD = ForwardLabel.Create ("USD", "3M");
+		ForwardLabel fri3MUSD = ForwardLabel.Create (
+			"USD",
+			"3M"
+		);
 
 		DiscountCurve dcUSDCollatDomestic = DiscountCurveBuilder.CreateFromFlatRate (
 			dtToday,
 			"USD",
-			new CollateralizationParams ("OVERNIGHT_INDEX", "USD"),
+			new CollateralizationParams (
+				"OVERNIGHT_INDEX",
+				"USD"
+			),
 			dblUSDCollateralRate
 		);
 
 		DiscountCurve dcEURCollatDomestic = DiscountCurveBuilder.CreateFromFlatRate (
 			dtToday,
 			"EUR",
-			new CollateralizationParams ("OVERNIGHT_INDEX", "EUR"),
+			new CollateralizationParams (
+				"OVERNIGHT_INDEX",
+				"EUR"
+			),
 			dblEURCollateralRate
 		);
 
@@ -213,7 +233,10 @@ public class CrossFixedPlainFloat {
 			dtToday,
 			fri3MUSD,
 			dblUSD3MForwardRate,
-			new CollateralizationParams ("OVERNIGHT_INDEX", "USD")
+			new CollateralizationParams (
+				"OVERNIGHT_INDEX",
+				"USD"
+			)
 		);
 
 		CurrencyPair cp = CurrencyPair.FromCode ("USD/EUR");
@@ -248,27 +271,64 @@ public class CrossFixedPlainFloat {
 
 		mktParams.setForwardCurve (fc3MUSD);
 
-		mktParams.setFundingCurveVolSurface (fundingLabelUSD, new FlatUnivariate (dblUSDFundingVol));
+		mktParams.setFundingCurveVolSurface (
+			fundingLabelUSD,
+			new FlatUnivariate (dblUSDFundingVol)
+		);
 
-		mktParams.setForwardCurveVolSurface (fri3MUSD, new FlatUnivariate (dblUSD3MVol));
+		mktParams.setForwardCurveVolSurface (
+			fri3MUSD,
+			new FlatUnivariate (dblUSD3MVol)
+		);
 
-		mktParams.setForwardFundingCorrSurface (fri3MUSD, fundingLabelUSD, new FlatUnivariate (dblUSD3MUSDFundingCorr));
+		mktParams.setForwardFundingCorrSurface (
+			fri3MUSD,
+			fundingLabelUSD,
+			new FlatUnivariate (dblUSD3MUSDFundingCorr)
+		);
 
 		mktParams.setFundingCurve (dcEURCollatDomestic);
 
-		mktParams.setFXCurve (fxLabel, new FlatUnivariate (dblUSDEURFXRate));
+		mktParams.setFXCurve (
+			fxLabel,
+			new FlatUnivariate (dblUSDEURFXRate)
+		);
 
-		mktParams.setFixing (dtToday, fxLabel, dblUSDEURFXRate);
+		mktParams.setFixing (
+			dtToday,
+			fxLabel,
+			dblUSDEURFXRate
+		);
 
-		mktParams.setFundingCurveVolSurface (fundingLabelEUR, new FlatUnivariate (dblEURFundingVol));
+		mktParams.setFundingCurveVolSurface (
+			fundingLabelEUR,
+			new FlatUnivariate (dblEURFundingVol)
+		);
 
-		mktParams.setFXCurveVolSurface (fxLabel, new FlatUnivariate (dblUSDEURFXVol));
+		mktParams.setFXCurveVolSurface (
+			fxLabel,
+			new FlatUnivariate (dblUSDEURFXVol)
+		);
 
-		mktParams.setFundingFXCorrSurface (fundingLabelUSD, fxLabel, new FlatUnivariate (dblUSDFundingUSDEURFXCorr));
+		mktParams.setFundingFXCorrSurface (
+			fundingLabelUSD,
+			fxLabel,
+			new FlatUnivariate (dblUSDFundingUSDEURFXCorr)
+		);
 
-		CaseInsensitiveTreeMap<Double> mapMTMOutput = fixMTMFloat.value (valParams, null, mktParams, null);
+		CaseInsensitiveTreeMap<Double> mapMTMOutput = fixMTMFloat.value (
+			valParams,
+			null,
+			mktParams,
+			null
+		);
 
-		CaseInsensitiveTreeMap<Double> mapNonMTMOutput = fixNonMTMFloat.value (valParams, null, mktParams, null);
+		CaseInsensitiveTreeMap<Double> mapNonMTMOutput = fixNonMTMFloat.value (
+			valParams,
+			null,
+			mktParams,
+			null
+		);
 
 		for (Map.Entry<String, Double> me : mapMTMOutput.entrySet()) {
 			String strKey = me.getKey();
@@ -278,9 +338,14 @@ public class CrossFixedPlainFloat {
 
 				double dblNonMTMMeasure = mapNonMTMOutput.get (strKey);
 
-				String strReconcile = NumberUtil.WithinTolerance (dblMTMMeasure, dblNonMTMMeasure, 1.e-08, 1.e-04) ?
-					"RECONCILES" :
-					"DOES NOT RECONCILE";
+				String strReconcile = NumberUtil.WithinTolerance (
+					dblMTMMeasure,
+					dblNonMTMMeasure,
+					1.e-08,
+					1.e-04
+				) ?
+				"RECONCILES" :
+				"DOES NOT RECONCILE";
 
 				System.out.println ("\t" +
 					FormatUtil.FormatDouble (dblMTMMeasure, 1, 8, 1.) + " | " +

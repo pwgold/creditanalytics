@@ -1,8 +1,7 @@
 
 package org.drip.sample.misc;
 
-import org.drip.analytics.date.DateUtil;
-import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.date.*;
 import org.drip.analytics.daycount.Convention;
 import org.drip.service.api.CreditAnalytics;
 
@@ -53,10 +52,15 @@ public class DateRollAPI {
 
 		CreditAnalytics.Init (strConfig);
 
-		JulianDate dt = DateUtil.CreateFromYMD (2012, DateUtil.FEBRUARY, 5);
+		JulianDate dt = DateUtil.CreateFromYMD (
+			2012,
+			DateUtil.FEBRUARY,
+			5
+		);
 
-		System.out.println ("\tDATE_ROLL_ACTUAL                      : " + dt + " -> " + new JulianDate (
-			Convention.RollDate (
+		System.out.println ("\tDATE_ROLL_ACTUAL                      : " + dt + " -> " +
+			new JulianDate (
+				Convention.RollDate (
 					dt.julian(),
 					Convention.DATE_ROLL_ACTUAL,
 					"USD",
@@ -65,8 +69,9 @@ public class DateRollAPI {
 			)
 		);
 
-		System.out.println ("\tDATE_ROLL_FOLLOWING                   : " + dt + " -> " + new JulianDate (
-			Convention.RollDate (
+		System.out.println ("\tDATE_ROLL_FOLLOWING                   : " + dt + " -> " +
+			new JulianDate (
+				Convention.RollDate (
 					dt.julian(),
 					Convention.DATE_ROLL_FOLLOWING,
 					"USD",
@@ -75,8 +80,9 @@ public class DateRollAPI {
 			)
 		);
 
-		System.out.println ("\tDATE_ROLL_MODIFIED_FOLLOWING          : " + dt + " -> " + new JulianDate (
-			Convention.RollDate (
+		System.out.println ("\tDATE_ROLL_MODIFIED_FOLLOWING          : " + dt + " -> " +
+			new JulianDate (
+				Convention.RollDate (
 					dt.julian(),
 					Convention.DATE_ROLL_MODIFIED_FOLLOWING,
 					"USD",
@@ -85,8 +91,9 @@ public class DateRollAPI {
 			)
 		);
 
-		System.out.println ("\tDATE_ROLL_MODIFIED_FOLLOWING_BIMONTHLY: " + dt + " -> " + new JulianDate (
-			Convention.RollDate (
+		System.out.println ("\tDATE_ROLL_MODIFIED_FOLLOWING_BIMONTHLY: " + dt + " -> " +
+			new JulianDate (
+				Convention.RollDate (
 					dt.julian(),
 					Convention.DATE_ROLL_MODIFIED_FOLLOWING_BIMONTHLY,
 					"USD",
@@ -95,8 +102,9 @@ public class DateRollAPI {
 			)
 		);
 
-		System.out.println ("\tDATE_ROLL_PREVIOUS                    : " + dt + " -> " + new JulianDate (
-			Convention.RollDate (
+		System.out.println ("\tDATE_ROLL_PREVIOUS                    : " + dt + " -> " +
+			new JulianDate (
+				Convention.RollDate (
 					dt.julian(),
 					Convention.DATE_ROLL_PREVIOUS,
 					"USD",
@@ -105,8 +113,9 @@ public class DateRollAPI {
 			)
 		);
 
-		System.out.println ("\tDATE_ROLL_MODIFIED_PREVIOUS           : " + dt + " -> " + new JulianDate (
-			Convention.RollDate (
+		System.out.println ("\tDATE_ROLL_MODIFIED_PREVIOUS           : " + dt + " -> " +
+			new JulianDate (
+				Convention.RollDate (
 					dt.julian(),
 					Convention.DATE_ROLL_MODIFIED_PREVIOUS,
 					"USD",

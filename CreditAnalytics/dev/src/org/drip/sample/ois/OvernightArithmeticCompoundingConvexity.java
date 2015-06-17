@@ -103,7 +103,10 @@ public class OvernightArithmeticCompoundingConvexity {
 					aiDay[i],
 					strCurrency
 				),
-				ForwardLabel.Create (strCurrency, "ON")
+				ForwardLabel.Create (
+					strCurrency,
+					"ON"
+				)
 			);
 
 		return aDeposit;
@@ -312,9 +315,16 @@ public class OvernightArithmeticCompoundingConvexity {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
-				null),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				null
+			),
 			BoundarySettings.NaturalStandard(),
 			MultiSegmentSequence.CALIBRATE,
 			null,
@@ -329,7 +339,11 @@ public class OvernightArithmeticCompoundingConvexity {
 		return ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (
 			lcc,
 			aStretchSpec,
-			new ValuationParams (dtSpot, dtSpot, strCurrency),
+			new ValuationParams (
+				dtSpot,
+				dtSpot,
+				strCurrency
+			),
 			null,
 			null,
 			null,
@@ -351,7 +365,11 @@ public class OvernightArithmeticCompoundingConvexity {
 		JulianDate dt = dtStart.addDays (1);
 
 		while (dt.julian() <= dtEnd.julian()) {
-			lsfc.add (dt, fri, dblFlatFixing);
+			lsfc.add (
+				dt,
+				fri,
+				dblFlatFixing
+			);
 
 			dt = dt.addBusDays (1, "USD");
 		}
@@ -370,11 +388,21 @@ public class OvernightArithmeticCompoundingConvexity {
 	{
 		FundingLabel fundingLabel = FundingLabel.Standard (strCurrency);
 
-		mktParams.setFundingCurveVolSurface (fundingLabel, new FlatUnivariate (dblUSDFundingVol));
+		mktParams.setFundingCurveVolSurface (
+			fundingLabel,
+			new FlatUnivariate (dblUSDFundingVol)
+		);
 
-		mktParams.setForwardCurveVolSurface (fri, new FlatUnivariate (dblOISVol));
+		mktParams.setForwardCurveVolSurface (
+			fri,
+			new FlatUnivariate (dblOISVol)
+		);
 
-		mktParams.setForwardFundingCorrSurface (fri, fundingLabel, new FlatUnivariate (dblUSDFundingUSDOISCorrelation));
+		mktParams.setForwardFundingCorrSurface (
+			fri,
+			fundingLabel,
+			new FlatUnivariate (dblUSDFundingUSDOISCorrelation)
+		);
 	}
 
 	private static final void VolCorrScenario (
@@ -451,7 +479,10 @@ public class OvernightArithmeticCompoundingConvexity {
 			"ON",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT,
 			null,
-			ForwardLabel.Create (strCurrency, "ON"),
+			ForwardLabel.Create (
+				strCurrency,
+				"ON"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -500,13 +531,23 @@ public class OvernightArithmeticCompoundingConvexity {
 			)
 		);
 
-		ValuationParams valParams = new ValuationParams (dtToday, dtToday, strCurrency);
+		ValuationParams valParams = new ValuationParams (
+			dtToday,
+			dtToday,
+			strCurrency
+		);
 
 		CompositePeriod period = lsCP.get (0);
 
-		double[] adblOISVol = new double [] {0.1, 0.3, 0.5};
-		double[] adblUSDFundingVol = new double [] {0.1, 0.3, 0.5};
-		double[] adblUSDFundingUSDOISCorrelation = new double [] {-0.3, 0.0, 0.3};
+		double[] adblOISVol = new double [] {
+			0.1, 0.3, 0.5
+		};
+		double[] adblUSDFundingVol = new double [] {
+			0.1, 0.3, 0.5
+		};
+		double[] adblUSDFundingUSDOISCorrelation = new double [] {
+			-0.3, 0.0, 0.3
+		};
 
 		System.out.println ("\n\t-------------------------------------------------------------------------------------");
 

@@ -104,7 +104,10 @@ public class FedFundOvernightCompounding {
 					aiDay[i],
 					strCurrency
 				),
-				ForwardLabel.Create (strCurrency, "ON")
+				ForwardLabel.Create (
+					strCurrency,
+					"ON"
+				)
 			);
 
 		return aDeposit;
@@ -325,8 +328,14 @@ public class FedFundOvernightCompounding {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
 				null
 			),
 			BoundarySettings.NaturalStandard(),
@@ -343,7 +352,11 @@ public class FedFundOvernightCompounding {
 		return ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (
 			lcc,
 			aStretchSpec,
-			new ValuationParams (dtSpot, dtSpot, strCurrency),
+			new ValuationParams (
+				dtSpot,
+				dtSpot,
+				strCurrency
+			),
 			null,
 			null,
 			null,
@@ -364,14 +377,22 @@ public class FedFundOvernightCompounding {
 
 		double dblAccount = 1.;
 
-		lsfc.add (dtStart, fri, dblFlatFixing);
+		lsfc.add (
+			dtStart,
+			fri,
+			dblFlatFixing
+		);
 
 		double dblPrevDate = dtStart.julian();
 
 		JulianDate dt = dtStart.addDays (1);
 
 		while (dt.julian() <= dtEnd.julian()) {
-			lsfc.add (dt, fri, dblFlatFixing);
+			lsfc.add (
+				dt,
+				fri,
+				dblFlatFixing
+			);
 
 			if (dt.julian() <= dtValue.julian()) {
 				double dblAccrualFraction = Convention.YearFraction (
@@ -388,7 +409,10 @@ public class FedFundOvernightCompounding {
 
 			dblPrevDate = dt.julian();
 
-			dt = dt.addBusDays (1, "USD");
+			dt = dt.addBusDays (
+				1,
+				"USD"
+			);
 		}
 
 		System.out.println ("\tManual Calc Float Accrued (Geometric Compounding): " + (dblAccount - 1.) * dblNotional);
@@ -430,7 +454,10 @@ public class FedFundOvernightCompounding {
 
 		JulianDate dtCustomOISMaturity = dtToday.addTenor ("4M");
 
-		ForwardLabel fri = ForwardLabel.Create (strCurrency, "ON");
+		ForwardLabel fri = ForwardLabel.Create (
+			strCurrency,
+			"ON"
+		);
 
 		FundingLabel fundingLabel = FundingLabel.Standard (strCurrency);
 
@@ -449,7 +476,10 @@ public class FedFundOvernightCompounding {
 			"ON",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT,
 			null,
-			ForwardLabel.Create (strCurrency, "ON"),
+			ForwardLabel.Create (
+				strCurrency,
+				"ON"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -550,7 +580,11 @@ public class FedFundOvernightCompounding {
 		FixFloatComponent oisArithmetic = new FixFloatComponent (
 			fixStream,
 			floatStreamArithmetic,
-			new CashSettleParams (0, strCurrency, 0)
+			new CashSettleParams (
+				0,
+				strCurrency,
+				0
+			)
 		);
 
 		FixFloatComponent oisGeometric = new FixFloatComponent (
@@ -580,7 +614,11 @@ public class FedFundOvernightCompounding {
 			)
 		);
 
-		ValuationParams valParams = new ValuationParams (dtToday, dtToday, strCurrency);
+		ValuationParams valParams = new ValuationParams (
+			dtToday,
+			dtToday,
+			strCurrency
+		);
 
 		Map<String, Double> mapOISGeometricOutput = oisGeometric.value (
 			valParams,
@@ -617,11 +655,21 @@ public class FedFundOvernightCompounding {
 		double dblUSDFundingVol = 0.3;
 		double dblUSDFundingUSDOISCorrelation = 0.3;
 
-		mktParams.setFundingCurveVolSurface (fundingLabel, new FlatUnivariate (dblUSDFundingVol));
+		mktParams.setFundingCurveVolSurface (
+			fundingLabel,
+			new FlatUnivariate (dblUSDFundingVol)
+		);
 
-		mktParams.setForwardCurveVolSurface (fri, new FlatUnivariate (dblOISVol));
+		mktParams.setForwardCurveVolSurface (
+			fri,
+			new FlatUnivariate (dblOISVol)
+		);
 
-		mktParams.setForwardFundingCorrSurface (fri, fundingLabel, new FlatUnivariate (dblUSDFundingUSDOISCorrelation));
+		mktParams.setForwardFundingCorrSurface (
+			fri,
+			fundingLabel,
+			new FlatUnivariate (dblUSDFundingUSDOISCorrelation)
+		);
 
 		System.out.println (
 			"\tPeriod #1 Coupon With Convexity Adjustment: " + floatStreamArithmetic.coupon (

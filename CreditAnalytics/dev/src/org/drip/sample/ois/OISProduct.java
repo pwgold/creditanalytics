@@ -81,7 +81,10 @@ public class OISProduct {
 					aiDay[i],
 					strCurrency
 				),
-				ForwardLabel.Create (strCurrency, "ON")
+				ForwardLabel.Create (
+					strCurrency,
+					"ON"
+				)
 			);
 
 		return aDeposit;
@@ -134,7 +137,10 @@ public class OISProduct {
 				"ON",
 				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT,
 				null,
-				ForwardLabel.Create (strCurrency, "ON"),
+				ForwardLabel.Create (
+					strCurrency,
+					"ON"
+				),
 				CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 				0.
 			);
@@ -261,7 +267,10 @@ public class OISProduct {
 				"ON",
 				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT,
 				null,
-				ForwardLabel.Create (strCurrency, "ON"),
+				ForwardLabel.Create (
+					strCurrency,
+					"ON"
+				),
 				CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 				0.
 			);
@@ -402,7 +411,10 @@ public class OISProduct {
 				"ON",
 				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT,
 				null,
-				ForwardLabel.Create (strCurrency, "ON"),
+				ForwardLabel.Create (
+					strCurrency,
+					"ON"
+				),
 				CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 				0.
 			);
@@ -530,7 +542,10 @@ public class OISProduct {
 				"ON",
 				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT,
 				null,
-				ForwardLabel.Create (strCurrency, "ON"),
+				ForwardLabel.Create (
+					strCurrency,
+					"ON"
+				),
 				CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 				0.
 			);
@@ -699,13 +714,15 @@ public class OISProduct {
 				new java.lang.String[] {"1M", "2M", "3M", "4M", "5M"},
 				new java.lang.String[] {"1M", "1M", "1M", "1M", "1M"},
 				adblOISFutureQuote,
-				strCurrency) :
+				strCurrency
+			) :
 			OvernightFundFutureFromMaturityTenor (
 				dtToday,
 				new java.lang.String[] {"1M", "2M", "3M", "4M", "5M"},
 				new java.lang.String[] {"1M", "1M", "1M", "1M", "1M"},
 				adblOISFutureQuote,
-				strCurrency);
+				strCurrency
+			);
 
 		/*
 		 * Construct the OIS Future Instrument Set Stretch Builder
@@ -749,13 +766,14 @@ public class OISProduct {
 				new java.lang.String[]
 					{"15M", "18M", "21M", "2Y", "3Y", "4Y", "5Y", "6Y", "7Y", "8Y", "9Y", "10Y", "11Y", "12Y", "15Y", "20Y", "25Y", "30Y"},
 				adblLongEndOISQuote,
-				strCurrency) :
-			OvernightFundFromMaturityTenor (
+				strCurrency
+			) : OvernightFundFromMaturityTenor (
 				dtToday,
 				new java.lang.String[]
 					{"15M", "18M", "21M", "2Y", "3Y", "4Y", "5Y", "6Y", "7Y", "8Y", "9Y", "10Y", "11Y", "12Y", "15Y", "20Y", "25Y", "30Y"},
 				adblLongEndOISQuote,
-				strCurrency);
+				strCurrency
+			);
 
 
 		/*
@@ -788,9 +806,16 @@ public class OISProduct {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
-				null),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				null
+			),
 			BoundarySettings.NaturalStandard(),
 			MultiSegmentSequence.CALIBRATE,
 			null,
@@ -804,7 +829,11 @@ public class OISProduct {
 		DiscountCurve dc = ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (
 			lcc,
 			aStretchSpec,
-			new ValuationParams (dtToday, dtToday, strCurrency),
+			new ValuationParams (
+				dtToday,
+				dtToday,
+				strCurrency
+			),
 			null,
 			null,
 			null,
@@ -936,7 +965,10 @@ public class OISProduct {
 			"ON",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_OVERNIGHT,
 			null,
-			ForwardLabel.Create (strCurrency, "ON"),
+			ForwardLabel.Create (
+				strCurrency,
+				"ON"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -1008,26 +1040,54 @@ public class OISProduct {
 		FixFloatComponent ois = new FixFloatComponent (
 			customFixedStream,
 			customFloatingStream,
-			new CashSettleParams (0, strCurrency, 0)
+			new CashSettleParams (
+				0,
+				strCurrency,
+				0
+			)
 		);
 
-		CurveSurfaceQuoteSet mktParamsIndex = MarketParamsBuilder.Create (dcIndex, null, null, null, null, null, null);
+		CurveSurfaceQuoteSet mktParamsIndex = MarketParamsBuilder.Create (
+			dcIndex,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
 
-		CurveSurfaceQuoteSet mktParamsFund = MarketParamsBuilder.Create (dcFund, null, null, null, null, null, null);
+		CurveSurfaceQuoteSet mktParamsFund = MarketParamsBuilder.Create (
+			dcFund,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
 
 		System.out.println ("\n\t----------------------------------------------------------------");
 
 		System.out.println ("\t----------------------------------------------------------------\n");
 
 		Map<String, Double> mapOISOutputIndex = ois.value (
-			new ValuationParams (dtToday, dtToday, strCurrency),
+			new ValuationParams (
+				dtToday,
+				dtToday,
+				strCurrency
+			),
 			null,
 			mktParamsIndex,
 			null
 		);
 
 		Map<String, Double> mapOISOutputFund = ois.value (
-			new ValuationParams (dtToday, dtToday, strCurrency),
+			new ValuationParams (
+				dtToday,
+				dtToday,
+				strCurrency
+			),
 			null,
 			mktParamsFund,
 			null
@@ -1040,9 +1100,13 @@ public class OISProduct {
 
 			double dblFundMeasure = mapOISOutputFund.get (strKey);
 
-			String strReconcile = NumberUtil.WithinTolerance (dblIndexMeasure, dblFundMeasure, 1.e-08, 1.e-04) ?
-				"RECONCILES" :
-				"DOES NOT RECONCILE";
+			String strReconcile = NumberUtil.WithinTolerance (
+				dblIndexMeasure,
+				dblFundMeasure,
+				1.e-08,
+				1.e-04) ?
+			"RECONCILES" :
+			"DOES NOT RECONCILE";
 
 			System.out.println ("\t" +
 				FormatUtil.FormatDouble (dblIndexMeasure, 1, 8, 1.) + " | " +

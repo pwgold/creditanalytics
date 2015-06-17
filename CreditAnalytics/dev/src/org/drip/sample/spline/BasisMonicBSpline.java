@@ -75,7 +75,8 @@ public class BasisMonicBSpline {
 			strShapeController,
 			adblPredictorOrdinate,
 			2,
-			aTBH[0].tension());
+			aTBH[0].tension()
+		);
 
 		/*
 		 * Compare the responses emitted by the basis hat functions and the monic basis functions.
@@ -113,7 +114,8 @@ public class BasisMonicBSpline {
 		while (dblX <= 3.0) {
 			System.out.println (
 				"\t\tNormCumulative[" + FormatUtil.FormatDouble (dblX, 1, 3, 1.) + "] : " +
-				FormatUtil.FormatDouble (me.normalizedCumulative (dblX), 1, 5, 1.));
+				FormatUtil.FormatDouble (me.normalizedCumulative (dblX), 1, 5, 1.)
+			);
 
 			dblX += dblXIncrement;
 		}
@@ -130,7 +132,8 @@ public class BasisMonicBSpline {
 		while (dblX <= 3.0) {
 			System.out.println (
 				"\t\t\tDeriv[" + FormatUtil.FormatDouble (dblX, 1, 3, 1.) + "] : " +
-				FormatUtil.FormatDouble (me.derivative (dblX, iOrder), 1, 5, 1.));
+				FormatUtil.FormatDouble (me.derivative (dblX, iOrder), 1, 5, 1.)
+			);
 
 			dblX += dblXIncrement;
 		}
@@ -183,7 +186,8 @@ public class BasisMonicBSpline {
 			adblPredictorOrdinate[1],
 			adblPredictorOrdinate[2],
 			2,
-			1.);
+			1.
+		);
 
 		/*
 		 * Implement and test the basis monic spline function using the constructed Processed Hyperbolic
@@ -195,7 +199,8 @@ public class BasisMonicBSpline {
 			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_LINEAR,
 			aTBHProcessed,
 			adblPredictorOrdinate,
-			" PROCESSED HYPERBOLIC ");
+			" PROCESSED HYPERBOLIC "
+		);
 
 		/*
 		 * Construct the Raw Hyperbolic Tension Hat Pair from the co-ordinate arrays and the tension.
@@ -205,7 +210,8 @@ public class BasisMonicBSpline {
 			adblPredictorOrdinate[0],
 			adblPredictorOrdinate[1],
 			adblPredictorOrdinate[2],
-			1.);
+			1.
+		);
 
 		/*
 		 * Implement and test the basis monic spline function using the constructed Raw Hyperbolic Tension
@@ -217,7 +223,8 @@ public class BasisMonicBSpline {
 			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_LINEAR,
 			aTBHStraight,
 			adblPredictorOrdinate,
-			" STRAIGHT  HYPERBOLIC ");
+			" STRAIGHT  HYPERBOLIC "
+		);
 
 		/*
 		 * Construct the Processed Cubic Rational Tension Hat Pair from the co-ordinate arrays, Linear
@@ -230,7 +237,8 @@ public class BasisMonicBSpline {
 			adblPredictorOrdinate[1],
 			adblPredictorOrdinate[2],
 			2,
-			0.);
+			0.
+		);
 
 		/*
 		 * Implement and test the basis monic spline function using the constructed Flat Processed Cubic
@@ -242,7 +250,8 @@ public class BasisMonicBSpline {
 			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_LINEAR,
 			aTBHCubicRationalPlain,
 			adblPredictorOrdinate,
-			"     CUBIC     FLAT   ");
+			"     CUBIC     FLAT   "
+		);
 
 		/*
 		 * Construct the Processed Cubic Rational Tension Hat Pair from the co-ordinate arrays, Linear
@@ -255,7 +264,8 @@ public class BasisMonicBSpline {
 			adblPredictorOrdinate[1],
 			adblPredictorOrdinate[2],
 			2,
-			1.);
+			1.
+		);
 
 		/*
 		 * Implement and test the basis monic spline function using the constructed Processed Cubic Rational
@@ -267,7 +277,8 @@ public class BasisMonicBSpline {
 			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_LINEAR,
 			aTBHCubicRationalLinear,
 			adblPredictorOrdinate,
-			" CUBIC LINEAR RATIONAL ");
+			" CUBIC LINEAR RATIONAL "
+		);
 
 		/*
 		 * Construct the Processed Cubic Rational Tension Hat Pair from the co-ordinate arrays, Quadratic
@@ -280,7 +291,8 @@ public class BasisMonicBSpline {
 			adblPredictorOrdinate[1],
 			adblPredictorOrdinate[2],
 			2,
-			1.);
+			1.
+		);
 
 		/*
 		 * Implement and test the basis monic spline function using the constructed Processed Cubic Rational
@@ -292,7 +304,8 @@ public class BasisMonicBSpline {
 			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_QUADRATIC,
 			aTBHCubicRationalQuadratic,
 			adblPredictorOrdinate,
-			" CUBIC  QUAD  RATIONAL ");
+			" CUBIC  QUAD  RATIONAL "
+		);
 
 		/*
 		 * Construct the Processed Cubic Rational Tension Hat Pair from the co-ordinate arrays, Exponential
@@ -305,7 +318,8 @@ public class BasisMonicBSpline {
 			adblPredictorOrdinate[1],
 			adblPredictorOrdinate[2],
 			2,
-			1.);
+			1.
+		);
 
 		/*
 		 * Implement and test the basis monic spline function using the constructed Processed Cubic Rational
@@ -317,7 +331,8 @@ public class BasisMonicBSpline {
 			BasisHatShapeControl.SHAPE_CONTROL_RATIONAL_EXPONENTIAL,
 			aTBHCubicRationalExponential,
 			adblPredictorOrdinate,
-			" CUBIC  EXP  RATIONAL ");
+			" CUBIC  EXP  RATIONAL "
+		);
 	}
 
 	public static final void main (
