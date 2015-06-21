@@ -7,8 +7,7 @@ package org.drip.sample.credit;
 
 import java.util.*;
 
-import org.drip.analytics.date.DateUtil;
-import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.date.*;
 import org.drip.analytics.support.CaseInsensitiveTreeMap;
 import org.drip.product.definition.*;
 import org.drip.service.api.CreditAnalytics;
@@ -66,19 +65,31 @@ public class StandardCDXAPI {
 
 	private static final void BasketCDSAPISample()
 	{
-		JulianDate dtToday = DateUtil.CreateFromYMD (2013, DateUtil.MAY, 10);
+		JulianDate dtToday = DateUtil.CreateFromYMD (
+			2013,
+			DateUtil.MAY,
+			10
+		);
 
 		/*
 		 * Construct the CDX.NA.IG 5Y Series 17 index by name and series
 		 */
 
-		BasketProduct bpCDX = CreditAnalytics.MakeCDX ("CDX.NA.IG", 17, "5Y");
+		BasketProduct bpCDX = CreditAnalytics.MakeCDX (
+			"CDX.NA.IG",
+			17,
+			"5Y"
+		);
 
 		/*
 		 * Construct the on-the-run CDX.NA.IG 5Y Series index
 		 */
 
-		BasketProduct bpCDXOTR = CreditAnalytics.MakeCDX ("CDX.NA.IG", dtToday, "5Y");
+		BasketProduct bpCDXOTR = CreditAnalytics.MakeCDX (
+			"CDX.NA.IG",
+			dtToday,
+			"5Y"
+		);
 
 		/*
 		 * List of all the built-in CDX names
@@ -96,14 +107,21 @@ public class StandardCDXAPI {
 		 * Construct the on-the run CDX.EM 5Y corresponding to T - 1Y
 		 */
 
-		BasketProduct bpPresetOTR = StandardCDXManager.GetOnTheRun ("CDX.EM", dtToday.subtractTenor ("1Y"), "5Y");
+		BasketProduct bpPresetOTR = StandardCDXManager.GetOnTheRun (
+			"CDX.EM",
+			dtToday.subtractTenor ("1Y"),
+			"5Y"
+		);
 
 		/*
 		 * Construct the on-the run ITRAXX.ENERGY 5Y corresponding to T - 7Y
 		 */
 
-		BasketProduct bpPreLoadedOTR = StandardCDXManager.GetOnTheRun ("ITRAXX.ENERGY", dtToday.subtractTenor
-			("7Y"), "5Y");
+		BasketProduct bpPreLoadedOTR = StandardCDXManager.GetOnTheRun (
+			"ITRAXX.ENERGY",
+			dtToday.subtractTenor ("7Y"),
+			"5Y"
+		);
 
 		/*
 		 * Retrieve the full set of date/index series set for ITRAXX.ENERGY

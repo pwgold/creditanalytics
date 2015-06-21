@@ -57,7 +57,10 @@ public class EvolutionMetrics {
 			dblSigma,
 			dblA,
 			new FlatUnivariate (dblStartingForwardRate),
-			new BoxMullerGaussian (0., 1.)
+			new BoxMullerGaussian (
+				0.,
+				1.
+			)
 		);
 	}
 

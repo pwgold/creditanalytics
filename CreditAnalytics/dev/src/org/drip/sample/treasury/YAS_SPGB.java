@@ -132,7 +132,10 @@ public class YAS_SPGB {
 			aCompCalib[i] = SingleStreamComponentBuilder.Deposit (
 				dtCashEffective,
 				new JulianDate (adblDate[i] = dtCashEffective.addTenor (astrCashTenor[i]).julian()),
-				ForwardLabel.Create (strCurrency, astrCashTenor[i])
+				ForwardLabel.Create (
+					strCurrency,
+					astrCashTenor[i]
+				)
 			);
 		}
 

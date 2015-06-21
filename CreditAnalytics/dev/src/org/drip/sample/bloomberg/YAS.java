@@ -112,7 +112,10 @@ public class YAS {
 
 		// Cash Calibration
 
-		JulianDate dtCashEffective = dtStart.addBusDays (1, strCurrency);
+		JulianDate dtCashEffective = dtStart.addBusDays (
+			1,
+			strCurrency
+		);
 
 		for (int i = 0; i < astrCashTenor.length; ++i) {
 			astrCalibMeasure[i] = "Rate";
@@ -122,7 +125,10 @@ public class YAS {
 			aCompCalib[i] = SingleStreamComponentBuilder.Deposit (
 				dtCashEffective,
 				new JulianDate (adblDate[i] = dtCashEffective.addTenor (astrCashTenor[i]).julian()),
-				ForwardLabel.Create (strCurrency, astrCashTenor[i])
+				ForwardLabel.Create (
+					strCurrency,
+					astrCashTenor[i]
+				)
 			);
 		}
 
@@ -149,8 +155,15 @@ public class YAS {
 		 * Build the IR curve from the components, their calibration measures, and their calibration quotes.
 		 */
 
-		return ScenarioDiscountCurveBuilder.NonlinearBuild (dtStart, strCurrency,
-			DiscountCurveBuilder.BOOTSTRAP_MODE_CONSTANT_FORWARD, aCompCalib, adblCompCalibValue, astrCalibMeasure, null);
+		return ScenarioDiscountCurveBuilder.NonlinearBuild (
+			dtStart,
+			strCurrency,
+			DiscountCurveBuilder.BOOTSTRAP_MODE_CONSTANT_FORWARD,
+			aCompCalib,
+			adblCompCalibValue,
+			astrCalibMeasure,
+			null
+		);
 	}
 
 	/*
@@ -167,16 +180,17 @@ public class YAS {
 		throws Exception
 	{
 		return BondBuilder.CreateSimpleFixed (	// Simple Fixed Rate Bond
-				strName,					// Name
-				"USD",						// Fictitious Treasury Curve Name
-				"",						 	// Empty Credit Curve
-				dblCoupon,					// Bond Coupon
-				2, 							// Frequency
-				"Act/360",					// Day Count
-				dt, 						// Effective
-				dt.addTenor (strTenor),		// Maturity
-				null,						// Principal Schedule
-				null);
+			strName,					// Name
+			"USD",						// Fictitious Treasury Curve Name
+			"",						 	// Empty Credit Curve
+			dblCoupon,					// Bond Coupon
+			2, 							// Frequency
+			"Act/360",					// Day Count
+			dt, 						// Effective
+			dt.addTenor (strTenor),		// Maturity
+			null,						// Principal Schedule
+			null
+		);
 	}
 
 	/*
@@ -194,7 +208,12 @@ public class YAS {
 		Bond aTSYBond[] = new Bond[astrTenor.length];
 
 		for (int i = 0; i < astrTenor.length; ++i)
-			aTSYBond[i] = CreateTSYBond ("TSY" + astrTenor[i] + "ON", adblCoupon[i], dt, astrTenor[i]);
+			aTSYBond[i] = CreateTSYBond (
+				"TSY" + astrTenor[i] + "ON",
+				adblCoupon[i],
+				dt,
+				astrTenor[i]
+			);
 
 		return aTSYBond;
 	}
@@ -222,7 +241,8 @@ public class YAS {
 			aTSYBond,
 			adblTSYYield,
 			astrCalibMeasure,
-			null);
+			null
+		);
 	}
 
 	/*
@@ -241,9 +261,20 @@ public class YAS {
 		for (int i = 0; i < astrTSYTenor.length; ++i) {
 			ProductMultiMeasureQuote cmmq = new ProductMultiMeasureQuote();
 
-			cmmq.addQuote ("Yield", new MultiSidedQuote ("mid", adblTSYYield[i], Double.NaN), true);
+			cmmq.addQuote (
+				"Yield",
+				new MultiSidedQuote (
+					"mid",
+					adblTSYYield[i],
+					Double.NaN
+				),
+				true
+			);
 
-			mTSYQuotes.put (astrTSYTenor[i] + "ON", cmmq);
+			mTSYQuotes.put (
+				astrTSYTenor[i] + "ON",
+				cmmq
+			);
 		}
 
 		return mTSYQuotes;
@@ -260,7 +291,10 @@ public class YAS {
 	{
 		JulianDate dtCurve = DateUtil.Today();
 
-		JulianDate dtSettle = dtCurve.addBusDays (3, "USD");
+		JulianDate dtSettle = dtCurve.addBusDays (
+			3,
+			"USD"
+		);
 
 		double dblNotional = 1000000.;
 		String[] astrCashTenor = new String[] {"3M"};
@@ -279,27 +313,52 @@ public class YAS {
 			0.00160, 0.00397, 0.00696, 0.01421, 0.01955, 0.02529, 0.03568
 		};
 
-		DiscountCurve dc = BuildRatesCurveFromInstruments (dtCurve, astrCashTenor, adblCashRate, astrIRSTenor, adblIRSRate, 0., "USD");
+		DiscountCurve dc = BuildRatesCurveFromInstruments (
+			dtCurve,
+			astrCashTenor,
+			adblCashRate,
+			astrIRSTenor,
+			adblIRSRate,
+			0.,
+			"USD"
+		);
 
-		Bond[] aTSYBond = CreateOnTheRunTSYBondSet (dtCurve, astrTSYTenor, adblTSYCoupon);
+		Bond[] aTSYBond = CreateOnTheRunTSYBondSet (
+			dtCurve,
+			astrTSYTenor,
+			adblTSYCoupon
+		);
 
 		/*
 		 * Create the on-the-run treasury discount curve
 		 */
 
-		DiscountCurve dcTSY = BuildOnTheRunTSYDiscountCurve (dtCurve, aTSYBond, adblTSYYield);
+		DiscountCurve dcTSY = BuildOnTheRunTSYDiscountCurve (
+			dtCurve,
+			aTSYBond,
+			adblTSYYield
+		);
 
 		BondComponent bond = BondBuilder.CreateSimpleFixed (	// Simple Fixed Rate Bond
-				"TEST",			// Name
-				"USD",			// Currency
-				"",				// Empty Credit Curve
-				0.054,			// Bond Coupon
-				2, 				// Frequency
-				"30/360",		// Day Count
-				DateUtil.CreateFromYMD (2011, 4, 21), // Effective
-				DateUtil.CreateFromYMD (2021, 4, 15),	// Maturity
-				null,		// Principal Schedule
-				null);
+			"TEST",			// Name
+			"USD",			// Currency
+			"",				// Empty Credit Curve
+			0.054,			// Bond Coupon
+			2, 				// Frequency
+			"30/360",		// Day Count
+			DateUtil.CreateFromYMD (
+				2011,
+				4,
+				21
+			), // Effective
+			DateUtil.CreateFromYMD (
+				2021,
+				4,
+				15
+			),	// Maturity
+			null,		// Principal Schedule
+			null
+		);
 
 		double[] adblDate = new double[] {
 			DateUtil.CreateFromYMD (2016, 3, 1).julian(),
@@ -309,14 +368,35 @@ public class YAS {
 			DateUtil.CreateFromYMD (2020, 3, 1).julian()
 		};
 
-		double[] adblFactor = new double[] {1.045, 1.03, 1.015, 1., 1.};
+		double[] adblFactor = new double[] {
+			1.045, 1.03, 1.015, 1., 1.
+		};
 
-		EmbeddedOptionSchedule eos = new EmbeddedOptionSchedule (adblDate, adblFactor, false, 30, false, Double.NaN, "", Double.NaN);
+		EmbeddedOptionSchedule eos = new EmbeddedOptionSchedule (
+			adblDate,
+			adblFactor,
+			false,
+			30,
+			false,
+			Double.NaN,
+			"",
+			Double.NaN
+		);
 
 		bond.setEmbeddedCallSchedule (eos);
 
-		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (dc, dcTSY, null, null, null, 
-			MakeTSYQuotes (astrTSYTenor, adblTSYYield), null);
+		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (
+			dc,
+			dcTSY,
+			null,
+			null,
+			null, 
+			MakeTSYQuotes (
+				astrTSYTenor,
+				adblTSYYield
+			),
+			null
+		);
 
 		System.out.println ("\n---- Valuation Details ----");
 
@@ -335,7 +415,10 @@ public class YAS {
 
 		double dblPrice = 0.97828;
 
-		double dblAccrued = bond.accrued (valParams.valueDate(), mktParams);
+		double dblAccrued = bond.accrued (
+			valParams.valueDate(),
+			mktParams
+		);
 
 		WorkoutInfo wi = bond.exerciseYieldFromPrice (valParams, mktParams, null, dblPrice);
 

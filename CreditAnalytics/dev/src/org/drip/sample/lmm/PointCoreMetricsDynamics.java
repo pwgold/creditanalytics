@@ -3,8 +3,7 @@ package org.drip.sample.lmm;
 
 import org.drip.analytics.date.JulianDate;
 import org.drip.analytics.definition.MarketSurface;
-import org.drip.analytics.rates.DiscountCurve;
-import org.drip.analytics.rates.ForwardCurve;
+import org.drip.analytics.rates.*;
 import org.drip.dynamics.lmm.*;
 import org.drip.param.creator.*;
 import org.drip.quant.common.FormatUtil;
@@ -100,14 +99,20 @@ public class PointCoreMetricsDynamics {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
 				null,
 				null
 			),
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
 				null,
 				null
 			)
@@ -125,7 +130,10 @@ public class PointCoreMetricsDynamics {
 		UnivariateSequenceGenerator[] aUSG = new UnivariateSequenceGenerator[aMS.length];
 
 		for (int i = 0; i < aUSG.length; ++i)
-			aUSG[i] = new BoxMullerGaussian (0., 1.);
+			aUSG[i] = new BoxMullerGaussian (
+				0.,
+				1.
+			);
 
 		return new LognormalLIBORVolatility (
 			dblSpotDate,
@@ -175,7 +183,9 @@ public class PointCoreMetricsDynamics {
 		double dblFlatForwardRate = 0.02;
 		int iNumRun = 20;
 
-		int[] aiNumFactor = {1, 2, 3};
+		int[] aiNumFactor = {
+			1, 2, 3
+		};
 
 		double[][] aadblCorrelation = new double[][] {
 			{1.0, 0.1, 0.2},

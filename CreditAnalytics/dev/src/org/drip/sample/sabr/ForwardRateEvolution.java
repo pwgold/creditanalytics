@@ -51,12 +51,21 @@ public class ForwardRateEvolution {
 		throws Exception
 	{
 		return new StochasticVolatilityStateEvolver (
-			ForwardLabel.Create ("USD", "6M"),
+			ForwardLabel.Create (
+				"USD",
+				"6M"
+			),
 			dblBeta,
 			dblRho,
 			dblVolatilityOfVolatility,
-			new BoxMullerGaussian (0., 1.),
-			new BoxMullerGaussian (0., 1.)
+			new BoxMullerGaussian (
+				0.,
+				1.
+			),
+			new BoxMullerGaussian (
+				0.,
+				1.
+			)
 		);
 	}
 
@@ -150,8 +159,12 @@ public class ForwardRateEvolution {
 		double dblForwardRate = 0.04;
 		double dblVolatilityOfVolatility = 0.59;
 		String strViewTenor = "3M";
-		double[] adblBeta = {0.00, 0.50, 1.00};
-		double[] adblForwardRateVolatility = {0.03, 0.26, 0.51};
+		double[] adblBeta = {
+			0.00, 0.50, 1.00
+		};
+		double[] adblForwardRateVolatility = {
+			0.03, 0.26, 0.51
+		};
 
 		double dblViewDate = dtSpot.addTenor (strViewTenor).julian();
 
@@ -174,7 +187,10 @@ public class ForwardRateEvolution {
 		);
 
 		ForwardRateUpdate lsqmInitial1 = ForwardRateUpdate.Create (
-			ForwardLabel.Create ("USD", "6M"),
+			ForwardLabel.Create (
+				"USD",
+				"6M"
+			),
 			dtSpot.julian(),
 			dtSpot.julian(),
 			dblViewDate,
@@ -185,7 +201,10 @@ public class ForwardRateEvolution {
 		);
 
 		ForwardRateUpdate lsqmInitial2 = ForwardRateUpdate.Create (
-			ForwardLabel.Create ("USD", "6M"),
+			ForwardLabel.Create (
+				"USD",
+				"6M"
+			),
 			dtSpot.julian(),
 			dtSpot.julian(),
 			dblViewDate,
@@ -196,7 +215,10 @@ public class ForwardRateEvolution {
 		);
 
 		ForwardRateUpdate lsqmInitial3 = ForwardRateUpdate.Create (
-			ForwardLabel.Create ("USD", "6M"),
+			ForwardLabel.Create (
+				"USD",
+				"6M"
+			),
 			dtSpot.julian(),
 			dtSpot.julian(),
 			dblViewDate,

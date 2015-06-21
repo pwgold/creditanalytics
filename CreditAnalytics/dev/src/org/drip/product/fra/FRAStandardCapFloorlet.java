@@ -71,33 +71,28 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 		_bIsCaplet = bIsCaplet;
 	}
 
-	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.String> couponCurrency()
-	{
-		return _fra.couponCurrency();
-	}
+	/**
+	 * Generate the Standard FRA Caplet/Floorlet Measures from the Integrated Surface Variance
+	 * 
+	 * @param valParams The Valuation Parameters
+	 * @param pricerParams The Pricer Parameters
+	 * @param csqs The Market Parameters
+	 * @param quotingParams The Quoting Parameters
+	 * @param dblIntegratedSurfaceVariance The Integrated Surface Variance
+	 * 
+	 * @return The Standard FRA Caplet/Floorlet Measures
+	 */
 
-	@Override public java.lang.String payCurrency()
-	{
-		return _fra.payCurrency();
-	}
-
-	@Override public java.lang.String principalCurrency()
-	{
-		return _fra.principalCurrency();
-	}
-
-	@Override public org.drip.state.identifier.FundingLabel fundingLabel()
-	{
-		return _fra.fundingLabel();
-	}
-
-	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> value (
+	public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> valueFromSurfaceVariance (
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.PricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
-		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
+		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
+		final double dblIntegratedSurfaceVariance)
 	{
-		if (null == valParams || null == csqs) return null;
+		if (null == valParams || null == csqs || !org.drip.quant.common.NumberUtil.IsValid
+			(dblIntegratedSurfaceVariance))
+			return null;
 
 		org.drip.analytics.rates.DiscountCurve dcFunding = csqs.fundingCurve
 			(org.drip.state.identifier.FundingLabel.Standard (_fra.payCurrency()));
@@ -137,18 +132,7 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 			!org.drip.quant.common.NumberUtil.IsValid (dblFRADV01))
 			return null;
 
-		org.drip.function.definition.R1ToR1 auForwardVolSurface = csqs.forwardCurveVolSurface
-			(_fra.forwardLabel().get ("DERIVED"));
-
-		if (null == auForwardVolSurface) return null;
-
 		try {
-			double dblIntegratedSurfaceVariance =
-				org.drip.analytics.support.OptionHelper.IntegratedSurfaceVariance (auForwardVolSurface,
-					dblValueDate, dblExerciseDate);
-
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblIntegratedSurfaceVariance)) return null;
-
 			double dblIntegratedSurfaceVolatility = java.lang.Math.sqrt (dblIntegratedSurfaceVariance);
 
 			double dblStrike = strike();
@@ -205,6 +189,8 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 
 			mapResult.put ("ATMFRA", dblATMManifestMeasure);
 
+			mapResult.put ("ATMPrice", dblForwardATMIntrinsic * dblManifestMeasurePriceTransformer);
+
 			mapResult.put ("CalcTime", (System.nanoTime() - lStart) * 1.e-09);
 
 			mapResult.put ("ForwardATMIntrinsic", dblForwardATMIntrinsic);
@@ -230,6 +216,46 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 
 			return mapResult;
 		} catch (java.lang.Exception e) {
+			// e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.String> couponCurrency()
+	{
+		return _fra.couponCurrency();
+	}
+
+	@Override public java.lang.String payCurrency()
+	{
+		return _fra.payCurrency();
+	}
+
+	@Override public java.lang.String principalCurrency()
+	{
+		return _fra.principalCurrency();
+	}
+
+	@Override public org.drip.state.identifier.FundingLabel fundingLabel()
+	{
+		return _fra.fundingLabel();
+	}
+
+	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> value (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
+		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
+	{
+		if (null == valParams || null == csqs) return null;
+
+		try {
+			return valueFromSurfaceVariance (valParams, pricerParams, csqs, quotingParams,
+				org.drip.analytics.support.OptionHelper.IntegratedSurfaceVariance
+					(csqs.forwardCurveVolSurface (_fra.forwardLabel().get ("DERIVED")),
+						valParams.valueDate(), exerciseDate().julian()));
+		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
 
@@ -241,6 +267,8 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 		java.util.Set<java.lang.String> setstrMeasureNames = new java.util.TreeSet<java.lang.String>();
 
 		setstrMeasureNames.add ("ATMFRA");
+
+		setstrMeasureNames.add ("ATMPrice");
 
 		setstrMeasureNames.add ("CalcTime");
 
@@ -265,5 +293,61 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 		setstrMeasureNames.add ("Upfront");
 
 		return setstrMeasureNames;
+	}
+
+	/**
+	 * Imply the Flat Caplet/Floorlet Volatility from the Marker Manifest Measure
+	 * 
+	 * @param valParams The Valuation Parameters
+	 * @param pricerParams Pricer Parameters
+	 * @param csqs The Market Parameters
+	 * @param quotingParams The Quoting Parameters
+	 * @param strCalibMeasure The Calibration Measure
+	 * @param dblCalibValue The Calibration Value
+	 * 
+	 * @return The Implied Caplet/Floorlet Volatility
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double implyVolatility (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
+		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
+		final java.lang.String strCalibMeasure,
+		final double dblCalibValue)
+		throws java.lang.Exception
+	{
+		if (null == valParams || null == strCalibMeasure || strCalibMeasure.isEmpty() ||
+			!org.drip.quant.common.NumberUtil.IsValid (dblCalibValue))
+			throw new java.lang.Exception ("FRAStandardCapFloorlet::implyVolatility => Invalid Inputs");
+
+		org.drip.function.definition.R1ToR1 funcVolPricer = new org.drip.function.definition.R1ToR1 (null) {
+			@Override public double evaluate (
+				final double dblVolatility)
+				throws java.lang.Exception
+			{
+				java.util.Map<java.lang.String, java.lang.Double> mapOutput = valueFromSurfaceVariance 
+					(valParams, pricerParams, csqs, quotingParams, dblVolatility * dblVolatility *
+						(exerciseDate().julian() - valParams.valueDate()) / 365.25);
+
+				if (null == mapOutput || !mapOutput.containsKey (strCalibMeasure))
+					throw new java.lang.Exception
+						("FRAStandardCapFloorlet::implyVolatility => Cannot generate Calibration Measure");
+
+				return mapOutput.get (strCalibMeasure);
+			}
+		};
+
+		org.drip.function.solverR1ToR1.FixedPointFinderOutput fpfo = (new
+			org.drip.function.solverR1ToR1.FixedPointFinderZheng (dblCalibValue, funcVolPricer,
+				false)).findRoot();
+
+		if (null == fpfo || !fpfo.containsRoot())
+			throw new java.lang.Exception
+				("FRAStandardCapFloorlet::implyVolatility => Cannot calibrate the Vol");
+
+		return fpfo.getRoot();
 	}
 }

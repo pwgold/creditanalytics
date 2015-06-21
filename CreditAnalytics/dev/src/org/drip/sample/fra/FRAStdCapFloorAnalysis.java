@@ -615,7 +615,7 @@ public class FRAStdCapFloorAnalysis {
 				"FRA_CAP",
 				floatStream,
 				csp
-			),
+			).stream(),
 			strManifestMeasure,
 			true,
 			dblStrike,
@@ -634,7 +634,7 @@ public class FRAStdCapFloorAnalysis {
 				"FRA_FLOOR",
 				floatStream,
 				csp
-			),
+			).stream(),
 			strManifestMeasure,
 			false,
 			dblStrike,
@@ -673,7 +673,15 @@ public class FRAStdCapFloorAnalysis {
 
 		System.out.println ("\t\tCap Price");
 
+		System.out.println ("\t\tCap Flat Price Vol (%)");
+
+		System.out.println ("\t\tCap Flat ATM Vol (%)");
+
 		System.out.println ("\t\tFloor Price");
+
+		System.out.println ("\t\tFloor Flat Price Vol (%)");
+
+		System.out.println ("\t\tFloor Flat ATM Vol (%)");
 
 		System.out.println ("\t-------------------------------------------------------------");
 
@@ -709,9 +717,18 @@ public class FRAStdCapFloorAnalysis {
 						org.drip.quant.common.FormatUtil.FormatDouble (dblSigmaFwd2DomX, 2, 0, 100.) + "%," +
 						org.drip.quant.common.FormatUtil.FormatDouble (dblCorrFwdFwd2DomX, 2, 0, 100.) + "%] =" +
 						org.drip.quant.common.FormatUtil.FormatDouble (mapFRACapOutput.get ("Price"), 1, 4, 1.) + " | " +
-						org.drip.quant.common.FormatUtil.FormatDouble (mapFRAFloorOutput.get ("Price"), 1, 4, 1.));
+						org.drip.quant.common.FormatUtil.FormatDouble (mapFRACapOutput.get ("FlatVolatility"), 1, 1, 100.) + "% | " +
+						org.drip.quant.common.FormatUtil.FormatDouble (mapFRACapOutput.get ("FlatATMVolatility"), 1, 1, 100.) + "% | " +
+						org.drip.quant.common.FormatUtil.FormatDouble (mapFRAFloorOutput.get ("Price"), 1, 4, 1.) + " | " +
+						org.drip.quant.common.FormatUtil.FormatDouble (mapFRAFloorOutput.get ("FlatVolatility"), 1, 1, 100.) + "% | " +
+						org.drip.quant.common.FormatUtil.FormatDouble (mapFRAFloorOutput.get ("FlatATMVolatility"), 1, 1, 100.) + "% ||"
+					);
 				}
 			}
 		}
+
+		System.out.println ("\t-------------------------------------------------------------");
+
+		System.out.println ("\t-------------------------------------------------------------");
 	}
 }

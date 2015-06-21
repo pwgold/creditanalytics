@@ -6,8 +6,7 @@ package org.drip.sample.credit;
  */
 
 import org.drip.analytics.cashflow.*;
-import org.drip.analytics.date.DateUtil;
-import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.date.*;
 import org.drip.analytics.daycount.Convention;
 import org.drip.analytics.definition.*;
 import org.drip.analytics.rates.DiscountCurve;
@@ -81,7 +80,13 @@ public class CreditAnalyticsAPI {
 		 * Create Credit Curve from flat Hazard Rate
 		 */
 
-		CreditCurve ccFlatHazard = CreditCurveBuilder.FromFlatHazard (dtStart.julian(), "CC", "USD", 0.02, 0.4);
+		CreditCurve ccFlatHazard = CreditCurveBuilder.FromFlatHazard (
+			dtStart.julian(),
+			"CC",
+			"USD",
+			0.02,
+			0.4
+		);
 
 		System.out.println ("CCFromFlatHazard[" + dt10Y.toString() + "]; Survival=" +
 			ccFlatHazard.survival ("10Y") + "; Hazard=" + ccFlatHazard.hazard ("10Y"));
@@ -99,8 +104,14 @@ public class CreditAnalyticsAPI {
 		 * Create Credit Curve from an array of dates and their corresponding survival probabilities
 		 */
 
-		CreditCurve ccFromSurvival = CreditCurveBuilder.FromSurvival
-			(dtStart.julian(), "CC", "USD", adblDate, adblSurvival, 0.4);
+		CreditCurve ccFromSurvival = CreditCurveBuilder.FromSurvival (
+			dtStart.julian(),
+			"CC",
+			"USD",
+			adblDate,
+			adblSurvival,
+			0.4
+		);
 
 		System.out.println ("CCFromSurvival[" + dt10Y.toString() + "]; Survival=" +
 			ccFromSurvival.survival ("10Y") + "; Hazard=" + ccFromSurvival.hazard ("10Y"));
@@ -130,7 +141,12 @@ public class CreditAnalyticsAPI {
 			 * The Calibration CDS
 			 */
 
-			aCDS[i] = CDSBuilder.CreateSNAC (dtStart, (i + 1) + "Y", 0.01, "CORP");
+			aCDS[i] = CDSBuilder.CreateSNAC (
+				dtStart,
+				(i + 1) + "Y",
+				0.01,
+				"CORP"
+			);
 
 			/*
 			 * Calibration Quote
@@ -149,14 +165,27 @@ public class CreditAnalyticsAPI {
 		 * Flat Discount Curve
 		 */
 
-		DiscountCurve dc = DiscountCurveBuilder.CreateFromFlatRate (dtStart, "USD", null, 0.05);
+		DiscountCurve dc = DiscountCurveBuilder.CreateFromFlatRate (
+			dtStart,
+			"USD",
+			null,
+			0.05
+		);
 
 		/*
 		 * Create the Credit Curve from the give CDS instruments
 		 */
 
-		CreditCurve cc = CreditScenarioCurveBuilder.CreateCreditCurve
-			("CORP", dtStart, aCDS, dc, adblQuotes, astrCalibMeasure, 0.4, false);
+		CreditCurve cc = CreditScenarioCurveBuilder.CreateCreditCurve (
+			"CORP",
+			dtStart,
+			aCDS,
+			dc,
+			adblQuotes,
+			astrCalibMeasure,
+			0.4,
+			false
+		);
 
 		/*
 		 * Valuation Parameters
@@ -180,9 +209,23 @@ public class CreditAnalyticsAPI {
 		 */
 
 		for (int i = 0; i < aCDS.length; ++i)
-			System.out.println ("\t" + astrCalibMeasure[i] + "[" + i + "] = " + aCDS[i].measureValue
-				(valParams, pricerParams, MarketParamsBuilder.Create
-					(dc, null, null, cc, null, null, null, null), null, astrCalibMeasure[i]));
+			System.out.println (
+				"\t" + astrCalibMeasure[i] + "[" + i + "] = " +
+				aCDS[i].measureValue (
+					valParams, pricerParams, MarketParamsBuilder.Create (
+						dc,
+						null,
+						null,
+						cc,
+						null,
+						null,
+						null,
+						null
+					),
+					null,
+					astrCalibMeasure[i]
+				)
+			);
 	}
 
 	/*
@@ -200,25 +243,44 @@ public class CreditAnalyticsAPI {
 		 * Flat Discount Curve
 		 */
 
-		DiscountCurve dc = DiscountCurveBuilder.CreateFromFlatRate (dtStart, "USD", null, 0.05);
+		DiscountCurve dc = DiscountCurveBuilder.CreateFromFlatRate (
+			dtStart,
+			"USD",
+			null,
+			0.05
+		);
 
 		/*
 		 * Flat Credit Curve
 		 */
 
-		CreditCurve cc = CreditCurveBuilder.FromFlatHazard (dtStart.julian(), "CC", "USD", 0.02, 0.4);
+		CreditCurve cc = CreditCurveBuilder.FromFlatHazard (
+			dtStart.julian(),
+			"CC",
+			"USD",
+			0.02,
+			0.4
+		);
 
 		/*
 		 * Component Market Parameters built from the Discount and the Credit Curves
 		 */
 
-		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Credit (dc, cc);
+		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Credit (
+			dc,
+			cc
+		);
 
 		/*
 		 * Create an SNAC CDS
 		 */
 
-		CreditDefaultSwap cds = CDSBuilder.CreateSNAC (dtStart, "5Y", 0.1, "CC");
+		CreditDefaultSwap cds = CDSBuilder.CreateSNAC (
+			dtStart,
+			"5Y",
+			0.1,
+			"CC"
+		);
 
 		/*
 		 * Valuation Parameters

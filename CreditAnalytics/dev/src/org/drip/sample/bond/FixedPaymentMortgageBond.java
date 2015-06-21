@@ -258,7 +258,10 @@ public class FixedPaymentMortgageBond {
 		System.out.println ("\t|---------------------------------------------------------------------------------------------------------------------||");
 
 		for (CompositePeriod p : bond.couponPeriods()) {
-			double dblPeriodCouponRate = p.couponMetrics (dtEffective.julian(), null).rate();
+			double dblPeriodCouponRate = p.couponMetrics (
+				dtEffective.julian(),
+				null
+			).rate();
 
 			double dblCouponDCF = p.couponDCF();
 

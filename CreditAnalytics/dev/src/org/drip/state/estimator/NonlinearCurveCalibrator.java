@@ -195,8 +195,8 @@ public class NonlinearCurveCalibrator {
 			}
 		};
 
-		org.drip.function.solverR1ToR1.FixedPointFinderOutput rfop = new org.drip.function.solverR1ToR1.FixedPointFinderBrent
-			(0., ofIROuter, true).findRoot();
+		org.drip.function.solverR1ToR1.FixedPointFinderOutput rfop = new
+			org.drip.function.solverR1ToR1.FixedPointFinderBrent (0., ofIROuter, true).findRoot();
 
 		if (null == rfop || !rfop.containsRoot())
 			throw new java.lang.Exception ("NonlinearCurveCalibrator::calibrateIRCurve => Cannot get root!");

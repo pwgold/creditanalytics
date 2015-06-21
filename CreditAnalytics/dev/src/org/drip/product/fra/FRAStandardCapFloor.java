@@ -35,7 +35,7 @@ package org.drip.product.fra;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FRAStandardCapFloor extends org.drip.product.option.FixedIncomeOptionComponent {
+public class FRAStandardCapFloor {
 	private java.util.List<org.drip.product.fra.FRAStandardCapFloorlet> _lsFRACapFloorlet = new
 		java.util.ArrayList<org.drip.product.fra.FRAStandardCapFloorlet>();
 
@@ -55,7 +55,7 @@ public class FRAStandardCapFloor extends org.drip.product.option.FixedIncomeOpti
 	 */
 
 	public FRAStandardCapFloor (
-		final org.drip.product.definition.FixedIncomeComponent comp,
+		final org.drip.product.rates.Stream stream,
 		final java.lang.String strManifestMeasure,
 		final boolean bIsCap,
 		final double dblStrike,
@@ -65,11 +65,15 @@ public class FRAStandardCapFloor extends org.drip.product.option.FixedIncomeOpti
 		final java.lang.String strCalendar)
 		throws java.lang.Exception
 	{
-		super (comp, strManifestMeasure, dblStrike, dblNotional, ltds, strDayCount, strCalendar);
+		if (null == stream)
+			throw new java.lang.Exception ("FRAStandardCapFloor Constructor => Invalid Inputs");
 
-		org.drip.state.identifier.ForwardLabel fri = comp.forwardLabel().get ("DERIVED");
+		org.drip.state.identifier.ForwardLabel fri = stream.forwardLabel();
 
-		for (org.drip.analytics.cashflow.CompositePeriod period : comp.couponPeriods()) {
+		if (null == fri)
+			throw new java.lang.Exception ("FRAStandardCapFloor Constructor => Invalid Floater Index");
+
+		for (org.drip.analytics.cashflow.CompositePeriod period : stream.periods()) {
 			org.drip.product.fra.FRAStandardComponent fra =
 				org.drip.product.creator.SingleStreamComponentBuilder.FRAStandard (new
 					org.drip.analytics.date.JulianDate (period.startDate()), fri, dblStrike);
@@ -79,22 +83,7 @@ public class FRAStandardCapFloor extends org.drip.product.option.FixedIncomeOpti
 		}
 	}
 
-	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.String> couponCurrency()
-	{
-		return _lsFRACapFloorlet.get (0).couponCurrency();
-	}
-
-	@Override public java.lang.String payCurrency()
-	{
-		return _lsFRACapFloorlet.get (0).payCurrency();
-	}
-
-	@Override public java.lang.String principalCurrency()
-	{
-		return _lsFRACapFloorlet.get (0).principalCurrency();
-	}
-
-	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> value (
+	public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> value (
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.PricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
@@ -103,14 +92,21 @@ public class FRAStandardCapFloor extends org.drip.product.option.FixedIncomeOpti
 		double dblPV = 0.;
 		double dblPrice = 0.;
 		double dblUpfront = 0.;
+		double dblATMPrice = 0.;
+		org.drip.function.solverR1ToR1.FixedPointFinderOutput fpfo = null;
+		org.drip.function.solverR1ToR1.FixedPointFinderOutput fpfoATM = null;
 
 		long lStart = System.nanoTime();
+
+		final double dblValueDate = valParams.valueDate();
 
 		for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : _lsFRACapFloorlet) {
 			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapFRAResult = fracfl.value
 				(valParams, pricerParams, csqs, quotingParams);
 
 			if (null == mapFRAResult) continue;
+
+			if (mapFRAResult.containsKey ("ATMPrice")) dblATMPrice += mapFRAResult.get ("ATMPrice");
 
 			if (mapFRAResult.containsKey ("Price")) dblPrice += mapFRAResult.get ("Price");
 
@@ -122,7 +118,7 @@ public class FRAStandardCapFloor extends org.drip.product.option.FixedIncomeOpti
 		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapResult = new
 			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
 
-		mapResult.put ("CalcTime", (System.nanoTime() - lStart) * 1.e-09);
+		mapResult.put ("ATMPrice", dblATMPrice);
 
 		mapResult.put ("Price", dblPrice);
 
@@ -130,14 +126,219 @@ public class FRAStandardCapFloor extends org.drip.product.option.FixedIncomeOpti
 
 		mapResult.put ("Upfront", dblUpfront);
 
+		org.drip.function.definition.R1ToR1 funcVolPricer = new org.drip.function.definition.R1ToR1 (null) {
+			@Override public double evaluate (
+				final double dblVolatility)
+				throws java.lang.Exception
+			{
+				double dblCapFloorletPrice = 0.;
+
+				for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : _lsFRACapFloorlet) {
+					double dblExerciseDate = fracfl.exerciseDate().julian();
+
+					if (dblExerciseDate <= dblValueDate) continue;
+
+					java.util.Map<java.lang.String, java.lang.Double> mapOutput =
+						fracfl.valueFromSurfaceVariance (valParams, pricerParams, csqs, quotingParams,
+							dblVolatility * dblVolatility * (dblExerciseDate - dblValueDate) / 365.25);
+
+					if (null == mapOutput || !mapOutput.containsKey ("Price"))
+						throw new java.lang.Exception
+							("FRAStandardCapFloor::value => Cannot generate Calibration Measure");
+
+					dblCapFloorletPrice += mapOutput.get ("Price");
+				}
+
+				return dblCapFloorletPrice;
+			}
+		};
+
+		org.drip.function.definition.R1ToR1 funcATMVolPricer = new org.drip.function.definition.R1ToR1 (null)
+		{
+			@Override public double evaluate (
+				final double dblVolatility)
+				throws java.lang.Exception
+			{
+				double dblCapFloorletATMPrice = 0.;
+
+				for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : _lsFRACapFloorlet) {
+					double dblExerciseDate = fracfl.exerciseDate().julian();
+
+					if (dblExerciseDate <= dblValueDate) continue;
+
+					java.util.Map<java.lang.String, java.lang.Double> mapOutput =
+						fracfl.valueFromSurfaceVariance (valParams, pricerParams, csqs, quotingParams,
+							dblVolatility * dblVolatility * (dblExerciseDate - dblValueDate) / 365.25);
+
+					if (null == mapOutput || !mapOutput.containsKey ("ATMPrice"))
+						throw new java.lang.Exception
+							("FRAStandardCapFloor::value => Cannot generate Calibration Measure");
+
+					dblCapFloorletATMPrice += mapOutput.get ("ATMPrice");
+				}
+
+				return dblCapFloorletATMPrice;
+			}
+		};
+
+		try {
+			fpfo = (new org.drip.function.solverR1ToR1.FixedPointFinderBracketing (dblPrice, funcVolPricer,
+				null, org.drip.function.solverR1ToR1.VariateIteratorPrimitive.BISECTION, false)).findRoot
+					(org.drip.function.solverR1ToR1.InitializationHeuristics.FromHardSearchEdges (0.0001,
+						5.));
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+
+			return mapResult;
+		}
+
+		try {
+			fpfoATM = (new org.drip.function.solverR1ToR1.FixedPointFinderBracketing (dblATMPrice,
+				funcATMVolPricer, null, org.drip.function.solverR1ToR1.VariateIteratorPrimitive.BISECTION,
+					false)).findRoot
+						(org.drip.function.solverR1ToR1.InitializationHeuristics.FromHardSearchEdges (0.0001,
+							5.));
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+
+			return mapResult;
+		}
+
+		mapResult.put ("CalcTime", (System.nanoTime() - lStart) * 1.e-09);
+
+		if (null != fpfo && fpfo.containsRoot())
+			mapResult.put ("FlatVolatility", fpfo.getRoot());
+		else
+			mapResult.put ("FlatVolatility", java.lang.Double.NaN);
+
+		if (null != fpfoATM && fpfoATM.containsRoot())
+			mapResult.put ("FlatATMVolatility", fpfoATM.getRoot());
+		else
+			mapResult.put ("FlatATMVolatility", java.lang.Double.NaN);
+
 		return mapResult;
 	}
 
-	@Override public java.util.Set<java.lang.String> measureNames()
+	/**
+	 * Imply the Forward Rate Volatility of the Unmarked Segment of the Volatility Term Structure
+	 * 
+	 * @param valParams The Valuation Parameters
+	 * @param pricerParams The pricer Parameters
+	 * @param csqs The Market Parameters
+	 * @param quotingParams The Quoting Parameters
+	 * @param strCalibMeasure The Calibration Measure
+	 * @param dblCalibValue The Calibration Value
+	 * @param mapDateVol The Date/Volatility Map
+	 * 
+	 * @return TRUE => The Forward Rate Volatility of the Unmarked Segment of the Volatility Term Structure
+	 * 	successfully implied
+	 */
+
+	public boolean implyVolatility (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
+		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
+		final java.lang.String strCalibMeasure,
+		final double dblCalibValue,
+		final java.util.Map<org.drip.analytics.date.JulianDate, java.lang.Double> mapDateVol)
+	{
+		if (null == valParams || null == strCalibMeasure || strCalibMeasure.isEmpty() ||
+			!org.drip.quant.common.NumberUtil.IsValid (dblCalibValue) || null == mapDateVol)
+			return false;
+
+		int iIndex = 0;
+		double dblPreceedingCapFloorletPV = 0.;
+		org.drip.function.solverR1ToR1.FixedPointFinderOutput fpfo = null;
+
+		final double dblValueDate = valParams.valueDate();
+
+		final java.util.List<java.lang.Integer> lsCalibCapFloorletIndex = new
+			java.util.ArrayList<java.lang.Integer>();
+
+		for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : _lsFRACapFloorlet) {
+			org.drip.analytics.date.JulianDate dtExercise = fracfl.exerciseDate();
+
+			double dblExerciseDate = dtExercise.julian();
+
+			if (dblExerciseDate <= dblValueDate) continue;
+
+			if (mapDateVol.containsKey (dtExercise)) {
+				double dblExerciseVolatility = mapDateVol.get (dtExercise);
+
+				org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapCapFloorlet =
+					fracfl.valueFromSurfaceVariance (valParams, pricerParams, csqs, quotingParams,
+						dblExerciseVolatility * dblExerciseVolatility * (dblExerciseDate - dblValueDate) /
+							365.25);
+
+				if (null == mapCapFloorlet || !mapCapFloorlet.containsKey (strCalibMeasure)) return false;
+
+				dblPreceedingCapFloorletPV += mapCapFloorlet.get (strCalibMeasure);
+			} else
+				lsCalibCapFloorletIndex.add (iIndex);
+
+			++iIndex;
+		}
+
+		org.drip.function.definition.R1ToR1 funcVolPricer = new org.drip.function.definition.R1ToR1 (null) {
+			@Override public double evaluate (
+				final double dblVolatility)
+				throws java.lang.Exception
+			{
+				int iIndex = 0;
+				double dblSucceedingCapFloorletPV = 0.;
+
+				for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : _lsFRACapFloorlet) {
+					double dblExerciseDate = fracfl.exerciseDate().julian();
+
+					if (dblExerciseDate <= dblValueDate) continue;
+
+					if (lsCalibCapFloorletIndex.contains (iIndex)) {
+						java.util.Map<java.lang.String, java.lang.Double> mapOutput =
+							fracfl.valueFromSurfaceVariance (valParams, pricerParams, csqs, quotingParams,
+								dblVolatility * dblVolatility * (dblExerciseDate - dblValueDate) / 365.25);
+	
+						if (null == mapOutput || !mapOutput.containsKey (strCalibMeasure))
+							throw new java.lang.Exception
+								("FRAStandardCapFloor::implyVolatility => Cannot generate Calibration Measure");
+	
+						dblSucceedingCapFloorletPV += mapOutput.get (strCalibMeasure);
+					}
+				}
+
+				return dblSucceedingCapFloorletPV;
+			}
+		};
+
+		try {
+			fpfo = (new org.drip.function.solverR1ToR1.FixedPointFinderBracketing (dblCalibValue -
+				dblPreceedingCapFloorletPV, funcVolPricer, null,
+					org.drip.function.solverR1ToR1.VariateIteratorPrimitive.BISECTION, false)).findRoot
+						(org.drip.function.solverR1ToR1.InitializationHeuristics.FromHardSearchEdges (0.0001,
+							5.));
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		if (null == fpfo || !fpfo.containsRoot()) return false;
+
+		double dblVolatility = fpfo.getRoot();
+
+		for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : _lsFRACapFloorlet) {
+			if (lsCalibCapFloorletIndex.contains (iIndex))
+				mapDateVol.put (fracfl.exerciseDate(), dblVolatility);
+		}
+
+		return true;
+	}
+
+	public java.util.Set<java.lang.String> measureNames()
 	{
 		java.util.Set<java.lang.String> setstrMeasureNames = new java.util.TreeSet<java.lang.String>();
 
 		setstrMeasureNames.add ("CalcTime");
+
+		setstrMeasureNames.add ("FlatATMVolatility");
 
 		setstrMeasureNames.add ("Price");
 

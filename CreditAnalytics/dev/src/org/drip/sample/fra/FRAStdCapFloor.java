@@ -617,7 +617,7 @@ public class FRAStdCapFloor {
 				"FRA_CAP",
 				floatStream,
 				csp
-			),
+			).stream(),
 			strManifestMeasure,
 			true,
 			dblStrike,
@@ -636,7 +636,7 @@ public class FRAStdCapFloor {
 				"FRA_FLOOR",
 				floatStream,
 				csp
-			),
+			).stream(),
 			strManifestMeasure,
 			false,
 			dblStrike,

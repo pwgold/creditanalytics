@@ -99,14 +99,20 @@ public class PointAncillaryMetricsDynamics {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
 				null,
 				null
 			),
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
 				null,
 				null
 			)
@@ -168,7 +174,9 @@ public class PointAncillaryMetricsDynamics {
 		double dblFlatForwardRate = 0.02;
 		int iNumRun = 20;
 
-		int[] aiNumFactor = {1, 2, 3};
+		int[] aiNumFactor = {
+			1, 2, 3
+		};
 
 		double[][] aadblCorrelation = new double[][] {
 			{1.0, 0.1, 0.2},

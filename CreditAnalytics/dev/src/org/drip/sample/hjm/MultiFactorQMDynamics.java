@@ -91,14 +91,20 @@ public class MultiFactorQMDynamics {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
 				null,
 				null
 			),
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
 				null,
 				null
 			)
@@ -123,9 +129,18 @@ public class MultiFactorQMDynamics {
 			},
 			new PrincipalFactorSequenceGenerator (
 				new UnivariateSequenceGenerator[] {
-					new BoxMullerGaussian (0., 1.),
-					new BoxMullerGaussian (0., 1.),
-					new BoxMullerGaussian (0., 1.)
+					new BoxMullerGaussian (
+						0.,
+						1.
+					),
+					new BoxMullerGaussian (
+						0.,
+						1.
+					),
+					new BoxMullerGaussian (
+						0.,
+						1.
+					)
 				},
 				new double[][] {
 					{1.0, 0.1, 0.2},
@@ -138,7 +153,10 @@ public class MultiFactorQMDynamics {
 
 		return new MultiFactorStateEvolver (
 			FundingLabel.Standard (strCurrency),
-			ForwardLabel.Create (strCurrency, strTenor),
+			ForwardLabel.Create (
+				strCurrency,
+				strTenor
+			),
 			mfv,
 			auForwardRate
 		);
@@ -155,7 +173,10 @@ public class MultiFactorQMDynamics {
 	{
 		return ShortForwardRateUpdate.Create (
 			FundingLabel.Standard (strCurrency),
-			ForwardLabel.Create (strCurrency, strTenor),
+			ForwardLabel.Create (
+				strCurrency,
+				strTenor
+			),
 			dtStart.julian(),
 			dtStart.julian(),
 			dtStart.addTenor (strViewTenor).julian(),

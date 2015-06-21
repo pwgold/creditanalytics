@@ -14,8 +14,7 @@ import org.drip.service.api.CreditAnalytics;
 import org.drip.spline.basis.PolynomialFunctionSetParams;
 import org.drip.spline.params.*;
 import org.drip.spline.stretch.MultiSegmentSequenceBuilder;
-import org.drip.state.identifier.ForwardLabel;
-import org.drip.state.identifier.FundingLabel;
+import org.drip.state.identifier.*;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -93,14 +92,20 @@ public class PrincipalComponentQMDynamics {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
 				null,
 				null
 			),
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
 				null,
 				null
 			)
@@ -126,9 +131,18 @@ public class PrincipalComponentQMDynamics {
 			},
 			new PrincipalFactorSequenceGenerator (
 				new UnivariateSequenceGenerator[] {
-					new BoxMullerGaussian (0., 1.),
-					new BoxMullerGaussian (0., 1.),
-					new BoxMullerGaussian (0., 1.)
+					new BoxMullerGaussian (
+						0.,
+						1.
+					),
+					new BoxMullerGaussian (
+						0.,
+						1.
+					),
+					new BoxMullerGaussian (
+						0.,
+						1.
+					)
 				},
 				new double[][] {
 					{1.0, 0.1, 0.2},
@@ -141,7 +155,10 @@ public class PrincipalComponentQMDynamics {
 
 		return new MultiFactorStateEvolver (
 			FundingLabel.Standard (strCurrency),
-			ForwardLabel.Create (strCurrency, strTenor),
+			ForwardLabel.Create (
+				strCurrency,
+				strTenor
+			),
 			mfv,
 			auForwardRate
 		);
@@ -158,7 +175,10 @@ public class PrincipalComponentQMDynamics {
 	{
 		return ShortForwardRateUpdate.Create (
 			FundingLabel.Standard (strCurrency),
-			ForwardLabel.Create (strCurrency, strTenor),
+			ForwardLabel.Create (
+				strCurrency,
+				strTenor
+			),
 			dtStart.julian(),
 			dtStart.julian(),
 			dtStart.addTenor (strViewTenor).julian(),

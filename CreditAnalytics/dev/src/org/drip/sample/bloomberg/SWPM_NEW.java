@@ -332,9 +332,16 @@ public class SWPM_NEW {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
-				null),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
+				null
+			),
 			BoundarySettings.NaturalStandard(),
 			MultiSegmentSequence.CALIBRATE,
 			null,
@@ -346,7 +353,11 @@ public class SWPM_NEW {
 		 *  of Deposit and Swap Stretches.
 		 */
 
-		ValuationParams valParams = new ValuationParams (dtSpot, dtSpot, strCurrency);
+		ValuationParams valParams = new ValuationParams (
+			dtSpot,
+			dtSpot,
+			strCurrency
+		);
 
 		DiscountCurve dcOvernight = ScenarioDiscountCurveBuilder.ShapePreservingDFBuild (
 			lcc,
@@ -454,7 +465,10 @@ public class SWPM_NEW {
 		SegmentCustomBuilderControl scbcCubic = new SegmentCustomBuilderControl (
 			MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 			new PolynomialFunctionSetParams (4),
-			SegmentInelasticDesignControl.Create (2, 2),
+			SegmentInelasticDesignControl.Create (
+				2,
+				2
+			),
 			new ResponseScalingShapeControl (
 				true,
 				new QuadraticRationalShapeControl (0.)

@@ -75,7 +75,10 @@ public class TrinomialTreeCalibration {
 			dblSigma,
 			dblA,
 			new FlatUnivariate (dblStartingForwardRate),
-			new BoxMullerGaussian (0., 1.)
+			new BoxMullerGaussian (
+				0.,
+				1.
+			)
 		);
 	}
 
@@ -128,8 +131,12 @@ public class TrinomialTreeCalibration {
 		double dblA = 0.1;
 		double dblSigma = 0.01;
 		String strCurrency = "USD";
-		String[] astrTenor = {"3M", "6M", "9M"};
-		double[] adblQuote = {0.0026, 0.00412, 0.00572};
+		String[] astrTenor = {
+			"3M", "6M", "9M"
+		};
+		double[] adblQuote = {
+			0.0026, 0.00412, 0.00572
+		};
 
 		SingleFactorStateEvolver hw = HullWhiteEvolver (
 			strCurrency,

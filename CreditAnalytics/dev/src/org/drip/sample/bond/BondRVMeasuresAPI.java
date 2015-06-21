@@ -109,7 +109,10 @@ public class BondRVMeasuresAPI {
 
 		// Cash Calibration
 
-		JulianDate dtCashEffective = dtStart.addBusDays (1, strCurrency);
+		JulianDate dtCashEffective = dtStart.addBusDays (
+			1,
+			strCurrency
+		);
 
 		for (int i = 0; i < astrCashTenor.length; ++i) {
 			astrCalibMeasure[i] = "Rate";
@@ -119,7 +122,10 @@ public class BondRVMeasuresAPI {
 			aCompCalib[i] = SingleStreamComponentBuilder.Deposit (
 				dtCashEffective,
 				new JulianDate (adblDate[i] = dtCashEffective.addTenor (astrCashTenor[i]).julian()),
-				ForwardLabel.Create (strCurrency, astrCashTenor[i])
+				ForwardLabel.Create (
+					strCurrency,
+					astrCashTenor[i]
+				)
 			);
 		}
 
@@ -171,16 +177,17 @@ public class BondRVMeasuresAPI {
 		throws Exception
 	{
 		return BondBuilder.CreateSimpleFixed (	// Simple Fixed Rate Bond
-				strName,					// Name
-				"USD",						// Fictitious Treasury Curve Name
-                "",                         // Credit Curve - Empty for now
-				dblCoupon,					// Bond Coupon
-				2, 							// Frequency
-				"Act/Act",					// Day Count
-				dt, 						// Effective
-				dt.addTenor (strTenor),		// Maturity
-				null,						// Principal Schedule
-				null);
+			strName,					// Name
+			"USD",						// Fictitious Treasury Curve Name
+            "",                         // Credit Curve - Empty for now
+			dblCoupon,					// Bond Coupon
+			2, 							// Frequency
+			"Act/Act",					// Day Count
+			dt, 						// Effective
+			dt.addTenor (strTenor),		// Maturity
+			null,						// Principal Schedule
+			null
+		);
 	}
 
 	/*
@@ -198,7 +205,12 @@ public class BondRVMeasuresAPI {
 		Bond aTSYBond[] = new Bond[astrTenor.length];
 
 		for (int i = 0; i < astrTenor.length; ++i)
-			aTSYBond[i] = CreateTSYBond ("TSY" + astrTenor[i] + "ON", adblCoupon[i], dt, astrTenor[i]);
+			aTSYBond[i] = CreateTSYBond (
+				"TSY" + astrTenor[i] + "ON",
+				adblCoupon[i],
+				dt,
+				astrTenor[i]
+			);
 
 		return aTSYBond;
 	}
@@ -220,13 +232,15 @@ public class BondRVMeasuresAPI {
 		for (int i = 0; i < aTSYBond.length; ++i)
 			astrCalibMeasure[i] = "Yield";
 
-		return ScenarioDiscountCurveBuilder.NonlinearBuild (dt,
+		return ScenarioDiscountCurveBuilder.NonlinearBuild (
+			dt,
 			"USD", // Fake curve name to indicate it is a USD TSY curve, not the usual USD curve
 			DiscountCurveBuilder.BOOTSTRAP_MODE_CONSTANT_FORWARD,
 			aTSYBond,
 			adblTSYYield,
 			astrCalibMeasure,
-			null);
+			null
+		);
 	}
 
 	/*
@@ -245,9 +259,20 @@ public class BondRVMeasuresAPI {
 		for (int i = 0; i < astrTSYTenor.length; ++i) {
 			ProductMultiMeasureQuote cmmq = new ProductMultiMeasureQuote();
 
-			cmmq.addQuote ("Yield", new MultiSidedQuote ("mid", adblTSYYield[i], Double.NaN), true);
+			cmmq.addQuote (
+				"Yield",
+				new MultiSidedQuote (
+					"mid",
+					adblTSYYield[i],
+					Double.NaN
+				),
+				true
+			);
 
-			mTSYQuotes.put (astrTSYTenor[i] + "ON", cmmq);
+			mTSYQuotes.put (
+				astrTSYTenor[i] + "ON",
+				cmmq
+			);
 		}
 
 		return mTSYQuotes;
@@ -323,9 +348,17 @@ public class BondRVMeasuresAPI {
 	private static final void BondRVMeasuresSample()
 		throws Exception
 	{
-		JulianDate dtCurve = DateUtil.CreateFromYMD (2013, 6, 27);
+		JulianDate dtCurve = DateUtil.CreateFromYMD (
+			2013,
+			6,
+			27
+		);
 
-		JulianDate dtSettle = DateUtil.CreateFromYMD (2013, 7, 1);
+		JulianDate dtSettle = DateUtil.CreateFromYMD (
+			2013,
+			7,
+			1
+		);
 
 		/*
 		 * Create the discount curve from rates instruments.
@@ -347,30 +380,65 @@ public class BondRVMeasuresAPI {
 			0.00160, 0.00397, 0.00696, 0.01421, 0.01955, 0.02529, 0.03568
 		};
 
-		DiscountCurve dc = BuildRatesCurveFromInstruments (dtCurve, astrCashTenor, adblCashRate, astrIRSTenor, adblIRSRate, 0., "USD");
+		DiscountCurve dc = BuildRatesCurveFromInstruments (
+			dtCurve,
+			astrCashTenor,
+			adblCashRate,
+			astrIRSTenor,
+			adblIRSRate,
+			0.,
+			"USD"
+		);
 
-		Bond[] aTSYBond = CreateOnTheRunTSYBondSet (dtCurve, astrTSYTenor, adblTSYCoupon);
+		Bond[] aTSYBond = CreateOnTheRunTSYBondSet (
+			dtCurve,
+			astrTSYTenor,
+			adblTSYCoupon
+		);
 
 		/*
 		 * Create the on-the-run treasury discount curve.
 		 */
 
-		DiscountCurve dcTSY = BuildOnTheRunTSYDiscountCurve (dtCurve, aTSYBond, adblTSYYield);
+		DiscountCurve dcTSY = BuildOnTheRunTSYDiscountCurve (
+			dtCurve,
+			aTSYBond,
+			adblTSYYield
+		);
 
 		BondComponent bond = BondBuilder.CreateSimpleFixed (	// Simple Fixed Rate Bond
-				"TEST",			// Name
-				"USD",			// Currency
-				"",				// Credit Curve - Empty for now
-				0.0875,			// Bond Coupon
-				2, 				// Frequency
-				"30/360",		// Day Count
-				DateUtil.CreateFromYMD (2010, 3, 17), // Effective
-				DateUtil.CreateFromYMD (2015, 4, 1),	// Maturity
-				null,		// Principal Schedule
-				null);
+			"TEST",			// Name
+			"USD",			// Currency
+			"",				// Credit Curve - Empty for now
+			0.0875,			// Bond Coupon
+			2, 				// Frequency
+			"30/360",		// Day Count
+			DateUtil.CreateFromYMD (
+				2010,
+				3,
+				17
+			), // Effective
+			DateUtil.CreateFromYMD (
+				2015,
+				4,
+				1
+			),	// Maturity
+			null,		// Principal Schedule
+			null
+		);
 
-		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (dc, dcTSY, null, null, null,
-			MakeTSYQuotes (astrTSYTenor, adblTSYYield), null);
+		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (
+			dc,
+			dcTSY,
+			null,
+			null,
+			null,
+			MakeTSYQuotes (
+				astrTSYTenor,
+				adblTSYYield
+			),
+			null
+		);
 
 		ValuationParams valParams = ValuationParams.Spot (
 			dtSettle,
@@ -385,17 +453,37 @@ public class BondRVMeasuresAPI {
 		 * Compute the work-out date given the price.
 		 */
 
-		WorkoutInfo wi = bond.exerciseYieldFromPrice (valParams, mktParams, null, dblPrice);
+		WorkoutInfo wi = bond.exerciseYieldFromPrice (
+			valParams,
+			mktParams,
+			null,
+			dblPrice
+		);
 
 		/*
 		 * Compute the base RV measures to the work-out date.
 		 */
 
-		org.drip.analytics.output.BondRVMeasures rvm = bond.standardMeasures (valParams, null, mktParams, null, wi, dblPrice);
+		org.drip.analytics.output.BondRVMeasures rvm = bond.standardMeasures (
+			valParams,
+			null,
+			mktParams,
+			null,
+			wi,
+			dblPrice
+		);
 
 		PrintRVMeasures ("\tBase: ", rvm);
 
-		DiscountCurve dcBumped = BuildRatesCurveFromInstruments (dtCurve, astrCashTenor, adblCashRate, astrIRSTenor, adblIRSRate, 0.0001, "USD");
+		DiscountCurve dcBumped = BuildRatesCurveFromInstruments (
+			dtCurve,
+			astrCashTenor,
+			adblCashRate,
+			astrIRSTenor,
+			adblIRSRate,
+			0.0001,
+			"USD"
+		);
 
 		mktParams.setFundingCurve (dcBumped);
 
@@ -403,7 +491,14 @@ public class BondRVMeasuresAPI {
 		 * Compute the bumped RV measures to the work-out date.
 		 */
 
-		org.drip.analytics.output.BondRVMeasures rvmBumped = bond.standardMeasures (valParams, null, mktParams, null, wi, dblPrice);
+		org.drip.analytics.output.BondRVMeasures rvmBumped = bond.standardMeasures (
+			valParams,
+			null,
+			mktParams,
+			null,
+			wi,
+			dblPrice
+		);
 
 		PrintRVMeasures ("\tBumped: ", rvmBumped);
 	}

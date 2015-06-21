@@ -124,13 +124,19 @@ public class CDSBasketAPI {
 			aCompCalib[i] = SingleStreamComponentBuilder.Deposit (
 				dtCashEffective,
 				new JulianDate (adblDate[i] = dtCashEffective.addTenor (astrCashTenor[i]).julian()),
-				ForwardLabel.Create (strCurrency, astrCashTenor[i])
+				ForwardLabel.Create (
+					strCurrency,
+					astrCashTenor[i]
+				)
 			);
 		}
 
 		// IRS Calibration
 
-		JulianDate dtIRSEffective = dtStart.addBusDays (2, strCurrency);
+		JulianDate dtIRSEffective = dtStart.addBusDays (
+			2,
+			strCurrency
+		);
 
 		for (int i = 0; i < astrIRSTenor.length; ++i) {
 			astrCalibMeasure[i + astrCashTenor.length] = "Rate";
@@ -181,7 +187,12 @@ public class CDSBasketAPI {
 		CreditDefaultSwap[] aCDS = new CreditDefaultSwap[adblQuote.length];
 
 		for (int i = 0; i < astrTenor.length; ++i) {
-			aCDS[i] = CDSBuilder.CreateSNAC (dtStart, astrTenor[i], 0.01, strCCName);
+			aCDS[i] = CDSBuilder.CreateSNAC (
+				dtStart,
+				astrTenor[i],
+				0.01,
+				strCCName
+			);
 
 			astrCalibMeasure[i] = "FairPremium";
 		}
@@ -190,8 +201,16 @@ public class CDSBasketAPI {
 		 * Build the credit curve from the CDS instruments and the fair premium
 		 */
 
-		return CreditScenarioCurveBuilder.CreateCreditCurve (strCCName, dtStart, aCDS, dc,
-			adblQuote, astrCalibMeasure, dblRecovery, false);
+		return CreditScenarioCurveBuilder.CreateCreditCurve (
+			strCCName,
+			dtStart,
+			aCDS,
+			dc,
+			adblQuote,
+			astrCalibMeasure,
+			dblRecovery,
+			false
+		);
 	}
 
 	/*
@@ -203,22 +222,42 @@ public class CDSBasketAPI {
 	public static final void BasketBondAPISample()
 		throws Exception
 	{
-		JulianDate dtCurve = DateUtil.CreateFromYMD (2013, 6, 27);
+		JulianDate dtCurve = DateUtil.CreateFromYMD (
+			2013,
+			6,
+			27
+		);
 
-		JulianDate dtSettle = DateUtil.CreateFromYMD (2013, 7, 1);
+		JulianDate dtSettle = DateUtil.CreateFromYMD (
+			2013,
+			7,
+			1
+		);
 
 		/*
 		 * Build the IR Curve from the Rates' instruments
 		 */
 
-		String[] astrCashTenor = new String[] {"3M"};
-		double[] adblCashRate = new double[] {0.00276};
+		String[] astrCashTenor = new String[] {
+			"3M"
+		};
+		double[] adblCashRate = new double[] {
+			0.00276
+		};
 		String[] astrIRSTenor = new String[] {   "1Y",    "2Y",    "3Y",    "4Y",    "5Y",    "6Y",    "7Y",
 			   "8Y",    "9Y",   "10Y",   "11Y",   "12Y",   "15Y",   "20Y",   "25Y",   "30Y",   "40Y",   "50Y"};
 		double[] adblIRSRate = new double[]  {0.00367, 0.00533, 0.00843, 0.01238, 0.01609, 0.01926, 0.02191,
 			0.02406, 0.02588, 0.02741, 0.02870, 0.02982, 0.03208, 0.03372, 0.03445, 0.03484, 0.03501, 0.03484};
 
-		DiscountCurve dc = BuildRatesCurveFromInstruments (dtCurve, astrCashTenor, adblCashRate, astrIRSTenor, adblIRSRate, 0., "USD");
+		DiscountCurve dc = BuildRatesCurveFromInstruments (
+			dtCurve,
+			astrCashTenor,
+			adblCashRate,
+			astrIRSTenor,
+			adblIRSRate,
+			0.,
+			"USD"
+		);
 
 		/*
 		 * Build the Component Credit Curve from the CDS instruments
@@ -299,13 +338,23 @@ public class CDSBasketAPI {
 			Convention.DATE_ROLL_ACTUAL
 		);
 
-		PricerParams pricerParams = new PricerParams (7, null, false, PricerParams.PERIOD_DISCRETIZATION_FULL_COUPON);
+		PricerParams pricerParams = new PricerParams (
+			7,
+			null,
+			false,
+			PricerParams.PERIOD_DISCRETIZATION_FULL_COUPON
+		);
 
 		/*
 		 * Generate the CDS basket measures from the valuation, the pricer, and the market parameters
 		 */
 
-		CaseInsensitiveTreeMap<Double> mapResult = bds.value (valParams, pricerParams, mktParams, null);
+		CaseInsensitiveTreeMap<Double> mapResult = bds.value (
+			valParams,
+			pricerParams,
+			mktParams,
+			null
+		);
 
 		System.out.println ("Accrued:      " + FormatUtil.FormatDouble (mapResult.get ("Accrued"), 0, 2, 100.));
 

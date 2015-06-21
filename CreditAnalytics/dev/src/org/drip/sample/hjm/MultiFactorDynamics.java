@@ -3,8 +3,7 @@ package org.drip.sample.hjm;
 
 import org.drip.analytics.date.*;
 import org.drip.analytics.definition.MarketSurface;
-import org.drip.dynamics.hjm.MultiFactorStateEvolver;
-import org.drip.dynamics.hjm.MultiFactorVolatility;
+import org.drip.dynamics.hjm.*;
 import org.drip.function.R1ToR1.FlatUnivariate;
 import org.drip.function.definition.R1ToR1;
 import org.drip.param.creator.ScenarioMarketSurfaceBuilder;
@@ -14,8 +13,7 @@ import org.drip.service.api.CreditAnalytics;
 import org.drip.spline.basis.PolynomialFunctionSetParams;
 import org.drip.spline.params.*;
 import org.drip.spline.stretch.MultiSegmentSequenceBuilder;
-import org.drip.state.identifier.ForwardLabel;
-import org.drip.state.identifier.FundingLabel;
+import org.drip.state.identifier.*;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -91,14 +89,20 @@ public class MultiFactorDynamics {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
 				null,
 				null
 			),
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
 				null,
 				null
 			)
@@ -122,9 +126,18 @@ public class MultiFactorDynamics {
 			},
 			new PrincipalFactorSequenceGenerator (
 				new UnivariateSequenceGenerator[] {
-					new BoxMullerGaussian (0., 1.),
-					new BoxMullerGaussian (0., 1.),
-					new BoxMullerGaussian (0., 1.)
+					new BoxMullerGaussian (
+						0.,
+						1.
+					),
+					new BoxMullerGaussian (
+						0.,
+						1.
+					),
+					new BoxMullerGaussian (
+						0.,
+						1.
+					)
 				},
 				new double[][] {
 					{1.0, 0.1, 0.2},
@@ -137,7 +150,10 @@ public class MultiFactorDynamics {
 
 		return new MultiFactorStateEvolver (
 			FundingLabel.Standard (strCurrency),
-			ForwardLabel.Create (strCurrency, "6M"),
+			ForwardLabel.Create (
+				strCurrency,
+				"6M"
+			),
 			mfv,
 			auForwardRate
 		);
@@ -280,7 +296,10 @@ public class MultiFactorDynamics {
 				FormatUtil.FormatDouble (dblProportionalPriceIncrement, 1, 2, 100.) + " || "
 			);
 
-			dtSpot = dtSpot.addBusDays (iDayStep, strCurrency);
+			dtSpot = dtSpot.addBusDays (
+				iDayStep,
+				strCurrency
+			);
 		}
 
 		System.out.println ("\t|-------------------------------------------------------------------------------------------------------------------------------||");

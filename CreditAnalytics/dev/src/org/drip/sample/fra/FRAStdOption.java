@@ -649,5 +649,17 @@ public class FRAStdOption {
 
 		for (Map.Entry<String, Double> me : mapFRAFloorletOutput.entrySet())
 			System.out.println ("\t" + me.getKey() + " => " + me.getValue());
+
+		System.out.println (
+			"FRA Caplet: " +
+			fraCaplet.implyVolatility (
+				valParams,
+				null,
+				mktParams,
+				null,
+				"ATMPrice",
+				mapFRACapletOutput.get ("ATMPrice")
+			)
+		);
 	}
 }

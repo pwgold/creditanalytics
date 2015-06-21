@@ -1,8 +1,7 @@
 
 package org.drip.sample.bloomberg;
 
-import org.drip.analytics.cashflow.ComposableUnitFloatingPeriod;
-import org.drip.analytics.cashflow.CompositePeriod;
+import org.drip.analytics.cashflow.*;
 import org.drip.analytics.date.*;
 import org.drip.analytics.rates.DiscountCurve;
 import org.drip.analytics.support.*;
@@ -73,8 +72,14 @@ public class SWPM {
 		for (int i = 0; i < aiDay.length; ++i)
 			aCalibComp[i] = SingleStreamComponentBuilder.Deposit (
 				dtEffective,
-				dtEffective.addBusDays (aiDay[i], strCurrency),
-				ForwardLabel.Create (strCurrency, aiDay[i] + "D")
+				dtEffective.addBusDays (
+					aiDay[i],
+					strCurrency
+				),
+				ForwardLabel.Create (
+					strCurrency,
+					aiDay[i] + "D"
+				)
 			);
 
 		CalibratableFixedIncomeComponent[] aEDF = SingleStreamComponentBuilder.FuturesPack (
@@ -208,7 +213,11 @@ public class SWPM {
 
 		return ScenarioDiscountCurveBuilder.CubicKLKHyperbolicDFRateShapePreserver (
 			"KLK_HYPERBOLIC_SHAPE_TEMPLATE",
-			new ValuationParams (dtSpot, dtSpot, "USD"),
+			new ValuationParams (
+				dtSpot,
+				dtSpot,
+				"USD"
+			),
 			aDepositComp,
 			adblDepositQuote,
 			null,
@@ -227,7 +236,10 @@ public class SWPM {
 
 		JulianDate dtValue = DateUtil.Today();
 
-		JulianDate dtSettle = dtValue.addBusDays (2, "USD");
+		JulianDate dtSettle = dtValue.addBusDays (
+			2,
+			"USD"
+		);
 
 		System.out.println ("\n---- Valuation Details ----\n");
 
@@ -247,9 +259,16 @@ public class SWPM {
 		 * Build the Discount Curve
 		 */
 
-		DiscountCurve dc = MakeDC (dtValue, "USD", 0.);
+		DiscountCurve dc = MakeDC (
+			dtValue,
+			"USD",
+			0.
+		);
 
-		JulianDate dtEffective = dtValue.addBusDays (2, "USD");
+		JulianDate dtEffective = dtValue.addBusDays (
+			2,
+			"USD"
+		);
 
 		JulianDate dtMaturity = dtEffective.addTenor ("5Y");
 
@@ -278,21 +297,42 @@ public class SWPM {
 
 		ComposableUnitFloatingPeriod cufs = ((ComposableUnitFloatingPeriod) (swap.derivedStream().periods().get (0).periods().get (0)));
 
-		lsfc.add (cufs.referenceIndexPeriod().fixingDate(), swap.derivedStream().forwardLabel(), dblFixing);
+		lsfc.add (
+			cufs.referenceIndexPeriod().fixingDate(),
+			swap.derivedStream().forwardLabel(),
+			dblFixing
+		);
 
-		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (dc, null, null, null, null, null, lsfc);
+		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (
+			dc,
+			null,
+			null,
+			null,
+			null,
+			null,
+			lsfc
+		);
 
 		/*
 		 * Set up the valuation parameters
 		 */
 
-		ValuationParams valParams = new ValuationParams (dtValue, dtSettle, "USD");
+		ValuationParams valParams = new ValuationParams (
+			dtValue,
+			dtSettle,
+			"USD"
+		);
 
 		/*
 		 * Generate the base scenario measures for the swap
 		 */
 
-		CaseInsensitiveTreeMap<Double> mapSwapCalc = swap.value (valParams, null, mktParams, null);
+		CaseInsensitiveTreeMap<Double> mapSwapCalc = swap.value (
+			valParams,
+			null,
+			mktParams,
+			null
+		);
 
 		double dblBasePV = mapSwapCalc.get ("PV");
 
@@ -310,15 +350,32 @@ public class SWPM {
 		 * Set up the fixings bumped market parameters - these use base discount curve and the bumped fixing
 		 */
 
-		lsfc.add (cufs.referenceIndexPeriod().fixingDate(), swap.derivedStream().forwardLabel(), dblFixing + 0.0001);
+		lsfc.add (
+			cufs.referenceIndexPeriod().fixingDate(),
+			swap.derivedStream().forwardLabel(),
+			dblFixing + 0.0001
+		);
 
-		CurveSurfaceQuoteSet mktParamsFixingsBumped = MarketParamsBuilder.Create (dc, null, null, null, null, null, lsfc);
+		CurveSurfaceQuoteSet mktParamsFixingsBumped = MarketParamsBuilder.Create (
+			dc,
+			null,
+			null,
+			null,
+			null,
+			null,
+			lsfc
+		);
 
 		/*
 		 * Generate the fixing bumped scenario measures for the swap
 		 */
 
-		CaseInsensitiveTreeMap<Double> mapSwapFixingsBumpedCalc = swap.value (valParams, null, mktParamsFixingsBumped, null);
+		CaseInsensitiveTreeMap<Double> mapSwapFixingsBumpedCalc = swap.value (
+			valParams,
+			null,
+			mktParamsFixingsBumped,
+			null
+		);
 
 		double dblFixingsDV01 = mapSwapFixingsBumpedCalc.get ("PV") - dblBasePV;
 
@@ -330,17 +387,38 @@ public class SWPM {
 		 * Set up the rate flat bumped market parameters - these use the bumped base discount curve and the base fixing
 		 */
 
-		DiscountCurve dcBumped = MakeDC (dtValue, "USD", -0.0001);
+		DiscountCurve dcBumped = MakeDC (
+			dtValue,
+			"USD",
+			-0.0001
+		);
 
-		lsfc.add (dtEffective, swap.derivedStream().forwardLabel(), dblFixing - 0.0001);
+		lsfc.add (
+			dtEffective,
+			swap.derivedStream().forwardLabel(),
+			dblFixing - 0.0001
+		);
 
-		CurveSurfaceQuoteSet mktParamsRateBumped = MarketParamsBuilder.Create (dcBumped, null, null, null, null, null, lsfc);
+		CurveSurfaceQuoteSet mktParamsRateBumped = MarketParamsBuilder.Create (
+			dcBumped,
+			null,
+			null,
+			null,
+			null,
+			null,
+			lsfc
+		);
 
 		/*
 		 * Generate the rate flat bumped scenario measures for the swap
 		 */
 
-		CaseInsensitiveTreeMap<Double> mapSwapRateBumpedCalc = swap.value (valParams, null, mktParamsRateBumped, null);
+		CaseInsensitiveTreeMap<Double> mapSwapRateBumpedCalc = swap.value (
+			valParams,
+			null,
+			mktParamsRateBumped,
+			null
+		);
 
 		System.out.println ("PV01         : " + FormatUtil.FormatDouble (mapSwapRateBumpedCalc.get ("PV") - dblBasePV, 0, 0, dblNotional));
 

@@ -1,5 +1,5 @@
 
-package org.drip.sample.credit;
+package org.drip.sample.tick;
 
 /*
  * Generic imports

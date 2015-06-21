@@ -7,9 +7,7 @@ import org.drip.analytics.date.JulianDate;
 import org.drip.analytics.definition.MarketSurface;
 import org.drip.analytics.rates.*;
 import org.drip.analytics.support.CompositePeriodBuilder;
-import org.drip.dynamics.lmm.BGMCurveUpdate;
-import org.drip.dynamics.lmm.LognormalLIBORCurveEvolver;
-import org.drip.dynamics.lmm.LognormalLIBORVolatility;
+import org.drip.dynamics.lmm.*;
 import org.drip.function.R1ToR1.QuadraticRationalShapeControl;
 import org.drip.param.creator.*;
 import org.drip.param.market.CurveSurfaceQuoteSet;
@@ -26,8 +24,7 @@ import org.drip.spline.params.*;
 import org.drip.spline.stretch.*;
 import org.drip.state.curve.BasisSplineForwardRate;
 import org.drip.state.estimator.LatentStateStretchBuilder;
-import org.drip.state.identifier.ForwardLabel;
-import org.drip.state.identifier.FundingLabel;
+import org.drip.state.identifier.*;
 import org.drip.state.inference.*;
 
 /*
@@ -93,7 +90,10 @@ public class MultiFactorLIBORCurveEvolver {
 			"3M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
 			null,
-			ForwardLabel.Create (strCurrency, "3M"),
+			ForwardLabel.Create (
+				strCurrency,
+				"3M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -123,7 +123,10 @@ public class MultiFactorLIBORCurveEvolver {
 					CompositePeriodBuilder.FloatingCompositeUnit (
 						CompositePeriodBuilder.EdgePair (
 							dtEffective,
-							dtEffective.addBusDays (aiDay[i], strCurrency)
+							dtEffective.addBusDays (
+								aiDay[i],
+								strCurrency
+							)
 						),
 						cps,
 						cfus
@@ -167,7 +170,10 @@ public class MultiFactorLIBORCurveEvolver {
 			"3M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-			ForwardLabel.Create (strCurrency, "3M"),
+			ForwardLabel.Create (
+				strCurrency,
+				"3M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -377,8 +383,14 @@ public class MultiFactorLIBORCurveEvolver {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
 				null
 			),
 			BoundarySettings.NaturalStandard(),
@@ -489,7 +501,10 @@ public class MultiFactorLIBORCurveEvolver {
 
 			adblDate[i] = dtForward.julian();
 
-			adblLIBOR[i] = dc.libor (dtForward, forwardLabel.tenor());
+			adblLIBOR[i] = dc.libor (
+				dtForward,
+				forwardLabel.tenor()
+			);
 
 			dtForward = dtForward.addTenor (forwardLabel.tenor());
 		}
@@ -548,14 +563,20 @@ public class MultiFactorLIBORCurveEvolver {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
 				null,
 				null
 			),
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
 				null,
 				null
 			)
@@ -573,7 +594,10 @@ public class MultiFactorLIBORCurveEvolver {
 		UnivariateSequenceGenerator[] aUSG = new UnivariateSequenceGenerator[aMS.length];
 
 		for (int i = 0; i < aUSG.length; ++i)
-			aUSG[i] = new BoxMullerGaussian (0., 1.);
+			aUSG[i] = new BoxMullerGaussian (
+				0.,
+				1.
+			);
 
 		return new LognormalLIBORVolatility (
 			dblSpotDate,

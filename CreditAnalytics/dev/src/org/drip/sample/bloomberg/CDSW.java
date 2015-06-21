@@ -109,7 +109,10 @@ public class CDSW {
 
 		// Cash Calibration
 
-		JulianDate dtCashEffective = dtStart.addBusDays (1, strCurrency);
+		JulianDate dtCashEffective = dtStart.addBusDays (
+			1,
+			strCurrency
+		);
 
 		for (int i = 0; i < astrCashTenor.length; ++i) {
 			astrCalibMeasure[i] = "Rate";
@@ -119,7 +122,10 @@ public class CDSW {
 			aCompCalib[i] = SingleStreamComponentBuilder.Deposit (
 				dtCashEffective,
 				new JulianDate (adblDate[i] = dtCashEffective.addTenor (astrCashTenor[i]).julian()),
-				ForwardLabel.Create (strCurrency, astrCashTenor[i])
+				ForwardLabel.Create (
+					strCurrency,
+					astrCashTenor[i]
+				)
 			);
 		}
 
@@ -179,7 +185,12 @@ public class CDSW {
 		CreditDefaultSwap[] aCDS = new CreditDefaultSwap[adblQuote.length];
 
 		for (int i = 0; i < astrTenor.length; ++i) {
-			aCDS[i] = CDSBuilder.CreateSNAC (dtStart, astrTenor[i], dblStrike, strCCName);
+			aCDS[i] = CDSBuilder.CreateSNAC (
+				dtStart,
+				astrTenor[i],
+				dblStrike,
+				strCCName
+			);
 
 			astrCalibMeasure[i] = strMeasure;
 			adblQuote[i] += dblBump;
@@ -189,8 +200,16 @@ public class CDSW {
 		 * Build the credit curve from the CDS instruments and the fair premium
 		 */
 
-		return CreditScenarioCurveBuilder.CreateCreditCurve (strCCName, dtStart, aCDS, dc, adblQuote,
-			astrCalibMeasure, dblRecovery, "QuotedSpread".equals (strMeasure));
+		return CreditScenarioCurveBuilder.CreateCreditCurve (
+			strCCName,
+			dtStart,
+			aCDS,
+			dc,
+			adblQuote,
+			astrCalibMeasure,
+			dblRecovery,
+			"QuotedSpread".equals (strMeasure)
+		);
 	}
 
 	/*
@@ -208,8 +227,8 @@ public class CDSW {
 		for (int i = 0; i < aCDS.length; ++i)
 			System.out.println (
 				aCDS[i].maturityDate() + " | " +
-				cc.manifestMeasure(aCDS[i].primaryCode()) + " | " +
-				org.drip.quant.common.FormatUtil.FormatDouble (1. - cc.survival (aCDS[i].maturityDate()), 1, 3, 1.));
+				cc.manifestMeasure (aCDS[i].primaryCode()) + " | " +
+				FormatUtil.FormatDouble (1. - cc.survival (aCDS[i].maturityDate()), 1, 3, 1.));
 	}
 
 	/*
@@ -243,7 +262,10 @@ public class CDSW {
 
 		JulianDate dtValue = dtCurve.addDays (1);
 
-		JulianDate dtSettle = dtValue.addBusDays (3, "USD");
+		JulianDate dtSettle = dtValue.addBusDays (
+			3,
+			"USD"
+		);
 
 		/*
 		 * Model the USD ISDA Standard Curve
@@ -262,21 +284,42 @@ public class CDSW {
 		 * Build the USD ISDA Standard Curve
 		 */
 
-		DiscountCurve dc = BuildRatesCurveFromInstruments (dtCurve, astrCashTenor, adblCashRate, astrIRSTenor,
-			adblIRSRate, 0., "USD");
+		DiscountCurve dc = BuildRatesCurveFromInstruments (
+			dtCurve,
+			astrCashTenor,
+			adblCashRate,
+			astrIRSTenor,
+			adblIRSRate,
+			0.,
+			"USD"
+		);
 
 		/*
 		 * Build the CDS Instrument Quotes
 		 */
 
-		String[] astrCDSTenor = new String[] {"6M", "1Y", "2Y", "3Y", "4Y", "5Y", "7Y", "10Y"};
-		double[] adblCDSParSpread = new double[] {60., 68., 88., 102., 121., 138., 168., 188.};
+		String[] astrCDSTenor = new String[] {
+			"6M", "1Y", "2Y", "3Y", "4Y", "5Y", "7Y", "10Y"
+		};
+		double[] adblCDSParSpread = new double[] {
+			60., 68., 88., 102., 121., 138., 168., 188.
+		};
 
 		/*
 		 * Build the Base Credit Curve
 		 */
 
-		CreditCurve cc = CreateCreditCurveFromCDS (dtValue, adblCDSParSpread, astrCDSTenor, "FairPremium", dc, dblRecovery, "MS", 0.01, 0.);
+		CreditCurve cc = CreateCreditCurveFromCDS (
+			dtValue,
+			adblCDSParSpread,
+			astrCDSTenor,
+			"FairPremium",
+			dc,
+			dblRecovery,
+			"MS",
+			0.01,
+			0.
+		);
 
 		/*
 		 * Display Survival Probability to the instrument maturities
@@ -288,9 +331,18 @@ public class CDSW {
 		 * Create the CDS to price. Contract Maturity is 6Y. Traded Spread Input is 0.05 (500 bp).
 		 */
 
-		CreditDefaultSwap cds = CreateCDS (dtValue, "6Y", 0.05, "MS");
+		CreditDefaultSwap cds = CreateCDS (
+			dtValue,
+			"6Y",
+			0.05,
+			"MS"
+		);
 
-		ValuationParams valParams = new ValuationParams (dtValue, dtSettle, "USD");
+		ValuationParams valParams = new ValuationParams (
+			dtValue,
+			dtSettle,
+			"USD"
+		);
 
 		PricerParams pricerParams = PricerParams.Standard();
 
@@ -310,13 +362,17 @@ public class CDSW {
 		 * Generate the base CDS Measures
 		 */
 
-		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Credit (dc, cc);
+		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Credit (
+			dc,
+			cc
+		);
 
 		CaseInsensitiveTreeMap<Double> mapBaseMeasures = cds.value (
 			valParams,
 			pricerParams,
 			mktParams,
-			null);
+			null
+		);
 
 		double dblAccrued = mapBaseMeasures.get ("Accrued") * 100. * dblNotional;
 
@@ -342,7 +398,17 @@ public class CDSW {
 		 * Build the Bumped 01 Credit Curve
 		 */
 
-		CreditCurve cc01Bump = CreateCreditCurveFromCDS (dtValue, adblCDSParSpread, astrCDSTenor, "FairPremium", dc, dblRecovery, "MS", 0.01, 1.);
+		CreditCurve cc01Bump = CreateCreditCurveFromCDS (
+			dtValue,
+			adblCDSParSpread,
+			astrCDSTenor,
+			"FairPremium",
+			dc,
+			dblRecovery,
+			"MS",
+			0.01,
+			1.
+		);
 
 		/*
 		 * Generate the 1 bp flat Credit Curve bumped  Measures
@@ -351,8 +417,12 @@ public class CDSW {
 		CaseInsensitiveTreeMap<Double> mapCreditFlat01Measures = cds.value (
 			valParams,
 			pricerParams,
-			MarketParamsBuilder.Credit (dc, cc01Bump),
-			null);
+			MarketParamsBuilder.Credit (
+				dc,
+				cc01Bump
+			),
+			null
+		);
 
 		double dblCreditFlat01DirtyPV = mapCreditFlat01Measures.get ("DirtyPV");
 
@@ -362,8 +432,15 @@ public class CDSW {
 		 * Build the Bumped 01 Rates Curve
 		 */
 
-		DiscountCurve dc01Bump = BuildRatesCurveFromInstruments (dtCurve, astrCashTenor, adblCashRate, astrIRSTenor,
-			adblIRSRate, 0.0001, "USD");
+		DiscountCurve dc01Bump = BuildRatesCurveFromInstruments (
+			dtCurve,
+			astrCashTenor,
+			adblCashRate,
+			astrIRSTenor,
+			adblIRSRate,
+			0.0001,
+			"USD"
+		);
 
 		/*
 		 * Generate the 1 bp flat Rates Curve bumped  Measures
@@ -372,8 +449,12 @@ public class CDSW {
 		CaseInsensitiveTreeMap<Double> mapRatesFlat01Measures = cds.value (
 			valParams,
 			pricerParams,
-			MarketParamsBuilder.Credit (dc01Bump, cc),
-			null);
+			MarketParamsBuilder.Credit (
+				dc01Bump,
+				cc
+			),
+			null
+		);
 
 		double dblRatesFlat01DirtyPV = mapRatesFlat01Measures.get ("DirtyPV");
 
@@ -405,7 +486,8 @@ public class CDSW {
 			mktParams,
 			null,
 			0.05,
-			208.);
+			208.
+		);
 
 		System.out.println ("\n---- Quoted Spread CDS Measures ----");
 

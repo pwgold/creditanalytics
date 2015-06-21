@@ -25,8 +25,7 @@ import org.drip.product.definition.*;
 
 import org.drip.product.rates.*;
 import org.drip.param.creator.*;
-import org.drip.quant.common.Array2D;
-import org.drip.quant.common.FormatUtil;
+import org.drip.quant.common.*;
 import org.drip.service.api.CreditAnalytics;
 import org.drip.state.creator.*;
 import org.drip.state.identifier.ForwardLabel;
@@ -96,7 +95,10 @@ public class BondBasketAPI {
 			"3M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-			ForwardLabel.Create (strCurrency, "3M"),
+			ForwardLabel.Create (
+				strCurrency,
+				"3M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -217,13 +219,19 @@ public class BondBasketAPI {
 			aCompCalib[i] = SingleStreamComponentBuilder.Deposit (
 				dtCashEffective,
 				new JulianDate (adblDate[i] = dtCashEffective.addTenor (astrCashTenor[i]).julian()),
-				ForwardLabel.Create (strCurrency, astrCashTenor[i])
+				ForwardLabel.Create (
+					strCurrency,
+					astrCashTenor[i]
+				)
 			);
 		}
 
 		// IRS Calibration
 
-		JulianDate dtIRSEffective = dtStart.addBusDays (2, strCurrency);
+		JulianDate dtIRSEffective = dtStart.addBusDays (
+			2,
+			strCurrency
+		);
 
 		for (int i = 0; i < astrIRSTenor.length; ++i) {
 			astrCalibMeasure[i + astrCashTenor.length] = "Rate";
@@ -269,16 +277,17 @@ public class BondBasketAPI {
 		throws Exception
 	{
 		return BondBuilder.CreateSimpleFixed (	// Simple Fixed Rate Bond
-				strName,					// Name
-				"USD",					// Fictitious Treasury Curve Name
-                "",                         // Credit Curve - Empty for now
-				dblCoupon,					// Bond Coupon
-				2, 							// Frequency
-				"Act/Act",					// Day Count
-				dt, 						// Effective
-				dt.addTenor (strTenor),		// Maturity
-				null,						// Principal Schedule
-				null);
+			strName,					// Name
+			"USD",					// Fictitious Treasury Curve Name
+            "",                         // Credit Curve - Empty for now
+			dblCoupon,					// Bond Coupon
+			2, 							// Frequency
+			"Act/Act",					// Day Count
+			dt, 						// Effective
+			dt.addTenor (strTenor),		// Maturity
+			null,						// Principal Schedule
+			null
+		);
 	}
 
 	/*
@@ -296,7 +305,12 @@ public class BondBasketAPI {
 		Bond aTSYBond[] = new Bond[astrTenor.length];
 
 		for (int i = 0; i < astrTenor.length; ++i)
-			aTSYBond[i] = CreateTSYBond ("TSY" + astrTenor[i] + "ON", adblCoupon[i], dt, astrTenor[i]);
+			aTSYBond[i] = CreateTSYBond (
+				"TSY" + astrTenor[i] + "ON",
+				adblCoupon[i],
+				dt,
+				astrTenor[i]
+			);
 
 		return aTSYBond;
 	}
@@ -318,13 +332,15 @@ public class BondBasketAPI {
 		for (int i = 0; i < aTSYBond.length; ++i)
 			astrCalibMeasure[i] = "Yield";
 
-		return ScenarioDiscountCurveBuilder.NonlinearBuild (dt,
+		return ScenarioDiscountCurveBuilder.NonlinearBuild (
+			dt,
 			"USD", // Fake curve name to indicate it is a USD TSY curve, not the usual USD curve
 			DiscountCurveBuilder.BOOTSTRAP_MODE_CONSTANT_FORWARD,
 			aTSYBond,
 			adblTSYYield,
 			astrCalibMeasure,
-			null);
+			null
+		);
 	}
 
 	/*
@@ -345,7 +361,10 @@ public class BondBasketAPI {
 		for (int i = 0; i < 5; ++i)
 			adblDate[i] = dtEOSStart.addYears (i + 2).julian();
 
-		return Array2D.FromArray (adblDate, adblFactor);
+		return Array2D.FromArray (
+			adblDate,
+			adblFactor
+		);
 	}
 
 	/*
@@ -366,7 +385,10 @@ public class BondBasketAPI {
 		for (int i = 0; i < 5; ++i)
 			adblDate[i] = dtEOSStart.addYears (i + 2).julian();
 
-		return Array2D.FromArray (adblDate, adblFactor);
+		return Array2D.FromArray (
+			adblDate,
+			adblFactor
+		);
 	}
 
 	/*
@@ -378,9 +400,17 @@ public class BondBasketAPI {
 	private static final void BasketBondAPISample()
 		throws Exception
 	{
-		JulianDate dtCurve = DateUtil.CreateFromYMD (2013, 6, 27);
+		JulianDate dtCurve = DateUtil.CreateFromYMD (
+			2013,
+			6,
+			27
+		);
 
-		JulianDate dtSettle = DateUtil.CreateFromYMD (2013, 7, 1);
+		JulianDate dtSettle = DateUtil.CreateFromYMD (
+			2013,
+			7,
+			1
+		);
 
 		/*
 		 * Build the IR Curve from the Rates' instruments
@@ -406,7 +436,11 @@ public class BondBasketAPI {
 			0.0000, 0.00375, 0.00500, 0.0100, 0.01375, 0.01375, 0.02875
 		};
 
-		Bond[] aTSYBond = CreateOnTheRunTSYBondSet (dtCurve, astrTSYTenor, adblTSYCoupon);
+		Bond[] aTSYBond = CreateOnTheRunTSYBondSet (
+			dtCurve,
+			astrTSYTenor,
+			adblTSYCoupon
+		);
 
 		/*
 		 * Build the Treasury Curve from the Treasury instruments and their yields
@@ -416,62 +450,110 @@ public class BondBasketAPI {
 			0.00160, 0.00397, 0.00696, 0.01421, 0.01955, 0.02529, 0.03568
 		};
 
-		DiscountCurve dcTSY = BuildOnTheRunTSYDiscountCurve (dtCurve, aTSYBond, adblTSYYield);
+		DiscountCurve dcTSY = BuildOnTheRunTSYDiscountCurve (
+			dtCurve,
+			aTSYBond,
+			adblTSYYield
+		);
 
 		/*
 		 * Construct the set of bonds and load them onto the basket
 		 */
 
 		BondComponent bond1 = BondBuilder.CreateSimpleFixed (
-                "TEST1",                                               // Name
-                "USD",                                  // Currency
-                "",                                  	// Credit Curve - Empty for now
-                0.09,                                      // Bond Coupon
-                2,                                                            // Frequency
-                "30/360",                             // Day Count
-                DateUtil.CreateFromYMD (2011, 2, 23), // Effective
-                DateUtil.CreateFromYMD (2021, 3, 1),               // Maturity
-                null,                       // Principal Schedule
-                null);
+            "TEST1",                                               // Name
+            "USD",                                  // Currency
+            "",                                  	// Credit Curve - Empty for now
+            0.09,                                      // Bond Coupon
+            2,                                                            // Frequency
+            "30/360",                             // Day Count
+            DateUtil.CreateFromYMD (
+            	2011,
+            	2,
+            	23
+            ), // Effective
+            DateUtil.CreateFromYMD (
+            	2021,
+            	3,
+            	1
+            ),               // Maturity
+            null,                       // Principal Schedule
+            null
+		);
 
 		BondComponent bond2 = BondBuilder.CreateSimpleFixed (    // Simple Fixed Rate Bond
-                "TEST2",                                               // Name
-                "USD",                                  // Currency
-                "",                                  	// Credit Curve - Empty for now
-                0.09,                                      // Bond Coupon
-                2,                                                            // Frequency
-                "30/360",                             // Day Count
-                DateUtil.CreateFromYMD (2011, 2, 23), // Effective
-                DateUtil.CreateFromYMD (2021, 3, 1),               // Maturity
-                null,                       // Principal Schedule
-                null);
+            "TEST2",                                               // Name
+            "USD",                                  // Currency
+            "",                                  	// Credit Curve - Empty for now
+            0.09,                                      // Bond Coupon
+            2,                                                            // Frequency
+            "30/360",                             // Day Count
+            DateUtil.CreateFromYMD (
+            	2011,
+            	2,
+            	23
+            ), // Effective
+            DateUtil.CreateFromYMD (
+            	2021,
+            	3,
+            	1
+            ),               // Maturity
+            null,                       // Principal Schedule
+            null
+		);
 
 		BondComponent bond3 = BondBuilder.CreateSimpleFixed (    // Simple Fixed Rate Bond
-                "TEST3",                                               // Name
-                "USD",                                  // Currency
-                "",                                  	// Credit Curve - Empty for now
-                0.09,                                      // Bond Coupon
-                2,                                                            // Frequency
-                "30/360",                             // Day Count
-                DateUtil.CreateFromYMD (2011, 2, 23), // Effective
-                DateUtil.CreateFromYMD (2021, 3, 1),               // Maturity
-                null,                       // Principal Schedule
-                null);
+            "TEST3",                                               // Name
+            "USD",                                  // Currency
+            "",                                  	// Credit Curve - Empty for now
+            0.09,                                      // Bond Coupon
+            2,                                                            // Frequency
+            "30/360",                             // Day Count
+            DateUtil.CreateFromYMD (
+            	2011,
+            	2,
+            	23
+            ), // Effective
+            DateUtil.CreateFromYMD (
+            	2021,
+            	3,
+            	1
+            ),               // Maturity
+            null,                       // Principal Schedule
+            null
+		);
 
 		BondComponent bond4 = BondBuilder.CreateSimpleFloater ( // Simple Floating Rate Bond
-				"FLOATER1",		// Name
-				"USD",			// Currency
-				"USD-6M",	// Rate Index
-                "",            	// Credit Curve - Empty for now
-				0.01,			// Floating Spread
-				2,				// Coupon Frequency
-				"30/360",		// Day Count
-				DateUtil.CreateFromYMD (2008, 9, 21), // Effective
-				DateUtil.CreateFromYMD (2023, 9, 20),	// Maturity
-				MakeFSPrincipal(),		// Principal Schedule
-				MakeFSCoupon());		// Coupon Schedule
+			"FLOATER1",		// Name
+			"USD",			// Currency
+			"USD-6M",	// Rate Index
+            "",            	// Credit Curve - Empty for now
+			0.01,			// Floating Spread
+			2,				// Coupon Frequency
+			"30/360",		// Day Count
+			DateUtil.CreateFromYMD (
+				2008,
+				9,
+				21
+			), // Effective
+			DateUtil.CreateFromYMD (
+				2023,
+				9,
+				20
+			),	// Maturity
+			MakeFSPrincipal(),		// Principal Schedule
+			MakeFSCoupon()		// Coupon Schedule
+		);
 
-		BasketProduct bb = new BondBasket ("TurtlePower", new Bond[] {bond1, bond2, bond3, bond4}, new double[] {0.1, 0.2, 0.3, 0.4});
+		BasketProduct bb = new BondBasket (
+			"TurtlePower",
+			new Bond[] {
+				bond1, bond2, bond3, bond4
+			},
+			new double[] {
+				0.1, 0.2, 0.3, 0.4
+			}
+		);
 
 		/*
 		 * Create the basket market parameters and add the named discount curve and the treasury curves to it.
@@ -494,13 +576,23 @@ public class BondBasketAPI {
 			Convention.DATE_ROLL_ACTUAL
 		);
 
-		PricerParams pricerParams = new PricerParams (7, null, false, PricerParams.PERIOD_DISCRETIZATION_FULL_COUPON);
+		PricerParams pricerParams = new PricerParams (
+			7,
+			null,
+			false,
+			PricerParams.PERIOD_DISCRETIZATION_FULL_COUPON
+		);
 
 		/*
 		 * Generate the bond basket measures from the valuation, the pricer, and the market parameters
 		 */
 
-		CaseInsensitiveTreeMap<Double> mapResult = bb.value (valParams, pricerParams, mktParams, null);
+		CaseInsensitiveTreeMap<Double> mapResult = bb.value (
+			valParams,
+			pricerParams,
+			mktParams,
+			null
+		);
 
 		System.out.println ("Clean Price:      " + FormatUtil.FormatDouble (mapResult.get ("CleanPrice"), 0, 2, 100.));
 

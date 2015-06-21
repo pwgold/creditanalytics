@@ -57,7 +57,10 @@ public class ShortRateDynamics {
 			dblSigma,
 			dblA,
 			new FlatUnivariate (dblStartingForwardRate),
-			new BoxMullerGaussian (0., 1.)
+			new BoxMullerGaussian (
+				0.,
+				1.
+			)
 		);
 	}
 
@@ -130,7 +133,10 @@ public class ShortRateDynamics {
 				FormatUtil.FormatDouble (dblTheta, 1, 4, 100.) + "% || "
 			);
 
-			dtView = dtView.addBusDays (iDayStep, strCurrency);
+			dtView = dtView.addBusDays (
+				iDayStep,
+				strCurrency
+			);
 		}
 
 		System.out.println ("\t|------------------------------------------------------||");

@@ -97,14 +97,20 @@ public class ContinuousForwardRateVolatility {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
 				null,
 				null
 			),
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
 				null,
 				null
 			)
@@ -118,7 +124,7 @@ public class ContinuousForwardRateVolatility {
 		String strDump = "\t | " + strTenor + " => ";
 
 		for (int i = 0; i < adblVol.length; ++i)
-			strDump += FormatUtil.FormatDouble(adblVol[i], 1, 2, 100.) + "% |";
+			strDump += FormatUtil.FormatDouble (adblVol[i], 1, 2, 100.) + "% |";
 
 		System.out.println (strDump);
 	}
@@ -136,9 +142,13 @@ public class ContinuousForwardRateVolatility {
 		double dblFlatVol3 = 0.27;
 		double dblFlatForwardRate = 0.02;
 
-		int[] aiNumFactor = {1, 2, 3};
+		int[] aiNumFactor = {
+			1, 2, 3
+		};
 
-		String[] astrForwardTenor = {"1Y", "2Y", "3Y", "4Y", "5Y", "6Y", "7Y", "8Y"};
+		String[] astrForwardTenor = {
+			"1Y", "2Y", "3Y", "4Y", "5Y", "6Y", "7Y", "8Y"
+		};
 
 		ForwardLabel forwardLabel = ForwardLabel.Create (
 			strCurrency,
@@ -183,9 +193,18 @@ public class ContinuousForwardRateVolatility {
 				},
 				new PrincipalFactorSequenceGenerator (
 					new UnivariateSequenceGenerator[] {
-						new BoxMullerGaussian (0., 1.),
-						new BoxMullerGaussian (0., 1.),
-						new BoxMullerGaussian (0., 1.)
+						new BoxMullerGaussian (
+							0.,
+							1.
+						),
+						new BoxMullerGaussian (
+							0.,
+							1.
+						),
+						new BoxMullerGaussian (
+							0.,
+							1.
+						)
 					},
 					new double[][] {
 						{1.0, 0.1, 0.2},

@@ -50,12 +50,21 @@ public class BlackVolatility {
 		throws Exception
 	{
 		return new StochasticVolatilityStateEvolver (
-			ForwardLabel.Create ("USD", "6M"),
+			ForwardLabel.Create (
+				"USD",
+				"6M"
+			),
 			dblBeta,
 			dblRho,
 			dblVolatilityOfVolatility,
-			new BoxMullerGaussian (0., 1.),
-			new BoxMullerGaussian (0., 1.)
+			new BoxMullerGaussian (
+				0.,
+				1.
+			),
+			new BoxMullerGaussian (
+				0.,
+				1.
+			)
 		);
 	}
 
@@ -93,8 +102,12 @@ public class BlackVolatility {
 		double dblATMForwardRate = 0.04;
 		double dblVolatilityOfVolatility = 0.5;
 		double adblForwardRateVolatility = 0.10;
-		double[] adblStrike = {0.30, 0.35, 0.40, 0.45, 0.50};
-		double[] adblTTE = {0.25, 0.50, 0.75, 1.00, 2.00, 3.00, 4.00, 5.00, 7.00, 9.99};
+		double[] adblStrike = {
+			0.30, 0.35, 0.40, 0.45, 0.50
+		};
+		double[] adblTTE = {
+			0.25, 0.50, 0.75, 1.00, 2.00, 3.00, 4.00, 5.00, 7.00, 9.99
+		};
 
 		StochasticVolatilityStateEvolver seSABR = SABREvolver (
 			dblBeta,

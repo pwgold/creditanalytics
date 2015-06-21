@@ -90,7 +90,10 @@ public class MultiFactorCurveDynamics {
 			"3M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
 			null,
-			ForwardLabel.Create (strCurrency, "3M"),
+			ForwardLabel.Create (
+				strCurrency,
+				"3M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -120,7 +123,10 @@ public class MultiFactorCurveDynamics {
 					CompositePeriodBuilder.FloatingCompositeUnit (
 						CompositePeriodBuilder.EdgePair (
 							dtEffective,
-							dtEffective.addBusDays (aiDay[i], strCurrency)
+							dtEffective.addBusDays (
+								aiDay[i],
+								strCurrency
+							)
 						),
 						cps,
 						cfus
@@ -164,7 +170,10 @@ public class MultiFactorCurveDynamics {
 			"3M",
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
 			null,
-			ForwardLabel.Create (strCurrency, "3M"),
+			ForwardLabel.Create (
+				strCurrency,
+				"3M"
+			),
 			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
 			0.
 		);
@@ -374,8 +383,14 @@ public class MultiFactorCurveDynamics {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
-				new ResponseScalingShapeControl (true, new QuadraticRationalShapeControl (0.)),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				new ResponseScalingShapeControl (
+					true,
+					new QuadraticRationalShapeControl (0.)
+				),
 				null
 			),
 			BoundarySettings.NaturalStandard(),
@@ -505,14 +520,20 @@ public class MultiFactorCurveDynamics {
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
 				null,
 				null
 			),
 			new SegmentCustomBuilderControl (
 				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
 				new PolynomialFunctionSetParams (4),
-				SegmentInelasticDesignControl.Create (2, 2),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
 				null,
 				null
 			)
@@ -530,7 +551,10 @@ public class MultiFactorCurveDynamics {
 		UnivariateSequenceGenerator[] aUSG = new UnivariateSequenceGenerator[aMS.length];
 
 		for (int i = 0; i < aUSG.length; ++i)
-			aUSG[i] = new BoxMullerGaussian (0., 1.);
+			aUSG[i] = new BoxMullerGaussian (
+				0.,
+				1.
+			);
 
 		return new LognormalLIBORVolatility (
 			dblSpotDate,
@@ -558,7 +582,9 @@ public class MultiFactorCurveDynamics {
 		double dblFlatForwardRate = 0.02;
 		int iNumRun = 1;
 
-		int[] aiNumFactor = {1, 2, 3};
+		int[] aiNumFactor = {
+			1, 2, 3
+		};
 
 		double[][] aadblCorrelation = new double[][] {
 			{1.0, 0.1, 0.2},

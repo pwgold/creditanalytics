@@ -1,5 +1,5 @@
 
-package org.drip.sample.bond;
+package org.drip.sample.tick;
 
 /*
  * Credit Product Analytics API

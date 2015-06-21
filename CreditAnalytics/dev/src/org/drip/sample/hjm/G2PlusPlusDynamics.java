@@ -59,8 +59,14 @@ public class G2PlusPlusDynamics {
 			dblEta,
 			dblB,
 			new UnivariateSequenceGenerator[] {
-				new BoxMullerGaussian (0., 1.),
-				new BoxMullerGaussian (0., 1.)
+				new BoxMullerGaussian (
+					0.,
+					1.
+				),
+				new BoxMullerGaussian (
+					0.,
+					1.
+				)
 			},
 			dblRho,
 			new FlatUnivariate (dblStartingForwardRate)
@@ -150,7 +156,10 @@ public class G2PlusPlusDynamics {
 				FormatUtil.FormatDouble (dblShortRate, 1, 2, 100.) + "% || "
 			);
 
-			dtSpot = dtSpot.addBusDays (iDayStep, strCurrency);
+			dtSpot = dtSpot.addBusDays (
+				iDayStep,
+				strCurrency
+			);
 		}
 
 		System.out.println ("\t|-----------------------------------------------------------------------||");
