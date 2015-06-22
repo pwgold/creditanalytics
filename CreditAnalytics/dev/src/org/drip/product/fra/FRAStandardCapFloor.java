@@ -35,55 +35,173 @@ package org.drip.product.fra;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FRAStandardCapFloor {
+/**
+ * @author Spooky
+ *
+ */
+public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncomeComponent {
+	private boolean _bIsCap = false;
+	private java.lang.String _strName = "";
+	private double _dblStrike = java.lang.Double.NaN;
+	private org.drip.product.rates.Stream _stream = null;
+	private org.drip.param.valuation.CashSettleParams _csp = null;
+
 	private java.util.List<org.drip.product.fra.FRAStandardCapFloorlet> _lsFRACapFloorlet = new
 		java.util.ArrayList<org.drip.product.fra.FRAStandardCapFloorlet>();
 
 	/**
 	 * FRAStandardCapFloor constructor
 	 * 
-	 * @param comp The Underlying Component
+	 * @param strName Name of the Cap/Floor Instance
+	 * @param stream The Underlying Stream
 	 * @param strManifestMeasure Measure of the Underlying Component
 	 * @param bIsCap Is the FRA Option a Cap? TRUE => YES
 	 * @param dblStrike Strike of the Underlying Component's Measure
-	 * @param dblNotional Option Notional
 	 * @param ltds Last Trading Date Setting
-	 * @param strDayCount Day Count Convention
-	 * @param strCalendar Holiday Calendar
+	 * @param csp Cash Settle Parameters
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public FRAStandardCapFloor (
+		final java.lang.String strName,
 		final org.drip.product.rates.Stream stream,
 		final java.lang.String strManifestMeasure,
 		final boolean bIsCap,
 		final double dblStrike,
-		final double dblNotional,
 		final org.drip.product.params.LastTradingDateSetting ltds,
-		final java.lang.String strDayCount,
-		final java.lang.String strCalendar)
+		final org.drip.param.valuation.CashSettleParams csp)
 		throws java.lang.Exception
 	{
-		if (null == stream)
+		if (null == (_strName = strName) || _strName.isEmpty() || null == (_stream = stream) ||
+			!org.drip.quant.common.NumberUtil.IsValid (_dblStrike = dblStrike))
 			throw new java.lang.Exception ("FRAStandardCapFloor Constructor => Invalid Inputs");
 
-		org.drip.state.identifier.ForwardLabel fri = stream.forwardLabel();
+		_csp = csp;
+		_bIsCap = bIsCap;
+
+		org.drip.state.identifier.ForwardLabel fri = _stream.forwardLabel();
 
 		if (null == fri)
 			throw new java.lang.Exception ("FRAStandardCapFloor Constructor => Invalid Floater Index");
 
-		for (org.drip.analytics.cashflow.CompositePeriod period : stream.periods()) {
+		java.lang.String strCalendar = _stream.calendar();
+
+		java.lang.String strDayCount = _stream.couponDC();
+
+		for (org.drip.analytics.cashflow.CompositePeriod period : _stream.periods()) {
 			org.drip.product.fra.FRAStandardComponent fra =
 				org.drip.product.creator.SingleStreamComponentBuilder.FRAStandard (new
-					org.drip.analytics.date.JulianDate (period.startDate()), fri, dblStrike);
+					org.drip.analytics.date.JulianDate (period.startDate()), fri, _dblStrike);
 
 			_lsFRACapFloorlet.add (new org.drip.product.fra.FRAStandardCapFloorlet (fra, strManifestMeasure,
-				bIsCap, dblStrike, dblNotional, ltds, strDayCount, strCalendar));
+				_bIsCap, _dblStrike, _stream.notional (period.startDate()), ltds, strDayCount, strCalendar));
 		}
 	}
 
-	public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> value (
+	@Override public java.lang.String name()
+	{
+		return _strName;
+	}
+
+	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.String> couponCurrency()
+	{
+		return _lsFRACapFloorlet.get (0).couponCurrency();
+	}
+
+	@Override public java.lang.String payCurrency()
+	{
+		return _stream.payCurrency();
+	}
+
+	@Override public java.lang.String principalCurrency()
+	{
+		return _stream.payCurrency();
+	}
+
+	@Override public org.drip.state.identifier.CreditLabel creditLabel()
+	{
+		return _stream.creditLabel();
+	}
+
+	@Override public
+		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.ForwardLabel>
+			forwardLabel()
+	{
+		return _lsFRACapFloorlet.get (0).forwardLabel();
+	}
+
+	@Override public org.drip.state.identifier.FundingLabel fundingLabel()
+	{
+		return _stream.fundingLabel();
+	}
+
+	@Override public
+		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.identifier.FXLabel> fxLabel()
+	{
+		return _lsFRACapFloorlet.get (0).fxLabel();
+	}
+
+	@Override public double initialNotional()
+		throws java.lang.Exception
+	{
+		return _stream.initialNotional();
+	}
+
+	@Override public double notional (
+		final double dblDate)
+		throws java.lang.Exception
+	{
+		return _stream.notional (dblDate);
+	}
+
+	@Override public double notional (
+		final double dblDate1,
+		final double dblDate2)
+		throws java.lang.Exception
+	{
+		return _stream.notional (dblDate1, dblDate2);
+	}
+
+	@Override public org.drip.analytics.output.CompositePeriodCouponMetrics couponMetrics (
+		final double dblAccrualEndDate,
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.market.CurveSurfaceQuoteSet csqs)
+	{
+		return null;
+	}
+
+	@Override public int freq()
+	{
+		return _stream.freq();
+	}
+
+	@Override public org.drip.analytics.date.JulianDate effectiveDate()
+	{
+		return _stream.effective();
+	}
+
+	@Override public org.drip.analytics.date.JulianDate maturityDate()
+	{
+		return _stream.maturity();
+	}
+
+	@Override public org.drip.analytics.date.JulianDate firstCouponDate()
+	{
+		return _stream.firstCouponDate();
+	}
+
+	@Override public java.util.List<org.drip.analytics.cashflow.CompositePeriod> couponPeriods()
+	{
+		return _stream.cashFlowPeriod();
+	}
+
+	@Override public org.drip.param.valuation.CashSettleParams cashSettleParams()
+	{
+		return _csp;
+	}
+
+	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> value (
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.PricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
@@ -219,6 +337,106 @@ public class FRAStandardCapFloor {
 		return mapResult;
 	}
 
+	@Override public java.util.Set<java.lang.String> measureNames()
+	{
+		java.util.Set<java.lang.String> setstrMeasureNames = new java.util.TreeSet<java.lang.String>();
+
+		setstrMeasureNames.add ("CalcTime");
+
+		setstrMeasureNames.add ("FlatATMVolatility");
+
+		setstrMeasureNames.add ("Price");
+
+		setstrMeasureNames.add ("PV");
+
+		setstrMeasureNames.add ("Upfront");
+
+		return setstrMeasureNames;
+	}
+
+	/**
+	 * Retrieve the Stream Instance Underlying the Cap
+	 * 
+	 * @return The Stream Instance Underlying the Cap
+	 */
+
+	public org.drip.product.rates.Stream stream()
+	{
+		return _stream;
+	}
+
+	/**
+	 * Retrieve the Strike
+	 * 
+	 * @return The Strike
+	 */
+
+	public double strike()
+	{
+		return _dblStrike;
+	}
+
+	/**
+	 * Indicate if this is a Cap or Floor
+	 * 
+	 * @return TRUE => The Product is a Cap
+	 */
+
+	public boolean isCap()
+	{
+		return _bIsCap;
+	}
+
+	/**
+	 * Compute the Cap/Floor Price from the Flat Volatility
+	 * 
+	 * @param valParams The Valuation Parameters
+	 * @param pricerParams The Pricer Parameters
+	 * @param csqs The Market Parameters
+	 * @param quotingParams The Quoting Parameters
+	 * @param dblFlatVolatility The Flat Volatility
+	 * 
+	 * @return The Cap/Floor Price
+	 * 
+	 * @throws java.lang.Exception Thrown if the Price cannot be calculated
+	 */
+
+	public double priceFromFlatVolatility (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
+		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
+		final double dblFlatVolatility)
+		throws java.lang.Exception
+	{
+		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblFlatVolatility))
+			throw new java.lang.Exception ("FRAStandardCapFloor::priceFromFlatVolatility => Invalid Inputs");
+
+		double dblValueDate = valParams.valueDate();
+
+		double dblPrice = 0.;
+
+		for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : _lsFRACapFloorlet) {
+			org.drip.analytics.date.JulianDate dtExercise = fracfl.exerciseDate();
+
+			double dblExerciseDate = dtExercise.julian();
+
+			if (dblExerciseDate <= dblValueDate) continue;
+
+			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapCapFloorlet =
+				fracfl.valueFromSurfaceVariance (valParams, pricerParams, csqs, quotingParams,
+					dblFlatVolatility * dblFlatVolatility * (dblExerciseDate - dblValueDate) / 365.25);
+
+			if (null == mapCapFloorlet || !mapCapFloorlet.containsKey ("Price"))
+				throw new java.lang.Exception
+					("FRAStandardCapFloor::priceFromFlatVolatility => Cannot value capFloorlet");
+
+			dblPrice += mapCapFloorlet.get ("Price");
+		}
+
+		return dblPrice;
+	}
+
 	/**
 	 * Imply the Forward Rate Volatility of the Unmarked Segment of the Volatility Term Structure
 	 * 
@@ -330,22 +548,5 @@ public class FRAStandardCapFloor {
 		}
 
 		return true;
-	}
-
-	public java.util.Set<java.lang.String> measureNames()
-	{
-		java.util.Set<java.lang.String> setstrMeasureNames = new java.util.TreeSet<java.lang.String>();
-
-		setstrMeasureNames.add ("CalcTime");
-
-		setstrMeasureNames.add ("FlatATMVolatility");
-
-		setstrMeasureNames.add ("Price");
-
-		setstrMeasureNames.add ("PV");
-
-		setstrMeasureNames.add ("Upfront");
-
-		return setstrMeasureNames;
 	}
 }

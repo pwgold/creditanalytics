@@ -1,5 +1,5 @@
 
-package org.drip.sample.fra;
+package org.drip.sample.capfloor;
 
 import java.util.*;
 
@@ -541,8 +541,9 @@ public class FRAStdCapFloorAnalysis {
 		CreditAnalytics.Init ("");
 
 		double dblStrike = 0.02;
-		String strTenor = "3M";
+		String strFRATenor = "3M";
 		String strCurrency = "USD";
+		String strMaturityTenor = "4Y";
 		String strManifestMeasure = "QuantoAdjustedParForward";
 
 		JulianDate dtToday = DateUtil.Today().addTenor ("0D");
@@ -564,13 +565,13 @@ public class FRAStdCapFloorAnalysis {
 
 		ForwardLabel fri = ForwardLabel.Create (
 			strCurrency,
-			strTenor
+			strFRATenor
 		);
 
-		JulianDate dtEffective = dtToday.addTenor (strTenor);
+		JulianDate dtEffective = dtToday.addTenor (strFRATenor);
 
 		ComposableFloatingUnitSetting cfus = new ComposableFloatingUnitSetting (
-			strTenor,
+			strFRATenor,
 			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
 			null,
 			fri,
@@ -580,7 +581,7 @@ public class FRAStdCapFloorAnalysis {
 
 		CompositePeriodSetting cps = new CompositePeriodSetting (
 			4,
-			strTenor,
+			strFRATenor,
 			strCurrency,
 			null,
 			1.,
@@ -590,20 +591,13 @@ public class FRAStdCapFloorAnalysis {
 			null
 		);
 
-		CashSettleParams csp = new CashSettleParams (
-			0,
-			strCurrency,
-			0
-		);
-
 		Stream floatStream = new Stream (
 			CompositePeriodBuilder.FloatingCompositeUnit (
-				CompositePeriodBuilder.EdgePair (
-					dtEffective,
-					dtEffective.addTenorAndAdjust (
-						strTenor,
-						strCurrency
-					)
+				CompositePeriodBuilder.RegularEdgeDates (
+					dtEffective.julian(),
+					strFRATenor,
+					strMaturityTenor,
+					null
 				),
 				cps,
 				cfus
@@ -611,46 +605,36 @@ public class FRAStdCapFloorAnalysis {
 		);
 
 		FRAStandardCapFloor fraCap = new FRAStandardCapFloor (
-			new SingleStreamComponent (
-				"FRA_CAP",
-				floatStream,
-				csp
-			).stream(),
+			"FRA_CAP",
+			floatStream,
 			strManifestMeasure,
 			true,
 			dblStrike,
-			1.,
 			new LastTradingDateSetting (
 				LastTradingDateSetting.MID_CURVE_OPTION_QUARTERLY,
 				"",
 				Double.NaN
 			),
-			"Act/360",
-			strCurrency
+			null
 		);
 
 		FRAStandardCapFloor fraFloor = new FRAStandardCapFloor (
-			new SingleStreamComponent (
-				"FRA_FLOOR",
-				floatStream,
-				csp
-			).stream(),
+			"FRA_FLOOR",
+			floatStream,
 			strManifestMeasure,
 			false,
 			dblStrike,
-			1.,
 			new LastTradingDateSetting (
 				LastTradingDateSetting.MID_CURVE_OPTION_QUARTERLY,
 				"",
 				Double.NaN
 			),
-			"Act/360",
-			strCurrency
+			null
 		);
 
 		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (
 			dc,
-			mapFC.get (strTenor),
+			mapFC.get (strFRATenor),
 			null,
 			null,
 			null,

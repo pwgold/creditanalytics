@@ -149,6 +149,71 @@ public abstract class DiscountCurve implements org.drip.analytics.rates.Discount
 		return turnAdjust (epoch().julian(), dblFinishDate);
 	}
 
+	/**
+	 * Construct the Native Forward Curve for the given Tenor from the Discount Curve
+	 * 
+	 * @param strTenor The Tenor
+	 * 
+	 * @return The Tenor-Native Forward Curve
+	 */
+
+	public org.drip.analytics.rates.ForwardCurve nativeForwardCurve (
+		final java.lang.String strTenor)
+	{
+		if (null == strTenor || strTenor.isEmpty()) return null;
+
+		try {
+			org.drip.analytics.rates.ForwardCurve fcNative = new org.drip.analytics.rates.ForwardCurve
+				(epoch().julian(), org.drip.state.identifier.ForwardLabel.Standard (_strCurrency + "-" +
+					strTenor)) {
+				@Override public org.drip.param.valuation.CollateralizationParams collateralParams()
+				{
+					return null;
+				}
+
+				@Override public double forward (
+					final double dblDate)
+					throws java.lang.Exception
+				{
+					return forward (new org.drip.analytics.date.JulianDate (dblDate));
+				}
+
+				@Override public double forward (
+					final org.drip.analytics.date.JulianDate dt)
+					throws java.lang.Exception
+				{
+					if (null == dt)
+						throw new java.lang.Exception ("DiscountCurve::nativeForwardCurve => Invalid Input");
+
+					return libor (dt.subtractTenor (strTenor).julian(), strTenor);
+				}
+
+				@Override public double forward (
+					final java.lang.String strTenor)
+					throws java.lang.Exception
+				{
+					if (null == strTenor || strTenor.isEmpty())
+						throw new java.lang.Exception ("DiscountCurve::nativeForwardCurve => Invalid Input");
+
+					return forward (epoch().addTenor (strTenor));
+				}
+
+				@Override public org.drip.quant.calculus.WengertJacobian jackDForwardDManifestMeasure (
+					final java.lang.String strManifestMeasure,
+					final double dblDate)
+				{
+					return null;
+				}
+			};
+
+			return fcNative;
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
 	@Override public double df (
 		final org.drip.analytics.date.JulianDate dt)
 		throws java.lang.Exception
