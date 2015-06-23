@@ -30,18 +30,19 @@ package org.drip.pricer.option;
  */
 
 /**
- * FokkerPlanckGenerator exposes the interface that the performs the PDF evolution oriented Option Pricing.
+ * FokkerPlanckGenerator holds the base functionality that the performs the PDF evolution oriented Option
+ *  Pricing.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public interface FokkerPlanckGenerator {
+public abstract class FokkerPlanckGenerator {
 
 	/**
 	 * Carry out a Pricing Run and generate the Pricing related measure set
 	 * 
 	 * @param dblStrike Option Strike
-	 * @param dbTimeToExpiry Option Time To Expiry
+	 * @param dblTimeToExpiry Option Time To Expiry
 	 * @param dblRiskFreeRate Option Risk Free Rate
 	 * @param dblUnderlier Option Underlier Value
 	 * @param bIsForward TRUE => The Underlier represents the Forward, FALSE => it represents Spot
@@ -53,7 +54,7 @@ public interface FokkerPlanckGenerator {
 
 	public abstract boolean compute (
 		final double dblStrike,
-		final double dbTimeToExpiry,
+		final double dblTimeToExpiry,
 		final double dblRiskFreeRate,
 		final double dblUnderlier,
 		final boolean bIsForward,
@@ -67,6 +68,14 @@ public interface FokkerPlanckGenerator {
 	 */
 
 	public abstract double df();
+
+	/**
+	 * The "Effective" Volatility
+	 * 
+	 * @return The "Effective" Volatility
+	 */
+
+	public abstract double effectiveVolatility();
 
 	/**
 	 * The Call Option Charm
@@ -315,4 +324,66 @@ public interface FokkerPlanckGenerator {
 	 */
 
 	public abstract double putVomma();
+
+	/**
+	 * Carry out a Pricing Run and generate the Pricing related measure set
+	 * 
+	 * @param dblSpotDate Spot Date
+	 * @param dblExpiryDate Expiry Date
+	 * @param dblStrike Option Strike
+	 * @param dcFunding The Funding Curve
+	 * @param dblUnderlier Option Underlier Value
+	 * @param bIsForward TRUE => The Underlier represents the Forward, FALSE => it represents Spot
+	 * @param funcVolatilityR1ToR1 The R^1 -> R^1 Volatility Term Structure
+	 * @param bCalibMode TRUE => Run on Calibration Mode
+	 * 
+	 * @return TRUE => Computation Successful
+	 */
+
+	public boolean compute (
+		final double dblSpotDate,
+		final double dblExpiryDate,
+		final double dblStrike,
+		final org.drip.analytics.rates.DiscountCurve dcFunding,
+		final double dblUnderlier,
+		final boolean bIsForward,
+		final org.drip.function.definition.R1ToR1 funcVolatilityR1ToR1,
+		final boolean bCalibMode)
+	{
+		{
+			if (!org.drip.quant.common.NumberUtil.IsValid (dblSpotDate) ||
+				!org.drip.quant.common.NumberUtil.IsValid (dblExpiryDate) || dblExpiryDate <= dblSpotDate ||
+					!org.drip.quant.common.NumberUtil.IsValid (dblStrike) || null == dcFunding || null ==
+						funcVolatilityR1ToR1)
+				return false;
+
+			double dblRiskFreeRate = java.lang.Double.NaN;
+			double dblEffectiveVolatility = java.lang.Double.NaN;
+			double dblTimeToExpiry = (dblExpiryDate - dblSpotDate) / 365.25;
+
+			org.drip.function.definition.R1ToR1 funcVarianceR1ToR1 = new org.drip.function.definition.R1ToR1
+				(null) {
+				@Override public double evaluate (
+					final double dblX)
+					throws java.lang.Exception
+				{
+					return funcVolatilityR1ToR1.evaluate (dblX) * funcVolatilityR1ToR1.evaluate (dblX);
+				}
+			};
+
+			try {
+				dblRiskFreeRate = dcFunding.libor (dblSpotDate, dblExpiryDate);
+
+				dblEffectiveVolatility = java.lang.Math.sqrt (funcVarianceR1ToR1.integrate (dblSpotDate,
+					dblExpiryDate) / 365.25) / dblTimeToExpiry;
+			} catch (java.lang.Exception e) {
+				e.printStackTrace();
+
+				return false;
+			}
+
+			return compute (dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblUnderlier, bIsForward,
+				dblEffectiveVolatility, bCalibMode);
+		}
+	}
 }

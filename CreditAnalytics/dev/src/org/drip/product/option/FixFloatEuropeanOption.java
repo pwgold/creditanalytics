@@ -172,20 +172,17 @@ public class FixFloatEuropeanOption extends org.drip.product.option.FixedIncomeO
 			if (!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer)) return null;
 
 			if (_bIsReceiver) {
-				dblForwardIntrinsic = dblATMManifestMeasure * org.drip.measure.continuous.Gaussian.InverseCDF
-					(dblDPlus) - dblStrike * org.drip.measure.continuous.Gaussian.InverseCDF (dblDMinus);
+				dblForwardIntrinsic = dblATMManifestMeasure * org.drip.measure.continuous.Gaussian.CDF
+					(dblDPlus) - dblStrike * org.drip.measure.continuous.Gaussian.CDF (dblDMinus);
 
-				dblForwardATMIntrinsic = dblATMManifestMeasure *
-					org.drip.measure.continuous.Gaussian.InverseCDF (dblATMDPlus) - dblStrike *
-						org.drip.measure.continuous.Gaussian.InverseCDF (dblATMDMinus);
+				dblForwardATMIntrinsic = dblATMManifestMeasure * org.drip.measure.continuous.Gaussian.CDF
+					(dblATMDPlus) - dblStrike * org.drip.measure.continuous.Gaussian.CDF (dblATMDMinus);
 			} else {
-				dblForwardIntrinsic = dblStrike * org.drip.measure.continuous.Gaussian.InverseCDF
-					(-dblDMinus) - dblATMManifestMeasure * org.drip.measure.continuous.Gaussian.InverseCDF
-						(-dblDPlus);
+				dblForwardIntrinsic = dblStrike * org.drip.measure.continuous.Gaussian.CDF (-dblDMinus) -
+					dblATMManifestMeasure * org.drip.measure.continuous.Gaussian.CDF (-dblDPlus);
 
-				dblForwardATMIntrinsic = dblStrike * org.drip.measure.continuous.Gaussian.InverseCDF
-					(-dblATMDMinus) - dblATMManifestMeasure * org.drip.measure.continuous.Gaussian.InverseCDF
-						(-dblATMDPlus);
+				dblForwardATMIntrinsic = dblStrike * org.drip.measure.continuous.Gaussian.CDF (-dblATMDMinus)
+					- dblATMManifestMeasure * org.drip.measure.continuous.Gaussian.CDF (-dblATMDPlus);
 			}
 
 			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapResult = new

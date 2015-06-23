@@ -1,21 +1,14 @@
 
-package org.drip.sample.capfloor;
-
-import java.util.*;
+package org.drip.sample.multicurve;
 
 import org.drip.analytics.date.*;
 import org.drip.analytics.rates.*;
-import org.drip.analytics.support.CompositePeriodBuilder;
 import org.drip.market.otc.*;
-import org.drip.param.creator.*;
-import org.drip.param.market.CurveSurfaceQuoteSet;
-import org.drip.param.period.*;
+import org.drip.param.creator.ScenarioDiscountCurveBuilder;
 import org.drip.param.valuation.ValuationParams;
 import org.drip.product.creator.SingleStreamComponentBuilder;
 import org.drip.product.definition.CalibratableFixedIncomeComponent;
-import org.drip.product.fra.FRAStandardCapFloor;
-import org.drip.product.params.LastTradingDateSetting;
-import org.drip.product.rates.*;
+import org.drip.product.rates.FixFloatComponent;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.api.CreditAnalytics;
 import org.drip.state.identifier.ForwardLabel;
@@ -48,16 +41,13 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /**
- * FRAStdCapSequence demonstrates the Product Creation, Market Parameters Construction, and Valuation of a
- * 	Sequence of Standard FRA Caps. The Marks and the Valuation References are sourced from:
- * 
- * 	- Brace, A., D. Gatarek, and M. Musiela (1997): The Market Model of Interest Rate Dynamics, Mathematical
- * 		Finance 7 (2), 127-155.
+ * FundingNativeForwardReconciler demonstrates the Construction of the Forward Curve Native to the Discount
+ *  Curve across different Tenors, and display their Reconciliation.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class FRAStdCapSequence {
+public class FundingNativeForwardReconciler {
 
 	private static final FixFloatComponent OTCFixFloat (
 		final JulianDate dtSpot,
@@ -240,15 +230,19 @@ public class FRAStdCapSequence {
 		int iNumTenor = 20;
 		JulianDate dtStart = dtSpot;
 
-		System.out.println ("\n\t---------------------------------------------------");
+		System.out.println ("\n\t|--------------------------------------------------||");
 
-		System.out.println ("\t---------------------------------------------------\n");
+		System.out.println ("\t|-------- RECONCILIATION FOR " + fc.label().fullyQualifiedName() + " ---------||");
+
+		System.out.println ("\t|--------------------------------------------------||");
+
+		System.out.println ("\t|                                                  ||");
 
 		for (int i = 0; i < iNumTenor; ++i) {
 			JulianDate dtEnd = dtStart.addTenor (strTenor);
 
 			System.out.println (
-				"\t[" + dtStart + " - " + dtEnd + "] " +
+				"\t|   [" + dtStart + " - " + dtEnd + "]   |  " +
 				FormatUtil.FormatDouble (dc.libor (dtStart, strTenor), 1, 2, 100.) + "% | " +
 				FormatUtil.FormatDouble (fc.forward (dtEnd), 1, 2, 100.) + "% ||"
 			);
@@ -256,66 +250,11 @@ public class FRAStdCapSequence {
 			dtStart = dtEnd;
 		}
 
-		System.out.println ("\n\t---------------------------------------------------");
+		System.out.println ("\t|                                                  ||");
 
-		System.out.println ("\t---------------------------------------------------\n\n");
-	}
+		System.out.println ("\t|--------------------------------------------------||");
 
-	private static final FRAStandardCapFloor MakeCap (
-		final JulianDate dtEffective,
-		final ForwardLabel fri,
-		final String strMaturityTenor,
-		final String strManifestMeasure,
-		final double dblStrike)
-		throws Exception
-	{
-		ComposableFloatingUnitSetting cfus = new ComposableFloatingUnitSetting (
-			fri.tenor(),
-			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
-			null,
-			fri,
-			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
-			0.
-		);
-
-		CompositePeriodSetting cps = new CompositePeriodSetting (
-			4,
-			fri.tenor(),
-			fri.currency(),
-			null,
-			1.,
-			null,
-			null,
-			null,
-			null
-		);
-
-		Stream floatStream = new Stream (
-			CompositePeriodBuilder.FloatingCompositeUnit (
-				CompositePeriodBuilder.RegularEdgeDates (
-					dtEffective.julian(),
-					fri.tenor(),
-					strMaturityTenor,
-					null
-				),
-				cps,
-				cfus
-			)
-		);
-
-		return new FRAStandardCapFloor (
-			"FRA_CAP",
-			floatStream,
-			strManifestMeasure,
-			true,
-			dblStrike,
-			new LastTradingDateSetting (
-				LastTradingDateSetting.MID_CURVE_OPTION_QUARTERLY,
-				"",
-				Double.NaN
-			),
-			null
-		);
+		System.out.println ("\t|--------------------------------------------------||\n");
 	}
 
 	public static final void main (
@@ -330,154 +269,25 @@ public class FRAStdCapSequence {
 			3
 		);
 
-		String strFRATenor = "3M";
 		String strCurrency = "GBP";
-		String strManifestMeasure = "ParForward";
-
-		ForwardLabel fri = ForwardLabel.Create (
-			strCurrency,
-			strFRATenor
-		);
+		String[] astrFRATenor = {
+			"1M", "3M", "6M", "12M"
+		};
 
 		DiscountCurve dc = MakeDC (
 			dtSpot,
 			strCurrency
 		);
 
-		ForwardCurve fcNative = dc.nativeForwardCurve (strFRATenor);
+		for (String strFRATenor : astrFRATenor) {
+			ForwardCurve fcNative = dc.nativeForwardCurve (strFRATenor);
 
-		DiscountForwardReconciliation (
-			dtSpot,
-			dc,
-			fcNative,
-			strFRATenor
-		);
-
-		ValuationParams valParams = new ValuationParams (
-			dtSpot,
-			dtSpot,
-			strCurrency
-		);
-
-		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (
-			dc,
-			fcNative,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null
-		);
-
-		String[] astrMaturityTenor = new String[] {
-			 "1Y",
-			 "2Y",
-			 "3Y",
-			 "4Y",
-			 "5Y",
-			 "7Y",
-			"10Y"
-		};
-
-		double[] adblATMStrike = new double[] {
-			0.0788, //  "1Y",
-			0.0839, // 	"2Y",
-			0.0864, //  "3Y",
-			0.0869, //  "4Y",
-			0.0879, //  "5Y",
-			0.0890, //  "7Y",
-			0.0889  // "10Y"
-		};
-
-		double[] adblATMVol = new double[] {
-			0.1550, //  "1Y",
-			0.1775, // 	"2Y",
-			0.1800, //  "3Y",
-			0.1775, //  "4Y",
-			0.1775, //  "5Y",
-			0.1650, //  "7Y",
-			0.1550  // "10Y"
-		};
-
-		Map<JulianDate, Double> mapDateVol = new TreeMap<JulianDate, Double>();
-
-		for (int i = 0; i < astrMaturityTenor.length; ++i) {
-			FRAStandardCapFloor cap = MakeCap (
+			DiscountForwardReconciliation (
 				dtSpot,
-				fri,
-				astrMaturityTenor[i],
-				strManifestMeasure,
-				adblATMStrike[i]
-			);
-
-			Map<String, Double> mapCapStreamOutput = cap.stream().value (
-				valParams,
-				null,
-				mktParams,
-				null
-			);
-
-			double dblCapStreamFairPremium = mapCapStreamOutput.get ("FairPremium");
-
-			FixFloatComponent swap = OTCFixFloat (
-				dtSpot,
-				strCurrency,
-				astrMaturityTenor[i],
-				0.
-			);
-
-			Map<String, Double> mapSwapOutput = swap.value (
-				valParams,
-				null,
-				mktParams,
-				null
-			);
-
-			double dblSwapRate = mapSwapOutput.get ("FairPremium");
-
-			double dblCapPrice = cap.priceFromFlatVolatility (
-				valParams,
-				null,
-				mktParams,
-				null,
-				adblATMVol[i]
-			);
-
-			cap.stripPiecewiseForwardVolatility (
-				valParams,
-				null,
-				mktParams,
-				null,
-				adblATMVol[i],
-				mapDateVol
-			);
-
-			System.out.println (
-				"\tCap  " + cap.maturityDate() + " | " +
-				FormatUtil.FormatDouble (dblCapStreamFairPremium, 1, 2, 100.) + "% |" +
-				FormatUtil.FormatDouble (dblSwapRate, 1, 2, 100.) + "% |" +
-				FormatUtil.FormatDouble (cap.strike(), 1, 2, 100.) + "% |" +
-				FormatUtil.FormatDouble (adblATMVol[i], 2, 2, 100.) + "% |" +
-				FormatUtil.FormatDouble (dblCapPrice, 1, 0, 10000.) + " ||"
+				dc,
+				fcNative,
+				strFRATenor
 			);
 		}
-
-		System.out.println ("\n\n\t---------------------------------------------------");
-
-		System.out.println ("\t-----  CALIBRATED FORWARD VOLATILITY NODES --------");
-
-		System.out.println ("\t---------------------------------------------------\n");
-
-		for (Map.Entry<JulianDate, Double> me : mapDateVol.entrySet())
-			System.out.println (
-				"\t" +
-				me.getKey() + " => " +
-				FormatUtil.FormatDouble (me.getValue(), 2, 2, 100.) + "%  ||"
-			);
-
-		System.out.println ("\t---------------------------------------------------");
-
-		System.out.println ("\t---------------------------------------------------");
 	}
 }

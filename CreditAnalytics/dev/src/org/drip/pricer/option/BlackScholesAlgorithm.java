@@ -35,7 +35,7 @@ package org.drip.pricer.option;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BlackScholesAlgorithm implements org.drip.pricer.option.FokkerPlanckGenerator {
+public class BlackScholesAlgorithm extends org.drip.pricer.option.FokkerPlanckGenerator {
 	private double _dblDF = java.lang.Double.NaN;
 	private double _dblPutRho = java.lang.Double.NaN;
 	private double _dblCallRho = java.lang.Double.NaN;
@@ -66,6 +66,7 @@ public class BlackScholesAlgorithm implements org.drip.pricer.option.FokkerPlanc
 	private double _dblPutUltima = java.lang.Double.NaN;
 	private double _dblCallUltima = java.lang.Double.NaN;
 	private double _dblPutPriceFromParity = java.lang.Double.NaN;
+	private double _dblEffectiveVolatility = java.lang.Double.NaN;
 
 	/**
 	 * Empty BlackScholesAlgorithm Constructor - nothing to be filled in with
@@ -155,6 +156,8 @@ public class BlackScholesAlgorithm implements org.drip.pricer.option.FokkerPlanc
 			return false;
 		}
 
+		_dblEffectiveVolatility = dblVolatility;
+
 		_dblCallVega = dblVega;
 		_dblCallVeta = dblVeta;
 		_dblCallCharm = dblCharm;
@@ -187,6 +190,11 @@ public class BlackScholesAlgorithm implements org.drip.pricer.option.FokkerPlanc
 	@Override public double df()
 	{
 		return _dblDF;
+	}
+
+	@Override public double effectiveVolatility()
+	{
+		return _dblEffectiveVolatility;
 	}
 
 	@Override public double callCharm()

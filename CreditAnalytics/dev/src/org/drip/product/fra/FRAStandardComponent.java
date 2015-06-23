@@ -120,8 +120,8 @@ public class FRAStandardComponent extends org.drip.product.rates.SingleStreamCom
 
 			double dblQuantoAdjustedParForward = dblParForward * dblMultiplicativeQuantoAdjustment;
 
-			double dblDV01 = dblDCF * dcFunding.df (dblMaturityDate) / dcFunding.df (dblCashSettle) *
-				notional (dblValueDate);
+			double dblDV01 = 0.0001 * dblDCF * dcFunding.df (dblMaturityDate) / dcFunding.df (dblCashSettle)
+				* notional (dblValueDate);
 
 			double dblPV = dblDV01 * (dblQuantoAdjustedParForward - _dblStrike);
 

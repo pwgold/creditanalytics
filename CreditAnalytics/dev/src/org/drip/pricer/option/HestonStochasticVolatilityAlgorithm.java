@@ -36,7 +36,7 @@ package org.drip.pricer.option;
  * @author Lakshmi Krishnamurthy
  */
 
-public class HestonStochasticVolatilityAlgorithm implements org.drip.pricer.option.FokkerPlanckGenerator {
+public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.FokkerPlanckGenerator {
 
 	/**
 	 * Payoff Transformation Type - The Original Heston 1993 Scheme
@@ -62,6 +62,7 @@ public class HestonStochasticVolatilityAlgorithm implements org.drip.pricer.opti
 	private double _dblCallProb1 = java.lang.Double.NaN;
 	private double _dblCallProb2 = java.lang.Double.NaN;
 	private double _dblPutPriceFromParity = java.lang.Double.NaN;
+	private double _dblEffectiveVolatility = java.lang.Double.NaN;
 
 	class PhaseCorrectedF {
 		double _dblCorrectedPhase = java.lang.Double.NaN;
@@ -529,6 +530,7 @@ public class HestonStochasticVolatilityAlgorithm implements org.drip.pricer.opti
 		double dblU1 = 0.5;
 		double dblU2 = -0.5;
 		double dblPreviousPhase = 0.;
+		_dblEffectiveVolatility = dblInitialVolatility;
 		double dblSpot = bIsForward ? dblUnderlier * _dblDF : dblUnderlier;
 
 		for (double dblFreq = FOURIER_FREQ_INIT; dblFreq <= FOURIER_FREQ_FINAL; dblFreq +=
@@ -594,6 +596,11 @@ public class HestonStochasticVolatilityAlgorithm implements org.drip.pricer.opti
 	@Override public double df()
 	{
 		return _dblDF;
+	}
+
+	@Override public double effectiveVolatility()
+	{
+		return _dblEffectiveVolatility;
 	}
 
 	@Override public double callCharm()

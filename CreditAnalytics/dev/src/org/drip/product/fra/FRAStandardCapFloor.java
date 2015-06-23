@@ -438,36 +438,43 @@ public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncome
 	}
 
 	/**
-	 * Imply the Forward Rate Volatility of the Unmarked Segment of the Volatility Term Structure
+	 * Strip the Piece-wise Constant Forward Rate Volatility of the Unmarked Segment of the Volatility Term
+	 *  Structure
 	 * 
 	 * @param valParams The Valuation Parameters
 	 * @param pricerParams The pricer Parameters
 	 * @param csqs The Market Parameters
 	 * @param quotingParams The Quoting Parameters
-	 * @param strCalibMeasure The Calibration Measure
-	 * @param dblCalibValue The Calibration Value
+	 * @param dblCapVolatility The Flat Cap Volatility
 	 * @param mapDateVol The Date/Volatility Map
 	 * 
 	 * @return TRUE => The Forward Rate Volatility of the Unmarked Segment of the Volatility Term Structure
 	 * 	successfully implied
 	 */
 
-	public boolean implyVolatility (
+	public boolean stripPiecewiseForwardVolatility (
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.PricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
-		final java.lang.String strCalibMeasure,
-		final double dblCalibValue,
+		final double dblCapVolatility,
 		final java.util.Map<org.drip.analytics.date.JulianDate, java.lang.Double> mapDateVol)
 	{
-		if (null == valParams || null == strCalibMeasure || strCalibMeasure.isEmpty() ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblCalibValue) || null == mapDateVol)
-			return false;
+		if (null == valParams || null == mapDateVol) return false;
 
 		int iIndex = 0;
 		double dblPreceedingCapFloorletPV = 0.;
+		double dblCapPrice = java.lang.Double.NaN;
 		org.drip.function.solverR1ToR1.FixedPointFinderOutput fpfo = null;
+
+		try {
+			dblCapPrice = priceFromFlatVolatility (valParams, pricerParams, csqs, quotingParams,
+				dblCapVolatility);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+
+			return false;
+		}
 
 		final double dblValueDate = valParams.valueDate();
 
@@ -489,9 +496,9 @@ public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncome
 						dblExerciseVolatility * dblExerciseVolatility * (dblExerciseDate - dblValueDate) /
 							365.25);
 
-				if (null == mapCapFloorlet || !mapCapFloorlet.containsKey (strCalibMeasure)) return false;
+				if (null == mapCapFloorlet || !mapCapFloorlet.containsKey ("Price")) return false;
 
-				dblPreceedingCapFloorletPV += mapCapFloorlet.get (strCalibMeasure);
+				dblPreceedingCapFloorletPV += mapCapFloorlet.get ("Price");
 			} else
 				lsCalibCapFloorletIndex.add (iIndex);
 
@@ -516,12 +523,14 @@ public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncome
 							fracfl.valueFromSurfaceVariance (valParams, pricerParams, csqs, quotingParams,
 								dblVolatility * dblVolatility * (dblExerciseDate - dblValueDate) / 365.25);
 	
-						if (null == mapOutput || !mapOutput.containsKey (strCalibMeasure))
+						if (null == mapOutput || !mapOutput.containsKey ("Price"))
 							throw new java.lang.Exception
 								("FRAStandardCapFloor::implyVolatility => Cannot generate Calibration Measure");
 	
-						dblSucceedingCapFloorletPV += mapOutput.get (strCalibMeasure);
+						dblSucceedingCapFloorletPV += mapOutput.get ("Price");
 					}
+
+					++iIndex;
 				}
 
 				return dblSucceedingCapFloorletPV;
@@ -529,7 +538,7 @@ public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncome
 		};
 
 		try {
-			fpfo = (new org.drip.function.solverR1ToR1.FixedPointFinderBracketing (dblCalibValue -
+			fpfo = (new org.drip.function.solverR1ToR1.FixedPointFinderBracketing (dblCapPrice -
 				dblPreceedingCapFloorletPV, funcVolPricer, null,
 					org.drip.function.solverR1ToR1.VariateIteratorPrimitive.BISECTION, false)).findRoot
 						(org.drip.function.solverR1ToR1.InitializationHeuristics.FromHardSearchEdges (0.0001,
@@ -542,9 +551,13 @@ public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncome
 
 		double dblVolatility = fpfo.getRoot();
 
+		iIndex = 0;
+
 		for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : _lsFRACapFloorlet) {
 			if (lsCalibCapFloorletIndex.contains (iIndex))
 				mapDateVol.put (fracfl.exerciseDate(), dblVolatility);
+
+			++iIndex;
 		}
 
 		return true;

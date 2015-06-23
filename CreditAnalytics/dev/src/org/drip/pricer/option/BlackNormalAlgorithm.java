@@ -35,7 +35,7 @@ package org.drip.pricer.option;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BlackNormalAlgorithm implements org.drip.pricer.option.FokkerPlanckGenerator {
+public class BlackNormalAlgorithm extends org.drip.pricer.option.FokkerPlanckGenerator {
 	private double _dblDF = java.lang.Double.NaN;
 	private double _dblPutPrice = java.lang.Double.NaN;
 	private double _dblPutProb1 = java.lang.Double.NaN;
@@ -44,6 +44,7 @@ public class BlackNormalAlgorithm implements org.drip.pricer.option.FokkerPlanck
 	private double _dblCallProb1 = java.lang.Double.NaN;
 	private double _dblCallProb2 = java.lang.Double.NaN;
 	private double _dblPutPriceFromParity = java.lang.Double.NaN;
+	private double _dblEffectiveVolatility = java.lang.Double.NaN;
 
 	/**
 	 * Empty BlackNormalAlgorithm Constructor - nothing to be filled in with
@@ -75,6 +76,7 @@ public class BlackNormalAlgorithm implements org.drip.pricer.option.FokkerPlanck
 
 		double dblForward = bIsForward ? dblUnderlier : dblUnderlier / _dblDF;
 		double dblD = (dblForward - dblStrike) / dblD1D2Diff;
+		_dblEffectiveVolatility = dblVolatility;
 
 		double dblN = java.lang.Math.exp (-0.5 * dblD * dblD) / java.lang.Math.sqrt (2. * java.lang.Math.PI);
 
@@ -103,6 +105,11 @@ public class BlackNormalAlgorithm implements org.drip.pricer.option.FokkerPlanck
 	@Override public double df()
 	{
 		return _dblDF;
+	}
+
+	@Override public double effectiveVolatility()
+	{
+		return _dblEffectiveVolatility;
 	}
 
 	@Override public double callCharm()
@@ -284,9 +291,7 @@ public class BlackNormalAlgorithm implements org.drip.pricer.option.FokkerPlanck
 		final double dblCallPrice)
 		throws java.lang.Exception
 	{
-		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1
-			(null)
-		{
+		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1 (null) {
 			@Override public double evaluate (
 				final double dblSpotVolatility)
 				throws java.lang.Exception
