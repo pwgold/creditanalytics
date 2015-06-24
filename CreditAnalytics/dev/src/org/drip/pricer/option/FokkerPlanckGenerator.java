@@ -39,351 +39,213 @@ package org.drip.pricer.option;
 public abstract class FokkerPlanckGenerator {
 
 	/**
-	 * Carry out a Pricing Run and generate the Pricing related measure set
+	 * Compute the Expected Payoff of the Option from the Inputs
 	 * 
 	 * @param dblStrike Option Strike
 	 * @param dblTimeToExpiry Option Time To Expiry
 	 * @param dblRiskFreeRate Option Risk Free Rate
 	 * @param dblUnderlier Option Underlier Value
+	 * @param bIsPut TRUE => The Option is a Put
 	 * @param bIsForward TRUE => The Underlier represents the Forward, FALSE => it represents Spot
 	 * @param dblInitialVolatility Option Initial Volatility Value
-	 * @param bCalibMode TRUE => Run on Calibration Mode
 	 * 
-	 * @return TRUE => Computation Successful
+	 * @return The Expected Option Payoff
+	 * 
+	 * @throws java.lang.Exception Thrown if the Expected Payoff cannot be calculated
 	 */
 
-	public abstract boolean compute (
+	public abstract double payoff (
 		final double dblStrike,
 		final double dblTimeToExpiry,
 		final double dblRiskFreeRate,
 		final double dblUnderlier,
+		final boolean bIsPut,
 		final boolean bIsForward,
-		final double dblInitialVolatility,
-		final boolean bCalibMode);
+		final double dblInitialVolatility)
+		throws java.lang.Exception;
 
 	/**
-	 * The Option Terminal Discount Factor
+	 * Carry out a Sensitivity Run and generate the Pricing related measure set
 	 * 
-	 * @return The Option Terminal Discount Factor
+	 * @param dblStrike Option Strike
+	 * @param dblTimeToExpiry Option Time To Expiry
+	 * @param dblRiskFreeRate Option Risk Free Rate
+	 * @param dblUnderlier Option Underlier Value
+	 * @param bIsPut TRUE => The Option is a Put
+	 * @param bIsForward TRUE => The Underlier represents the Forward, FALSE => it represents Spot
+	 * @param dblInitialVolatility Option Initial Volatility Value
+	 * 
+	 * @return The Greeks Sensitivities Output
 	 */
 
-	public abstract double df();
+	public abstract org.drip.pricer.option.Greeks greeks (
+		final double dblStrike,
+		final double dblTimeToExpiry,
+		final double dblRiskFreeRate,
+		final double dblUnderlier,
+		final boolean bIsPut,
+		final boolean bIsForward,
+		final double dblInitialVolatility);
 
 	/**
-	 * The "Effective" Volatility
-	 * 
-	 * @return The "Effective" Volatility
-	 */
-
-	public abstract double effectiveVolatility();
-
-	/**
-	 * The Call Option Charm
-	 * 
-	 * @return The Call Option Charm
-	 */
-
-	public abstract double callCharm();
-
-	/**
-	 * The Call Option Color
-	 * 
-	 * @return The Call Option Color
-	 */
-
-	public abstract double callColor();
-
-	/**
-	 * The Call Option Delta
-	 * 
-	 * @return The Call Option Delta
-	 */
-
-	public abstract double callDelta();
-
-	/**
-	 * The Call Option Gamma
-	 * 
-	 * @return The Call Option Gamma
-	 */
-
-	public abstract double callGamma();
-
-	/**
-	 * The Call Option Price
-	 * 
-	 * @return The Call Option Price
-	 */
-
-	public abstract double callPrice();
-
-	/**
-	 * The Call Prob 1 Term
-	 * 
-	 * @return The Call Prob 1 Term
-	 */
-
-	public abstract double callProb1();
-
-	/**
-	 * The Call Prob 2 Term
-	 * 
-	 * @return The Call Prob 2 Term
-	 */
-
-	public abstract double callProb2();
-
-	/**
-	 * The Call Option Rho
-	 * 
-	 * @return The Call Option Rho
-	 */
-
-	public abstract double callRho();
-
-	/**
-	 * The Call Option Speed
-	 * 
-	 * @return The Call Option Speed
-	 */
-
-	public abstract double callSpeed();
-
-	/**
-	 * The Call Option Theta
-	 * 
-	 * @return The Call Option Theta
-	 */
-
-	public abstract double callTheta();
-
-	/**
-	 * The Call Option Ultima
-	 * 
-	 * @return The Call Option Ultima
-	 */
-
-	public abstract double callUltima();
-
-	/**
-	 * The Call Option Vanna
-	 * 
-	 * @return The Call Option Vanna
-	 */
-
-	public abstract double callVanna();
-
-	/**
-	 * The Call Option Vega
-	 * 
-	 * @return The Call Option Vega
-	 */
-
-	public abstract double callVega();
-
-	/**
-	 * The Call Option Veta
-	 * 
-	 * @return The Call Option Veta
-	 */
-
-	public abstract double callVeta();
-
-	/**
-	 * The Call Option Vomma
-	 * 
-	 * @return The Call Option Vomma
-	 */
-
-	public abstract double callVomma();
-
-	/**
-	 * The Put Option Charm
-	 * 
-	 * @return The Put Option Charm
-	 */
-
-	public abstract double putCharm();
-
-	/**
-	 * The Put Option Color
-	 * 
-	 * @return The Put Option Color
-	 */
-
-	public abstract double putColor();
-
-	/**
-	 * The Put Option Delta
-	 * 
-	 * @return The Put Option Delta
-	 */
-
-	public abstract double putDelta();
-
-	/**
-	 * The Put Option Gamma
-	 * 
-	 * @return The Put Option Gamma
-	 */
-
-	public abstract double putGamma();
-
-	/**
-	 * The Put Option Price
-	 * 
-	 * @return The Put Option Price
-	 */
-
-	public abstract double putPrice();
-
-	/**
-	 * The Put Option Price Computed from the Put-Call Parity Relation
-	 * 
-	 * @return The Put Option Price Computed from the Put-Call Parity Relation
-	 */
-
-	public abstract double putPriceFromParity();
-
-	/**
-	 * The Put Prob 1 Term
-	 * 
-	 * @return The Put Prob 1 Term
-	 */
-
-	public abstract double putProb1();
-
-	/**
-	 * The Put Prob 2 Term
-	 * 
-	 * @return The Put Prob 2 Term
-	 */
-
-	public abstract double putProb2();
-
-	/**
-	 * The Put Option Rho
-	 * 
-	 * @return The Put Option Rho
-	 */
-
-	public abstract double putRho();
-
-	/**
-	 * The Put Option Speed
-	 * 
-	 * @return The Put Option Speed
-	 */
-
-	public abstract double putSpeed();
-
-	/**
-	 * The Put Option Theta
-	 * 
-	 * @return The Put Option Theta
-	 */
-
-	public abstract double putTheta();
-
-	/**
-	 * The Put Option Ultima
-	 * 
-	 * @return The Put Option Ultima
-	 */
-
-	public abstract double putUltima();
-
-	/**
-	 * The Put Option Vanna
-	 * 
-	 * @return The Put Option Vanna
-	 */
-
-	public abstract double putVanna();
-
-	/**
-	 * The Put Option Vega
-	 * 
-	 * @return The Put Option Vega
-	 */
-
-	public abstract double putVega();
-
-	/**
-	 * The Put Option Veta
-	 * 
-	 * @return The Put Option Veta
-	 */
-
-	public abstract double putVeta();
-
-	/**
-	 * The Put Option Vomma
-	 * 
-	 * @return The Put Option Vomma
-	 */
-
-	public abstract double putVomma();
-
-	/**
-	 * Carry out a Pricing Run and generate the Pricing related measure set
+	 * Compute the Expected Payoff of the Option from the Inputs
 	 * 
 	 * @param dblSpotDate Spot Date
 	 * @param dblExpiryDate Expiry Date
 	 * @param dblStrike Option Strike
 	 * @param dcFunding The Funding Curve
 	 * @param dblUnderlier Option Underlier Value
+	 * @param bIsPut TRUE => The Option is a Put
 	 * @param bIsForward TRUE => The Underlier represents the Forward, FALSE => it represents Spot
 	 * @param funcVolatilityR1ToR1 The R^1 -> R^1 Volatility Term Structure
-	 * @param bCalibMode TRUE => Run on Calibration Mode
 	 * 
-	 * @return TRUE => Computation Successful
+	 * @return The Expected Option Payoff
+	 * 
+	 * @throws java.lang.Exception Thrown if the Expected Payoff cannot be calculated
 	 */
 
-	public boolean compute (
+	public double payoff (
 		final double dblSpotDate,
 		final double dblExpiryDate,
 		final double dblStrike,
 		final org.drip.analytics.rates.DiscountCurve dcFunding,
 		final double dblUnderlier,
+		final boolean bIsPut,
 		final boolean bIsForward,
-		final org.drip.function.definition.R1ToR1 funcVolatilityR1ToR1,
-		final boolean bCalibMode)
+		final org.drip.function.definition.R1ToR1 funcVolatilityR1ToR1)
+		throws java.lang.Exception
 	{
-		{
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblSpotDate) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblExpiryDate) || dblExpiryDate <= dblSpotDate ||
-					!org.drip.quant.common.NumberUtil.IsValid (dblStrike) || null == dcFunding || null ==
-						funcVolatilityR1ToR1)
-				return false;
+		if (!org.drip.quant.common.NumberUtil.IsValid (dblSpotDate) ||
+			!org.drip.quant.common.NumberUtil.IsValid (dblExpiryDate) || dblExpiryDate <= dblSpotDate ||
+				!org.drip.quant.common.NumberUtil.IsValid (dblStrike) || null == dcFunding || null ==
+					funcVolatilityR1ToR1)
+			throw new java.lang.Exception ("FokkerPlanckGenerator::payoff => Invalid Inputs");
 
-			double dblRiskFreeRate = java.lang.Double.NaN;
-			double dblEffectiveVolatility = java.lang.Double.NaN;
-			double dblTimeToExpiry = (dblExpiryDate - dblSpotDate) / 365.25;
+		double dblTimeToExpiry = (dblExpiryDate - dblSpotDate) / 365.25;
 
-			org.drip.function.definition.R1ToR1 funcVarianceR1ToR1 = new org.drip.function.definition.R1ToR1
-				(null) {
-				@Override public double evaluate (
-					final double dblX)
-					throws java.lang.Exception
-				{
-					return funcVolatilityR1ToR1.evaluate (dblX) * funcVolatilityR1ToR1.evaluate (dblX);
-				}
-			};
-
-			try {
-				dblRiskFreeRate = dcFunding.libor (dblSpotDate, dblExpiryDate);
-
-				dblEffectiveVolatility = java.lang.Math.sqrt (funcVarianceR1ToR1.integrate (dblSpotDate,
-					dblExpiryDate) / 365.25) / dblTimeToExpiry;
-			} catch (java.lang.Exception e) {
-				e.printStackTrace();
-
-				return false;
+		org.drip.function.definition.R1ToR1 funcVarianceR1ToR1 = new org.drip.function.definition.R1ToR1
+			(null) {
+			@Override public double evaluate (
+				final double dblX)
+				throws java.lang.Exception
+			{
+				return funcVolatilityR1ToR1.evaluate (dblX) * funcVolatilityR1ToR1.evaluate (dblX);
 			}
+		};
 
-			return compute (dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblUnderlier, bIsForward,
-				dblEffectiveVolatility, bCalibMode);
+		double dblRiskFreeRate = dcFunding.libor (dblSpotDate, dblExpiryDate);
+
+		double dblEffectiveVolatility = java.lang.Math.sqrt (funcVarianceR1ToR1.integrate (dblSpotDate,
+			dblExpiryDate) / 365.25) / dblTimeToExpiry;
+
+		return payoff (dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblUnderlier, bIsPut, bIsForward,
+			dblEffectiveVolatility);
+	}
+
+	/**
+	 * Carry out a Sensitivity Run and generate the Pricing related measure set
+	 * 
+	 * @param dblSpotDate Spot Date
+	 * @param dblExpiryDate Expiry Date
+	 * @param dblStrike Option Strike
+	 * @param dcFunding The Funding Curve
+	 * @param dblUnderlier Option Underlier Value
+	 * @param bIsPut TRUE => The Option is a Put
+	 * @param bIsForward TRUE => The Underlier represents the Forward, FALSE => it represents Spot
+	 * @param funcVolatilityR1ToR1 The R^1 -> R^1 Volatility Term Structure
+	 * @param bCalibMode TRUE => Run on Calibration Mode
+	 * 
+	 * @return The Greeks Output generated from the Sensitivities Run
+	 */
+
+	public org.drip.pricer.option.Greeks greeks (
+		final double dblSpotDate,
+		final double dblExpiryDate,
+		final double dblStrike,
+		final org.drip.analytics.rates.DiscountCurve dcFunding,
+		final double dblUnderlier,
+		final boolean bIsPut,
+		final boolean bIsForward,
+		final org.drip.function.definition.R1ToR1 funcVolatilityR1ToR1)
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (dblSpotDate) ||
+			!org.drip.quant.common.NumberUtil.IsValid (dblExpiryDate) || dblExpiryDate <= dblSpotDate ||
+				!org.drip.quant.common.NumberUtil.IsValid (dblStrike) || null == dcFunding || null ==
+					funcVolatilityR1ToR1)
+			return null;
+
+		double dblRiskFreeRate = java.lang.Double.NaN;
+		double dblEffectiveVolatility = java.lang.Double.NaN;
+		double dblTimeToExpiry = (dblExpiryDate - dblSpotDate) / 365.25;
+
+		org.drip.function.definition.R1ToR1 funcVarianceR1ToR1 = new org.drip.function.definition.R1ToR1
+			(null) {
+			@Override public double evaluate (
+				final double dblX)
+				throws java.lang.Exception
+			{
+				return funcVolatilityR1ToR1.evaluate (dblX) * funcVolatilityR1ToR1.evaluate (dblX);
+			}
+		};
+
+		try {
+			dblRiskFreeRate = dcFunding.libor (dblSpotDate, dblExpiryDate);
+
+			dblEffectiveVolatility = java.lang.Math.sqrt (funcVarianceR1ToR1.integrate (dblSpotDate,
+				dblExpiryDate) / 365.25) / dblTimeToExpiry;
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+
+			return null;
 		}
+
+		return greeks (dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblUnderlier, bIsPut, bIsForward,
+			dblEffectiveVolatility);
+	}
+
+	/**
+	 * Imply the Effective Volatility From the Option Price
+	 * 
+	 * @param dblStrike Strike
+	 * @param dblTimeToExpiry Time To Expiry
+	 * @param dblRiskFreeRate Risk Free Rate
+	 * @param dblUnderlier The Underlier
+	 * @param bIsPut TRUE => The Option is a Put
+	 * @param bIsForward TRUE => The Underlier represents the Forward, FALSE => it represents Spot
+	 * @param dblPrice The Price
+	 * 
+	 * @return The Implied Effective Volatility
+	 * 
+	 * @throws java.lang.Exception Thrown if the Effective Volatility cannot be implied
+	 */
+
+	public double impliedVolatilityFromPrice (
+		final double dblStrike,
+		final double dblTimeToExpiry,
+		final double dblRiskFreeRate,
+		final double dblUnderlier,
+		final boolean bIsPut,
+		final boolean bIsForward,
+		final double dblPrice)
+		throws java.lang.Exception
+	{
+		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1 (null) {
+			@Override public double evaluate (
+				final double dblSpotVolatility)
+				throws java.lang.Exception
+			{
+				return payoff (dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblUnderlier, bIsPut, bIsForward,
+					dblSpotVolatility) - dblPrice;
+			}
+		};
+
+		org.drip.function.solverR1ToR1.FixedPointFinderOutput fpop = new
+			org.drip.function.solverR1ToR1.FixedPointFinderBrent (0., au, true).findRoot();
+
+		if (null == fpop || !fpop.containsRoot())
+			throw new java.lang.Exception
+				("FokkerPlanckGenerator::impliedVolatilityFromPrice => Cannot imply Volatility");
+
+		return java.lang.Math.abs (fpop.getRoot());
 	}
 }

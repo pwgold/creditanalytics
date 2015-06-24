@@ -56,14 +56,6 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 
 	private org.drip.param.pricer.HestonOptionPricerParams _fphp = null;
 
-	private double _dblDF = java.lang.Double.NaN;
-	private double _dblCallDelta = java.lang.Double.NaN;
-	private double _dblCallPrice = java.lang.Double.NaN;
-	private double _dblCallProb1 = java.lang.Double.NaN;
-	private double _dblCallProb2 = java.lang.Double.NaN;
-	private double _dblPutPriceFromParity = java.lang.Double.NaN;
-	private double _dblEffectiveVolatility = java.lang.Double.NaN;
-
 	class PhaseCorrectedF {
 		double _dblCorrectedPhase = java.lang.Double.NaN;
 		org.drip.quant.fourier.ComplexNumber _cnF = null;
@@ -493,20 +485,22 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 		return mapPhaseRun;
 	}
 
-	@Override public boolean compute (
+	@Override public double payoff (
 		final double dblStrike,
-		final double dbTimeToExpiry,
+		final double dblTimeToExpiry,
 		final double dblRiskFreeRate,
 		final double dblUnderlier,
+		final boolean bIsPut,
 		final boolean bIsForward,
-		final double dblInitialVolatility,
-		final boolean bCalibMode)
+		final double dblInitialVolatility)
+		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblStrike) ||!org.drip.quant.common.NumberUtil.IsValid
-			(dblUnderlier) ||!org.drip.quant.common.NumberUtil.IsValid (dblInitialVolatility) ||
-				!org.drip.quant.common.NumberUtil.IsValid (dbTimeToExpiry) ||
-					!org.drip.quant.common.NumberUtil.IsValid (dblRiskFreeRate))
-			return false;
+		if (!org.drip.quant.common.NumberUtil.IsValid (dblStrike) ||
+			!org.drip.quant.common.NumberUtil.IsValid (dblUnderlier) ||
+				!org.drip.quant.common.NumberUtil.IsValid (dblInitialVolatility) ||
+					!org.drip.quant.common.NumberUtil.IsValid (dblTimeToExpiry) ||
+						!org.drip.quant.common.NumberUtil.IsValid (dblRiskFreeRate))
+			throw new java.lang.Exception ("HestonStochasticVolatilityAlgorithm::payoff => Invalid Inputs");
 
 		org.drip.quant.fourier.RotationCountPhaseTracker rcpt1 =
 			org.drip.quant.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT ==
@@ -522,20 +516,19 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 
 		double dblB1 = dblB2 - _fphp.rho() * _fphp.sigma();
 
-		_dblDF = java.lang.Math.exp (-1. * dblRiskFreeRate * dbTimeToExpiry);
+		double dblDF = java.lang.Math.exp (-1. * dblRiskFreeRate * dblTimeToExpiry);
 
 		int i = 0;
-		_dblCallProb1 = 0.;
-		_dblCallProb2 = 0.;
 		double dblU1 = 0.5;
 		double dblU2 = -0.5;
+		double dblCallProb1 = 0.;
+		double dblCallProb2 = 0.;
 		double dblPreviousPhase = 0.;
-		_dblEffectiveVolatility = dblInitialVolatility;
-		double dblSpot = bIsForward ? dblUnderlier * _dblDF : dblUnderlier;
+		double dblSpot = bIsForward ? dblUnderlier * dblDF : dblUnderlier;
 
 		for (double dblFreq = FOURIER_FREQ_INIT; dblFreq <= FOURIER_FREQ_FINAL; dblFreq +=
 			FOURIER_FREQ_INCREMENT, ++i) {
-			PhaseCorrectedF pcf1 = payoffTransform (dblStrike, dbTimeToExpiry, dblRiskFreeRate, dblSpot,
+			PhaseCorrectedF pcf1 = payoffTransform (dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblSpot,
 				dblInitialVolatility, dblA, dblFreq, dblB1, dblU1, rcpt1);
 
 			if (null != rcpt1) {
@@ -547,17 +540,20 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 					if (dblCurrentPhase < dblPreviousPhase) {
 						if (!rcpt1.setDirection
 							(org.drip.quant.fourier.RotationCountPhaseTracker.APPLY_BACKWARD))
-							return false;
+							throw new java.lang.Exception
+								("HestonStochasticVolatilityAlgorithm::payoff => Cannot compute payoff");
 					} else if (dblCurrentPhase > dblPreviousPhase) {
 						if (!rcpt1.setDirection
 							(org.drip.quant.fourier.RotationCountPhaseTracker.APPLY_FORWARD))
-							return false;
+							throw new java.lang.Exception
+								("HestonStochasticVolatilityAlgorithm::payoff => Cannot compute payoff");
 					} else
-						return false;
+						throw new java.lang.Exception
+							("HestonStochasticVolatilityAlgorithm::payoff => Cannot compute payoff");
 				}
 			}
 
-			PhaseCorrectedF pcf2 = payoffTransform (dblStrike, dbTimeToExpiry, dblRiskFreeRate, dblSpot,
+			PhaseCorrectedF pcf2 = payoffTransform (dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblSpot,
 				dblInitialVolatility, dblA, dblFreq, dblB2, dblU2, rcpt2);
 
 			if (null != rcpt2) {
@@ -569,192 +565,172 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 					if (dblCurrentPhase < dblPreviousPhase) {
 						if (!rcpt2.setDirection
 							(org.drip.quant.fourier.RotationCountPhaseTracker.APPLY_BACKWARD))
-							return false;
+							throw new java.lang.Exception
+								("HestonStochasticVolatilityAlgorithm::payoff => Cannot compute payoff");
 					} else if (dblCurrentPhase > dblPreviousPhase) {
 						if (!rcpt2.setDirection
 							(org.drip.quant.fourier.RotationCountPhaseTracker.APPLY_FORWARD))
-							return false;
+							throw new java.lang.Exception
+								("HestonStochasticVolatilityAlgorithm::payoff => Cannot compute payoff");
 					} else
-						return false;
+						throw new java.lang.Exception
+							("HestonStochasticVolatilityAlgorithm::payoff => Cannot compute payoff");
 				}
 			}
 
-			_dblCallProb1 += pcf1._cnF.real() * FOURIER_FREQ_INCREMENT;
+			dblCallProb1 += pcf1._cnF.real() * FOURIER_FREQ_INCREMENT;
 
-			_dblCallProb2 += pcf2._cnF.real() * FOURIER_FREQ_INCREMENT;
+			dblCallProb2 += pcf2._cnF.real() * FOURIER_FREQ_INCREMENT;
 		}
 
 		double dblPIScaler = 1. / java.lang.Math.PI;
-		_dblCallProb1 = 0.5 + _dblCallProb1 * dblPIScaler;
-		_dblCallProb2 = 0.5 + _dblCallProb2 * dblPIScaler;
-		_dblCallDelta = _dblCallProb1;
-		_dblCallPrice = dblSpot * _dblCallProb1 - dblStrike * _dblDF * _dblCallProb2;
-		_dblPutPriceFromParity = _dblCallPrice + dblStrike * _dblDF - dblSpot;
-		return true;
+		double dblCallPrice = dblSpot * (0.5 + dblCallProb1 * dblPIScaler) - dblStrike * dblDF * (0.5 +
+			dblCallProb2 * dblPIScaler);
+		return bIsPut ? dblCallPrice + dblStrike * dblDF - dblSpot : dblCallPrice;
 	}
 
-	@Override public double df()
+	@Override public org.drip.pricer.option.Greeks greeks (
+		final double dblStrike,
+		final double dblTimeToExpiry,
+		final double dblRiskFreeRate,
+		final double dblUnderlier,
+		final boolean bIsPut,
+		final boolean bIsForward,
+		final double dblInitialVolatility)
 	{
-		return _dblDF;
-	}
+		if (!org.drip.quant.common.NumberUtil.IsValid (dblStrike) ||
+			!org.drip.quant.common.NumberUtil.IsValid (dblUnderlier) ||
+				!org.drip.quant.common.NumberUtil.IsValid (dblInitialVolatility) ||
+					!org.drip.quant.common.NumberUtil.IsValid (dblTimeToExpiry) ||
+						!org.drip.quant.common.NumberUtil.IsValid (dblRiskFreeRate))
+			return null;
 
-	@Override public double effectiveVolatility()
-	{
-		return _dblEffectiveVolatility;
-	}
+		org.drip.quant.fourier.RotationCountPhaseTracker rcpt1 =
+			org.drip.quant.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT ==
+				_fphp.phaseTrackerType() ? new org.drip.quant.fourier.RotationCountPhaseTracker() : null;
 
-	@Override public double callCharm()
-	{
-		return java.lang.Double.NaN;
-	}
+		org.drip.quant.fourier.RotationCountPhaseTracker rcpt2 =
+			org.drip.quant.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT ==
+				_fphp.phaseTrackerType() ? new org.drip.quant.fourier.RotationCountPhaseTracker() : null;
 
-	@Override public double callColor()
-	{
-		return java.lang.Double.NaN;
-	}
+		double dblA = _fphp.kappa() * _fphp.theta();
 
-	@Override public double callDelta()
-	{
-		return _dblCallDelta;
-	}
+		double dblB2 = _fphp.kappa() + _fphp.lambda();
 
-	@Override public double callGamma()
-	{
-		return java.lang.Double.NaN;
-	}
+		double dblB1 = dblB2 - _fphp.rho() * _fphp.sigma();
 
-	@Override public double callPrice()
-	{
-		return _dblCallPrice;
-	}
+		double dblDF = java.lang.Math.exp (-1. * dblRiskFreeRate * dblTimeToExpiry);
 
-	@Override public double callProb1()
-	{
-		return _dblCallProb1;
-	}
+		int i = 0;
+		double dblU1 = 0.5;
+		double dblU2 = -0.5;
+		double dblCallProb1 = 0.;
+		double dblCallProb2 = 0.;
+		double dblPreviousPhase = 0.;
+		double dblSpot = bIsForward ? dblUnderlier * dblDF : dblUnderlier;
 
-	@Override public double callProb2()
-	{
-		return _dblCallProb2;
-	}
+		for (double dblFreq = FOURIER_FREQ_INIT; dblFreq <= FOURIER_FREQ_FINAL; dblFreq +=
+			FOURIER_FREQ_INCREMENT, ++i) {
+			PhaseCorrectedF pcf1 = payoffTransform (dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblSpot,
+				dblInitialVolatility, dblA, dblFreq, dblB1, dblU1, rcpt1);
 
-	@Override public double callRho()
-	{
-		return java.lang.Double.NaN;
-	}
+			if (null != rcpt1) {
+				if (0 == i)
+					dblPreviousPhase = rcpt1.getPreviousPhase();
+				else if (1 == i) {
+					double dblCurrentPhase = rcpt1.getPreviousPhase();
 
-	@Override public double callSpeed()
-	{
-		return java.lang.Double.NaN;
-	}
+					if (dblCurrentPhase < dblPreviousPhase) {
+						if (!rcpt1.setDirection
+							(org.drip.quant.fourier.RotationCountPhaseTracker.APPLY_BACKWARD))
+							return null;
+					} else if (dblCurrentPhase > dblPreviousPhase) {
+						if (!rcpt1.setDirection
+							(org.drip.quant.fourier.RotationCountPhaseTracker.APPLY_FORWARD))
+							return null;
+					} else
+						return null;
+				}
+			}
 
-	@Override public double callTheta()
-	{
-		return java.lang.Double.NaN;
-	}
+			PhaseCorrectedF pcf2 = payoffTransform (dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblSpot,
+				dblInitialVolatility, dblA, dblFreq, dblB2, dblU2, rcpt2);
 
-	@Override public double callUltima()
-	{
-		return java.lang.Double.NaN;
-	}
+			if (null != rcpt2) {
+				if (0 == i)
+					dblPreviousPhase = rcpt2.getPreviousPhase();
+				else if (1 == i) {
+					double dblCurrentPhase = rcpt2.getPreviousPhase();
 
-	@Override public double callVanna()
-	{
-		return java.lang.Double.NaN;
-	}
+					if (dblCurrentPhase < dblPreviousPhase) {
+						if (!rcpt2.setDirection
+							(org.drip.quant.fourier.RotationCountPhaseTracker.APPLY_BACKWARD))
+							return null;
+					} else if (dblCurrentPhase > dblPreviousPhase) {
+						if (!rcpt2.setDirection
+							(org.drip.quant.fourier.RotationCountPhaseTracker.APPLY_FORWARD))
+							return null;
+					} else
+						return null;
+				}
+			}
 
-	@Override public double callVega()
-	{
-		return java.lang.Double.NaN;
-	}
+			dblCallProb1 += pcf1._cnF.real() * FOURIER_FREQ_INCREMENT;
 
-	@Override public double callVeta()
-	{
-		return java.lang.Double.NaN;
-	}
+			dblCallProb2 += pcf2._cnF.real() * FOURIER_FREQ_INCREMENT;
+		}
 
-	@Override public double callVomma()
-	{
-		return java.lang.Double.NaN;
-	}
+		double dblPIScaler = 1. / java.lang.Math.PI;
+		dblCallProb1 = 0.5 + dblCallProb1 * dblPIScaler;
+		dblCallProb2 = 0.5 + dblCallProb2 * dblPIScaler;
+		double dblCallPrice = dblSpot * dblCallProb1 - dblStrike * dblDF * dblCallProb2;
 
-	@Override public double putCharm()
-	{
-		return java.lang.Double.NaN;
-	}
+		try {
+			if (!bIsPut)
+				return new org.drip.pricer.option.Greeks (
+					dblDF,
+					dblInitialVolatility,
+					dblCallPrice,
+					dblCallProb1,
+					dblCallProb2,
+					dblCallProb1,
+					java.lang.Double.NaN,
+					java.lang.Double.NaN,
+					java.lang.Double.NaN,
+					java.lang.Double.NaN,
+					java.lang.Double.NaN,
+					java.lang.Double.NaN,
+					java.lang.Double.NaN,
+					java.lang.Double.NaN,
+					java.lang.Double.NaN,
+					java.lang.Double.NaN,
+					java.lang.Double.NaN
+				);
 
-	@Override public double putColor()
-	{
-		return java.lang.Double.NaN;
-	}
+			return new org.drip.pricer.option.PutGreeks (
+				dblDF,
+				dblInitialVolatility,
+				java.lang.Double.NaN,
+				dblCallPrice + dblStrike * dblDF - dblSpot,
+				java.lang.Double.NaN,
+				java.lang.Double.NaN,
+				java.lang.Double.NaN,
+				java.lang.Double.NaN,
+				java.lang.Double.NaN,
+				java.lang.Double.NaN,
+				java.lang.Double.NaN,
+				java.lang.Double.NaN,
+				java.lang.Double.NaN,
+				java.lang.Double.NaN,
+				java.lang.Double.NaN,
+				java.lang.Double.NaN,
+				java.lang.Double.NaN,
+				java.lang.Double.NaN
+			);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
 
-	@Override public double putDelta()
-	{
-		return java.lang.Double.NaN;
-	}
-
-	@Override public double putGamma()
-	{
-		return java.lang.Double.NaN;
-	}
-
-	@Override public double putPrice()
-	{
-		return java.lang.Double.NaN;
-	}
-
-	@Override public double putPriceFromParity()
-	{
-		return _dblPutPriceFromParity;
-	}
-
-	@Override public double putProb1()
-	{
-		return java.lang.Double.NaN;
-	}
-
-	@Override public double putProb2()
-	{
-		return java.lang.Double.NaN;
-	}
-
-	@Override public double putRho()
-	{
-		return java.lang.Double.NaN;
-	}
-
-	@Override public double putSpeed()
-	{
-		return java.lang.Double.NaN;
-	}
-
-	@Override public double putUltima()
-	{
-		return java.lang.Double.NaN;
-	}
-
-	@Override public double putTheta()
-	{
-		return java.lang.Double.NaN;
-	}
-
-	@Override public double putVanna()
-	{
-		return java.lang.Double.NaN;
-	}
-
-	@Override public double putVega()
-	{
-		return java.lang.Double.NaN;
-	}
-
-	@Override public double putVeta()
-	{
-		return java.lang.Double.NaN;
-	}
-
-	@Override public double putVomma()
-	{
-		return java.lang.Double.NaN;
+		return null;
 	}
 }

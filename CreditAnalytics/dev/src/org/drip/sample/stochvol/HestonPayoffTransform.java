@@ -2,6 +2,7 @@
 package org.drip.sample.stochvol;
 
 import org.drip.param.pricer.HestonOptionPricerParams;
+import org.drip.pricer.option.Greeks;
 import org.drip.pricer.option.HestonStochasticVolatilityAlgorithm;
 import org.drip.quant.common.FormatUtil;
 import org.drip.quant.fourier.PhaseAdjuster;
@@ -72,17 +73,17 @@ public class HestonPayoffTransform {
 		double dblSpot = 1.;
 		double dblSpotVolatility = 0.1;
 
-		hsva.compute (
+		Greeks greeks = hsva.greeks (
 			dblStrike,
 			dblTimeToExpiry,
 			dblRiskFreeRate,
 			dblSpot,
 			false,
-			dblSpotVolatility,
-			false
+			false,
+			dblSpotVolatility
 		);
 
-		return bProb1 ? hsva.callProb1() : hsva.callProb2();
+		return bProb1 ? greeks.prob1() : greeks.prob2();
 	}
 
 	public static final void main (

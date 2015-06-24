@@ -128,22 +128,26 @@ public class EuropeanCallPut {
 			return null;
 		}
 
-		if (!fpg.compute (_dblStrike, dblTTE, dblRiskFreeRate, dblUnderlier, bIsForward,
-			dblTimeAveragedVolatility, false))
-			return null;
+		org.drip.pricer.option.Greeks callGreeks = fpg.greeks (_dblStrike, dblTTE, dblRiskFreeRate,
+			dblUnderlier, false, bIsForward, dblTimeAveragedVolatility);
 
-		double dblCallPrice = fpg.callPrice();
+		org.drip.pricer.option.PutGreeks putGreeks = (org.drip.pricer.option.PutGreeks) fpg.greeks
+			(_dblStrike, dblTTE, dblRiskFreeRate, dblUnderlier, true, bIsForward, dblTimeAveragedVolatility);
 
-		double dblPutPrice = fpg.putPrice();
+		if (null == callGreeks || null == putGreeks) return null;
+
+		double dblCallPrice = callGreeks.price();
+
+		double dblPutPrice = putGreeks.price();
 
 		try {
 			dblImpliedCallVolatility = new
-				org.drip.pricer.option.BlackScholesAlgorithm().implyVolatilityFromCallPrice (_dblStrike,
-					dblTTE, dblRiskFreeRate, dblUnderlier, bIsForward, dblCallPrice);
+				org.drip.pricer.option.BlackScholesAlgorithm().impliedVolatilityFromPrice (_dblStrike,
+					dblTTE, dblRiskFreeRate, dblUnderlier, false, bIsForward, dblCallPrice);
 
 			dblImpliedPutVolatility = new
-				org.drip.pricer.option.BlackScholesAlgorithm().implyVolatilityFromPutPrice (_dblStrike,
-					dblTTE, dblRiskFreeRate, dblUnderlier, bIsForward, dblPutPrice);
+				org.drip.pricer.option.BlackScholesAlgorithm().impliedVolatilityFromPrice (_dblStrike,
+					dblTTE, dblRiskFreeRate, dblUnderlier, true, bIsForward, dblPutPrice);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 
@@ -155,73 +159,73 @@ public class EuropeanCallPut {
 
 		mapMeasure.put ("CalcTime", (System.nanoTime() - lStartTime) * 1.e-09);
 
-		mapMeasure.put ("CallCharm", fpg.callCharm());
+		mapMeasure.put ("CallCharm", callGreeks.charm());
 
-		mapMeasure.put ("CallColor", fpg.callColor());
+		mapMeasure.put ("CallColor", callGreeks.color());
 
-		mapMeasure.put ("CallDelta", fpg.callDelta());
+		mapMeasure.put ("CallDelta", callGreeks.delta());
 
-		mapMeasure.put ("CallGamma", fpg.callGamma());
+		mapMeasure.put ("CallGamma", callGreeks.gamma());
 
-		mapMeasure.put ("CallPrice", dblCallPrice);
+		mapMeasure.put ("CallPrice", callGreeks.price());
 
-		mapMeasure.put ("CallProb1", fpg.callProb1());
+		mapMeasure.put ("CallProb1", callGreeks.prob1());
 
-		mapMeasure.put ("CallProb2", fpg.callProb2());
+		mapMeasure.put ("CallProb2", callGreeks.prob2());
 
-		mapMeasure.put ("CallRho", fpg.callRho());
+		mapMeasure.put ("CallRho", callGreeks.rho());
 
-		mapMeasure.put ("CallSpeed", fpg.callSpeed());
+		mapMeasure.put ("CallSpeed", callGreeks.speed());
 
-		mapMeasure.put ("CallTheta", fpg.callTheta());
+		mapMeasure.put ("CallTheta", callGreeks.theta());
 
-		mapMeasure.put ("CallUltima", fpg.callUltima());
+		mapMeasure.put ("CallUltima", callGreeks.ultima());
 
-		mapMeasure.put ("CallVanna", fpg.callVanna());
+		mapMeasure.put ("CallVanna", callGreeks.vanna());
 
-		mapMeasure.put ("CallVega", fpg.callVega());
+		mapMeasure.put ("CallVega", callGreeks.vega());
 
-		mapMeasure.put ("CallVeta", fpg.callVeta());
+		mapMeasure.put ("CallVeta", callGreeks.veta());
 
-		mapMeasure.put ("CallVomma", fpg.callVomma());
+		mapMeasure.put ("CallVomma", callGreeks.vomma());
 
-		mapMeasure.put ("DF", fpg.df());
+		mapMeasure.put ("DF", callGreeks.df());
 
 		mapMeasure.put ("ImpliedCallVolatility", dblImpliedCallVolatility);
 
 		mapMeasure.put ("ImpliedPutVolatility", dblImpliedPutVolatility);
 
-		mapMeasure.put ("PutCharm", fpg.putCharm());
+		mapMeasure.put ("PutCharm", putGreeks.charm());
 
-		mapMeasure.put ("PutColor", fpg.putColor());
+		mapMeasure.put ("PutColor", putGreeks.color());
 
-		mapMeasure.put ("PutDelta", fpg.putDelta());
+		mapMeasure.put ("PutDelta", putGreeks.delta());
 
-		mapMeasure.put ("PutGamma", fpg.putGamma());
+		mapMeasure.put ("PutGamma", putGreeks.gamma());
 
-		mapMeasure.put ("PutPrice", fpg.putPrice());
+		mapMeasure.put ("PutPrice", putGreeks.price());
 
-		mapMeasure.put ("PutPriceFromParity", fpg.putPriceFromParity());
+		mapMeasure.put ("PutPriceFromParity", putGreeks.putPriceFromParity());
 
-		mapMeasure.put ("PutProb1", fpg.putProb1());
+		mapMeasure.put ("PutProb1", putGreeks.prob1());
 
-		mapMeasure.put ("PutProb2", fpg.putProb2());
+		mapMeasure.put ("PutProb2", putGreeks.prob2());
 
-		mapMeasure.put ("PutRho", fpg.putRho());
+		mapMeasure.put ("PutRho", putGreeks.rho());
 
-		mapMeasure.put ("PutSpeed", fpg.putSpeed());
+		mapMeasure.put ("PutSpeed", putGreeks.speed());
 
-		mapMeasure.put ("PutTheta", fpg.putTheta());
+		mapMeasure.put ("PutTheta", putGreeks.theta());
 
-		mapMeasure.put ("PutUltima", fpg.putUltima());
+		mapMeasure.put ("PutUltima", putGreeks.ultima());
 
-		mapMeasure.put ("PutVanna", fpg.putVanna());
+		mapMeasure.put ("PutVanna", putGreeks.vanna());
 
-		mapMeasure.put ("PutVega", fpg.putVega());
+		mapMeasure.put ("PutVega", putGreeks.vega());
 
-		mapMeasure.put ("PutVeta", fpg.putVeta());
+		mapMeasure.put ("PutVeta", putGreeks.veta());
 
-		mapMeasure.put ("PutVomma", fpg.putVomma());
+		mapMeasure.put ("PutVomma", putGreeks.vomma());
 
 		mapMeasure.put ("TTE", dblTTE);
 
@@ -262,8 +266,8 @@ public class EuropeanCallPut {
 
 		double dblTTE = (dblMaturity - dblValueDate) / 365.25;
 
-		return new org.drip.pricer.option.BlackScholesAlgorithm().implyVolatilityFromCallPrice (_dblStrike,
-			dblTTE, dc.zero (dblMaturity), dblUnderlier, bIsForward, dblCallPrice);
+		return new org.drip.pricer.option.BlackScholesAlgorithm().impliedVolatilityFromPrice (_dblStrike,
+			dblTTE, dc.zero (dblMaturity), dblUnderlier, false, bIsForward, dblCallPrice);
 	}
 
 	/**
@@ -300,8 +304,8 @@ public class EuropeanCallPut {
 
 		double dblTTE = (dblMaturity - dblValueDate) / 365.25;
 
-		return new org.drip.pricer.option.BlackScholesAlgorithm().implyVolatilityFromPutPrice (_dblStrike,
-			dblTTE, dc.zero (dblMaturity), dblUnderlier, bIsForward, dblPutPrice);
+		return new org.drip.pricer.option.BlackScholesAlgorithm().impliedVolatilityFromPrice (_dblStrike,
+			dblTTE, dc.zero (dblMaturity), dblUnderlier, true, bIsForward, dblPutPrice);
 	}
 
 	/**

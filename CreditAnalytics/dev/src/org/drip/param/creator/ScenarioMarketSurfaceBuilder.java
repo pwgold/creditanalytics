@@ -573,14 +573,15 @@ public class ScenarioMarketSurfaceBuilder {
 					double dblTimeToExpiry = org.drip.analytics.support.AnalyticsHelper.TenorToYearFraction
 						(strTenor);
 
-					if (!hsva.compute (dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblUnderlier, bIsForward,
-						dblInitialVolatility, false))
-						return null;
+					org.drip.pricer.option.Greeks callGreeks = hsva.greeks (dblStrike, dblTimeToExpiry,
+						dblRiskFreeRate, dblUnderlier, false, bIsForward, dblInitialVolatility);
 
-					aadblImpliedNode[iStrike][iTenor++] = bPriceSurface ? hsva.callPrice() : new
-						org.drip.pricer.option.BlackScholesAlgorithm().implyVolatilityFromCallPrice
-							(dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblUnderlier, false,
-								hsva.callPrice());
+					if (null == callGreeks) return null;
+
+					aadblImpliedNode[iStrike][iTenor++] = bPriceSurface ? callGreeks.price() : new
+						org.drip.pricer.option.BlackScholesAlgorithm().impliedVolatilityFromPrice
+							(dblStrike, dblTimeToExpiry, dblRiskFreeRate, dblUnderlier, false, false,
+								callGreeks.price());
 				} catch (java.lang.Exception e) {
 					e.printStackTrace();
 
