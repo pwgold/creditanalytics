@@ -42,6 +42,8 @@ public class PutGreeks extends org.drip.pricer.option.Greeks {
 	 * 
 	 * @param dblDF The Payoff Discount Factor
 	 * @param dblEffectiveVolatility Effective Volatility
+	 * @param dblExpectedPayoff Expected Forward Payoff
+	 * @param dblExpectedATMPayoff Expected ATM Forward Payoff
 	 * @param dblPutPrice Put Price
 	 * @param dblPutPriceFromParity Put Price Computed from Put-Call Parity
 	 * @param dblPutProb1 Put Probability Term #1
@@ -65,6 +67,8 @@ public class PutGreeks extends org.drip.pricer.option.Greeks {
 	public PutGreeks (
 		final double dblDF,
 		final double dblEffectiveVolatility,
+		final double dblExpectedPayoff,
+		final double dblExpectedATMPayoff,
 		final double dblPutPrice,
 		final double dblPutPriceFromParity,
 		final double dblPutProb1,
@@ -83,9 +87,9 @@ public class PutGreeks extends org.drip.pricer.option.Greeks {
 		final double dblPutUltima)
 		throws java.lang.Exception
 	{
-		super (dblDF, dblEffectiveVolatility, dblPutPrice, dblPutProb1, dblPutProb2, dblPutDelta, dblPutVega,
-			dblPutTheta, dblPutRho, dblPutGamma, dblPutVanna, dblPutVomma, dblPutCharm, dblPutVeta,
-				dblPutColor, dblPutSpeed, dblPutUltima);
+		super (dblDF, dblEffectiveVolatility, dblExpectedPayoff, dblExpectedATMPayoff, dblPutPrice,
+			dblPutProb1, dblPutProb2, dblPutDelta, dblPutVega, dblPutTheta, dblPutRho, dblPutGamma,
+				dblPutVanna, dblPutVomma, dblPutCharm, dblPutVeta, dblPutColor, dblPutSpeed, dblPutUltima);
 
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblPutPrice) &&
 			!org.drip.quant.common.NumberUtil.IsValid (_dblPutPriceFromParity = dblPutPriceFromParity))

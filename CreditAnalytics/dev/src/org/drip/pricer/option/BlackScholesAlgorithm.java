@@ -52,7 +52,8 @@ public class BlackScholesAlgorithm extends org.drip.pricer.option.FokkerPlanckGe
 		final double dblUnderlier,
 		final boolean bIsPut,
 		final boolean bIsForward,
-		final double dblVolatility)
+		final double dblVolatility,
+		final boolean bAsPrice)
 		throws java.lang.Exception
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblStrike) ||
@@ -81,10 +82,12 @@ public class BlackScholesAlgorithm extends org.drip.pricer.option.FokkerPlanckGe
 			dblD2 = dblD1;
 		}
 
-		double dblCallPrice = dblDF * (dblForward * org.drip.measure.continuous.Gaussian.CDF (dblD1) -
-			dblStrike * org.drip.measure.continuous.Gaussian.CDF (dblD2));
+		double dblCallPayoff = dblForward * org.drip.measure.continuous.Gaussian.CDF (dblD1) - dblStrike *
+			org.drip.measure.continuous.Gaussian.CDF (dblD2);
 
-		return bIsPut ? dblCallPrice + dblDF * (dblStrike - dblForward) : dblCallPrice;
+		if (!bAsPrice) return bIsPut ? dblCallPayoff + dblStrike - dblForward : dblCallPayoff;
+
+		return bIsPut ? dblDF * (dblCallPayoff + dblStrike - dblForward) : dblDF * dblCallPayoff;
 	}
 
 	@Override public org.drip.pricer.option.Greeks greeks (
@@ -111,6 +114,8 @@ public class BlackScholesAlgorithm extends org.drip.pricer.option.FokkerPlanckGe
 		double dblD2 = java.lang.Double.NaN;
 		double dblVega = java.lang.Double.NaN;
 		double dblVeta = java.lang.Double.NaN;
+		double dblATMD1 = java.lang.Double.NaN;
+		double dblATMD2 = java.lang.Double.NaN;
 		double dblCharm = java.lang.Double.NaN;
 		double dblColor = java.lang.Double.NaN;
 		double dblGamma = java.lang.Double.NaN;
@@ -121,23 +126,33 @@ public class BlackScholesAlgorithm extends org.drip.pricer.option.FokkerPlanckGe
 		double dblCallProb1 = java.lang.Double.NaN;
 		double dblCallProb2 = java.lang.Double.NaN;
 		double dblTimeDecay = java.lang.Double.NaN;
+		double dblATMCallProb1 = java.lang.Double.NaN;
+		double dblATMCallProb2 = java.lang.Double.NaN;
 		double dblForward = bIsForward ? dblUnderlier : dblUnderlier / dblDF;
 
 		if (0. != dblVolatility) {
 			dblD1 = (java.lang.Math.log (dblForward / dblStrike) + dblTimeToExpiry * (0.5 * dblVolatility *
 				dblVolatility)) / dblD1D2Diff;
 
+			dblATMD1 = dblTimeToExpiry * (0.5 * dblVolatility * dblVolatility) / dblD1D2Diff;
 			dblD2 = dblD1 - dblD1D2Diff;
+			dblATMD2 = -1. * dblATMD1;
 		} else {
 			dblD1 = dblForward > dblStrike ? java.lang.Double.POSITIVE_INFINITY :
 				java.lang.Double.NEGATIVE_INFINITY;
 			dblD2 = dblD1;
+			dblATMD1 = 0.;
+			dblATMD2 = 0.;
 		}
 
 		try {
 			dblCallProb1 = org.drip.measure.continuous.Gaussian.CDF (dblD1);
 
 			dblCallProb2 = org.drip.measure.continuous.Gaussian.CDF (dblD2);
+
+			dblATMCallProb1 = org.drip.measure.continuous.Gaussian.CDF (dblATMD1);
+
+			dblATMCallProb2 = org.drip.measure.continuous.Gaussian.CDF (dblATMD2);
 
 			double dblD1Density = org.drip.measure.continuous.Gaussian.Density (dblD1);
 
@@ -163,14 +178,18 @@ public class BlackScholesAlgorithm extends org.drip.pricer.option.FokkerPlanckGe
 			return null;
 		}
 
+		double dblExpectedCallPayoff = dblForward * dblCallProb1 - dblStrike * dblCallProb2;
+		double dblExpectedATMCallPayoff = dblForward * (dblATMCallProb1 - dblATMCallProb2);
 		double dblCallRho = dblUnderlier * dblTimeToExpiry * dblCallProb2;
-		double dblCallPrice = dblDF * (dblForward * dblCallProb1 - dblStrike * dblCallProb2);
+		double dblCallPrice = dblDF * dblExpectedCallPayoff;
 
 		try {
 			if (!bIsPut)
 				return new org.drip.pricer.option.Greeks (
 					dblDF,
 					dblVolatility,
+					dblExpectedCallPayoff,
+					dblExpectedATMCallPayoff,
 					dblCallPrice,
 					dblCallProb1,
 					dblCallProb2,
@@ -197,6 +216,8 @@ public class BlackScholesAlgorithm extends org.drip.pricer.option.FokkerPlanckGe
 			return new org.drip.pricer.option.PutGreeks (
 				dblDF,
 				dblVolatility,
+				dblExpectedCallPayoff + dblStrike - dblForward,
+				dblExpectedATMCallPayoff,
 				dblDF * (-1. * dblForward * dblPutProb1 + dblStrike * dblPutProb2),
 				dblCallPrice + dblDF * (dblStrike - dblForward),
 				dblPutProb1,

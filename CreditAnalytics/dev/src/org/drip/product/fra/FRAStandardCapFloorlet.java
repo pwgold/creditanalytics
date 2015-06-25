@@ -39,6 +39,9 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 	private boolean _bIsCaplet = false;
 	private org.drip.product.fra.FRAStandardComponent _fra = null;
 
+	private org.drip.pricer.option.FokkerPlanckGenerator _fpg = new
+		org.drip.pricer.option.BlackScholesAlgorithm();
+
 	/**
 	 * FRAStandardCapFloorlet constructor
 	 * 
@@ -165,18 +168,23 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 
 			if (!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer)) return null;
 
+			org.drip.pricer.option.Greeks optGreek = _fpg.greeks (dblValueDate, dblExerciseDate, dblStrike,
+				dcFunding, dblATMManifestMeasure, !_bIsCaplet, true, dblIntegratedSurfaceVariance);
+
 			if (_bIsCaplet) {
 				dblForwardIntrinsic = dblATMManifestMeasure * org.drip.measure.continuous.Gaussian.CDF
 					(dblDPlus) - dblStrike * org.drip.measure.continuous.Gaussian.CDF (dblDMinus);
 
 				dblForwardATMIntrinsic = dblATMManifestMeasure * org.drip.measure.continuous.Gaussian.CDF
-					(dblATMDPlus) - dblStrike * org.drip.measure.continuous.Gaussian.CDF (dblATMDMinus);
+					(dblATMDPlus) - dblATMManifestMeasure * org.drip.measure.continuous.Gaussian.CDF
+						(dblATMDMinus);
 			} else {
 				dblForwardIntrinsic = dblStrike * org.drip.measure.continuous.Gaussian.CDF (-dblDMinus) -
 					dblATMManifestMeasure * org.drip.measure.continuous.Gaussian.CDF (-dblDPlus);
 
-				dblForwardATMIntrinsic = dblStrike * org.drip.measure.continuous.Gaussian.CDF (-dblATMDMinus)
-					- dblATMManifestMeasure * org.drip.measure.continuous.Gaussian.CDF (-dblATMDPlus);
+				dblForwardATMIntrinsic = dblATMManifestMeasure * org.drip.measure.continuous.Gaussian.CDF
+					(-dblATMDMinus) - dblATMManifestMeasure * org.drip.measure.continuous.Gaussian.CDF
+						(-dblATMDPlus);
 			}
 
 			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapResult = new
@@ -189,6 +197,10 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 			mapResult.put ("ATMPrice", dblForwardATMIntrinsic * dblManifestMeasurePriceTransformer);
 
 			mapResult.put ("CalcTime", (System.nanoTime() - lStart) * 1.e-09);
+
+			mapResult.put ("ExpectedATMPayoff", optGreek.expectedATMPayoff());
+
+			mapResult.put ("ExpectedPayoff", optGreek.expectedPayoff());
 
 			mapResult.put ("ForwardATMIntrinsic", dblForwardATMIntrinsic);
 
@@ -269,6 +281,10 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 
 		setstrMeasureNames.add ("CalcTime");
 
+		setstrMeasureNames.add ("ExpectedATMPayoff");
+
+		setstrMeasureNames.add ("ExpectedPayoff");
+
 		setstrMeasureNames.add ("ForwardATMIntrinsic");
 
 		setstrMeasureNames.add ("ForwardIntrinsic");
@@ -293,7 +309,7 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 	}
 
 	/**
-	 * Imply the Flat Caplet/Floorlet Volatility from the Marker Manifest Measure
+	 * Imply the Flat Caplet/Floorlet Volatility from the Market Manifest Measure
 	 * 
 	 * @param valParams The Valuation Parameters
 	 * @param pricerParams Pricer Parameters
@@ -316,24 +332,48 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 		final double dblCalibValue)
 		throws java.lang.Exception
 	{
-		if (null == valParams || null == strCalibMeasure || strCalibMeasure.isEmpty() ||
+		if (null == valParams || null == strCalibMeasure || strCalibMeasure.isEmpty() || null == csqs ||
 			!org.drip.quant.common.NumberUtil.IsValid (dblCalibValue))
 			throw new java.lang.Exception ("FRAStandardCapFloorlet::implyVolatility => Invalid Inputs");
+
+		final double dblStrike = strike();
+
+		final double dblValueDate = valParams.valueDate();
+
+		final double dblExerciseDate = exerciseDate().julian();
+
+		final org.drip.analytics.rates.DiscountCurve dcFunding = csqs.fundingCurve
+			(org.drip.state.identifier.FundingLabel.Standard (_fra.payCurrency()));
+
+		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapFRAOutput = _fra.value
+			(valParams, pricerParams, csqs, quotingParams);
+
+		java.lang.String strManifestMeasure = manifestMeasure();
+
+		if (null == mapFRAOutput || !mapFRAOutput.containsKey (strManifestMeasure))
+			throw new java.lang.Exception ("FRAStandardCapFloorlet::implyVolatility => No ATM Metric");
+
+		final double dblATMManifestMeasure = mapFRAOutput.get (strManifestMeasure);
 
 		org.drip.function.definition.R1ToR1 funcVolPricer = new org.drip.function.definition.R1ToR1 (null) {
 			@Override public double evaluate (
 				final double dblVolatility)
 				throws java.lang.Exception
 			{
+				if ("Price".equals (strCalibMeasure))
+					return _fpg.impliedVolatilityFromPrice (dblValueDate, dblExerciseDate, dblStrike,
+						dcFunding, dblATMManifestMeasure, !_bIsCaplet, true, dblCalibValue);
+
 				java.util.Map<java.lang.String, java.lang.Double> mapOutput = valueFromSurfaceVariance 
 					(valParams, pricerParams, csqs, quotingParams, dblVolatility * dblVolatility *
-						(exerciseDate().julian() - valParams.valueDate()) / 365.25);
+						(dblExerciseDate - dblValueDate) / 365.25);
 
 				if (null == mapOutput || !mapOutput.containsKey (strCalibMeasure))
 					throw new java.lang.Exception
 						("FRAStandardCapFloorlet::implyVolatility => Cannot generate Calibration Measure");
 
 				return mapOutput.get (strCalibMeasure);
+
 			}
 		};
 
@@ -346,5 +386,69 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 				("FRAStandardCapFloorlet::implyVolatility => Cannot calibrate the Vol");
 
 		return fpfo.getRoot();
+	}
+
+	/**
+	 * Compute the Caplet/Floorlet Price from the Inputs
+	 * 
+	 * @param valParams The Valuation Parameters
+	 * @param pricerParams Pricer Parameters
+	 * @param csqs The Market Parameters
+	 * @param quotingParams The Quoting Parameters
+	 * @param dblVolatility The FRA Volatility
+	 * 
+	 * @return The Caplet/Floorlet Price
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double price (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
+		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
+		final double dblVolatility)
+		throws java.lang.Exception
+	{
+		if (null == valParams || null == csqs || !org.drip.quant.common.NumberUtil.IsValid (dblVolatility))
+			throw new java.lang.Exception ("FRAStandardCapFloorlet::price => Invalid Inputs");
+
+		org.drip.analytics.rates.DiscountCurve dcFunding = csqs.fundingCurve
+			(org.drip.state.identifier.FundingLabel.Standard (_fra.payCurrency()));
+
+		if (null == dcFunding)
+			throw new java.lang.Exception ("FRAStandardCapFloorlet::price => Invalid Inputs");
+
+		double dblExerciseDate = exerciseDate().julian();
+
+		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapFRAOutput = _fra.value
+			(valParams, pricerParams, csqs, quotingParams);
+
+		java.lang.String strManifestMeasure = manifestMeasure();
+
+		if (null == mapFRAOutput || !mapFRAOutput.containsKey (strManifestMeasure))
+			throw new java.lang.Exception ("FRAStandardCapFloorlet::price => No ATM Metric");
+
+		double dblManifestMeasurePriceTransformer = java.lang.Double.NaN;
+
+		if (strManifestMeasure.equalsIgnoreCase ("Price") || strManifestMeasure.equalsIgnoreCase ("PV"))
+			dblManifestMeasurePriceTransformer = dcFunding.df (dblExerciseDate);
+		else if (strManifestMeasure.equalsIgnoreCase ("ForwardRate") ||
+			strManifestMeasure.equalsIgnoreCase ("ParForward") || strManifestMeasure.equalsIgnoreCase
+				("ParForwardRate") || strManifestMeasure.equalsIgnoreCase ("QuantoAdjustedParForward") ||
+					strManifestMeasure.equalsIgnoreCase ("Rate")) {
+			if (!mapFRAOutput.containsKey ("DV01"))
+				throw new java.lang.Exception ("FRAStandardCapFloorlet::price => No FRA DV01");
+
+			dblManifestMeasurePriceTransformer = 10000. * mapFRAOutput.get ("DV01");
+		}
+
+		if (!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer))
+			throw new java.lang.Exception
+				("FRAStandardCapFloorlet::price => No Manifest Measure Price Transformer");
+
+		return dblManifestMeasurePriceTransformer * _fpg.payoff (valParams.valueDate(), dblExerciseDate,
+			strike(), dcFunding, mapFRAOutput.get (strManifestMeasure), !_bIsCaplet, true, dblVolatility,
+				false);
 	}
 }

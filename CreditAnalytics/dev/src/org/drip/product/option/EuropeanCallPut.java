@@ -116,6 +116,8 @@ public class EuropeanCallPut {
 		double dblImpliedPutVolatility = java.lang.Double.NaN;
 		double dblImpliedCallVolatility = java.lang.Double.NaN;
 		double dblTimeAveragedVolatility = java.lang.Double.NaN;
+		double dblBlackScholesPutVolatility = java.lang.Double.NaN;
+		double dblBlackScholesCallVolatility = java.lang.Double.NaN;
 
 		try {
 			dblRiskFreeRate = dc.zero (dblMaturity);
@@ -141,13 +143,17 @@ public class EuropeanCallPut {
 		double dblPutPrice = putGreeks.price();
 
 		try {
-			dblImpliedCallVolatility = new
-				org.drip.pricer.option.BlackScholesAlgorithm().impliedVolatilityFromPrice (_dblStrike,
-					dblTTE, dblRiskFreeRate, dblUnderlier, false, bIsForward, dblCallPrice);
+			dblBlackScholesCallVolatility = fpg.impliedBlackScholesVolatility (_dblStrike, dblTTE,
+				dblRiskFreeRate, dblUnderlier, false, bIsForward, dblCallPrice);
 
-			dblImpliedPutVolatility = new
-				org.drip.pricer.option.BlackScholesAlgorithm().impliedVolatilityFromPrice (_dblStrike,
-					dblTTE, dblRiskFreeRate, dblUnderlier, true, bIsForward, dblPutPrice);
+			dblBlackScholesPutVolatility = fpg.impliedBlackScholesVolatility (_dblStrike, dblTTE,
+				dblRiskFreeRate, dblUnderlier, true, bIsForward, dblPutPrice);
+
+			dblImpliedCallVolatility = fpg.impliedVolatilityFromPrice (_dblStrike, dblTTE, dblRiskFreeRate,
+				dblUnderlier, false, bIsForward, dblCallPrice);
+
+			dblImpliedPutVolatility = fpg.impliedVolatilityFromPrice (_dblStrike, dblTTE, dblRiskFreeRate,
+				dblUnderlier, true, bIsForward, dblPutPrice);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 
@@ -156,6 +162,10 @@ public class EuropeanCallPut {
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapMeasure = new
 			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
+
+		mapMeasure.put ("BlackScholesCallVolatility", dblBlackScholesCallVolatility);
+
+		mapMeasure.put ("BlackScholesPutVolatility", dblBlackScholesPutVolatility);
 
 		mapMeasure.put ("CalcTime", (System.nanoTime() - lStartTime) * 1.e-09);
 
@@ -190,6 +200,8 @@ public class EuropeanCallPut {
 		mapMeasure.put ("CallVomma", callGreeks.vomma());
 
 		mapMeasure.put ("DF", callGreeks.df());
+
+		mapMeasure.put ("EffectiveVolatility", callGreeks.effectiveVolatility());
 
 		mapMeasure.put ("ImpliedCallVolatility", dblImpliedCallVolatility);
 
@@ -318,6 +330,10 @@ public class EuropeanCallPut {
 	{
 		java.util.Set<java.lang.String> setstrMeasureNames = new java.util.TreeSet<java.lang.String>();
 
+		setstrMeasureNames.add ("BlackScholesCallVolatility");
+
+		setstrMeasureNames.add ("BlackScholesPutVolatility");
+
 		setstrMeasureNames.add ("CalcTime");
 
 		setstrMeasureNames.add ("CallCharm");
@@ -352,7 +368,11 @@ public class EuropeanCallPut {
 
 		setstrMeasureNames.add ("DF");
 
+		setstrMeasureNames.add ("EffectiveVolatility");
+
 		setstrMeasureNames.add ("ImpliedCallVolatility");
+
+		setstrMeasureNames.add ("ImpliedPutVolatility");
 
 		setstrMeasureNames.add ("PutCharm");
 

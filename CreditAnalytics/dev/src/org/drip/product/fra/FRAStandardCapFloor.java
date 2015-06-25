@@ -212,7 +212,6 @@ public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncome
 		double dblUpfront = 0.;
 		double dblATMPrice = 0.;
 		org.drip.function.solverR1ToR1.FixedPointFinderOutput fpfo = null;
-		org.drip.function.solverR1ToR1.FixedPointFinderOutput fpfoATM = null;
 
 		long lStart = System.nanoTime();
 
@@ -256,46 +255,11 @@ public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncome
 
 					if (dblExerciseDate <= dblValueDate) continue;
 
-					java.util.Map<java.lang.String, java.lang.Double> mapOutput =
-						fracfl.valueFromSurfaceVariance (valParams, pricerParams, csqs, quotingParams,
-							dblVolatility * dblVolatility * (dblExerciseDate - dblValueDate) / 365.25);
-
-					if (null == mapOutput || !mapOutput.containsKey ("Price"))
-						throw new java.lang.Exception
-							("FRAStandardCapFloor::value => Cannot generate Calibration Measure");
-
-					dblCapFloorletPrice += mapOutput.get ("Price");
+					dblCapFloorletPrice += fracfl.price (valParams, pricerParams, csqs, quotingParams,
+						dblVolatility);
 				}
 
 				return dblCapFloorletPrice;
-			}
-		};
-
-		org.drip.function.definition.R1ToR1 funcATMVolPricer = new org.drip.function.definition.R1ToR1 (null)
-		{
-			@Override public double evaluate (
-				final double dblVolatility)
-				throws java.lang.Exception
-			{
-				double dblCapFloorletATMPrice = 0.;
-
-				for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : _lsFRACapFloorlet) {
-					double dblExerciseDate = fracfl.exerciseDate().julian();
-
-					if (dblExerciseDate <= dblValueDate) continue;
-
-					java.util.Map<java.lang.String, java.lang.Double> mapOutput =
-						fracfl.valueFromSurfaceVariance (valParams, pricerParams, csqs, quotingParams,
-							dblVolatility * dblVolatility * (dblExerciseDate - dblValueDate) / 365.25);
-
-					if (null == mapOutput || !mapOutput.containsKey ("ATMPrice"))
-						throw new java.lang.Exception
-							("FRAStandardCapFloor::value => Cannot generate Calibration Measure");
-
-					dblCapFloorletATMPrice += mapOutput.get ("ATMPrice");
-				}
-
-				return dblCapFloorletATMPrice;
 			}
 		};
 
@@ -310,29 +274,12 @@ public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncome
 			return mapResult;
 		}
 
-		try {
-			fpfoATM = (new org.drip.function.solverR1ToR1.FixedPointFinderBracketing (dblATMPrice,
-				funcATMVolPricer, null, org.drip.function.solverR1ToR1.VariateIteratorPrimitive.BISECTION,
-					false)).findRoot
-						(org.drip.function.solverR1ToR1.InitializationHeuristics.FromHardSearchEdges (0.0001,
-							5.));
-		} catch (java.lang.Exception e) {
-			e.printStackTrace();
-
-			return mapResult;
-		}
-
 		mapResult.put ("CalcTime", (System.nanoTime() - lStart) * 1.e-09);
 
 		if (null != fpfo && fpfo.containsRoot())
 			mapResult.put ("FlatVolatility", fpfo.getRoot());
 		else
 			mapResult.put ("FlatVolatility", java.lang.Double.NaN);
-
-		if (null != fpfoATM && fpfoATM.containsRoot())
-			mapResult.put ("FlatATMVolatility", fpfoATM.getRoot());
-		else
-			mapResult.put ("FlatATMVolatility", java.lang.Double.NaN);
 
 		return mapResult;
 	}

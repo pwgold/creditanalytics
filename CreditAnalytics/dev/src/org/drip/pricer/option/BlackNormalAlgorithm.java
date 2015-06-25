@@ -52,7 +52,8 @@ public class BlackNormalAlgorithm extends org.drip.pricer.option.FokkerPlanckGen
 		final double dblUnderlier,
 		final boolean bIsPut,
 		final boolean bIsForward,
-		final double dblVolatility)
+		final double dblVolatility,
+		final boolean bAsPrice)
 		throws java.lang.Exception
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblStrike) ||
@@ -69,11 +70,13 @@ public class BlackNormalAlgorithm extends org.drip.pricer.option.FokkerPlanckGen
 		double dblForward = bIsForward ? dblUnderlier : dblUnderlier / dblDF;
 		double dblD = (dblForward - dblStrike) / dblD1D2Diff;
 
-		double dblCallPrice = dblDF * (dblForward * dblD1D2Diff * java.lang.Math.exp (-0.5 * dblD * dblD) /
+		double dblCallPayoff = dblForward * dblD1D2Diff * java.lang.Math.exp (-0.5 * dblD * dblD) /
 			java.lang.Math.sqrt (2. * java.lang.Math.PI) / dblForward - dblStrike * -1. * dblD1D2Diff * dblD
-				* org.drip.measure.continuous.Gaussian.CDF (dblD) / dblStrike);
+				* org.drip.measure.continuous.Gaussian.CDF (dblD) / dblStrike;
 
-		return bIsPut ? dblCallPrice + dblDF * (dblStrike - dblForward) : dblCallPrice;
+		if (!bAsPrice) return bIsPut ? dblCallPayoff + dblStrike - dblForward : dblCallPayoff;
+
+		return bIsPut ? dblDF * (dblCallPayoff + dblStrike - dblForward) : dblDF * dblCallPayoff;
 	}
 
 	@Override public org.drip.pricer.option.Greeks greeks (
@@ -107,12 +110,16 @@ public class BlackNormalAlgorithm extends org.drip.pricer.option.FokkerPlanckGen
 			double dblCallProb2 = -1. * dblD1D2Diff * dblD * org.drip.measure.continuous.Gaussian.CDF (dblD)
 				/ dblStrike;
 
-			double dblCallPrice = dblDF * (dblForward * dblCallProb1 - dblStrike * dblCallProb2);
+			double dblExpectedCallPayoff = dblForward * dblCallProb1 - dblStrike * dblCallProb2;
+			double dblATMCallPayoff = dblForward * (dblCallProb1 - dblCallProb2);
+			double dblCallPrice = dblDF * dblExpectedCallPayoff;
 
 			if (!bIsPut)
 				return new org.drip.pricer.option.Greeks (
 					dblDF,
 					dblVolatility,
+					dblExpectedCallPayoff,
+					dblATMCallPayoff,
 					dblCallPrice,
 					dblCallProb1,
 					dblCallProb2,
@@ -138,6 +145,8 @@ public class BlackNormalAlgorithm extends org.drip.pricer.option.FokkerPlanckGen
 			return new org.drip.pricer.option.PutGreeks (
 				dblDF,
 				dblVolatility,
+				dblExpectedCallPayoff + dblStrike - dblForward,
+				dblATMCallPayoff,
 				dblDF * (-1. * dblForward * dblPutProb1 + dblStrike * dblPutProb2),
 				dblCallPrice + dblDF * (dblStrike - dblForward),
 				dblPutProb1,

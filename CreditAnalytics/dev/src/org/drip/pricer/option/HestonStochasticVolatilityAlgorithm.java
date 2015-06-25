@@ -492,7 +492,8 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 		final double dblUnderlier,
 		final boolean bIsPut,
 		final boolean bIsForward,
-		final double dblInitialVolatility)
+		final double dblInitialVolatility,
+		final boolean bAsPrice)
 		throws java.lang.Exception
 	{
 		if (!org.drip.quant.common.NumberUtil.IsValid (dblStrike) ||
@@ -583,10 +584,14 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 			dblCallProb2 += pcf2._cnF.real() * FOURIER_FREQ_INCREMENT;
 		}
 
+		double dblForward = dblSpot / dblDF;
 		double dblPIScaler = 1. / java.lang.Math.PI;
-		double dblCallPrice = dblSpot * (0.5 + dblCallProb1 * dblPIScaler) - dblStrike * dblDF * (0.5 +
+		double dblCallPayoff = dblForward * (0.5 + dblCallProb1 * dblPIScaler) - dblStrike * (0.5 +
 			dblCallProb2 * dblPIScaler);
-		return bIsPut ? dblCallPrice + dblStrike * dblDF - dblSpot : dblCallPrice;
+
+		if (!bAsPrice) return bIsPut ? dblCallPayoff + dblStrike - dblForward : dblCallPayoff;
+
+		return bIsPut ? dblDF * (dblCallPayoff + dblStrike - dblForward) : dblDF * dblCallPayoff;
 	}
 
 	@Override public org.drip.pricer.option.Greeks greeks (
@@ -680,16 +685,21 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 			dblCallProb2 += pcf2._cnF.real() * FOURIER_FREQ_INCREMENT;
 		}
 
+		double dblForward = dblSpot / dblDF;
 		double dblPIScaler = 1. / java.lang.Math.PI;
 		dblCallProb1 = 0.5 + dblCallProb1 * dblPIScaler;
 		dblCallProb2 = 0.5 + dblCallProb2 * dblPIScaler;
+		double dblATMCallPayoff = dblForward * (dblCallProb1 - dblCallProb2);
 		double dblCallPrice = dblSpot * dblCallProb1 - dblStrike * dblDF * dblCallProb2;
+		double dblExpectedCallPayoff = dblForward * dblCallProb1 - dblStrike * dblDF * dblCallProb2;
 
 		try {
 			if (!bIsPut)
 				return new org.drip.pricer.option.Greeks (
 					dblDF,
 					dblInitialVolatility,
+					dblExpectedCallPayoff,
+					dblATMCallPayoff,
 					dblCallPrice,
 					dblCallProb1,
 					dblCallProb2,
@@ -707,11 +717,15 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 					java.lang.Double.NaN
 				);
 
+			double dblPutPriceFromParity = dblCallPrice + dblStrike * dblDF - dblSpot;
+
 			return new org.drip.pricer.option.PutGreeks (
 				dblDF,
 				dblInitialVolatility,
-				java.lang.Double.NaN,
-				dblCallPrice + dblStrike * dblDF - dblSpot,
+				dblExpectedCallPayoff + dblStrike - dblSpot,
+				dblATMCallPayoff,
+				dblPutPriceFromParity,
+				dblPutPriceFromParity,
 				java.lang.Double.NaN,
 				java.lang.Double.NaN,
 				java.lang.Double.NaN,

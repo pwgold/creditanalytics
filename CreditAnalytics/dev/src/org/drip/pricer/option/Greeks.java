@@ -51,6 +51,8 @@ public class Greeks {
 	private double _dblVanna = java.lang.Double.NaN;
 	private double _dblVomma = java.lang.Double.NaN;
 	private double _dblUltima = java.lang.Double.NaN;
+	private double _dblExpectedPayoff = java.lang.Double.NaN;
+	private double _dblExpectedATMPayoff = java.lang.Double.NaN;
 	private double _dblEffectiveVolatility = java.lang.Double.NaN;
 
 	/**
@@ -58,6 +60,8 @@ public class Greeks {
 	 * 
 	 * @param dblDF The Payoff Discount Factor
 	 * @param dblEffectiveVolatility Effective Volatility
+	 * @param dblExpectedPayoff Expected Forward Payoff
+	 * @param dblExpectedATMPayoff Expected ATM Forward Payoff
 	 * @param dblPrice Price
 	 * @param dblProb1 Probability Term #1
 	 * @param dblProb2 Probability Term #2
@@ -80,6 +84,8 @@ public class Greeks {
 	public Greeks (
 		final double dblDF,
 		final double dblEffectiveVolatility,
+		final double dblExpectedPayoff,
+		final double dblExpectedATMPayoff,
 		final double dblPrice,
 		final double dblProb1,
 		final double dblProb2,
@@ -101,6 +107,9 @@ public class Greeks {
 			!org.drip.quant.common.NumberUtil.IsValid (_dblEffectiveVolatility = dblEffectiveVolatility))
 			throw new java.lang.Exception ("Greeks ctr: Invalid Inputs");
 
+		_dblExpectedPayoff = dblExpectedPayoff;
+		_dblExpectedATMPayoff = dblExpectedATMPayoff;
+		_dblPrice = dblPrice;
 		_dblProb1 = dblProb1;
 		_dblProb2 = dblProb2;
 		_dblDelta = dblDelta;
@@ -137,6 +146,28 @@ public class Greeks {
 	public double effectiveVolatility()
 	{
 		return _dblEffectiveVolatility;
+	}
+
+	/**
+	 * The Expected Payoff
+	 * 
+	 * @return The Expected Payoff
+	 */
+
+	public double expectedPayoff()
+	{
+		return _dblExpectedPayoff;
+	}
+
+	/**
+	 * The Expected ATM Payoff
+	 * 
+	 * @return The Expected ATM Payoff
+	 */
+
+	public double expectedATMPayoff()
+	{
+		return _dblExpectedATMPayoff;
 	}
 
 	/**
