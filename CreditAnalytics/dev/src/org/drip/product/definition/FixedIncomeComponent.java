@@ -220,7 +220,7 @@ public abstract class FixedIncomeComponent implements org.drip.product.definitio
 
 	public abstract org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> value (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp);
 
@@ -267,7 +267,7 @@ public abstract class FixedIncomeComponent implements org.drip.product.definitio
 
 	public double measureValue (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final java.lang.String strMeasure)
@@ -290,7 +290,7 @@ public abstract class FixedIncomeComponent implements org.drip.product.definitio
 
 	public org.drip.analytics.output.ComponentMeasures measures (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.definition.ScenarioMarketParams mpc,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
@@ -612,7 +612,7 @@ public abstract class FixedIncomeComponent implements org.drip.product.definitio
 
 	public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> customScenarioMeasures (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.definition.ScenarioMarketParams mpc,
 		final java.lang.String strCustomScenName,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,

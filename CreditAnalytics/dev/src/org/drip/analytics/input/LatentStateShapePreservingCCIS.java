@@ -49,7 +49,7 @@ package org.drip.analytics.input;
 
 public class LatentStateShapePreservingCCIS implements
 	org.drip.analytics.input.CurveConstructionInputSet {
-	private org.drip.param.pricer.PricerParams _pricerParam = null;
+	private org.drip.param.pricer.CreditPricerParams _pricerParam = null;
 	private org.drip.param.market.CurveSurfaceQuoteSet _csqs = null;
 	private org.drip.param.valuation.ValuationParams _valParam = null;
 	private org.drip.param.market.LatentStateFixingsContainer _lsfc = null;
@@ -74,7 +74,7 @@ public class LatentStateShapePreservingCCIS implements
 		final org.drip.state.inference.LinearLatentStateCalibrator llscShapePreserving,
 		final org.drip.state.inference.LatentStateStretchSpec[] aStretchSpec,
 		final org.drip.param.valuation.ValuationParams valParam,
-		final org.drip.param.pricer.PricerParams pricerParam,
+		final org.drip.param.pricer.CreditPricerParams pricerParam,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs)
 		throws java.lang.Exception
@@ -160,7 +160,7 @@ public class LatentStateShapePreservingCCIS implements
 	 * @return The Pricer Parameters
 	 */
 
-	public org.drip.param.pricer.PricerParams pricerParameter()
+	public org.drip.param.pricer.CreditPricerParams pricerParameter()
 	{
 		return _pricerParam;
 	}

@@ -164,8 +164,8 @@ public class LossQuadratureGenerator {
 
 		int iDayStep = (int) ((period.endDate() - dblSubPeriodStart) / (iPeriodUnit));
 
-		if (iDayStep < org.drip.param.pricer.PricerParams.PERIOD_DAY_STEPS_MINIMUM)
-			iDayStep = org.drip.param.pricer.PricerParams.PERIOD_DAY_STEPS_MINIMUM;
+		if (iDayStep < org.drip.param.pricer.CreditPricerParams.PERIOD_DAY_STEPS_MINIMUM)
+			iDayStep = org.drip.param.pricer.CreditPricerParams.PERIOD_DAY_STEPS_MINIMUM;
 
 		while (!bPeriodDone) {
 			double dblSubPeriodEnd = dblSubPeriodStart + iDayStep;

@@ -13,7 +13,7 @@ import org.drip.analytics.support.*;
 import org.drip.market.otc.*;
 import org.drip.param.creator.*;
 import org.drip.param.market.CurveSurfaceQuoteSet;
-import org.drip.param.pricer.PricerParams;
+import org.drip.param.pricer.CreditPricerParams;
 import org.drip.param.valuation.*;
 import org.drip.product.definition.*;
 import org.drip.product.rates.*;
@@ -344,7 +344,7 @@ public class CDSW {
 			"USD"
 		);
 
-		PricerParams pricerParams = PricerParams.Standard();
+		CreditPricerParams pricerParams = CreditPricerParams.Standard();
 
 		System.out.println ("\n---- Valuation Details ----");
 

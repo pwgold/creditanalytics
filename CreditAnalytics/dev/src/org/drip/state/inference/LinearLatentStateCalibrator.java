@@ -79,7 +79,7 @@ public class LinearLatentStateCalibrator extends org.drip.state.estimator.Global
 		final org.drip.state.inference.LatentStateStretchSpec[] aStretchSpec,
 		final double dblEpochResponse,
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs)
 	{

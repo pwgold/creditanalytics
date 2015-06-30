@@ -53,7 +53,7 @@ public abstract class CreditComponent extends org.drip.product.definition.Calibr
 
 	public abstract java.util.List<org.drip.analytics.cashflow.LossQuadratureMetrics> lossFlow (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs);
 
 	/**

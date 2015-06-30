@@ -70,7 +70,7 @@ public abstract class CreditDefaultSwap extends org.drip.product.definition.Cred
 
 	public abstract double calibFlatSpread (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 		throws java.lang.Exception;
@@ -90,7 +90,7 @@ public abstract class CreditDefaultSwap extends org.drip.product.definition.Cred
 
 	public abstract org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> valueFromQuotedSpread (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final double dblFixCoupon,

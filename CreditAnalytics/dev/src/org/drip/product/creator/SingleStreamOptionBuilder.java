@@ -67,7 +67,8 @@ public class SingleStreamOptionBuilder {
 					strManifestMeasure, bIsCaplet, dblStrike, 1., new
 						org.drip.product.params.LastTradingDateSetting
 							(org.drip.product.params.LastTradingDateSetting.MID_CURVE_OPTION_QUARTERLY, "",
-								java.lang.Double.NaN), floaterIndex.dayCount(), floaterIndex.calendar());
+								java.lang.Double.NaN), floaterIndex.dayCount(), floaterIndex.calendar(), new
+									org.drip.pricer.option.BlackScholesAlgorithm());
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -116,7 +117,8 @@ public class SingleStreamOptionBuilder {
 			return new org.drip.product.fra.FRAStandardCapFloorlet
 				(org.drip.product.creator.SingleStreamComponentBuilder.Futures (dtEffective, forwardLabel),
 					strManifestMeasure, bIsCaplet, dblStrike, 1., fo.ltdsArray (strExchange)[0],
-						floaterIndex.dayCount(), floaterIndex.calendar());
+						floaterIndex.dayCount(), floaterIndex.calendar(), new
+							org.drip.pricer.option.BlackScholesAlgorithm());
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}

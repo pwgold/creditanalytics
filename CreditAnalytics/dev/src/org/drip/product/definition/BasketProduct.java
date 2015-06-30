@@ -111,7 +111,7 @@ public abstract class BasketProduct implements org.drip.product.definition.Baske
 
 	private FlatDeltaGammaMeasureMap accumulateDeltaGammaMeasures (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqsUp,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqsDown,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
@@ -184,7 +184,7 @@ public abstract class BasketProduct implements org.drip.product.definition.Baske
 
 	private TenorDeltaGammaMeasureMap accumulateTenorDeltaGammaMeasures (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.param.market.CurveSurfaceQuoteSet>
 			mapTenorUpCSQS,
 		final org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.param.market.CurveSurfaceQuoteSet>
@@ -275,7 +275,7 @@ public abstract class BasketProduct implements org.drip.product.definition.Baske
 
 	private ComponentFactorTenorDeltaGammaMeasureMap accumulateComponentWiseTenorDeltaGammaMeasures (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.param.market.CurveSurfaceQuoteSet>
 			mapCSQS,
 		final org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.param.market.CurveSurfaceQuoteSet>
@@ -889,7 +889,7 @@ public abstract class BasketProduct implements org.drip.product.definition.Baske
 
 	public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> value (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
@@ -960,7 +960,7 @@ public abstract class BasketProduct implements org.drip.product.definition.Baske
 
 	public double measureValue (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final java.lang.String strMeasure)
@@ -983,7 +983,7 @@ public abstract class BasketProduct implements org.drip.product.definition.Baske
 
 	public org.drip.analytics.output.BasketMeasures measures (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.definition.ScenarioMarketParams mpc,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
@@ -1098,7 +1098,7 @@ public abstract class BasketProduct implements org.drip.product.definition.Baske
 
 	public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> customScenarioMeasures (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.definition.ScenarioMarketParams mpc,
 		final java.lang.String strCustomScenName,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,

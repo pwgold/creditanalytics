@@ -1738,7 +1738,7 @@ public class RatesClosesLoader {
 		java.lang.String[] astrTenor = null;
 		java.io.BufferedReader brSwapCOB = null;
 
-		org.drip.param.pricer.PricerParams pricerParams = org.drip.param.pricer.PricerParams.Standard();
+		org.drip.param.pricer.CreditPricerParams pricerParams = org.drip.param.pricer.CreditPricerParams.Standard();
 
 		try {
 			brSwapCOB = new java.io.BufferedReader (new java.io.FileReader

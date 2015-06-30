@@ -1011,7 +1011,7 @@ public abstract class CompositePeriod {
 	public java.util.List<org.drip.analytics.cashflow.LossQuadratureMetrics> lossMetrics (
 		final org.drip.product.definition.CreditComponent comp,
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final double dblWorkoutDate,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs)
 	{
@@ -1033,20 +1033,20 @@ public abstract class CompositePeriod {
 
 		double dblPeriodEndDate = dblEndDate < dblWorkoutDate ? dblEndDate : dblWorkoutDate;
 
-		if (org.drip.param.pricer.PricerParams.PERIOD_DISCRETIZATION_DAY_STEP == iDiscretizationScheme &&
+		if (org.drip.param.pricer.CreditPricerParams.PERIOD_DISCRETIZATION_DAY_STEP == iDiscretizationScheme &&
 			(null == (lsLQM = org.drip.analytics.support.LossQuadratureGenerator.GenerateDayStepLossPeriods
 				(comp, valParams, this, dblPeriodEndDate, pricerParams.unitSize(), csqs)) || 0 ==
 					lsLQM.size()))
 				return null;
 
-		if (org.drip.param.pricer.PricerParams.PERIOD_DISCRETIZATION_PERIOD_STEP == iDiscretizationScheme &&
+		if (org.drip.param.pricer.CreditPricerParams.PERIOD_DISCRETIZATION_PERIOD_STEP == iDiscretizationScheme &&
 			(null == (lsLQM =
 				org.drip.analytics.support.LossQuadratureGenerator.GeneratePeriodUnitLossPeriods (comp,
 					valParams, this, dblPeriodEndDate, pricerParams.unitSize(), csqs)) || 0 ==
 						lsLQM.size()))
 			return null;
 
-		if (org.drip.param.pricer.PricerParams.PERIOD_DISCRETIZATION_FULL_COUPON == iDiscretizationScheme &&
+		if (org.drip.param.pricer.CreditPricerParams.PERIOD_DISCRETIZATION_FULL_COUPON == iDiscretizationScheme &&
 			(null == (lsLQM = org.drip.analytics.support.LossQuadratureGenerator.GenerateWholeLossPeriods
 				(comp, valParams, this, dblPeriodEndDate, csqs)) || 0 == lsLQM.size()))
 			return null;

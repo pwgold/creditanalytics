@@ -65,7 +65,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 	 */
 
 	private static final int s_iDiscretizationScheme =
-		org.drip.param.pricer.PricerParams.PERIOD_DISCRETIZATION_DAY_STEP;
+		org.drip.param.pricer.CreditPricerParams.PERIOD_DISCRETIZATION_DAY_STEP;
 
 	/*
 	 * Discount Curve to derive the zero curve off of
@@ -338,7 +338,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 	private org.drip.analytics.output.BondWorkoutMeasures workoutMeasures (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final double dblWorkoutDate,
 		final double dblWorkoutFactor)
@@ -537,7 +537,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 	private org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> rvMeasures (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.param.valuation.WorkoutInfo wi,
@@ -554,7 +554,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 	private org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> fairMeasures (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
@@ -590,7 +590,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 	private org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> marketMeasures (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.param.valuation.WorkoutInfo wiMarket)
@@ -624,7 +624,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 	@Override protected org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> calibMeasures (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
@@ -1169,7 +1169,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 	@Override public java.util.List<org.drip.analytics.cashflow.LossQuadratureMetrics> lossFlow (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs)
 	{
 		if (null == valParams || null == pricerParams || null == csqs) return null;
@@ -1191,7 +1191,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 	@Override public java.util.List<org.drip.analytics.cashflow.LossQuadratureMetrics> lossFlowFromPrice (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final double dblPrice)
@@ -1916,8 +1916,8 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		double dblScalingNotional = 1.;
 		double dblCashPayDate = java.lang.Double.NaN;
 
-		org.drip.param.pricer.PricerParams pricerParams = new org.drip.param.pricer.PricerParams (7, null,
-			false, s_iDiscretizationScheme);
+		org.drip.param.pricer.CreditPricerParams pricerParams = new org.drip.param.pricer.CreditPricerParams
+			(7, null, false, s_iDiscretizationScheme);
 
 		for (org.drip.analytics.cashflow.CompositePeriod period : couponPeriods()) {
 			double dblPeriodPayDate = period.payDate();
@@ -10860,7 +10860,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 	@Override public org.drip.analytics.output.BondRVMeasures standardMeasures (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.param.valuation.WorkoutInfo wi,
@@ -11004,7 +11004,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> value (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
@@ -11620,7 +11620,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 	@Override public org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
@@ -11635,7 +11635,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint fundingPRWC (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
@@ -11645,7 +11645,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint forwardPRWC (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
@@ -11655,7 +11655,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint fundingForwardPRWC (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
@@ -11666,7 +11666,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 	@Override public org.drip.quant.calculus.WengertJacobian manifestMeasureDFMicroJack (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{

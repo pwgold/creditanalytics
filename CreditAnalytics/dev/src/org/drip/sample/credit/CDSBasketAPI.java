@@ -12,7 +12,7 @@ import org.drip.analytics.rates.DiscountCurve;
 import org.drip.analytics.support.*;
 import org.drip.market.otc.*;
 import org.drip.param.market.CurveSurfaceQuoteSet;
-import org.drip.param.pricer.PricerParams;
+import org.drip.param.pricer.CreditPricerParams;
 import org.drip.param.valuation.*;
 import org.drip.product.creator.*;
 import org.drip.product.credit.*;
@@ -338,11 +338,11 @@ public class CDSBasketAPI {
 			Convention.DATE_ROLL_ACTUAL
 		);
 
-		PricerParams pricerParams = new PricerParams (
+		CreditPricerParams pricerParams = new CreditPricerParams (
 			7,
 			null,
 			false,
-			PricerParams.PERIOD_DISCRETIZATION_FULL_COUPON
+			CreditPricerParams.PERIOD_DISCRETIZATION_FULL_COUPON
 		);
 
 		/*

@@ -236,7 +236,7 @@ public abstract class FixedIncomeOptionComponent implements
 
 	public abstract org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> value (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp);
 
@@ -264,7 +264,7 @@ public abstract class FixedIncomeOptionComponent implements
 
 	public double calcMeasureValue (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final java.lang.String strMeasure)

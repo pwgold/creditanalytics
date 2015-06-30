@@ -44,7 +44,7 @@ public class LatentStateSequenceBuilder implements org.drip.spline.stretch.Segme
 	private double _dblEpochResponse = java.lang.Double.NaN;
 	private org.drip.spline.stretch.BoundarySettings _bs = null;
 	private org.drip.state.estimator.CurveStretch _stretch = null;
-	private org.drip.param.pricer.PricerParams _pricerParams = null;
+	private org.drip.param.pricer.CreditPricerParams _pricerParams = null;
 	private org.drip.param.market.CurveSurfaceQuoteSet _csqs = null;
 	private org.drip.param.valuation.ValuationParams _valParams = null;
 	private org.drip.spline.params.StretchBestFitResponse _sbfr = null;
@@ -253,7 +253,7 @@ public class LatentStateSequenceBuilder implements org.drip.spline.stretch.Segme
 		final double dblEpochResponse,
 		final org.drip.state.inference.LatentStateStretchSpec stretchSpec,
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.spline.grid.Span span,

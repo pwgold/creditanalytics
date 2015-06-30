@@ -1119,7 +1119,7 @@ public class CreditAnalytics {
 		if (null == dcEOD || null == ccEOD) return null;
 
 		return cds.value (org.drip.param.valuation.ValuationParams.Standard (dtEOD, strIR),
-			org.drip.param.pricer.PricerParams.Standard(), org.drip.param.creator.MarketParamsBuilder.Create
+			org.drip.param.pricer.CreditPricerParams.Standard(), org.drip.param.creator.MarketParamsBuilder.Create
 				(dcEOD, null, null, ccEOD, null, null, null, null), null);
 	}
 
@@ -5445,7 +5445,7 @@ public class CreditAnalytics {
 		if (null == strCC || strCC.isEmpty()) ccEOD = LoadEODCDSCreditCurve (strCC, strIR, dtEOD);
 
 		return bond.value (org.drip.param.valuation.ValuationParams.Standard (dtEOD, strIR),
-			org.drip.param.pricer.PricerParams.Standard(), org.drip.param.creator.MarketParamsBuilder.Create
+			org.drip.param.pricer.CreditPricerParams.Standard(), org.drip.param.creator.MarketParamsBuilder.Create
 				(dcEOD, dcTSY, ccEOD, bond.name(), cq, org.drip.service.env.EODCurves.GetTSYQuotes (s_stmt,
 					dtEOD, strIR), null), null);
 	}
@@ -5524,7 +5524,7 @@ public class CreditAnalytics {
 		if (null == strCC || strCC.isEmpty()) ccEOD = LoadEODCDSCreditCurve (strCC, strIR, dtEOD);
 
 		return bond.value (org.drip.param.valuation.ValuationParams.Standard (dtEOD, strIR),
-			org.drip.param.pricer.PricerParams.Standard(), org.drip.param.creator.MarketParamsBuilder.Create
+			org.drip.param.pricer.CreditPricerParams.Standard(), org.drip.param.creator.MarketParamsBuilder.Create
 				(dcEOD, dcTSY, ccEOD, bond.name(), cq, org.drip.service.env.EODCurves.GetTSYQuotes (s_stmt,
 					dtEOD, strIR), null), null);
 	}
@@ -5603,7 +5603,7 @@ public class CreditAnalytics {
 		if (null == strCC || strCC.isEmpty()) ccEOD = LoadEODCDSCreditCurve (strCC, strIR, dtEOD);
 
 		return bond.value (org.drip.param.valuation.ValuationParams.Standard (dtEOD, strIR),
-			org.drip.param.pricer.PricerParams.Standard(), org.drip.param.creator.MarketParamsBuilder.Create
+			org.drip.param.pricer.CreditPricerParams.Standard(), org.drip.param.creator.MarketParamsBuilder.Create
 				(dcEOD, dcTSY, ccEOD, bond.name(), cq, org.drip.service.env.EODCurves.GetTSYQuotes (s_stmt,
 					dtEOD, strIR), null), null);
 	}

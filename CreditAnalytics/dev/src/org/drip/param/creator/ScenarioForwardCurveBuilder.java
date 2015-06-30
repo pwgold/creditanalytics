@@ -67,7 +67,7 @@ public class ScenarioForwardCurveBuilder {
 		final org.drip.state.inference.LatentStateStretchSpec[] aStretchSpec,
 		final org.drip.state.identifier.ForwardLabel fri,
 		final org.drip.param.valuation.ValuationParams valParam,
-		final org.drip.param.pricer.PricerParams pricerParam,
+		final org.drip.param.pricer.CreditPricerParams pricerParam,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParam,
 		final double dblEpochResponse)
@@ -112,7 +112,7 @@ public class ScenarioForwardCurveBuilder {
 		final java.lang.String strName,
 		final org.drip.state.identifier.ForwardLabel fri,
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParam,
+		final org.drip.param.pricer.CreditPricerParams pricerParam,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParam,
 		final java.lang.String strBasisType,

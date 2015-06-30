@@ -55,7 +55,7 @@ public class FixFloatComponent extends org.drip.product.rates.DualStreamComponen
 
 	@Override protected org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> calibMeasures (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 	{
@@ -256,7 +256,7 @@ public class FixFloatComponent extends org.drip.product.rates.DualStreamComponen
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> value (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 	{
@@ -607,7 +607,7 @@ public class FixFloatComponent extends org.drip.product.rates.DualStreamComponen
 
 	@Override public org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 	{
@@ -662,7 +662,7 @@ public class FixFloatComponent extends org.drip.product.rates.DualStreamComponen
 	@Override public org.drip.quant.calculus.WengertJacobian manifestMeasureDFMicroJack (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 	{
@@ -748,7 +748,7 @@ public class FixFloatComponent extends org.drip.product.rates.DualStreamComponen
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint fundingPRWC (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
 		final org.drip.product.calib.ProductQuoteSet pqs)
@@ -810,7 +810,7 @@ public class FixFloatComponent extends org.drip.product.rates.DualStreamComponen
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint forwardPRWC (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
 		final org.drip.product.calib.ProductQuoteSet pqs)
@@ -869,7 +869,7 @@ public class FixFloatComponent extends org.drip.product.rates.DualStreamComponen
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint fundingForwardPRWC (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
 		final org.drip.product.calib.ProductQuoteSet pqs)

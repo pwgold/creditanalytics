@@ -67,7 +67,7 @@ public interface CurveConstructionInputSet {
 	 * @return The Pricer Parameters
 	 */
 
-	public abstract org.drip.param.pricer.PricerParams pricerParameter();
+	public abstract org.drip.param.pricer.CreditPricerParams pricerParameter();
 
 	/**
 	 * Retrieve the Quoting Parameter

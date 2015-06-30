@@ -122,7 +122,7 @@ public abstract class Bond extends CreditComponent {
 
 	public abstract java.util.List<org.drip.analytics.cashflow.LossQuadratureMetrics> lossFlowFromPrice (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final double dblPrice);
@@ -14732,7 +14732,7 @@ public abstract class Bond extends CreditComponent {
 
 	public abstract org.drip.analytics.output.BondRVMeasures standardMeasures (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.param.valuation.WorkoutInfo wi,

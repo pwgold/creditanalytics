@@ -7,10 +7,6 @@ package org.drip.param.pricer;
 
 /*!
  * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
- * Copyright (C) 2013 Lakshmi Krishnamurthy
- * Copyright (C) 2012 Lakshmi Krishnamurthy
- * Copyright (C) 2011 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for fixed income analysts and developers -
  * 		http://www.credit-trader.org/Begin.html
@@ -33,121 +29,10 @@ package org.drip.param.pricer;
  */
 
 /**
- * PricerParams contains the pricer parameters - the discrete unit size, calibration mode on/off, survival to
- * 	pay/end date, and the discretization scheme
+ * GenericPricerParams exposes the Parameters needed for the Pricing Run.
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PricerParams {
-
-	/*
-	 * Loss period Grid discretization scheme
-	 */
-
-	/**
-	 * Minimum number of days per unit
-	 */
-
-	public static final int PERIOD_DAY_STEPS_MINIMUM = 7;
-
-	/**
-	 * Discretization as a sequence of day steps
-	 */
-
-	public static final int PERIOD_DISCRETIZATION_DAY_STEP = 1;
-
-	/**
-	 * Discretization as a sequence of time space divided periods
-	 */
-
-	public static final int PERIOD_DISCRETIZATION_PERIOD_STEP = 2;
-
-	/**
-	 * No discretization at all - just the full coupon period
-	 */
-
-	public static final int PERIOD_DISCRETIZATION_FULL_COUPON = 3;
-
-	private int _iUnitSize = 7;
-	private boolean _bSurvToPayDate = false;
-	private int _iDiscretizationScheme = PERIOD_DISCRETIZATION_DAY_STEP;
-	private org.drip.param.definition.CalibrationParams _calibParams = null;
-
-	/**
-	 * Create the standard pricer parameters object instance
-	 * 
-	 * @return PricerParams object instance
-	 */
-
-	public static final PricerParams Standard()
-	{
-		return new PricerParams (7, null, false, PERIOD_DISCRETIZATION_DAY_STEP);
-	}
-
-	/**
-	 * Create the pricer parameters from the discrete unit size, calibration mode on/off, survival to
-	 * 	pay/end date, and the discretization scheme
-	 * 
-	 * @param iUnitSize Discretization Unit Size
-	 * @param calibParams Optional Calibration Params
-	 * @param bSurvToPayDate Survival to Pay Date (True) or Period End Date (false)
-	 * @param iDiscretizationScheme Discretization Scheme In Use
-	 */
-
-	public PricerParams (
-		final int iUnitSize,
-		final org.drip.param.definition.CalibrationParams calibParams,
-		final boolean bSurvToPayDate,
-		final int iDiscretizationScheme)
-	{
-		_iUnitSize = iUnitSize;
-		_calibParams = calibParams;
-		_bSurvToPayDate = bSurvToPayDate;
-		_iDiscretizationScheme = iDiscretizationScheme;
-	}
-
-	/**
-	 * Retrieve the Discretized Loss Unit Size
-	 * 
-	 * @return The Discretized Loss Unit Size
-	 */
-
-	public int unitSize()
-	{
-		return _iUnitSize;
-	}
-
-	/**
-	 * Retrieve the Calibration Parameters Instance
-	 * 
-	 * @return The Calibration Parameters Instance
-	 */
-
-	public org.drip.param.definition.CalibrationParams calibParams()
-	{
-		return _calibParams;
-	}
-
-	/**
-	 * Retrieve the flag indicating whether the Survival is to be computed to the Pay Date (TRUE) or not
-	 * 
-	 * @return TRUE => Survival is to be computed to the Pay Date
-	 */
-
-	public boolean survivalToPayDate()
-	{
-		return _bSurvToPayDate;
-	}
-
-	/**
-	 * Retrieve the Discretization Scheme
-	 * 
-	 * @return The Discretization Scheme
-	 */
-
-	public int discretizationScheme()
-	{
-		return _iDiscretizationScheme;
-	}
+public interface PricerParams {
 }

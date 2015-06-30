@@ -59,6 +59,7 @@ public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncome
 	 * @param dblStrike Strike of the Underlying Component's Measure
 	 * @param ltds Last Trading Date Setting
 	 * @param csp Cash Settle Parameters
+	 * @param fpg The Fokker Planck Pricer Instance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -70,7 +71,8 @@ public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncome
 		final boolean bIsCap,
 		final double dblStrike,
 		final org.drip.product.params.LastTradingDateSetting ltds,
-		final org.drip.param.valuation.CashSettleParams csp)
+		final org.drip.param.valuation.CashSettleParams csp,
+		final org.drip.pricer.option.FokkerPlanckGenerator fpg)
 		throws java.lang.Exception
 	{
 		if (null == (_strName = strName) || _strName.isEmpty() || null == (_stream = stream) ||
@@ -94,8 +96,9 @@ public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncome
 				org.drip.product.creator.SingleStreamComponentBuilder.FRAStandard (new
 					org.drip.analytics.date.JulianDate (period.startDate()), fri, _dblStrike);
 
-			_lsFRACapFloorlet.add (new org.drip.product.fra.FRAStandardCapFloorlet (fra, strManifestMeasure,
-				_bIsCap, _dblStrike, _stream.notional (period.startDate()), ltds, strDayCount, strCalendar));
+			_lsFRACapFloorlet.add (new org.drip.product.fra.FRAStandardCapFloorlet (fra,
+				strManifestMeasure, _bIsCap, _dblStrike, _stream.notional (period.startDate()), ltds,
+					strDayCount, strCalendar, fpg));
 		}
 	}
 
@@ -203,7 +206,7 @@ public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncome
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> value (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 	{
@@ -350,7 +353,7 @@ public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncome
 
 	public double priceFromFlatVolatility (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
 		final double dblFlatVolatility)
@@ -401,7 +404,7 @@ public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncome
 
 	public boolean stripPiecewiseForwardVolatility (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
 		final double dblCapVolatility,

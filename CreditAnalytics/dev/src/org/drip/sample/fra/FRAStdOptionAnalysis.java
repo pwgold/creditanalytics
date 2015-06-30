@@ -10,6 +10,7 @@ import org.drip.market.otc.*;
 import org.drip.param.creator.*;
 import org.drip.param.market.CurveSurfaceQuoteSet;
 import org.drip.param.valuation.*;
+import org.drip.pricer.option.BlackScholesAlgorithm;
 import org.drip.product.creator.*;
 import org.drip.product.definition.*;
 import org.drip.product.fra.*;
@@ -538,7 +539,8 @@ public class FRAStdOptionAnalysis {
 				Double.NaN
 			),
 			strCurrency,
-			strCurrency
+			strCurrency,
+			new BlackScholesAlgorithm()
 		);
 
 		FRAStandardCapFloorlet fraFloorlet = new FRAStandardCapFloorlet (
@@ -553,7 +555,8 @@ public class FRAStdOptionAnalysis {
 				Double.NaN
 			),
 			strCurrency,
-			strCurrency
+			strCurrency,
+			new BlackScholesAlgorithm()
 		);
 
 		Map<String, Double> mapFRACapletOutput = fraCaplet.value (
@@ -590,11 +593,11 @@ public class FRAStdOptionAnalysis {
 			org.drip.quant.common.FormatUtil.FormatDouble (dblForwardFundingCorr, 2, 0, 100.) + "%] =" +
 			org.drip.quant.common.FormatUtil.FormatDouble (dblATMFRA, 1, 4, 100.) + "% | " +
 			org.drip.quant.common.FormatUtil.FormatDouble (dblManifestMeasureIntrinsic, 1, 1, 10000.) + " | " +
-			org.drip.quant.common.FormatUtil.FormatDouble (dblManifestMeasureIntrinsicValue, 1, 4, 1.) + " | " +
-			org.drip.quant.common.FormatUtil.FormatDouble (dblForwardATMCapletPrice, 1, 4, 1.) + " | " +
-			org.drip.quant.common.FormatUtil.FormatDouble (dblSpotCapletPrice, 1, 4, 1.) + " | " +
-			org.drip.quant.common.FormatUtil.FormatDouble (dblForwardATMFloorletPrice, 1, 4, 1.) + " | " +
-			org.drip.quant.common.FormatUtil.FormatDouble (dblSpotFloorletPrice, 1, 4, 1.));
+			org.drip.quant.common.FormatUtil.FormatDouble (dblManifestMeasureIntrinsicValue, 1, 1, 10000.) + " | " +
+			org.drip.quant.common.FormatUtil.FormatDouble (dblForwardATMCapletPrice, 1, 1, 10000.) + " | " +
+			org.drip.quant.common.FormatUtil.FormatDouble (dblSpotCapletPrice, 1, 1, 10000.) + " | " +
+			org.drip.quant.common.FormatUtil.FormatDouble (dblForwardATMFloorletPrice, 1, 1, 10000.) + " | " +
+			org.drip.quant.common.FormatUtil.FormatDouble (dblSpotFloorletPrice, 1, 1, 10000.));
 	}
 
 	public static final void main (

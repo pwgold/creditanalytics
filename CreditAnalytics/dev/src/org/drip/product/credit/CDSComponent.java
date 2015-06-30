@@ -63,7 +63,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 	@Override protected org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> calibMeasures (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
@@ -73,7 +73,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 	private org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> measures (
 		final java.lang.String strMeasureSetPrefix,
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
@@ -246,7 +246,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 		final double dblFairPremium,
 		final org.drip.analytics.cashflow.CompositePeriod period,
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs)
 	{
 		org.drip.analytics.rates.DiscountCurve dcFunding = csqs.fundingCurve (fundingLabel());
@@ -286,7 +286,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 	private PeriodLossMicroJack calcPeriodLossMicroJack (
 		final org.drip.analytics.cashflow.CompositePeriod period,
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs)
 	{
 		org.drip.analytics.rates.DiscountCurve dcFunding = csqs.fundingCurve (fundingLabel());
@@ -669,7 +669,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 	@Override public java.util.List<org.drip.analytics.cashflow.LossQuadratureMetrics> lossFlow (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs)
 	{
 		if (null == valParams || null == pricerParams) return null;
@@ -693,7 +693,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> value (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
@@ -738,9 +738,9 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 		try {
 			SpreadCalibOP scop = new SpreadCalibrator (this,
 				SpreadCalibrator.CALIBRATION_TYPE_NODE_PARALLEL_BUMP).calibrateHazardFromPrice (valParams,
-					new org.drip.param.pricer.PricerParams (7,
+					new org.drip.param.pricer.CreditPricerParams (7,
 						org.drip.param.definition.CalibrationParams.Standard(), false,
-							org.drip.param.pricer.PricerParams.PERIOD_DISCRETIZATION_DAY_STEP), csqs, vcp,
+							org.drip.param.pricer.CreditPricerParams.PERIOD_DISCRETIZATION_DAY_STEP), csqs, vcp,
 								dblMarketMeasure);
 
 			if (null != scop) {
@@ -902,7 +902,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>
 		valueFromQuotedSpread (
 			final org.drip.param.valuation.ValuationParams valParams,
-			final org.drip.param.pricer.PricerParams pricerParams,
+			final org.drip.param.pricer.CreditPricerParams pricerParams,
 			final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 			final org.drip.param.valuation.ValuationCustomizationParams vcp,
 			final double dblFixCoupon,
@@ -998,7 +998,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 	@Override public org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
@@ -1066,7 +1066,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 	@Override public org.drip.quant.calculus.WengertJacobian manifestMeasureDFMicroJack (
 		final java.lang.String strManifestMeasure,
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 	{
@@ -1146,7 +1146,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint fundingPRWC (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
@@ -1156,7 +1156,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint forwardPRWC (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
@@ -1166,7 +1166,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 	@Override public org.drip.state.estimator.PredictorResponseWeightConstraint fundingForwardPRWC (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)
@@ -1188,7 +1188,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 	public double calibFlatSpread (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp)
 		throws java.lang.Exception
@@ -1281,7 +1281,7 @@ public class CDSComponent extends org.drip.product.definition.CreditDefaultSwap 
 
 		public SpreadCalibOP calibrateHazardFromPrice (
 			final org.drip.param.valuation.ValuationParams valParams,
-			final org.drip.param.pricer.PricerParams pricerParams,
+			final org.drip.param.pricer.CreditPricerParams pricerParams,
 			final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 			final org.drip.param.valuation.ValuationCustomizationParams vcp,
 			final double dblPriceCalib)

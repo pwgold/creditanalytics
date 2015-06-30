@@ -218,7 +218,7 @@ public class ScenarioDiscountCurveBuilder {
 		final org.drip.state.inference.LinearLatentStateCalibrator llsc,
 		final org.drip.state.inference.LatentStateStretchSpec[] aStretchSpec,
 		final org.drip.param.valuation.ValuationParams valParam,
-		final org.drip.param.pricer.PricerParams pricerParam,
+		final org.drip.param.pricer.CreditPricerParams pricerParam,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParam,
 		final double dblEpochResponse)
@@ -261,7 +261,7 @@ public class ScenarioDiscountCurveBuilder {
 		final org.drip.state.inference.LinearLatentStateCalibrator llsc,
 		final org.drip.state.estimator.GlobalControlCurveParams gccp,
 		final org.drip.param.valuation.ValuationParams valParam,
-		final org.drip.param.pricer.PricerParams pricerParam,
+		final org.drip.param.pricer.CreditPricerParams pricerParam,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParam)
 	{
@@ -359,7 +359,7 @@ public class ScenarioDiscountCurveBuilder {
 		final org.drip.state.inference.LinearLatentStateCalibrator llsc,
 		final org.drip.state.estimator.LocalControlCurveParams lccp,
 		final org.drip.param.valuation.ValuationParams valParam,
-		final org.drip.param.pricer.PricerParams pricerParam,
+		final org.drip.param.pricer.CreditPricerParams pricerParam,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParam)
 	{
@@ -470,7 +470,7 @@ public class ScenarioDiscountCurveBuilder {
 	public static final org.drip.analytics.rates.DiscountCurve DFRateShapePreserver (
 		final java.lang.String strName,
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParam,
+		final org.drip.param.pricer.CreditPricerParams pricerParam,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParam,
 		final java.lang.String strBasisType,

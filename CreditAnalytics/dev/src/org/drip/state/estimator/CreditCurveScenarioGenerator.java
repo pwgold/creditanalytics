@@ -61,7 +61,7 @@ public class CreditCurveScenarioGenerator {
 	private final TranslatedQuoteMeasure translateQuoteMeasure (
 		final org.drip.product.definition.CalibratableFixedIncomeComponent comp,
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.analytics.rates.DiscountCurve dc,
 		final org.drip.analytics.definition.CreditCurve cc,
 		final java.lang.String strMeasure,
@@ -170,8 +170,8 @@ public class CreditCurveScenarioGenerator {
 			return null;
 		}
 
-		org.drip.param.pricer.PricerParams pricerParams = new org.drip.param.pricer.PricerParams (7, null,
-			false, org.drip.param.pricer.PricerParams.PERIOD_DISCRETIZATION_DAY_STEP);
+		org.drip.param.pricer.CreditPricerParams pricerParams = new org.drip.param.pricer.CreditPricerParams
+			(7, null, false, org.drip.param.pricer.CreditPricerParams.PERIOD_DISCRETIZATION_DAY_STEP);
 
 		for (int i = 0; i < iNumInstr; ++i) {
 			TranslatedQuoteMeasure tqm = translateQuoteMeasure (_aCalibInst[i], valParams, pricerParams, dc,

@@ -12,6 +12,7 @@ import org.drip.param.creator.*;
 import org.drip.param.market.CurveSurfaceQuoteSet;
 import org.drip.param.period.*;
 import org.drip.param.valuation.*;
+import org.drip.pricer.option.BlackScholesAlgorithm;
 import org.drip.product.creator.*;
 import org.drip.product.definition.*;
 import org.drip.product.fra.FRAStandardCapFloor;
@@ -615,7 +616,8 @@ public class FRAStdCapFloorAnalysis {
 				"",
 				Double.NaN
 			),
-			null
+			null,
+			new BlackScholesAlgorithm()
 		);
 
 		FRAStandardCapFloor fraFloor = new FRAStandardCapFloor (
@@ -629,7 +631,8 @@ public class FRAStdCapFloorAnalysis {
 				"",
 				Double.NaN
 			),
-			null
+			null,
+			new BlackScholesAlgorithm()
 		);
 
 		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (

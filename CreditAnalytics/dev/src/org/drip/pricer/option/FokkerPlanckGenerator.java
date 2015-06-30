@@ -36,7 +36,7 @@ package org.drip.pricer.option;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class FokkerPlanckGenerator {
+public abstract class FokkerPlanckGenerator implements org.drip.param.pricer.GenericPricer {
 
 	/**
 	 * Compute the Expected Payoff of the Option from the Inputs

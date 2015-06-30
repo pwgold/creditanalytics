@@ -14,7 +14,7 @@ import org.drip.analytics.support.*;
 import org.drip.market.otc.*;
 import org.drip.param.definition.*;
 import org.drip.param.market.CurveSurfaceQuoteSet;
-import org.drip.param.pricer.PricerParams;
+import org.drip.param.pricer.CreditPricerParams;
 import org.drip.param.valuation.*;
 import org.drip.product.params.*;
 import org.drip.product.rates.*;
@@ -295,15 +295,15 @@ public class BondAnalyticsAPI {
 				2,				// Coupon Frequency
 				"30/360",		// Day Count
 				DateUtil.CreateFromYMD (
-						2008,
-						9,
-						21
-					), // Effective
-					DateUtil.CreateFromYMD (
-						2023,
-						9,
-						20
-					),	// Maturity
+					2008,
+					9,
+					21
+				), // Effective
+				DateUtil.CreateFromYMD (
+					2023,
+					9,
+					20
+				),	// Maturity
 				MakeFSPrincipal(),		// Principal Schedule
 				MakeFSCoupon()		// Coupon Schedule
 			);
@@ -949,7 +949,7 @@ public class BondAnalyticsAPI {
 		System.out.println (
 			cds.primaryCode() + " => " + cds.measureValue (
 				valParams,
-				PricerParams.Standard(),
+				CreditPricerParams.Standard(),
 				mktParamsCalib,
 				null,
 				"FairPremium"

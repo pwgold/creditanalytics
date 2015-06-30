@@ -57,7 +57,7 @@ public class NonlinearCurveCalibrator {
 		private double _dblCalibValue = java.lang.Double.NaN;
 		private org.drip.analytics.rates.DiscountCurve _dc = null;
 		private org.drip.analytics.rates.DiscountCurve _dcTSY = null;
-		private org.drip.param.pricer.PricerParams _pricerParams = null;
+		private org.drip.param.pricer.CreditPricerParams _pricerParams = null;
 		private org.drip.param.valuation.ValuationParams _valParams = null;
 		private org.drip.product.definition.FixedIncomeComponent _comp = null;
 		private org.drip.param.market.LatentStateFixingsContainer _lsfc = null;
@@ -71,7 +71,7 @@ public class NonlinearCurveCalibrator {
 			final org.drip.param.valuation.ValuationParams valParams,
 			final org.drip.analytics.rates.DiscountCurve dc,
 			final org.drip.analytics.rates.DiscountCurve dcTSY,
-			final org.drip.param.pricer.PricerParams pricerParamsIn,
+			final org.drip.param.pricer.CreditPricerParams pricerParamsIn,
 			final java.lang.String strMeasure,
 			final double dblCalibValue,
 			final org.drip.param.market.LatentStateFixingsContainer lsfc,
@@ -93,7 +93,7 @@ public class NonlinearCurveCalibrator {
 			_dblCalibValue = dblCalibValue;
 			_quotingParams = quotingParams;
 
-			_pricerParams = new org.drip.param.pricer.PricerParams (pricerParamsIn.unitSize(), new
+			_pricerParams = new org.drip.param.pricer.CreditPricerParams (pricerParamsIn.unitSize(), new
 				org.drip.param.definition.CalibrationParams (strMeasure, 0, null),
 					pricerParamsIn.survivalToPayDate(), pricerParamsIn.discretizationScheme());
 		}
@@ -240,7 +240,7 @@ public class NonlinearCurveCalibrator {
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.analytics.rates.DiscountCurve dc,
 		final org.drip.analytics.rates.DiscountCurve dcTSY,
-		final org.drip.param.pricer.PricerParams pricerParamsIn,
+		final org.drip.param.pricer.CreditPricerParams pricerParamsIn,
 		final java.lang.String strMeasure,
 		final double dblCalibValue,
 		final org.drip.param.market.LatentStateFixingsContainer lsfc,
@@ -319,10 +319,11 @@ public class NonlinearCurveCalibrator {
 						("NonlinearCurveCalibrator::calibrateIRNode => Cannot set Value = " + dblValue +
 							" for node " + iInstr);
 
-				return dblCalibValue - comp.measureValue (valParams, new org.drip.param.pricer.PricerParams
-					(1, new org.drip.param.definition.CalibrationParams (strMeasure, 0, null), true, 0),
-						org.drip.param.creator.MarketParamsBuilder.Create (dc, dcTSY, null, null, null, null,
-							lsfc), quotingParams, strMeasure);
+				return dblCalibValue - comp.measureValue (valParams, new
+					org.drip.param.pricer.CreditPricerParams (1, new
+						org.drip.param.definition.CalibrationParams (strMeasure, 0, null), true, 0),
+							org.drip.param.creator.MarketParamsBuilder.Create (dc, dcTSY, null, null, null,
+								null, lsfc), quotingParams, strMeasure);
 			}
 
 			@Override public double integrate (

@@ -887,8 +887,8 @@ public class ProductTestSuite {
 			}
 		}
 
-		org.drip.param.pricer.PricerParams pricerParams = new org.drip.param.pricer.PricerParams (7, null,
-			false, org.drip.param.pricer.PricerParams.PERIOD_DISCRETIZATION_DAY_STEP);
+		org.drip.param.pricer.CreditPricerParams pricerParams = new org.drip.param.pricer.CreditPricerParams
+			(7, null, false, org.drip.param.pricer.CreditPricerParams.PERIOD_DISCRETIZATION_DAY_STEP);
 
 		org.drip.analytics.rates.DiscountCurve dc = mpc.scenarioMarketParams (aCDSBRA[0], "Base").fundingCurve
 			(org.drip.state.identifier.FundingLabel.Standard (aCDSBRA[0].payCurrency()));
@@ -1417,7 +1417,7 @@ public class ProductTestSuite {
 
 		org.drip.analytics.output.ComponentMeasures cdsOut = cds.measures (new
 			org.drip.param.valuation.ValuationParams (dt, dt, "USD"),
-				org.drip.param.pricer.PricerParams.Standard(), mpc, null);
+				org.drip.param.pricer.CreditPricerParams.Standard(), mpc, null);
 
 		System.out.println ("CDS calcs in " + cdsOut.calcTime() + " sec");
 
@@ -1637,7 +1637,7 @@ public class ProductTestSuite {
 
 		org.drip.analytics.output.ComponentMeasures bondOut = bond.measures (new
 			org.drip.param.valuation.ValuationParams (dt, dt, "USD"),
-				org.drip.param.pricer.PricerParams.Standard(), mpc, null);
+				org.drip.param.pricer.CreditPricerParams.Standard(), mpc, null);
 
 		System.out.println ("Fixed Cpn Bond calcs in " + bondOut.calcTime() + " sec");
 
@@ -1872,8 +1872,8 @@ public class ProductTestSuite {
 		org.drip.param.valuation.ValuationParams valParams = new org.drip.param.valuation.ValuationParams
 			(dt, dt, "USD");
 
-		org.drip.param.pricer.PricerParams pricerParams =
-			org.drip.param.pricer.PricerParams.Standard();
+		org.drip.param.pricer.CreditPricerParams pricerParams =
+			org.drip.param.pricer.CreditPricerParams.Standard();
 
 		org.drip.analytics.output.BasketMeasures cdxOp = cdx.measures (valParams, pricerParams, mpc,
 			null);
@@ -2367,7 +2367,7 @@ public class ProductTestSuite {
 		org.drip.param.valuation.ValuationParams valParams = new org.drip.param.valuation.ValuationParams
 			(dt, dt, "USD");
 
-		org.drip.param.pricer.PricerParams pricerParams = org.drip.param.pricer.PricerParams.Standard();
+		org.drip.param.pricer.CreditPricerParams pricerParams = org.drip.param.pricer.CreditPricerParams.Standard();
 
 		org.drip.analytics.output.BasketMeasures bbOp = bb.measures (valParams, pricerParams, mpc, null);
 

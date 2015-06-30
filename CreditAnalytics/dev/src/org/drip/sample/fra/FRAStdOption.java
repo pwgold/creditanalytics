@@ -10,11 +10,13 @@ import org.drip.market.otc.*;
 import org.drip.param.creator.*;
 import org.drip.param.market.CurveSurfaceQuoteSet;
 import org.drip.param.valuation.*;
+import org.drip.pricer.option.BlackScholesAlgorithm;
 import org.drip.product.creator.*;
 import org.drip.product.definition.*;
 import org.drip.product.fra.*;
 import org.drip.product.params.LastTradingDateSetting;
 import org.drip.product.rates.*;
+import org.drip.quant.common.FormatUtil;
 import org.drip.service.api.CreditAnalytics;
 import org.drip.spline.basis.PolynomialFunctionSetParams;
 import org.drip.spline.stretch.MultiSegmentSequenceBuilder;
@@ -608,7 +610,8 @@ public class FRAStdOption {
 				Double.NaN
 			),
 			strCurrency,
-			strCurrency
+			strCurrency,
+			new BlackScholesAlgorithm()
 		);
 
 		Map<String, Double> mapFRACapletOutput = fraCaplet.value (
@@ -617,6 +620,10 @@ public class FRAStdOption {
 			mktParams,
 			null
 		);
+
+		System.out.println ("\n------------------------------------------------------------------");
+
+		System.out.println ("------------------------------------------------------------------\n");
 
 		for (Map.Entry<String, Double> me : mapFRACapletOutput.entrySet())
 			System.out.println ("\t" + me.getKey() + " => " + me.getValue());
@@ -637,7 +644,8 @@ public class FRAStdOption {
 				Double.NaN
 			),
 			strCurrency,
-			strCurrency
+			strCurrency,
+			new BlackScholesAlgorithm()
 		);
 
 		Map<String, Double> mapFRAFloorletOutput = fraFloorlet.value (
@@ -650,16 +658,32 @@ public class FRAStdOption {
 		for (Map.Entry<String, Double> me : mapFRAFloorletOutput.entrySet())
 			System.out.println ("\t" + me.getKey() + " => " + me.getValue());
 
+		System.out.println ("\n------------------------------------------------------------------");
+
+		System.out.println ("------------------------------------------------------------------\n");
+
 		System.out.println (
-			"FRA Caplet: " +
-			fraCaplet.implyVolatility (
+			"\tPrice Implied FRA Caplet Vol   : " +
+			FormatUtil.FormatDouble (fraCaplet.implyVolatility (
 				valParams,
 				null,
 				mktParams,
 				null,
-				"ATMPrice",
-				mapFRACapletOutput.get ("ATMPrice")
-			)
+				"Price",
+				mapFRACapletOutput.get ("Price")
+			), 1, 2, 100.) + "%"
+		);
+
+		System.out.println (
+			"\tPrice Implied FRA Floorlet Vol : " +
+			FormatUtil.FormatDouble (fraFloorlet.implyVolatility (
+				valParams,
+				null,
+				mktParams,
+				null,
+				"Price",
+				mapFRAFloorletOutput.get ("Price")
+			), 1, 2, 100.) + "%"
 		);
 	}
 }

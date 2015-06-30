@@ -173,7 +173,7 @@ public class BootCurveConstructionInput implements org.drip.analytics.input.Curv
 		return _valParam;
 	}
 
-	@Override public org.drip.param.pricer.PricerParams pricerParameter()
+	@Override public org.drip.param.pricer.CreditPricerParams pricerParameter()
 	{
 		return null;
 	}

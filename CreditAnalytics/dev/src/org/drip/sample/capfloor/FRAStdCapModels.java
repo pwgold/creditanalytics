@@ -11,7 +11,7 @@ import org.drip.param.creator.*;
 import org.drip.param.market.CurveSurfaceQuoteSet;
 import org.drip.param.period.*;
 import org.drip.param.valuation.ValuationParams;
-import org.drip.pricer.option.BlackScholesAlgorithm;
+import org.drip.pricer.option.*;
 import org.drip.product.creator.SingleStreamComponentBuilder;
 import org.drip.product.definition.CalibratableFixedIncomeComponent;
 import org.drip.product.fra.FRAStandardCapFloor;
@@ -49,8 +49,7 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /**
- * FRAStdCapSequence demonstrates the Product Creation, Market Parameters Construction, and Valuation of a
- * 	Sequence of Standard FRA Caps. The Marks and the Valuation References are sourced from:
+ * FRAStdCapModels runs a side-by-side comparison of the FRA Cap sequence using different models.
  * 
  * 	- Brace, A., D. Gatarek, and M. Musiela (1997): The Market Model of Interest Rate Dynamics, Mathematical
  * 		Finance 7 (2), 127-155.
@@ -58,7 +57,7 @@ import org.drip.state.identifier.ForwardLabel;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FRAStdCapSequence {
+public class FRAStdCapModels {
 
 	private static final FixFloatComponent OTCFixFloat (
 		final JulianDate dtSpot,
@@ -231,43 +230,13 @@ public class FRAStdCapSequence {
 		);
 	}
 
-	private static final void DiscountForwardReconciliation (
-		final JulianDate dtSpot,
-		final DiscountCurve dc,
-		final ForwardCurve fc,
-		final String strTenor)
-		throws Exception
-	{
-		int iNumTenor = 20;
-		JulianDate dtStart = dtSpot;
-
-		System.out.println ("\n\t---------------------------------------------------");
-
-		System.out.println ("\t---------------------------------------------------\n");
-
-		for (int i = 0; i < iNumTenor; ++i) {
-			JulianDate dtEnd = dtStart.addTenor (strTenor);
-
-			System.out.println (
-				"\t[" + dtStart + " - " + dtEnd + "] " +
-				FormatUtil.FormatDouble (dc.libor (dtStart, strTenor), 1, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (fc.forward (dtEnd), 1, 2, 100.) + "% ||"
-			);
-
-			dtStart = dtEnd;
-		}
-
-		System.out.println ("\n\t---------------------------------------------------");
-
-		System.out.println ("\t---------------------------------------------------\n\n");
-	}
-
 	private static final FRAStandardCapFloor MakeCap (
 		final JulianDate dtEffective,
 		final ForwardLabel fri,
 		final String strMaturityTenor,
 		final String strManifestMeasure,
-		final double dblStrike)
+		final double dblStrike,
+		final FokkerPlanckGenerator fpg)
 		throws Exception
 	{
 		ComposableFloatingUnitSetting cfus = new ComposableFloatingUnitSetting (
@@ -316,8 +285,86 @@ public class FRAStdCapSequence {
 				Double.NaN
 			),
 			null,
-			new BlackScholesAlgorithm()
+			fpg
 		);
+	}
+
+	private static final Map<JulianDate, Double> ValueCap (
+		final ForwardLabel fri,
+		final String strManifestMeasure,
+		final ValuationParams valParams,
+		final CurveSurfaceQuoteSet mktParams,
+		final String[] astrMaturityTenor,
+		final double[] adblATMStrike,
+		final double[] adblATMVol,
+		final FokkerPlanckGenerator fpg)
+		throws Exception
+	{
+		Map<JulianDate, Double> mapDateVol = new TreeMap<JulianDate, Double>();
+
+		for (int i = 0; i < astrMaturityTenor.length; ++i) {
+			FRAStandardCapFloor cap = MakeCap (
+				new JulianDate (valParams.valueDate()),
+				fri,
+				astrMaturityTenor[i],
+				strManifestMeasure,
+				adblATMStrike[i],
+				fpg
+			);
+
+			Map<String, Double> mapCapStreamOutput = cap.stream().value (
+				valParams,
+				null,
+				mktParams,
+				null
+			);
+
+			double dblCapStreamFairPremium = mapCapStreamOutput.get ("FairPremium");
+
+			FixFloatComponent swap = OTCFixFloat (
+				new JulianDate (valParams.valueDate()),
+				fri.currency(),
+				astrMaturityTenor[i],
+				0.
+			);
+
+			Map<String, Double> mapSwapOutput = swap.value (
+				valParams,
+				null,
+				mktParams,
+				null
+			);
+
+			double dblSwapRate = mapSwapOutput.get ("FairPremium");
+
+			double dblCapPrice = cap.priceFromFlatVolatility (
+				valParams,
+				null,
+				mktParams,
+				null,
+				adblATMVol[i]
+			);
+
+			cap.stripPiecewiseForwardVolatility (
+				valParams,
+				null,
+				mktParams,
+				null,
+				adblATMVol[i],
+				mapDateVol
+			);
+
+			System.out.println (
+				"\tCap  " + cap.maturityDate() + " | " +
+				FormatUtil.FormatDouble (dblCapStreamFairPremium, 1, 2, 100.) + "% |" +
+				FormatUtil.FormatDouble (dblSwapRate, 1, 2, 100.) + "% |" +
+				FormatUtil.FormatDouble (cap.strike(), 1, 2, 100.) + "% |" +
+				FormatUtil.FormatDouble (adblATMVol[i], 2, 2, 100.) + "% |" +
+				FormatUtil.FormatDouble (dblCapPrice, 1, 0, 10000.) + " ||"
+			);
+		}
+
+		return mapDateVol;
 	}
 
 	public static final void main (
@@ -347,13 +394,6 @@ public class FRAStdCapSequence {
 		);
 
 		ForwardCurve fcNative = dc.nativeForwardCurve (strFRATenor);
-
-		DiscountForwardReconciliation (
-			dtSpot,
-			dc,
-			fcNative,
-			strFRATenor
-		);
 
 		ValuationParams valParams = new ValuationParams (
 			dtSpot,
@@ -402,68 +442,35 @@ public class FRAStdCapSequence {
 			0.1550  // "10Y"
 		};
 
-		Map<JulianDate, Double> mapDateVol = new TreeMap<JulianDate, Double>();
+		System.out.println ("\t---------------------------------------------------");
 
-		for (int i = 0; i < astrMaturityTenor.length; ++i) {
-			FRAStandardCapFloor cap = MakeCap (
-				dtSpot,
-				fri,
-				astrMaturityTenor[i],
-				strManifestMeasure,
-				adblATMStrike[i]
-			);
+		System.out.println ("\t---------------------------------------------------");
 
-			Map<String, Double> mapCapStreamOutput = cap.stream().value (
-				valParams,
-				null,
-				mktParams,
-				null
-			);
+		Map<JulianDate, Double> mapLognormalDateVol = ValueCap (
+			fri,
+			strManifestMeasure,
+			valParams,
+			mktParams,
+			astrMaturityTenor,
+			adblATMStrike,
+			adblATMVol,
+			new BlackScholesAlgorithm()
+		);
 
-			double dblCapStreamFairPremium = mapCapStreamOutput.get ("FairPremium");
+		System.out.println ("\t---------------------------------------------------");
 
-			FixFloatComponent swap = OTCFixFloat (
-				dtSpot,
-				strCurrency,
-				astrMaturityTenor[i],
-				0.
-			);
+		System.out.println ("\t---------------------------------------------------");
 
-			Map<String, Double> mapSwapOutput = swap.value (
-				valParams,
-				null,
-				mktParams,
-				null
-			);
-
-			double dblSwapRate = mapSwapOutput.get ("FairPremium");
-
-			double dblCapPrice = cap.priceFromFlatVolatility (
-				valParams,
-				null,
-				mktParams,
-				null,
-				adblATMVol[i]
-			);
-
-			cap.stripPiecewiseForwardVolatility (
-				valParams,
-				null,
-				mktParams,
-				null,
-				adblATMVol[i],
-				mapDateVol
-			);
-
-			System.out.println (
-				"\tCap  " + cap.maturityDate() + " | " +
-				FormatUtil.FormatDouble (dblCapStreamFairPremium, 1, 2, 100.) + "% |" +
-				FormatUtil.FormatDouble (dblSwapRate, 1, 2, 100.) + "% |" +
-				FormatUtil.FormatDouble (cap.strike(), 1, 2, 100.) + "% |" +
-				FormatUtil.FormatDouble (adblATMVol[i], 2, 2, 100.) + "% |" +
-				FormatUtil.FormatDouble (dblCapPrice, 1, 0, 10000.) + " ||"
-			);
-		}
+		Map<JulianDate, Double> mapNormalDateVol = ValueCap (
+			fri,
+			strManifestMeasure,
+			valParams,
+			mktParams,
+			astrMaturityTenor,
+			adblATMStrike,
+			adblATMVol,
+			new BlackNormalAlgorithm()
+		);
 
 		System.out.println ("\n\n\t---------------------------------------------------");
 
@@ -471,11 +478,12 @@ public class FRAStdCapSequence {
 
 		System.out.println ("\t---------------------------------------------------\n");
 
-		for (Map.Entry<JulianDate, Double> me : mapDateVol.entrySet())
+		for (Map.Entry<JulianDate, Double> me : mapLognormalDateVol.entrySet())
 			System.out.println (
 				"\t" +
 				me.getKey() + " => " +
-				FormatUtil.FormatDouble (me.getValue(), 2, 2, 100.) + "%  ||"
+				FormatUtil.FormatDouble (me.getValue(), 2, 2, 100.) + "%  |" +
+				FormatUtil.FormatDouble (mapNormalDateVol.get (me.getKey()), 2, 2, 100.) + "%  ||"
 			);
 
 		System.out.println ("\t---------------------------------------------------");

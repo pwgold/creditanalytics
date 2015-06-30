@@ -11,7 +11,7 @@ import org.drip.analytics.daycount.Convention;
 import org.drip.analytics.definition.*;
 import org.drip.analytics.rates.DiscountCurve;
 import org.drip.param.market.CurveSurfaceQuoteSet;
-import org.drip.param.pricer.PricerParams;
+import org.drip.param.pricer.CreditPricerParams;
 import org.drip.param.valuation.*;
 import org.drip.product.definition.*;
 import org.drip.param.creator.*;
@@ -202,7 +202,7 @@ public class CreditAnalyticsAPI {
 		 * Standard Credit Pricer Parameters (check javadoc for details)
 		 */
 
-		PricerParams pricerParams = PricerParams.Standard();
+		CreditPricerParams pricerParams = CreditPricerParams.Standard();
 
 		/*
 		 * Re-calculate the input calibration measures for the input CDSes
@@ -297,7 +297,7 @@ public class CreditAnalyticsAPI {
 		 * Standard Credit Pricer Parameters (check javadoc for details)
 		 */
 
-		PricerParams pricerParams = PricerParams.Standard();
+		CreditPricerParams pricerParams = CreditPricerParams.Standard();
 
 		System.out.println ("Loss Start     Loss End  Notl    Rec    EffDF    StartSurv  EndSurv");
 

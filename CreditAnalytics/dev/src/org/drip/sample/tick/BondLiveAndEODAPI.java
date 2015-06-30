@@ -16,7 +16,7 @@ import org.drip.analytics.output.ExerciseInfo;
 import org.drip.analytics.rates.ExplicitBootDiscountCurve;
 import org.drip.analytics.support.CaseInsensitiveTreeMap;
 import org.drip.param.market.CurveSurfaceQuoteSet;
-import org.drip.param.pricer.PricerParams;
+import org.drip.param.pricer.CreditPricerParams;
 import org.drip.param.valuation.*;
 import org.drip.product.definition.*;
 import org.drip.param.creator.*;
@@ -291,7 +291,7 @@ public class BondLiveAndEODAPI {
 			Convention.DATE_ROLL_ACTUAL
 		);
 
-		PricerParams pricerParams = PricerParams.Standard();
+		CreditPricerParams pricerParams = CreditPricerParams.Standard();
 
 		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Credit (dc, cc);
 

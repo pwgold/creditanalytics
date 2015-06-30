@@ -63,7 +63,7 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 	protected java.lang.String[] _astrCalibMeasure = null;
 	protected org.drip.analytics.rates.DiscountCurve _dc = null;
 	protected org.drip.analytics.rates.DiscountCurve _dcTSY = null;
-	protected org.drip.param.pricer.PricerParams _pricerParam = null;
+	protected org.drip.param.pricer.CreditPricerParams _pricerParam = null;
 	protected org.drip.param.valuation.ValuationParams _valParam = null;
 	protected org.drip.param.market.LatentStateFixingsContainer _lsfc = null;
 	protected org.drip.param.valuation.ValuationCustomizationParams _quotingParams = null;
@@ -485,7 +485,7 @@ public abstract class CreditCurve implements org.drip.analytics.definition.Curve
 		final boolean bFlat,
 		final org.drip.analytics.rates.DiscountCurve dc,
 		final org.drip.analytics.rates.DiscountCurve dcTSY,
-		final org.drip.param.pricer.PricerParams pricerParam,
+		final org.drip.param.pricer.CreditPricerParams pricerParam,
 		final org.drip.product.definition.CalibratableFixedIncomeComponent[] aCalibInst,
 		final double[] adblCalibQuote,
 		final java.lang.String[] astrCalibMeasure,

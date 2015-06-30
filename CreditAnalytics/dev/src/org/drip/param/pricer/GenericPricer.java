@@ -7,7 +7,6 @@ package org.drip.param.pricer;
 
 /*!
  * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
  *  This file is part of DRIP, a free-software/open-source library for fixed income analysts and developers -
  * 		http://www.credit-trader.org/Begin.html
@@ -30,11 +29,10 @@ package org.drip.param.pricer;
  */
 
 /**
- * OptionPricerParams exposes the interface that holds the parameters that drive the dynamics of the Fokker
- * 	Planck distribution.
+ * GenericPricer is the Base Stub on top which all the Custom Pricers are implemented.
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public interface OptionPricerParams {
+public interface GenericPricer {
 }

@@ -38,9 +38,7 @@ package org.drip.product.fra;
 public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeOptionComponent {
 	private boolean _bIsCaplet = false;
 	private org.drip.product.fra.FRAStandardComponent _fra = null;
-
-	private org.drip.pricer.option.FokkerPlanckGenerator _fpg = new
-		org.drip.pricer.option.BlackScholesAlgorithm();
+	private org.drip.pricer.option.FokkerPlanckGenerator _fpg = null;
 
 	/**
 	 * FRAStandardCapFloorlet constructor
@@ -53,6 +51,7 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 	 * @param ltds Last Trading Date Setting
 	 * @param strDayCount Day Count Convention
 	 * @param strCalendar Holiday Calendar
+	 * @param fpg The Fokker Planck Pricer Instance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -65,13 +64,50 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 		final double dblNotional,
 		final org.drip.product.params.LastTradingDateSetting ltds,
 		final java.lang.String strDayCount,
-		final java.lang.String strCalendar)
+		final java.lang.String strCalendar,
+		final org.drip.pricer.option.FokkerPlanckGenerator fpg)
 		throws java.lang.Exception
 	{
 		super (fra, strManifestMeasure, dblStrike, dblNotional, ltds, strDayCount, strCalendar);
 
+		if (null == (_fpg = fpg))
+			throw new java.lang.Exception ("FRAStandardCapFloorlet ctr: Invalid Option Pricer");
+
 		_fra = fra;
 		_bIsCaplet = bIsCaplet;
+	}
+
+	/**
+	 * Retrieve the Underlying FRA Instance
+	 * 
+	 * @return The FRA Instance
+	 */
+
+	public org.drip.product.fra.FRAStandardComponent fra()
+	{
+		return _fra;
+	}
+
+	/**
+	 * Indicate whether this a Caplet/Floorlet
+	 * 
+	 * @return TRUE => This is a Caplet
+	 */
+
+	public boolean isCaplet()
+	{
+		return _bIsCaplet;
+	}
+
+	/**
+	 * Retrieve the Underlying Pricer Instance
+	 * 
+	 * @return The Pricer Instance
+	 */
+
+	public org.drip.pricer.option.FokkerPlanckGenerator pricer()
+	{
+		return _fpg;
 	}
 
 	/**
@@ -88,7 +124,7 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 
 	public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> valueFromSurfaceVariance (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
 		final double dblIntegratedSurfaceVariance)
@@ -136,27 +172,14 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 			return null;
 
 		try {
-			double dblIntegratedSurfaceVolatility = java.lang.Math.sqrt (dblIntegratedSurfaceVariance);
-
 			double dblStrike = strike();
 
 			double dblNotional = notional();
 
 			double dblMoneynessFactor = dblATMManifestMeasure / dblStrike;
-
-			double dblLogMoneynessFactor = java.lang.Math.log (dblMoneynessFactor);
-
-			double dblForwardIntrinsic = java.lang.Double.NaN;
-			double dblForwardATMIntrinsic = java.lang.Double.NaN;
 			double dblManifestMeasurePriceTransformer = java.lang.Double.NaN;
 			double dblManifestMeasureIntrinsic = _bIsCaplet ? dblATMManifestMeasure - dblStrike : dblStrike -
 				dblATMManifestMeasure;
-			double dblATMDPlus = 0.5 * dblIntegratedSurfaceVariance / dblIntegratedSurfaceVolatility;
-			double dblATMDMinus = -1. * dblATMDPlus;
-			double dblDPlus = (dblLogMoneynessFactor + 0.5 * dblIntegratedSurfaceVariance) /
-				dblIntegratedSurfaceVolatility;
-			double dblDMinus = (dblLogMoneynessFactor - 0.5 * dblIntegratedSurfaceVariance) /
-				dblIntegratedSurfaceVolatility;
 
 			if (strManifestMeasure.equalsIgnoreCase ("Price") || strManifestMeasure.equalsIgnoreCase ("PV"))
 				dblManifestMeasurePriceTransformer = dcFunding.df (dblExerciseDate);
@@ -171,24 +194,12 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 			org.drip.pricer.option.Greeks optGreek = _fpg.greeks (dblValueDate, dblExerciseDate, dblStrike,
 				dcFunding, dblATMManifestMeasure, !_bIsCaplet, true, dblIntegratedSurfaceVariance);
 
-			if (_bIsCaplet) {
-				dblForwardIntrinsic = dblATMManifestMeasure * org.drip.measure.continuous.Gaussian.CDF
-					(dblDPlus) - dblStrike * org.drip.measure.continuous.Gaussian.CDF (dblDMinus);
-
-				dblForwardATMIntrinsic = dblATMManifestMeasure * org.drip.measure.continuous.Gaussian.CDF
-					(dblATMDPlus) - dblATMManifestMeasure * org.drip.measure.continuous.Gaussian.CDF
-						(dblATMDMinus);
-			} else {
-				dblForwardIntrinsic = dblStrike * org.drip.measure.continuous.Gaussian.CDF (-dblDMinus) -
-					dblATMManifestMeasure * org.drip.measure.continuous.Gaussian.CDF (-dblDPlus);
-
-				dblForwardATMIntrinsic = dblATMManifestMeasure * org.drip.measure.continuous.Gaussian.CDF
-					(-dblATMDMinus) - dblATMManifestMeasure * org.drip.measure.continuous.Gaussian.CDF
-						(-dblATMDPlus);
-			}
-
 			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapResult = new
 				org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
+
+			double dblForwardIntrinsic = optGreek.expectedPayoff();
+
+			double dblForwardATMIntrinsic = optGreek.expectedATMPayoff();
 
 			double dblSpotPrice = dblForwardIntrinsic * dblManifestMeasurePriceTransformer;
 
@@ -198,6 +209,14 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 
 			mapResult.put ("CalcTime", (System.nanoTime() - lStart) * 1.e-09);
 
+			mapResult.put ("Charm", optGreek.charm() * dblManifestMeasurePriceTransformer);
+
+			mapResult.put ("Color", optGreek.color() * dblManifestMeasurePriceTransformer);
+
+			mapResult.put ("Delta", optGreek.delta() * dblManifestMeasurePriceTransformer);
+
+			mapResult.put ("EffectiveVolatility", optGreek.effectiveVolatility());
+
 			mapResult.put ("ExpectedATMPayoff", optGreek.expectedATMPayoff());
 
 			mapResult.put ("ExpectedPayoff", optGreek.expectedPayoff());
@@ -205,6 +224,8 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 			mapResult.put ("ForwardATMIntrinsic", dblForwardATMIntrinsic);
 
 			mapResult.put ("ForwardIntrinsic", dblForwardIntrinsic);
+
+			mapResult.put ("Gamma", optGreek.gamma() * dblManifestMeasurePriceTransformer);
 
 			mapResult.put ("IntegratedSurfaceVariance", dblIntegratedSurfaceVariance);
 
@@ -217,11 +238,31 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 
 			mapResult.put ("Price", dblSpotPrice);
 
+			mapResult.put ("Prob1", optGreek.prob1());
+
+			mapResult.put ("Prob2", optGreek.prob2());
+
 			mapResult.put ("PV", dblSpotPrice * dblNotional);
+
+			mapResult.put ("Rho", optGreek.rho() * dblManifestMeasurePriceTransformer);
+
+			mapResult.put ("Speed", optGreek.speed() * dblManifestMeasurePriceTransformer);
 
 			mapResult.put ("SpotPrice", dblSpotPrice);
 
+			mapResult.put ("Theta", optGreek.theta() * dblManifestMeasurePriceTransformer);
+
+			mapResult.put ("Ultima", optGreek.ultima() * dblManifestMeasurePriceTransformer);
+
 			mapResult.put ("Upfront", dblSpotPrice);
+
+			mapResult.put ("Vanna", optGreek.vanna() * dblManifestMeasurePriceTransformer);
+
+			mapResult.put ("Vega", optGreek.vega() * dblManifestMeasurePriceTransformer);
+
+			mapResult.put ("Veta", optGreek.veta() * dblManifestMeasurePriceTransformer);
+
+			mapResult.put ("Vomma", optGreek.vomma() * dblManifestMeasurePriceTransformer);
 
 			return mapResult;
 		} catch (java.lang.Exception e) {
@@ -253,7 +294,7 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> value (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams)
 	{
@@ -281,6 +322,14 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 
 		setstrMeasureNames.add ("CalcTime");
 
+		setstrMeasureNames.add ("Charm");
+
+		setstrMeasureNames.add ("Color");
+
+		setstrMeasureNames.add ("Delta");
+
+		setstrMeasureNames.add ("EffectiveVolatility");
+
 		setstrMeasureNames.add ("ExpectedATMPayoff");
 
 		setstrMeasureNames.add ("ExpectedPayoff");
@@ -288,6 +337,8 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 		setstrMeasureNames.add ("ForwardATMIntrinsic");
 
 		setstrMeasureNames.add ("ForwardIntrinsic");
+
+		setstrMeasureNames.add ("Gamma");
 
 		setstrMeasureNames.add ("IntegratedSurfaceVariance");
 
@@ -299,11 +350,31 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 
 		setstrMeasureNames.add ("Price");
 
+		setstrMeasureNames.add ("Prob1");
+
+		setstrMeasureNames.add ("Prob2");
+
 		setstrMeasureNames.add ("PV");
+
+		setstrMeasureNames.add ("Rho");
+
+		setstrMeasureNames.add ("Speed");
 
 		setstrMeasureNames.add ("SpotPrice");
 
+		setstrMeasureNames.add ("Theta");
+
+		setstrMeasureNames.add ("Ultima");
+
 		setstrMeasureNames.add ("Upfront");
+
+		setstrMeasureNames.add ("Vanna");
+
+		setstrMeasureNames.add ("Vega");
+
+		setstrMeasureNames.add ("Veta");
+
+		setstrMeasureNames.add ("Vomma");
 
 		return setstrMeasureNames;
 	}
@@ -325,7 +396,7 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 
 	public double implyVolatility (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
 		final java.lang.String strCalibMeasure,
@@ -361,8 +432,8 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 				throws java.lang.Exception
 			{
 				if ("Price".equals (strCalibMeasure))
-					return _fpg.impliedVolatilityFromPrice (dblValueDate, dblExerciseDate, dblStrike,
-						dcFunding, dblATMManifestMeasure, !_bIsCaplet, true, dblCalibValue);
+					return _fpg.payoff (dblValueDate, dblExerciseDate, dblStrike, dcFunding,
+						dblATMManifestMeasure, !_bIsCaplet, true, dblVolatility, true);
 
 				java.util.Map<java.lang.String, java.lang.Double> mapOutput = valueFromSurfaceVariance 
 					(valParams, pricerParams, csqs, quotingParams, dblVolatility * dblVolatility *
@@ -378,7 +449,7 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 		};
 
 		org.drip.function.solverR1ToR1.FixedPointFinderOutput fpfo = (new
-			org.drip.function.solverR1ToR1.FixedPointFinderZheng (dblCalibValue, funcVolPricer,
+			org.drip.function.solverR1ToR1.FixedPointFinderBrent (dblCalibValue, funcVolPricer,
 				false)).findRoot();
 
 		if (null == fpfo || !fpfo.containsRoot())
@@ -404,7 +475,7 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 
 	public double price (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
 		final double dblVolatility)

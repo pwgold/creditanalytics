@@ -44,7 +44,7 @@ public abstract class CalibratableFixedIncomeComponent extends
 	org.drip.product.definition.FixedIncomeComponent {
 	protected abstract org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> calibMeasures (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp);
 
@@ -102,7 +102,7 @@ public abstract class CalibratableFixedIncomeComponent extends
 
 	public abstract org.drip.quant.calculus.WengertJacobian jackDDirtyPVDManifestMeasure (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp);
 
@@ -121,7 +121,7 @@ public abstract class CalibratableFixedIncomeComponent extends
 	public abstract org.drip.quant.calculus.WengertJacobian manifestMeasureDFMicroJack (
 		final java.lang.String strMainfestMeasure,
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp);
 
@@ -153,7 +153,7 @@ public abstract class CalibratableFixedIncomeComponent extends
 
 	public abstract org.drip.state.estimator.PredictorResponseWeightConstraint fundingPRWC (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs);
@@ -175,7 +175,7 @@ public abstract class CalibratableFixedIncomeComponent extends
 
 	public abstract org.drip.state.estimator.PredictorResponseWeightConstraint forwardPRWC (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs);
@@ -197,7 +197,7 @@ public abstract class CalibratableFixedIncomeComponent extends
 
 	public abstract org.drip.state.estimator.PredictorResponseWeightConstraint fundingForwardPRWC (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs);
@@ -219,7 +219,7 @@ public abstract class CalibratableFixedIncomeComponent extends
 
 	public org.drip.state.estimator.PredictorResponseWeightConstraint calibPRWC (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
 		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final org.drip.product.calib.ProductQuoteSet pqs)

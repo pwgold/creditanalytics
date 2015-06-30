@@ -1055,7 +1055,7 @@ public class CreditAnalyticsTestSuite {
 			for (org.drip.analytics.cashflow.LossQuadratureMetrics dp : cds.lossFlow
 				(org.drip.param.valuation.ValuationParams.Spot (org.drip.analytics.date.DateUtil.Today(), 0,
 					"USD", org.drip.analytics.daycount.Convention.DATE_ROLL_ACTUAL),
-						org.drip.param.pricer.PricerParams.Standard(),
+						org.drip.param.pricer.CreditPricerParams.Standard(),
 							org.drip.param.creator.MarketParamsBuilder.Credit (dc, cc)))
 				System.out.println (org.drip.analytics.date.DateUtil.FromJulian (dp.start()) + "    " +
 					org.drip.analytics.date.DateUtil.FromJulian (dp.end()) + "    " +
@@ -1279,7 +1279,7 @@ public class CreditAnalyticsTestSuite {
 				("----------     --------      --------      ---    ----     ---    -----    ---------  -------");
 	
 			for (org.drip.analytics.cashflow.LossQuadratureMetrics dp : bond.lossFlow (valParams,
-				org.drip.param.pricer.PricerParams.Standard(),
+				org.drip.param.pricer.CreditPricerParams.Standard(),
 					org.drip.param.creator.MarketParamsBuilder.Credit (dc, cc)))
 				System.out.println (org.drip.analytics.date.DateUtil.FromJulian (dp.start()) + "    " +
 					org.drip.analytics.date.DateUtil.FromJulian (dp.end()) + "    " +
@@ -2700,7 +2700,7 @@ public class CreditAnalyticsTestSuite {
 		if (s_bCDSBondCreditCurve) {
 			try {
 				System.out.println (cds.primaryCode() + " => " + cds.measureValue (valParams,
-					org.drip.param.pricer.PricerParams.Standard(),
+					org.drip.param.pricer.CreditPricerParams.Standard(),
 						org.drip.param.creator.MarketParamsBuilder.Create (dc, null, null, ccCalib,
 							null, null, null, org.drip.analytics.support.AnalyticsHelper.CreateFixingsObject
 								(bond, org.drip.analytics.date.DateUtil.Today(), 0.04)), null,
@@ -2739,8 +2739,9 @@ public class CreditAnalyticsTestSuite {
 		try {
 			mapResult = bb.value (org.drip.param.valuation.ValuationParams.Spot (dtToday, 0, "USD",
 				org.drip.analytics.daycount.Convention.DATE_ROLL_ACTUAL), new
-					org.drip.param.pricer.PricerParams (7, null, false,
-						org.drip.param.pricer.PricerParams.PERIOD_DISCRETIZATION_FULL_COUPON), csqs, null);
+					org.drip.param.pricer.CreditPricerParams (7, null, false,
+						org.drip.param.pricer.CreditPricerParams.PERIOD_DISCRETIZATION_FULL_COUPON), csqs,
+							null);
 		} catch (java.lang.Exception e) {
 			if (s_bSupressErrMsg) {
 				System.out.println ("BasketBondAPISample failed.");

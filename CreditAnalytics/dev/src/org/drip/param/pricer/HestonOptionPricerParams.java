@@ -36,7 +36,7 @@ package org.drip.param.pricer;
  * @author Lakshmi Krishnamurthy
  */
 
-public class HestonOptionPricerParams implements org.drip.param.pricer.OptionPricerParams {
+public class HestonOptionPricerParams {
 	private int _iPayoffTransformScheme = -1;
 	private double _dblRho = java.lang.Double.NaN;
 	private double _dblKappa = java.lang.Double.NaN;
