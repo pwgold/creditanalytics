@@ -172,7 +172,8 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 
 			if (null == fpop || !fpop.containsRoot()) {
 				try {
-					fpop = new org.drip.function.solverR1ToR1.FixedPointFinderZheng (0., this, true).findRoot();
+					fpop = new org.drip.function.solverR1ToR1.FixedPointFinderBrent (0., this,
+						true).findRoot();
 				} catch (java.lang.Exception e) {
 					e.printStackTrace();
 
@@ -221,8 +222,8 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 		final int iCalibrationDetail)
 	{
 		try {
-			return setup (new org.drip.spline.stretch.CkSegmentSequenceBuilder (srvcLeading, aSRVC, sbfr, bs),
-				iCalibrationDetail);
+			return setup (new org.drip.spline.stretch.CkSegmentSequenceBuilder (srvcLeading, aSRVC, sbfr,
+				bs), iCalibrationDetail);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}

@@ -347,14 +347,22 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 
 		org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFC = ssciState.flexureConstraint();
 
-		int iNumConstraint = null == aSBFC ? 0 : aSBFC.length;
+		int iNumConstraint = 0;
 		int iNumResponseBasisCoeff = _adblResponseBasisCoeff.length;
 		int iNumLeftDeriv = null == adblLeftEdgeDeriv ? 0 : adblLeftEdgeDeriv.length;
 		int iNumRightDeriv = null == adblRightEdgeDeriv ? 0 : adblRightEdgeDeriv.length;
 		double[] adblPredictorResponseConstraintValue = new double[iNumResponseBasisCoeff];
+		int iNumPredictorOrdinate = null == adblPredictorOrdinate ? 0 : adblPredictorOrdinate.length;
 		double[][] aadblResponseBasisCoeffConstraint = new
 			double[iNumResponseBasisCoeff][iNumResponseBasisCoeff];
-		int iNumPredictorOrdinate = null == adblPredictorOrdinate ? 0 : adblPredictorOrdinate.length;
+
+		if (null != aSBFC) {
+			int iNumPotentialConstraint = aSBFC.length;
+
+			for (int i = 0; i < iNumPotentialConstraint; ++i) {
+				if (null != aSBFC[i]) ++iNumConstraint;
+			}
+		}
 
 		if (iNumResponseBasisCoeff < iNumPredictorOrdinate + iNumLeftDeriv + iNumRightDeriv + iNumConstraint)
 			return false;

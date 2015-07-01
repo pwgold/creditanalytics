@@ -100,7 +100,7 @@ public class RegressionSplineEstimator {
 			"SPLINE_STRETCH",
 			adblX, // predictors
 			aSCBC, // Basis Segment Builder parameters
-			sbfr, 
+			sbfr,
 			BoundarySettings.NaturalStandard(), // Boundary Condition - Natural
 			MultiSegmentSequence.CALIBRATE // Calibrate the Stretch predictors to the responses
 		);
