@@ -231,37 +231,6 @@ public class FRAStdCapSequence {
 		);
 	}
 
-	private static final void DiscountForwardReconciliation (
-		final JulianDate dtSpot,
-		final DiscountCurve dc,
-		final ForwardCurve fc,
-		final String strTenor)
-		throws Exception
-	{
-		int iNumTenor = 20;
-		JulianDate dtStart = dtSpot;
-
-		System.out.println ("\n\t---------------------------------------------------");
-
-		System.out.println ("\t---------------------------------------------------\n");
-
-		for (int i = 0; i < iNumTenor; ++i) {
-			JulianDate dtEnd = dtStart.addTenor (strTenor);
-
-			System.out.println (
-				"\t[" + dtStart + " - " + dtEnd + "] " +
-				FormatUtil.FormatDouble (dc.libor (dtStart, strTenor), 1, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (fc.forward (dtEnd), 1, 2, 100.) + "% ||"
-			);
-
-			dtStart = dtEnd;
-		}
-
-		System.out.println ("\n\t---------------------------------------------------");
-
-		System.out.println ("\t---------------------------------------------------\n\n");
-	}
-
 	private static final FRAStandardCapFloor MakeCap (
 		final JulianDate dtEffective,
 		final ForwardLabel fri,
@@ -347,13 +316,6 @@ public class FRAStdCapSequence {
 		);
 
 		ForwardCurve fcNative = dc.nativeForwardCurve (strFRATenor);
-
-		DiscountForwardReconciliation (
-			dtSpot,
-			dc,
-			fcNative,
-			strFRATenor
-		);
 
 		ValuationParams valParams = new ValuationParams (
 			dtSpot,

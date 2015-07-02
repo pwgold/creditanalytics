@@ -471,8 +471,8 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		org.drip.spline.params.SegmentBasisFlexureConstraint[] aSBFCManifestSensitivity =
 			ssciManifestSensitivity.flexureConstraint();
 
+		int iNumConstraint = 0;
 		int iNumResponseBasisCoeff = _adblResponseBasisCoeff.length;
-		int iNumConstraint = null == aSBFCManifestSensitivity ? 0 : aSBFCManifestSensitivity.length;
 		int iNumPredictorOrdinate = null == adblPredictorOrdinate ? 0 : adblPredictorOrdinate.length;
 		double[] adblPredictorResponseManifestSensitivityConstraint = new double[iNumResponseBasisCoeff];
 		int iNumLeftDerivManifestSensitivity = null == adblLeftEdgeDerivManifestSensitivity ? 0 :
@@ -482,9 +482,13 @@ public class LatentStateResponseModel extends org.drip.spline.segment.LatentStat
 		double[][] aadblResponseCoeffConstraintManifestSensitivity = new
 			double[iNumResponseBasisCoeff][iNumResponseBasisCoeff];
 
-		if ((null == aSBFCState && 0 != iNumConstraint) || (null != aSBFCState && iNumConstraint !=
-			aSBFCState.length) || null == _be)
-			return null;
+		if (null != aSBFCState) {
+			int iNumPotentialConstraint = aSBFCState.length;
+
+			for (int i = 0; i < iNumPotentialConstraint; ++i) {
+				if (null != aSBFCState[i]) ++iNumConstraint;
+			}
+		}
 
 		if (iNumResponseBasisCoeff < iNumPredictorOrdinate + iNumLeftDerivManifestSensitivity +
 			iNumRightDerivManifestSensitivity + iNumConstraint)

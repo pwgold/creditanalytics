@@ -1,5 +1,5 @@
 
-package org.drip.sample.funding;
+package org.drip.sample.tick;
 
 /*
  * General imports

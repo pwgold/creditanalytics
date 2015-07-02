@@ -213,7 +213,6 @@ public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncome
 		double dblPV = 0.;
 		double dblPrice = 0.;
 		double dblUpfront = 0.;
-		double dblATMPrice = 0.;
 		org.drip.function.solverR1ToR1.FixedPointFinderOutput fpfo = null;
 
 		long lStart = System.nanoTime();
@@ -226,8 +225,6 @@ public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncome
 
 			if (null == mapFRAResult) continue;
 
-			if (mapFRAResult.containsKey ("ATMPrice")) dblATMPrice += mapFRAResult.get ("ATMPrice");
-
 			if (mapFRAResult.containsKey ("Price")) dblPrice += mapFRAResult.get ("Price");
 
 			if (mapFRAResult.containsKey ("PV")) dblPV += mapFRAResult.get ("PV");
@@ -237,8 +234,6 @@ public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncome
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapResult = new
 			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
-
-		mapResult.put ("ATMPrice", dblATMPrice);
 
 		mapResult.put ("Price", dblPrice);
 
@@ -293,7 +288,7 @@ public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncome
 
 		setstrMeasureNames.add ("CalcTime");
 
-		setstrMeasureNames.add ("FlatATMVolatility");
+		setstrMeasureNames.add ("FlatVolatility");
 
 		setstrMeasureNames.add ("Price");
 
@@ -373,18 +368,57 @@ public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncome
 
 			if (dblExerciseDate <= dblValueDate) continue;
 
-			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapCapFloorlet =
-				fracfl.valueFromSurfaceVariance (valParams, pricerParams, csqs, quotingParams,
-					dblFlatVolatility * dblFlatVolatility * (dblExerciseDate - dblValueDate) / 365.25);
-
-			if (null == mapCapFloorlet || !mapCapFloorlet.containsKey ("Price"))
-				throw new java.lang.Exception
-					("FRAStandardCapFloor::priceFromFlatVolatility => Cannot value capFloorlet");
-
-			dblPrice += mapCapFloorlet.get ("Price");
+			dblPrice += fracfl.price (valParams, pricerParams, csqs, quotingParams, dblFlatVolatility);
 		}
 
 		return dblPrice;
+	}
+
+	/**
+	 * Imply the Flat Cap/Floor Volatility from the Calibration Price
+	 * 
+	 * @param valParams The Valuation Parameters
+	 * @param pricerParams The Pricer Parameters
+	 * @param csqs The Market Parameters
+	 * @param quotingParams The Quoting Parameters
+	 * @param dblCalibPrice The Calibration Price
+	 * 
+	 * @return The Cap/Floor Flat Volatility
+	 * 
+	 * @throws java.lang.Exception Thrown if the Price cannot be calculated
+	 */
+
+	public double flatVolatilityFromPrice (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
+		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
+		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
+		final double dblCalibPrice)
+		throws java.lang.Exception
+	{
+		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblCalibPrice))
+			throw new java.lang.Exception ("FRAStandardCapFloor::flatVolatilityFromPrice => Invalid Inputs");
+
+		org.drip.function.definition.R1ToR1 funcVolPricer = new org.drip.function.definition.R1ToR1 (null) {
+			@Override public double evaluate (
+				final double dblVolatility)
+				throws java.lang.Exception
+			{
+				return priceFromFlatVolatility (valParams, pricerParams, csqs, quotingParams, dblVolatility);
+			}
+		};
+
+		org.drip.function.solverR1ToR1.FixedPointFinderOutput fpfo = (new
+			org.drip.function.solverR1ToR1.FixedPointFinderBracketing (dblCalibPrice, funcVolPricer, null,
+				org.drip.function.solverR1ToR1.VariateIteratorPrimitive.BISECTION, false)).findRoot
+					(org.drip.function.solverR1ToR1.InitializationHeuristics.FromHardSearchEdges (0.0001,
+						5.));
+
+		if (null == fpfo || !fpfo.containsRoot())
+			throw new java.lang.Exception
+				("FRAStandardCapFloor::flatVolatilityFromPrice => Cannot imply Flat Vol");
+
+		return fpfo.getRoot();
 	}
 
 	/**

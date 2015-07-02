@@ -18,6 +18,7 @@ import org.drip.product.definition.*;
 import org.drip.product.fra.FRAStandardCapFloor;
 import org.drip.product.params.LastTradingDateSetting;
 import org.drip.product.rates.*;
+import org.drip.quant.common.FormatUtil;
 import org.drip.service.api.CreditAnalytics;
 import org.drip.spline.basis.PolynomialFunctionSetParams;
 import org.drip.spline.stretch.MultiSegmentSequenceBuilder;
@@ -689,5 +690,31 @@ public class FRAStdCapFloor {
 
 		for (Map.Entry<String, Double> me : mapFRAFloorOutput.entrySet())
 			System.out.println ("\t" + me.getKey() + " => " + me.getValue());
+
+		System.out.println ("\t-------------------------------------------------------------");
+
+		System.out.println ("\t-------------------------------------------------------------");
+
+		System.out.println (
+			"\tPrice Implied FRA Cap Volatility   : " +
+			FormatUtil.FormatDouble (fraCap.flatVolatilityFromPrice (
+				valParams,
+				null,
+				mktParams,
+				null,
+				mapFRACapOutput.get ("Price")
+			), 1, 2, 100.) + "%"
+		);
+
+		System.out.println (
+			"\tPrice Implied FRA Floor Volatility : " +
+			FormatUtil.FormatDouble (fraFloor.flatVolatilityFromPrice (
+				valParams,
+				null,
+				mktParams,
+				null,
+				mapFRAFloorOutput.get ("Price")
+			), 1, 2, 100.) + "%"
+		);
 	}
 }

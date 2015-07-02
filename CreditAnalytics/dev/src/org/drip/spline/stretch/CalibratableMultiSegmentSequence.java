@@ -172,7 +172,7 @@ public class CalibratableMultiSegmentSequence extends org.drip.function.definiti
 
 			if (null == fpop || !fpop.containsRoot()) {
 				try {
-					fpop = new org.drip.function.solverR1ToR1.FixedPointFinderBrent (0., this,
+					fpop = new org.drip.function.solverR1ToR1.FixedPointFinderZheng (0., this,
 						true).findRoot();
 				} catch (java.lang.Exception e) {
 					e.printStackTrace();

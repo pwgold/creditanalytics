@@ -8,18 +8,17 @@ import org.drip.analytics.date.*;
 import org.drip.analytics.daycount.Convention;
 import org.drip.analytics.rates.DiscountCurve;
 import org.drip.analytics.support.AnalyticsHelper;
+import org.drip.param.creator.MarketParamsBuilder;
+import org.drip.param.market.CurveSurfaceQuoteSet;
+import org.drip.param.valuation.ValuationParams;
 import org.drip.product.creator.BondBuilder;
 import org.drip.product.definition.Bond;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.api.CreditAnalytics;
 import org.drip.spline.basis.PolynomialFunctionSetParams;
 import org.drip.spline.grid.OverlappingStretchSpan;
-import org.drip.spline.params.SegmentCustomBuilderControl;
-import org.drip.spline.params.SegmentInelasticDesignControl;
-import org.drip.spline.params.StretchBestFitResponse;
-import org.drip.spline.stretch.BoundarySettings;
-import org.drip.spline.stretch.MultiSegmentSequence;
-import org.drip.spline.stretch.MultiSegmentSequenceBuilder;
+import org.drip.spline.params.*;
+import org.drip.spline.stretch.*;
 import org.drip.state.curve.DiscountFactorDiscountCurve;
 
 /*
@@ -58,7 +57,42 @@ import org.drip.state.curve.DiscountFactorDiscountCurve;
 
 public class RegressionSplineBondCurve {
 
-	private static final SegmentCustomBuilderControl QuarticPolynomialSegmentBuilder()
+	static class CashFlowYieldDF {
+		double _dblCumulativeCashFlow = java.lang.Double.NaN;
+		double _dblDiscountedCumulativeCashFlow = java.lang.Double.NaN;
+
+		CashFlowYieldDF (
+			final double dblCashFlow,
+			final double dblYieldDF)
+		{
+			_dblDiscountedCumulativeCashFlow = (_dblCumulativeCashFlow = dblCashFlow) * dblYieldDF;
+		}
+
+		void accumulate (
+			final double dblCashFlow,
+			final double dblYieldDF)
+		{
+			_dblCumulativeCashFlow += dblCashFlow;
+			_dblDiscountedCumulativeCashFlow += dblCashFlow * dblYieldDF;
+		}
+
+		double cumulativeCashFlow()
+		{
+			return _dblCumulativeCashFlow;
+		}
+
+		double discountedCumulativeCashFlow()
+		{
+			return _dblDiscountedCumulativeCashFlow;
+		}
+
+		double weightedDF()
+		{
+			return _dblDiscountedCumulativeCashFlow / _dblCumulativeCashFlow;
+		}
+	}
+
+	private static final SegmentCustomBuilderControl PolynomialSplineSegmentBuilder()
 		throws Exception
 	{
 		int iCk = 2;
@@ -108,96 +142,6 @@ public class RegressionSplineBondCurve {
 		final String strDayCount)
 		throws Exception
 	{
-		/* Bond bond1 = FixedCouponBond (
-			"BOND1",
-			DateUtil.CreateFromYMD (
-				2010,
-				DateUtil.JANUARY,
-				1
-			),
-			DateUtil.CreateFromYMD (
-				2020,
-				DateUtil.JANUARY,
-				1
-			),
-			0.05,
-			strCurrency,
-			strDayCount,
-			2
-		);
-
-		Bond bond2 = FixedCouponBond (
-			"BOND2",
-			DateUtil.CreateFromYMD (
-				2010,
-				DateUtil.APRIL,
-				1
-			),
-			DateUtil.CreateFromYMD (
-				2020,
-				DateUtil.APRIL,
-				1
-			),
-			0.04,
-			strCurrency,
-			strDayCount,
-			2
-		);
-
-		Bond bond3 = FixedCouponBond (
-			"BOND3",
-			DateUtil.CreateFromYMD (
-				2010,
-				DateUtil.MAY,
-				1
-			),
-			DateUtil.CreateFromYMD (
-				2020,
-				DateUtil.MAY,
-				1
-			),
-			0.04,
-			strCurrency,
-			strDayCount,
-			2
-		);
-
-		Bond bond4 = FixedCouponBond (
-			"BOND4",
-			DateUtil.CreateFromYMD (
-				2010,
-				DateUtil.AUGUST,
-				1
-			),
-			DateUtil.CreateFromYMD (
-				2020,
-				DateUtil.AUGUST,
-				1
-			),
-			0.04,
-			strCurrency,
-			strDayCount,
-			2
-		);
-
-		Bond bond5 = FixedCouponBond (
-			"BOND5",
-			DateUtil.CreateFromYMD (
-				2010,
-				DateUtil.SEPTEMBER,
-				1
-			),
-			DateUtil.CreateFromYMD (
-				2020,
-				DateUtil.SEPTEMBER,
-				1
-			),
-			0.04,
-			strCurrency,
-			strDayCount,
-			2
-		); */
-
 		Bond bond1 = FixedCouponBond (
 			"MBONO  8.00  12/17/2015",
 			DateUtil.CreateFromYMD (
@@ -582,22 +526,29 @@ public class RegressionSplineBondCurve {
 		};
 	}
 
-	private static final Map<JulianDate, Double> BondYieldFlows (
+	private static final Map<JulianDate, CashFlowYieldDF> BondYieldFlows (
 		final Bond[] aBond,
 		final double[] adblYield,
 		final double dblValueDate)
 		throws Exception
 	{
-		Map<JulianDate, Double> mapDateYield = new TreeMap<JulianDate, Double>();
+		Map<JulianDate, CashFlowYieldDF> mapDateYieldDF = new TreeMap<JulianDate, CashFlowYieldDF>();
 
-		mapDateYield.put (
+		ValuationParams valParams = new ValuationParams (
 			new JulianDate (dblValueDate),
-			1.
+			new JulianDate (dblValueDate),
+			""
 		);
 
 		for (int i = 0; i < aBond.length; ++i) {
 			for (CompositePeriod cp : aBond[i].couponPeriods()) {
 				if (cp.payDate() <= dblValueDate) continue;
+
+				double dblCashFlow = aBond[i].couponMetrics (
+					cp.endDate(),
+					valParams,
+					null
+				).rate() / aBond[i].freq();
 
 				double dblYieldDF = AnalyticsHelper.Yield2DF (
 					aBond[i].freq(),
@@ -614,21 +565,56 @@ public class RegressionSplineBondCurve {
 
 				JulianDate dtPay = new JulianDate (cp.payDate());
 
-				if (mapDateYield.containsKey (dtPay))
-					dblYieldDF = 0.5 * (mapDateYield.get (dtPay) + dblYieldDF);
+				if (mapDateYieldDF.containsKey (dtPay))
+					mapDateYieldDF.get (dtPay).accumulate (
+						dblCashFlow,
+						dblYieldDF
+					);
+				else
+					mapDateYieldDF.put (
+						dtPay,
+						new CashFlowYieldDF (
+							dblCashFlow,
+							dblYieldDF
+						)
+					);
+			}
 
-				mapDateYield.put (
-					dtPay,
+			JulianDate dtMaturity = aBond[i].maturityDate();
+
+			double dblYieldDF = AnalyticsHelper.Yield2DF (
+				aBond[i].freq(),
+				adblYield[i],
+				Convention.YearFraction (
+					dblValueDate,
+					dtMaturity.julian(),
+					aBond[i].couponDC(),
+					false,
+					null,
+					aBond[i].currency()
+				)
+			);
+
+			if (mapDateYieldDF.containsKey (dtMaturity))
+				mapDateYieldDF.get (dtMaturity).accumulate (
+					1.,
 					dblYieldDF
 				);
-			}
+			else
+				mapDateYieldDF.put (
+					dtMaturity,
+					new CashFlowYieldDF (
+						1.,
+						dblYieldDF
+					)
+				);
 		}
 
-		return mapDateYield;
+		return mapDateYieldDF;
 	}
 
 	private static final StretchBestFitResponse SBFR (
-		final Map<JulianDate, Double> mapDateYieldDF)
+		final Map<JulianDate, CashFlowYieldDF> mapDateYieldDF)
 		throws Exception
 	{
 		int iMapSize = mapDateYieldDF.size();
@@ -638,12 +624,12 @@ public class RegressionSplineBondCurve {
 		double[] adblYieldDF = new double[iMapSize];
 		double[] adblWeight = new double[iMapSize];
 
-		for (Map.Entry<JulianDate, Double> me : mapDateYieldDF.entrySet()) {
+		for (Map.Entry<JulianDate, CashFlowYieldDF> me : mapDateYieldDF.entrySet()) {
 			adblDate[i] = me.getKey().julian();
 
-			adblYieldDF[i] = me.getValue();
+			adblYieldDF[i] = me.getValue().weightedDF();
 
-			adblWeight[i] = 1. / iMapSize;
+			adblWeight[i] = me.getValue().cumulativeCashFlow();
 
 			++i;
 		}
@@ -659,10 +645,10 @@ public class RegressionSplineBondCurve {
 		final JulianDate dtSpot,
 		final Bond[] aBondSet,
 		final int iNumKnots,
-		final Map<JulianDate, Double> mapDateDF)
+		final Map<JulianDate, CashFlowYieldDF> mapDateDF)
 		throws Exception
 	{
-		SegmentCustomBuilderControl scbc = QuarticPolynomialSegmentBuilder();
+		SegmentCustomBuilderControl scbc = PolynomialSplineSegmentBuilder();
 
 		double dblXStart = dtSpot.julian();
 
@@ -697,7 +683,7 @@ public class RegressionSplineBondCurve {
 	{
 		CreditAnalytics.Init ("");
 
-		int iNumKnots = 15;
+		int iNumKnots = 10;
 		String strCurrency = "MXN";
 		String strDayCount = "30/360";
 
@@ -731,7 +717,7 @@ public class RegressionSplineBondCurve {
 			strDayCount
 		);
 
-		Map<JulianDate, Double> mapDateDF = BondYieldFlows (
+		Map<JulianDate, CashFlowYieldDF> mapDateDF = BondYieldFlows (
 			aBondSet,
 			aCalibYield,
 			dtSpot.julian()
@@ -745,7 +731,7 @@ public class RegressionSplineBondCurve {
 		);
 
 		DiscountCurve dfdc = new DiscountFactorDiscountCurve (
-			strCurrency + "_BOND_CURVE",
+			strCurrency,
 			null,
 			new OverlappingStretchSpan (mss)
 		);
@@ -759,14 +745,66 @@ public class RegressionSplineBondCurve {
 
 		System.out.println ("\t|--------------------------------------------|");
 
-		for (Map.Entry<JulianDate, Double> me : mapDateDF.entrySet()) {
+		for (Map.Entry<JulianDate, CashFlowYieldDF> me : mapDateDF.entrySet()) {
 			System.out.println (
 				"\t|\t " + me.getKey() + " => " +
-				FormatUtil.FormatDouble (me.getValue(), 1, 4, 1.) + " | " +
+				FormatUtil.FormatDouble (me.getValue().weightedDF(), 1, 4, 1.) + " | " +
 				FormatUtil.FormatDouble (dfdc.df (me.getKey().julian()), 1, 4, 1.) + "     |"
 			);
 		}
 
-		System.out.println ("\t|--------------------------------------------|\n");
+		System.out.println ("\t|--------------------------------------------|\n\n");
+
+		System.out.println ("\t|---------------------------------------------------------------||");
+
+		System.out.println ("\t|     Market Yield vs. Regression Curve                         ||");
+
+		System.out.println ("\t|---------------------------------------------------------------||");
+
+		System.out.println ("\t|     L -> R                                                    ||");
+
+		System.out.println ("\t|           Bond Name                                           ||");
+
+		System.out.println ("\t|           Market Yield                                        ||");
+
+		System.out.println ("\t|           Regressed Yield (Bond Basis)                        ||");
+
+		System.out.println ("\t|           Regressed Yield (Yield Spread)                      ||");
+
+		System.out.println ("\t|           Continuous Zero To Maturity                         ||");
+
+		System.out.println ("\t|---------------------------------------------------------------||");
+
+		ValuationParams valParams = new ValuationParams (
+			dtSpot,
+			dtSpot,
+			""
+		);
+
+		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Discount (dfdc);
+
+		for (int i = 0; i < aBondSet.length; ++i) {
+			System.out.println (
+				"\t| " + aBondSet[i].name() + " ==> " +
+				FormatUtil.FormatDouble (aCalibYield[i], 1, 2, 100.) + "% | " +
+				FormatUtil.FormatDouble (aBondSet[i].yieldFromBondBasis (
+					valParams,
+					mktParams,
+					null,
+					0.
+				), 1, 2, 100.) + "% | " +
+				FormatUtil.FormatDouble (aBondSet[i].yieldFromYieldSpread (
+					valParams,
+					mktParams,
+					null,
+					0.
+				), 1, 2, 100.) + "% | " +
+				FormatUtil.FormatDouble (dfdc.zero (
+					aBondSet[i].maturityDate().julian()
+				), 1, 2, 100.) + "% || "
+			);
+		}
+
+		System.out.println ("\t|---------------------------------------------------------------||\n\n");
 	}
 }

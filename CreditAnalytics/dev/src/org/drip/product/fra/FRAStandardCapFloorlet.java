@@ -380,86 +380,6 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 	}
 
 	/**
-	 * Imply the Flat Caplet/Floorlet Volatility from the Market Manifest Measure
-	 * 
-	 * @param valParams The Valuation Parameters
-	 * @param pricerParams Pricer Parameters
-	 * @param csqs The Market Parameters
-	 * @param quotingParams The Quoting Parameters
-	 * @param strCalibMeasure The Calibration Measure
-	 * @param dblCalibValue The Calibration Value
-	 * 
-	 * @return The Implied Caplet/Floorlet Volatility
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double implyVolatility (
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.CreditPricerParams pricerParams,
-		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
-		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
-		final java.lang.String strCalibMeasure,
-		final double dblCalibValue)
-		throws java.lang.Exception
-	{
-		if (null == valParams || null == strCalibMeasure || strCalibMeasure.isEmpty() || null == csqs ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblCalibValue))
-			throw new java.lang.Exception ("FRAStandardCapFloorlet::implyVolatility => Invalid Inputs");
-
-		final double dblStrike = strike();
-
-		final double dblValueDate = valParams.valueDate();
-
-		final double dblExerciseDate = exerciseDate().julian();
-
-		final org.drip.analytics.rates.DiscountCurve dcFunding = csqs.fundingCurve
-			(org.drip.state.identifier.FundingLabel.Standard (_fra.payCurrency()));
-
-		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapFRAOutput = _fra.value
-			(valParams, pricerParams, csqs, quotingParams);
-
-		java.lang.String strManifestMeasure = manifestMeasure();
-
-		if (null == mapFRAOutput || !mapFRAOutput.containsKey (strManifestMeasure))
-			throw new java.lang.Exception ("FRAStandardCapFloorlet::implyVolatility => No ATM Metric");
-
-		final double dblATMManifestMeasure = mapFRAOutput.get (strManifestMeasure);
-
-		org.drip.function.definition.R1ToR1 funcVolPricer = new org.drip.function.definition.R1ToR1 (null) {
-			@Override public double evaluate (
-				final double dblVolatility)
-				throws java.lang.Exception
-			{
-				if ("Price".equals (strCalibMeasure))
-					return _fpg.payoff (dblValueDate, dblExerciseDate, dblStrike, dcFunding,
-						dblATMManifestMeasure, !_bIsCaplet, true, dblVolatility, true);
-
-				java.util.Map<java.lang.String, java.lang.Double> mapOutput = valueFromSurfaceVariance 
-					(valParams, pricerParams, csqs, quotingParams, dblVolatility * dblVolatility *
-						(dblExerciseDate - dblValueDate) / 365.25);
-
-				if (null == mapOutput || !mapOutput.containsKey (strCalibMeasure))
-					throw new java.lang.Exception
-						("FRAStandardCapFloorlet::implyVolatility => Cannot generate Calibration Measure");
-
-				return mapOutput.get (strCalibMeasure);
-
-			}
-		};
-
-		org.drip.function.solverR1ToR1.FixedPointFinderOutput fpfo = (new
-			org.drip.function.solverR1ToR1.FixedPointFinderBrent (dblCalibValue, funcVolPricer,
-				false)).findRoot();
-
-		if (null == fpfo || !fpfo.containsRoot())
-			throw new java.lang.Exception
-				("FRAStandardCapFloorlet::implyVolatility => Cannot calibrate the Vol");
-
-		return fpfo.getRoot();
-	}
-
-	/**
 	 * Compute the Caplet/Floorlet Price from the Inputs
 	 * 
 	 * @param valParams The Valuation Parameters
@@ -521,5 +441,110 @@ public class FRAStandardCapFloorlet extends org.drip.product.option.FixedIncomeO
 		return dblManifestMeasurePriceTransformer * _fpg.payoff (valParams.valueDate(), dblExerciseDate,
 			strike(), dcFunding, mapFRAOutput.get (strManifestMeasure), !_bIsCaplet, true, dblVolatility,
 				false);
+	}
+
+	/**
+	 * Imply the Flat Caplet/Floorlet Volatility from the Market Manifest Measure
+	 * 
+	 * @param valParams The Valuation Parameters
+	 * @param pricerParams Pricer Parameters
+	 * @param csqs The Market Parameters
+	 * @param quotingParams The Quoting Parameters
+	 * @param strCalibMeasure The Calibration Measure
+	 * @param dblCalibValue The Calibration Value
+	 * 
+	 * @return The Implied Caplet/Floorlet Volatility
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double implyVolatility (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
+		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
+		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
+		final java.lang.String strCalibMeasure,
+		final double dblCalibValue)
+		throws java.lang.Exception
+	{
+		if (null == valParams || null == strCalibMeasure || strCalibMeasure.isEmpty() || null == csqs ||
+			!org.drip.quant.common.NumberUtil.IsValid (dblCalibValue))
+			throw new java.lang.Exception ("FRAStandardCapFloorlet::implyVolatility => Invalid Inputs");
+
+		final double dblStrike = strike();
+
+		final double dblValueDate = valParams.valueDate();
+
+		final double dblExerciseDate = exerciseDate().julian();
+
+		final org.drip.analytics.rates.DiscountCurve dcFunding = csqs.fundingCurve
+			(org.drip.state.identifier.FundingLabel.Standard (_fra.payCurrency()));
+
+		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapFRAOutput = _fra.value
+			(valParams, pricerParams, csqs, quotingParams);
+
+		java.lang.String strManifestMeasure = manifestMeasure();
+
+		if (null == mapFRAOutput || !mapFRAOutput.containsKey (strManifestMeasure))
+			throw new java.lang.Exception ("FRAStandardCapFloorlet::implyVolatility => No ATM Metric");
+
+		final double dblATMManifestMeasure = mapFRAOutput.get (strManifestMeasure);
+
+		double dblManifestMeasurePriceTransformer = java.lang.Double.NaN;
+
+		if (strManifestMeasure.equalsIgnoreCase ("Price") || strManifestMeasure.equalsIgnoreCase ("PV"))
+			dblManifestMeasurePriceTransformer = dcFunding.df (dblExerciseDate);
+		else if (strManifestMeasure.equalsIgnoreCase ("ForwardRate") ||
+			strManifestMeasure.equalsIgnoreCase ("ParForward") || strManifestMeasure.equalsIgnoreCase
+				("ParForwardRate") || strManifestMeasure.equalsIgnoreCase ("QuantoAdjustedParForward") ||
+					strManifestMeasure.equalsIgnoreCase ("Rate")) {
+			if (!mapFRAOutput.containsKey ("DV01"))
+				throw new java.lang.Exception ("FRAStandardCapFloorlet::implyVolatility => No DV01");
+
+			dblManifestMeasurePriceTransformer = 10000. * mapFRAOutput.get ("DV01");
+		}
+
+		final double dblManifestMeasurePriceTransformerCalib = dblManifestMeasurePriceTransformer;
+
+		if (!org.drip.quant.common.NumberUtil.IsValid (dblManifestMeasurePriceTransformer))
+			throw new java.lang.Exception ("FRAStandardCapFloorlet::implyVolatility => No Transformer");
+
+		org.drip.function.definition.R1ToR1 funcVolPricer = new org.drip.function.definition.R1ToR1 (null) {
+			@Override public double evaluate (
+				final double dblVolatility)
+				throws java.lang.Exception
+			{
+				if ("Price".equals (strCalibMeasure))
+					return dblManifestMeasurePriceTransformerCalib * _fpg.payoff (dblValueDate,
+						dblExerciseDate, dblStrike, dcFunding, dblATMManifestMeasure, !_bIsCaplet, true,
+							dblVolatility, false);
+
+				if ("ATMPrice".equals (strCalibMeasure))
+					return dblManifestMeasurePriceTransformerCalib * _fpg.payoff (dblValueDate,
+						dblExerciseDate, dblATMManifestMeasure, dcFunding, dblATMManifestMeasure,
+							!_bIsCaplet, true, dblVolatility, false);
+
+				java.util.Map<java.lang.String, java.lang.Double> mapOutput = valueFromSurfaceVariance 
+					(valParams, pricerParams, csqs, quotingParams, dblVolatility * dblVolatility *
+						(dblExerciseDate - dblValueDate) / 365.25);
+
+				if (null == mapOutput || !mapOutput.containsKey (strCalibMeasure))
+					throw new java.lang.Exception
+						("FRAStandardCapFloorlet::implyVolatility => Cannot generate Calibration Measure");
+
+				return mapOutput.get (strCalibMeasure);
+
+			}
+		};
+
+		org.drip.function.solverR1ToR1.FixedPointFinderOutput fpfo = (new
+			org.drip.function.solverR1ToR1.FixedPointFinderBrent (dblCalibValue, funcVolPricer,
+				false)).findRoot();
+
+		if (null == fpfo || !fpfo.containsRoot())
+			throw new java.lang.Exception
+				("FRAStandardCapFloorlet::implyVolatility => Cannot calibrate the Vol");
+
+		return fpfo.getRoot();
 	}
 }

@@ -663,7 +663,7 @@ public class FRAStdOption {
 		System.out.println ("------------------------------------------------------------------\n");
 
 		System.out.println (
-			"\tPrice Implied FRA Caplet Vol   : " +
+			"\tPrice Implied FRA Caplet Vol       : " +
 			FormatUtil.FormatDouble (fraCaplet.implyVolatility (
 				valParams,
 				null,
@@ -675,7 +675,19 @@ public class FRAStdOption {
 		);
 
 		System.out.println (
-			"\tPrice Implied FRA Floorlet Vol : " +
+			"\tATM Price Implied FRA Caplet Vol   : " +
+			FormatUtil.FormatDouble (fraCaplet.implyVolatility (
+				valParams,
+				null,
+				mktParams,
+				null,
+				"ATMPrice",
+				mapFRACapletOutput.get ("ATMPrice")
+			), 1, 2, 100.) + "%"
+		);
+
+		System.out.println (
+			"\tPrice Implied FRA Floorlet Vol     : " +
 			FormatUtil.FormatDouble (fraFloorlet.implyVolatility (
 				valParams,
 				null,
@@ -683,6 +695,18 @@ public class FRAStdOption {
 				null,
 				"Price",
 				mapFRAFloorletOutput.get ("Price")
+			), 1, 2, 100.) + "%"
+		);
+
+		System.out.println (
+			"\tATM Price Implied FRA Floorlet Vol : " +
+			FormatUtil.FormatDouble (fraFloorlet.implyVolatility (
+				valParams,
+				null,
+				mktParams,
+				null,
+				"ATMPrice",
+				mapFRAFloorletOutput.get ("ATMPrice")
 			), 1, 2, 100.) + "%"
 		);
 	}
