@@ -1,24 +1,22 @@
 
-package org.drip.sample.capfloor;
-
-import java.util.*;
+package org.drip.sample.lmm;
 
 import org.drip.analytics.date.*;
+import org.drip.analytics.definition.MarketSurface;
 import org.drip.analytics.rates.*;
-import org.drip.analytics.support.CompositePeriodBuilder;
+import org.drip.dynamics.lmm.LognormalLIBORVolatility;
 import org.drip.market.otc.*;
 import org.drip.param.creator.*;
-import org.drip.param.market.CurveSurfaceQuoteSet;
-import org.drip.param.period.*;
 import org.drip.param.valuation.ValuationParams;
-import org.drip.pricer.option.BlackScholesAlgorithm;
 import org.drip.product.creator.SingleStreamComponentBuilder;
 import org.drip.product.definition.CalibratableFixedIncomeComponent;
-import org.drip.product.fra.FRAStandardCapFloor;
-import org.drip.product.params.LastTradingDateSetting;
-import org.drip.product.rates.*;
+import org.drip.product.rates.FixFloatComponent;
 import org.drip.quant.common.FormatUtil;
+import org.drip.sequence.random.*;
 import org.drip.service.api.CreditAnalytics;
+import org.drip.spline.basis.PolynomialFunctionSetParams;
+import org.drip.spline.params.*;
+import org.drip.spline.stretch.MultiSegmentSequenceBuilder;
 import org.drip.state.identifier.ForwardLabel;
 
 /*
@@ -49,16 +47,22 @@ import org.drip.state.identifier.ForwardLabel;
  */
 
 /**
- * FRAStdCapSequence demonstrates the Product Creation, Market Parameters Construction, and Valuation of a
- * 	Sequence of Standard FRA Caps. The Marks and the Valuation References are sourced from:
+ * TwoFactorLIBORVolatility demonstrates the Construction and Usage of the 2 Factor LIBOR Forward Rate
+ *  Volatility. The References are:
  * 
- * 	- Brace, A., D. Gatarek, and M. Musiela (1997): The Market Model of Interest Rate Dynamics, Mathematical
+ *  1) Goldys, B., M. Musiela, and D. Sondermann (1994): Log-normality of Rates and Term Structure Models,
+ *  	The University of New South Wales.
+ * 
+ *  2) Musiela, M. (1994): Nominal Annual Rates and Log-normal Volatility Structure, The University of New
+ *   	South Wales.
+ * 
+ * 	3) Brace, A., D. Gatarek, and M. Musiela (1997): The Market Model of Interest Rate Dynamics, Mathematical
  * 		Finance 7 (2), 127-155.
- * 
+ *
  * @author Lakshmi Krishnamurthy
  */
 
-public class FRAStdCapSequence {
+public class TwoFactorLIBORVolatility {
 
 	private static final FixFloatComponent OTCFixFloat (
 		final JulianDate dtSpot,
@@ -231,62 +235,70 @@ public class FRAStdCapSequence {
 		);
 	}
 
-	private static final FRAStandardCapFloor MakeCap (
-		final JulianDate dtEffective,
-		final ForwardLabel fri,
-		final String strMaturityTenor,
-		final String strManifestMeasure,
-		final double dblStrike)
+	private static final MarketSurface FactorFlatVolatilitySurface (
+		final JulianDate dtStart,
+		final String strCurrency,
+		final String[] astrMaturityTenor,
+		final double[] adblFactorFlatVolatility,
+		final double[] adblTermStructureLoading)
 		throws Exception
 	{
-		ComposableFloatingUnitSetting cfus = new ComposableFloatingUnitSetting (
-			fri.tenor(),
-			CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
-			null,
-			fri,
-			CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
-			0.
-		);
+		int iNumNode = astrMaturityTenor.length + 1;
+		double[] adblDate = new double[iNumNode];
+		double[][] aadblVolatility = new double[iNumNode][iNumNode];
 
-		CompositePeriodSetting cps = new CompositePeriodSetting (
-			4,
-			fri.tenor(),
-			fri.currency(),
-			null,
-			1.,
-			null,
-			null,
-			null,
-			null
-		);
+		for (int i = 0; i < iNumNode; ++i)
+			adblDate[i] = 0 == i ? adblDate[i] = dtStart.julian() : dtStart.addTenor (astrMaturityTenor[i - 1]).julian();
 
-		Stream floatStream = new Stream (
-			CompositePeriodBuilder.FloatingCompositeUnit (
-				CompositePeriodBuilder.RegularEdgeDates (
-					dtEffective.julian(),
-					fri.tenor(),
-					strMaturityTenor,
-					null
+		for (int i = 0; i < iNumNode; ++i) {
+			for (int j = 0; j < iNumNode; ++j)
+				aadblVolatility[i][j] =
+					0 == i || 0 == j ?
+					adblFactorFlatVolatility[0] :
+					adblTermStructureLoading[i - 1] * adblFactorFlatVolatility[j - 1];
+		}
+
+		return ScenarioMarketSurfaceBuilder.CustomSplineWireSurface (
+			"VIEW_TARGET_VOLATILITY_SURFACE",
+			dtStart,
+			strCurrency,
+			null,
+			adblDate,
+			adblDate,
+			aadblVolatility,
+			new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (2),
+				SegmentInelasticDesignControl.Create (
+					0,
+					2
 				),
-				cps,
-				cfus
+				null,
+				null
+			),
+			new SegmentCustomBuilderControl (
+				MultiSegmentSequenceBuilder.BASIS_SPLINE_POLYNOMIAL,
+				new PolynomialFunctionSetParams (4),
+				SegmentInelasticDesignControl.Create (
+					2,
+					2
+				),
+				null,
+				null
 			)
 		);
+	}
 
-		return new FRAStandardCapFloor (
-			"FRA_CAP",
-			floatStream,
-			strManifestMeasure,
-			true,
-			dblStrike,
-			new LastTradingDateSetting (
-				LastTradingDateSetting.MID_CURVE_OPTION_QUARTERLY,
-				"",
-				Double.NaN
-			),
-			null,
-			new BlackScholesAlgorithm()
-		);
+	private static final void DisplayVolArray (
+		final String strTenor,
+		final double[] adblVol)
+	{
+		String strDump = "\t | " + strTenor + " =>  ";
+
+		for (int i = 0; i < adblVol.length; ++i)
+			strDump += FormatUtil.FormatDouble (adblVol[i], 1, 2, 100.) + "% | ";
+
+		System.out.println (strDump);
 	}
 
 	public static final void main (
@@ -303,9 +315,8 @@ public class FRAStdCapSequence {
 
 		String strFRATenor = "3M";
 		String strCurrency = "GBP";
-		String strManifestMeasure = "ParForward";
 
-		ForwardLabel fri = ForwardLabel.Create (
+		ForwardLabel forwardLabel = ForwardLabel.Create (
 			strCurrency,
 			strFRATenor
 		);
@@ -317,179 +328,127 @@ public class FRAStdCapSequence {
 
 		ForwardCurve fcNative = dc.nativeForwardCurve (strFRATenor);
 
-		ValuationParams valParams = new ValuationParams (
-			dtSpot,
-			dtSpot,
-			strCurrency
-		);
-
-		CurveSurfaceQuoteSet mktParams = MarketParamsBuilder.Create (
-			dc,
-			fcNative,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null
-		);
-
 		String[] astrMaturityTenor = new String[] {
-			 "1Y",
-			 "2Y",
+			 "3M",
+			 "6M",
+			"12M",
+			"18M",
+			"24M",
+			"30M",
 			 "3Y",
 			 "4Y",
 			 "5Y",
 			 "7Y",
-			"10Y"
+			 "9Y",
+			"11Y"
 		};
 
-		double[] adblATMStrike = new double[] {
-			0.0788, //  "1Y",
-			0.0839, // 	"2Y",
-			0.0864, //  "3Y",
-			0.0869, //  "4Y",
-			0.0879, //  "5Y",
-			0.0890, //  "7Y",
-			0.0889  // "10Y"
+		double[] adblFlatTermStructure = new double[] {
+			1.00000000, //  "3M",
+			1.00000000, //  "6M",
+			0.99168448, // "12M",
+			1.00388389, // "18M",
+			1.00388389, // "24M",
+			1.07602593, // "30M",
+			1.07602593, //  "3Y",
+			1.04727642, //  "4Y",
+			1.02727799, //  "5Y",
+			0.96660430, //  "7Y",
+			0.93012459, //  "9Y",
+			0.81425256  // "11Y"
 		};
 
-		double[] adblATMVol = new double[] {
-			0.1550, //  "1Y",
-			0.1775, // 	"2Y",
-			0.1800, //  "3Y",
-			0.1775, //  "4Y",
-			0.1775, //  "5Y",
-			0.1650, //  "7Y",
-			0.1550  // "10Y"
+		double[] adblFlatVolFactor1 = new double[] {
+			0.09481393, //  "3M",
+			0.08498925, //  "6M",
+			0.22939966, // "12M",
+			0.19166872, // "18M",
+			0.08232925, // "24M",
+			0.18548202, // "30M",
+			0.13817885, //  "3Y",
+			0.08562258, //  "4Y",
+			0.14547123, //  "5Y",
+			0.08869328, //  "7Y",
+			0.04121240, //  "9Y",
+			0.15206796  // "11Y"
 		};
 
-		Map<JulianDate, Double> mapDateVol = new TreeMap<JulianDate, Double>();
-
-		for (int i = 0; i < astrMaturityTenor.length; ++i) {
-			FRAStandardCapFloor cap = MakeCap (
-				dtSpot,
-				fri,
-				astrMaturityTenor[i],
-				strManifestMeasure,
-				adblATMStrike[i]
-			);
-
-			Map<String, Double> mapCapStreamOutput = cap.stream().value (
-				valParams,
-				null,
-				mktParams,
-				null
-			);
-
-			double dblCapStreamFairPremium = mapCapStreamOutput.get ("FairPremium");
-
-			FixFloatComponent swap = OTCFixFloat (
-				dtSpot,
-				strCurrency,
-				astrMaturityTenor[i],
-				0.
-			);
-
-			Map<String, Double> mapSwapOutput = swap.value (
-				valParams,
-				null,
-				mktParams,
-				null
-			);
-
-			double dblSwapRate = mapSwapOutput.get ("FairPremium");
-
-			double dblCapPrice = cap.priceFromFlatVolatility (
-				valParams,
-				null,
-				mktParams,
-				null,
-				adblATMVol[i]
-			);
-
-			cap.stripPiecewiseForwardVolatility (
-				valParams,
-				null,
-				mktParams,
-				null,
-				adblATMVol[i],
-				mapDateVol
-			);
-
-			System.out.println (
-				"\tCap  " + cap.maturityDate() + " | " +
-				FormatUtil.FormatDouble (dblCapStreamFairPremium, 1, 2, 100.) + "% |" +
-				FormatUtil.FormatDouble (dblSwapRate, 1, 2, 100.) + "% |" +
-				FormatUtil.FormatDouble (cap.strike(), 1, 2, 100.) + "% |" +
-				FormatUtil.FormatDouble (adblATMVol[i], 2, 2, 100.) + "% |" +
-				FormatUtil.FormatDouble (dblCapPrice, 1, 0, 10000.) + " ||"
-			);
-		}
-
-		System.out.println ("\n\n\t---------------------------------------------------");
-
-		System.out.println ("\t-----  CALIBRATED FORWARD VOLATILITY NODES --------");
-
-		System.out.println ("\t---------------------------------------------------\n");
-
-		for (Map.Entry<JulianDate, Double> me : mapDateVol.entrySet())
-			System.out.println (
-				"\t" +
-				me.getKey() + " => " +
-				FormatUtil.FormatDouble (me.getValue(), 2, 2, 100.) + "%  ||"
-			);
-
-		System.out.println ("\t---------------------------------------------------");
-
-		System.out.println ("\t---------------------------------------------------------------");
-
-		double[] adblATMPrice = new double[] {
-			0.0027, //  "1Y",
-			0.0100, // 	"2Y",
-			0.0185, //  "3Y",
-			0.0267, //  "4Y",
-			0.0360, //  "5Y",
-			0.0511, //  "7Y",
-			0.0703  // "10Y"
+		double[] adblFlatVolFactor2 = new double[] {
+			 0.12146092, //  "3M",
+			 0.05117321, //  "6M",
+			 0.09100802, // "12M",
+			 0.02876211, // "18M",
+			 0.01172983, // "24M",
+			 0.00047705, // "30M",
+			-0.01160086, //  "3Y",
+			-0.04673283, //  "4Y",
+			-0.04181446, //  "5Y",
+			-0.05459175, //  "7Y",
+			-0.03631021, //  "9Y",
+			-0.16626765  // "11Y"
 		};
 
-		for (int i = 0; i < astrMaturityTenor.length; ++i) {
-			FRAStandardCapFloor cap = MakeCap (
-				dtSpot,
-				fri,
-				astrMaturityTenor[i],
-				strManifestMeasure,
-				adblATMStrike[i]
+		MarketSurface mktSurf1 = FactorFlatVolatilitySurface (
+			dtSpot,
+			strCurrency,
+			astrMaturityTenor,
+			adblFlatVolFactor1,
+			adblFlatTermStructure
+		);
+
+		MarketSurface mktSurf2 = FactorFlatVolatilitySurface (
+			dtSpot,
+			strCurrency,
+			astrMaturityTenor,
+			adblFlatVolFactor2,
+			adblFlatTermStructure
+		);
+
+		LognormalLIBORVolatility llv = new LognormalLIBORVolatility (
+			dtSpot.julian(),
+			forwardLabel,
+			new MarketSurface[] {
+				mktSurf1,
+				mktSurf2
+			},
+			new PrincipalFactorSequenceGenerator (
+				new UnivariateSequenceGenerator[] {
+					new BoxMullerGaussian (
+						0.,
+						1.
+					),
+					new BoxMullerGaussian (
+						0.,
+						1.
+					)
+				},
+				new double[][] {
+					{1.0, 0.1},
+					{0.1, 1.0},
+				},
+				2
+			)
+		);
+
+		String[] astrForwardTenor = {
+			"1Y", "2Y", "3Y", "4Y", "5Y", "6Y", "7Y", "8Y"
+		};
+
+		System.out.println ("\n\t |------------------------------|");
+
+		System.out.println ("\t |  CONTINUOUS FORWARD RATE VOL |");
+
+		System.out.println ("\t |------------------------------|");
+
+		for (String strForwardTenor : astrForwardTenor)
+			DisplayVolArray (
+				strForwardTenor,
+				llv.continuousForwardVolatility (
+					dtSpot.addTenor (strForwardTenor).julian(),
+					fcNative
+				)
 			);
 
-			double dblATMVolatility = cap.volatilityFromATMPrice (
-				valParams,
-				null,
-				mktParams,
-				null,
-				adblATMPrice[i]
-			);
-
-			Map<String, Double> mapCapStreamOutput = cap.stream().value (
-				valParams,
-				null,
-				mktParams,
-				null
-			);
-
-			double dblCapStreamFairPremium = mapCapStreamOutput.get ("FairPremium");
-
-			System.out.println (
-				"\tCap ATM Volatility  " + cap.maturityDate() + " | " +
-				FormatUtil.FormatDouble (adblATMPrice[i], 2, 2, 100.) + "% |" +
-				FormatUtil.FormatDouble (dblCapStreamFairPremium, 2, 2, 100.) + "% |" +
-				FormatUtil.FormatDouble (dblATMVolatility, 2, 2, 100.) + "% ||"
-			);
-		}
-
-		System.out.println ("\t---------------------------------------------------------------");
-
-		System.out.println ("\t---------------------------------------------------------------");
+		System.out.println ("\t |------------------------------|");
 	}
 }

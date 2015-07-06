@@ -263,4 +263,49 @@ public class LognormalLIBORVolatility extends org.drip.dynamics.hjm.MultiFactorV
 
 		return adblContinuousForwardVolatility;
 	}
+
+	/**
+	 * Multi-Factor Cross Volatility Integral
+	 * 
+	 * @param dblForwardDate1 Forward Date #1
+	 * @param dblForwardDate2 Forward Date #2
+	 * @param dblTerminalDate The Terminal Date
+	 * 
+	 * @return The Multi-Factor Cross Volatility Integral
+	 * 
+	 * @throws java.lang.Exception Thrown if the Multi-Factor Cross Volatility Integral cannot be computed
+	 */
+
+	public double crossVolatilityIntegralProduct (
+		final double dblForwardDate1,
+		final double dblForwardDate2,
+		final double dblTerminalDate)
+		throws java.lang.Exception
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (dblForwardDate1) ||
+			!org.drip.quant.common.NumberUtil.IsValid (dblForwardDate2) ||
+				!org.drip.quant.common.NumberUtil.IsValid (dblTerminalDate) || dblForwardDate1 <
+					dblTerminalDate || dblForwardDate2 < dblTerminalDate)
+			throw new java.lang.Exception
+				("LognormalLIBORVolatility::crossVolatilityIntegralProduct => Invalid Inputs");
+
+		org.drip.function.definition.R1ToR1 crossVolR1ToR1 = new org.drip.function.definition.R1ToR1 (null) {
+			@Override public double evaluate (
+				final double dblDate)
+				throws java.lang.Exception
+			{
+				double dblCrossVolProduct = 0.;
+
+				int iNumFactor = msg().numFactor();
+
+				for (int iFactorIndex = 0; iFactorIndex < iNumFactor; ++iFactorIndex)
+					dblCrossVolProduct += factorPointVolatility (iFactorIndex, dblDate, dblForwardDate1) *
+						factorPointVolatility (iFactorIndex, dblDate, dblForwardDate2);
+
+				return dblCrossVolProduct;
+			}
+		};
+
+		return crossVolR1ToR1.integrate (_dblSpotDate, dblTerminalDate);
+	}
 }

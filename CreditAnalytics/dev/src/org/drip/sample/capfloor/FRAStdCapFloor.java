@@ -667,6 +667,36 @@ public class FRAStdCapFloor {
 			strCurrency
 		);
 
+		System.out.println ("\n\n\t-------------------------------------------------------------");
+
+		double dblCapATMPrice = fraCap.atmPriceFromVolatility (
+			valParams,
+			null,
+			mktParams,
+			null,
+			dblForwardVol
+		);
+
+		System.out.println (
+			"\tCap ATM Price     : " +
+			FormatUtil.FormatDouble (dblCapATMPrice, 1, 2, 100.) + "%"
+		);
+
+		double dblFloorATMPrice = fraFloor.atmPriceFromVolatility (
+			valParams,
+			null,
+			mktParams,
+			null,
+			dblForwardVol
+		);
+
+		System.out.println (
+			"\tFloor ATM Price   : " +
+			FormatUtil.FormatDouble (dblFloorATMPrice, 1, 2, 100.) + "%"
+		);
+
+		System.out.println ("\t-------------------------------------------------------------");
+
 		Map<String, Double> mapFRACapOutput = fraCap.value (
 			valParams,
 			null,
@@ -696,7 +726,7 @@ public class FRAStdCapFloor {
 		System.out.println ("\t-------------------------------------------------------------");
 
 		System.out.println (
-			"\tPrice Implied FRA Cap Volatility   : " +
+			"\tPrice Implied Cap Volatility         : " +
 			FormatUtil.FormatDouble (fraCap.flatVolatilityFromPrice (
 				valParams,
 				null,
@@ -707,13 +737,35 @@ public class FRAStdCapFloor {
 		);
 
 		System.out.println (
-			"\tPrice Implied FRA Floor Volatility : " +
+			"\tPrice Implied ATM Cap Volatility     : " +
+			FormatUtil.FormatDouble (fraCap.volatilityFromATMPrice (
+				valParams,
+				null,
+				mktParams,
+				null,
+				dblCapATMPrice
+			), 1, 2, 100.) + "%"
+		);
+
+		System.out.println (
+			"\tPrice Implied FRA Floor Volatility   : " +
 			FormatUtil.FormatDouble (fraFloor.flatVolatilityFromPrice (
 				valParams,
 				null,
 				mktParams,
 				null,
 				mapFRAFloorOutput.get ("Price")
+			), 1, 2, 100.) + "%"
+		);
+
+		System.out.println (
+			"\tPrice Implied ATM Floor Volatility   : " +
+			FormatUtil.FormatDouble (fraFloor.volatilityFromATMPrice (
+				valParams,
+				null,
+				mktParams,
+				null,
+				dblFloorATMPrice
 			), 1, 2, 100.) + "%"
 		);
 	}

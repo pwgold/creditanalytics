@@ -219,6 +219,9 @@ public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncome
 
 		final double dblValueDate = valParams.valueDate();
 
+		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapStreamResult = _stream.value
+			(valParams, pricerParams, csqs, quotingParams);
+
 		for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : _lsFRACapFloorlet) {
 			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapFRAResult = fracfl.value
 				(valParams, pricerParams, csqs, quotingParams);
@@ -234,6 +237,8 @@ public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncome
 
 		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapResult = new
 			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
+
+		mapResult.put ("ATMFairPremium", mapStreamResult.get ("FairPremium"));
 
 		mapResult.put ("Price", dblPrice);
 
@@ -286,6 +291,8 @@ public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncome
 	{
 		java.util.Set<java.lang.String> setstrMeasureNames = new java.util.TreeSet<java.lang.String>();
 
+		setstrMeasureNames.add ("ATMFairPremium");
+
 		setstrMeasureNames.add ("CalcTime");
 
 		setstrMeasureNames.add ("FlatVolatility");
@@ -330,6 +337,132 @@ public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncome
 	public boolean isCap()
 	{
 		return _bIsCap;
+	}
+
+	/**
+	 * Compute the ATM Cap/Floor Price from the Flat Volatility
+	 * 
+	 * @param valParams The Valuation Parameters
+	 * @param pricerParams The Pricer Parameters
+	 * @param csqs The Market Parameters
+	 * @param quotingParams The Quoting Parameters
+	 * @param dblFlatVolatility The Flat Volatility
+	 * 
+	 * @return The Cap/Floor ATM Price
+	 * 
+	 * @throws java.lang.Exception Thrown if the ATM Price cannot be calculated
+	 */
+
+	public double atmPriceFromVolatility (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
+		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
+		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
+		final double dblFlatVolatility)
+		throws java.lang.Exception
+	{
+		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblFlatVolatility))
+			throw new java.lang.Exception ("FRAStandardCapFloor::atmPriceFromVolatility => Invalid Inputs");
+
+		double dblValueDate = valParams.valueDate();
+
+		double dblPrice = 0.;
+
+		org.drip.product.fra.FRAStandardCapFloorlet fraLeading = _lsFRACapFloorlet.get (0);
+
+		java.lang.String strCalendar = fraLeading.calendar();
+
+		java.lang.String strDayCount = fraLeading.dayCount();
+
+		java.lang.String strManifestMeasure = fraLeading.manifestMeasure();
+
+		org.drip.pricer.option.FokkerPlanckGenerator fpg = fraLeading.pricer();
+
+		org.drip.product.params.LastTradingDateSetting ltds = fraLeading.lastTradingDateSetting();
+
+		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapStreamResult = _stream.value
+			(valParams, pricerParams, csqs, quotingParams);
+
+		if (null == mapStreamResult || !mapStreamResult.containsKey ("FairPremium"))
+			throw new java.lang.Exception
+				("FRAStandardCapFloor::atmPriceFromVolatility => Cannot calculate Fair Premium");
+
+		double dblCapATMFairPremium = mapStreamResult.get ("FairPremium");
+
+		org.drip.state.identifier.ForwardLabel forwardLabel = _stream.forwardLabel();
+
+		java.util.List<org.drip.product.fra.FRAStandardCapFloorlet> lsATMFRACapFloorlet = new
+			java.util.ArrayList<org.drip.product.fra.FRAStandardCapFloorlet>();
+
+		for (org.drip.analytics.cashflow.CompositePeriod period : _stream.periods()) {
+			org.drip.product.fra.FRAStandardComponent fra =
+				org.drip.product.creator.SingleStreamComponentBuilder.FRAStandard (new
+					org.drip.analytics.date.JulianDate (period.startDate()), forwardLabel,
+						dblCapATMFairPremium);
+
+			lsATMFRACapFloorlet.add (new org.drip.product.fra.FRAStandardCapFloorlet (fra,
+				strManifestMeasure, _bIsCap, dblCapATMFairPremium, _stream.notional (period.startDate()),
+					ltds, strDayCount, strCalendar, fpg));
+		}
+
+		for (org.drip.product.fra.FRAStandardCapFloorlet fracfl : lsATMFRACapFloorlet) {
+			org.drip.analytics.date.JulianDate dtExercise = fracfl.exerciseDate();
+
+			double dblExerciseDate = dtExercise.julian();
+
+			if (dblExerciseDate <= dblValueDate) continue;
+
+			dblPrice += fracfl.price (valParams, pricerParams, csqs, quotingParams, dblFlatVolatility);
+		}
+
+		return dblPrice;
+	}
+
+	/**
+	 * Imply the Flat Cap/Floor Volatility from the Calibration ATM Price
+	 * 
+	 * @param valParams The Valuation Parameters
+	 * @param pricerParams The Pricer Parameters
+	 * @param csqs The Market Parameters
+	 * @param quotingParams The Quoting Parameters
+	 * @param dblCalibPrice The Calibration Price
+	 * 
+	 * @return The Cap/Floor Flat Volatility
+	 * 
+	 * @throws java.lang.Exception Thrown if the Flat Volatility cannot be calculated
+	 */
+
+	public double volatilityFromATMPrice (
+		final org.drip.param.valuation.ValuationParams valParams,
+		final org.drip.param.pricer.CreditPricerParams pricerParams,
+		final org.drip.param.market.CurveSurfaceQuoteSet csqs,
+		final org.drip.param.valuation.ValuationCustomizationParams quotingParams,
+		final double dblCalibPrice)
+		throws java.lang.Exception
+	{
+		if (null == valParams || !org.drip.quant.common.NumberUtil.IsValid (dblCalibPrice))
+			throw new java.lang.Exception ("FRAStandardCapFloor::volatilityFromATMPrice => Invalid Inputs");
+
+		org.drip.function.definition.R1ToR1 funcVolPricer = new org.drip.function.definition.R1ToR1 (null) {
+			@Override public double evaluate (
+				final double dblVolatility)
+				throws java.lang.Exception
+			{
+				return atmPriceFromVolatility (valParams, pricerParams, csqs, quotingParams, dblVolatility);
+			}
+		};
+
+		org.drip.function.solverR1ToR1.FixedPointFinderOutput fpfo = (new
+			org.drip.function.solverR1ToR1.FixedPointFinderBracketing (dblCalibPrice, funcVolPricer, null,
+				org.drip.function.solverR1ToR1.VariateIteratorPrimitive.BISECTION, false)).findRoot
+					(org.drip.function.solverR1ToR1.InitializationHeuristics.FromHardSearchEdges (0.0001,
+						5.));
+
+		if (null == fpfo || !fpfo.containsRoot())
+			throw new java.lang.Exception
+				("FRAStandardCapFloor::volatilityFromATMPrice => Cannot imply Flat Vol");
+
+		return fpfo.getRoot();
 	}
 
 	/**
