@@ -6,7 +6,6 @@ package org.drip.product.params;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -33,8 +32,7 @@ package org.drip.product.params;
 
 /**
  * QuoteConvention contains the Component Market Convention Parameters - the quote convention, the
- *  calculation type, the first settle date, and the redemption amount. It exports serialization into and
- *  de-serialization out of byte arrays.
+ *  calculation type, the first settle date, and the redemption amount.
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -73,10 +71,10 @@ public class QuoteConvention extends org.drip.service.stream.Serializer implemen
 	public org.drip.param.valuation.CashSettleParams _settleParams = null;
 
 	/**
-	 * Construct the QuoteConvention object from the quoting convention, the calculation type, the first
-	 * 	settle date, and the redemption value.
+	 * Constructs the QuoteConvention object from the quoting convention, the calculation type, the
+	 * 		first settle date, and the redemption value.
 	 * 
-	 * @param quotingParams Quoting Parameters
+	 * @param quotingParams Quoting Params
 	 * @param strCalculationType Calculation Type
 	 * @param dblFirstSettle First Settle Date
 	 * @param dblRedemptionValue Redemption Value
@@ -129,7 +127,7 @@ public class QuoteConvention extends org.drip.service.stream.Serializer implemen
 		if (null == strSerializedMarketConvention || strSerializedMarketConvention.isEmpty())
 			throw new java.lang.Exception ("QuoteConvention de-serializer: Cannot locate state");
 
-		java.lang.String[] astrField = org.drip.quant.common.StringUtil.Split (strSerializedMarketConvention,
+		java.lang.String[] astrField = org.drip.math.common.StringUtil.Split (strSerializedMarketConvention,
 			getFieldDelimiter());
 
 		if (null == astrField || 6 > astrField.length)
@@ -186,13 +184,13 @@ public class QuoteConvention extends org.drip.service.stream.Serializer implemen
 		if (null == valParams)
 			throw new java.lang.Exception ("QuoteConvention::getSettleDate => Invalid inputs");
 
-		return _settleParams.cashSettleDate (valParams.valueDate());
+		return _settleParams.cashSettleDate (valParams._dblValue);
 	}
 
 	@Override public boolean validate()
 	{
-		return org.drip.quant.common.NumberUtil.IsValid (_dblFirstSettle) &&
-			org.drip.quant.common.NumberUtil.IsValid (_dblRedemptionValue);
+		return org.drip.math.common.NumberUtil.IsValid (_dblFirstSettle) &&
+			org.drip.math.common.NumberUtil.IsValid (_dblRedemptionValue);
 	}
 
 	@Override public byte[] serialize()

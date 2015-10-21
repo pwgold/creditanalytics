@@ -340,6 +340,17 @@ public class FRAStandardCapFloor extends org.drip.product.definition.FixedIncome
 	}
 
 	/**
+	 * Retrieve the List of the Underlying Caplets/Floorlets
+	 * 
+	 * @return The List of the Underlying Caplets/Floorlets
+	 */
+
+	public java.util.List<org.drip.product.fra.FRAStandardCapFloorlet> capFloorlets()
+	{
+		return _lsFRACapFloorlet;
+	}
+
+	/**
 	 * Compute the ATM Cap/Floor Price from the Flat Volatility
 	 * 
 	 * @param valParams The Valuation Parameters

@@ -6,7 +6,6 @@ package org.drip.analytics.daycount;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -32,19 +31,26 @@ package org.drip.analytics.daycount;
  */
 
 /**
- * This class contains the parameters needed for adjusting dates. It exports the following functionality:
- * 	- Accessor for holiday calendar and adjustment type
- *  - Serialization/De-serialization to and from Byte Arrays
+ * This class contains the parameters needed for adjusting dates – holiday calendar and adjustment type.
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class DateAdjustParams extends org.drip.service.stream.Serializer {
-	private int _iRollMode = 0;
-	private java.lang.String _strCalendar = "";
+	/**
+	 * The Roll mode
+	 */
+
+	public int _iRollMode = 0;
 
 	/**
-	 * Create a DateAdjustParams instance from the roll mode and the calendar
+	 * Roll calendar
+	 */
+
+	public java.lang.String _strCalendar = "";
+
+	/**
+	 * Creates a DateAdjustParams class from the roll mode and the calendar
 	 * 
 	 * @param iRollMode Roll Mode
 	 * @param strCalendar Calendar
@@ -83,7 +89,7 @@ public class DateAdjustParams extends org.drip.service.stream.Serializer {
 		if (null == strDAP || strDAP.isEmpty())
 			throw new java.lang.Exception ("DateAdjustParams de-serializer: Cannot locate state");
 
-		java.lang.String[] astrField = org.drip.quant.common.StringUtil.Split (strDAP, getFieldDelimiter());
+		java.lang.String[] astrField = org.drip.math.common.StringUtil.Split (strDAP, getFieldDelimiter());
 
 		if (null == astrField || 3 > astrField.length)
 			throw new java.lang.Exception ("DateAdjustParams de-serialize: Invalid number of fields");
@@ -104,29 +110,7 @@ public class DateAdjustParams extends org.drip.service.stream.Serializer {
 	}
 
 	/**
-	 * Retrieve the Roll Mode
-	 * 
-	 * @return The Roll Mode
-	 */
-
-	public int rollMode()
-	{
-		return _iRollMode;
-	}
-
-	/**
-	 * Retrieve the Roll Holiday Calendar
-	 * 
-	 * @return The Roll Holiday Calendar
-	 */
-
-	public java.lang.String calendar()
-	{
-		return _strCalendar;
-	}
-
-	/**
-	 * Roll the given date
+	 * Rolls the given date
 	 * 
 	 * @param dblDate Input date
 	 * 
@@ -135,7 +119,7 @@ public class DateAdjustParams extends org.drip.service.stream.Serializer {
 	 * @throws java.lang.Exception Thrown if the date cannot be rolled
 	 */
 
-	public double roll (
+	public double Roll (
 		final double dblDate)
 		throws java.lang.Exception
 	{
@@ -163,8 +147,7 @@ public class DateAdjustParams extends org.drip.service.stream.Serializer {
 	}
 
 	@Override public org.drip.service.stream.Serializer deserialize (
-		final byte[] ab)
-	{
+		final byte[] ab) {
 		try {
 			return new DateAdjustParams (ab);
 		} catch (java.lang.Exception e) {

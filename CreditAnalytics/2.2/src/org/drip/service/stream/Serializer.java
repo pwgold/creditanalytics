@@ -6,7 +6,6 @@ package org.drip.service.stream;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -55,7 +54,7 @@ public abstract class Serializer {
 	 * Serialization Version - ALWAYS prepend this on all derived classes
 	 */
 
-	public static final double VERSION = 2.3;
+	public static final double VERSION = 2.2;
 
 	/**
 	 * Returns the Collection Multi-level Key Delimiter String

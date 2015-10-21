@@ -6,7 +6,6 @@ package org.drip.product.creator;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -532,7 +531,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Create BondRefDataBuilder object from java ResultSet SQL
+	 * Creates BondRefDataBuilder object from java ResultSet SQL
 	 * 
 	 * @param rs SQL ResultSet
 	 * 
@@ -555,7 +554,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 
 			brdb._strTicker = rs.getString ("Ticker");
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (brdb._dblCoupon = rs.getDouble ("Coupon")))
+			if (!org.drip.math.common.NumberUtil.IsValid (brdb._dblCoupon = rs.getDouble ("Coupon")))
 				return null;
 
 			brdb._dtMaturity = org.drip.analytics.support.AnalyticsHelper.MakeJulianFromRSEntry (rs.getDate
@@ -628,13 +627,13 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 				(rs.getDate ("IssueDate"))))
 				return null;
 
-			brdb._bIsCallable = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bIsCallable = org.drip.math.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("IsCallable"));
 
-			brdb._bIsPutable = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bIsPutable = org.drip.math.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("IsPutable"));
 
-			brdb._bIsSinkable = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bIsSinkable = org.drip.math.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("IsSinkable"));
 
 			brdb._strBBGParent = rs.getString ("BBGParent");
@@ -670,26 +669,26 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 
 			if (null == brdb._strCouponCurrency || brdb._strCouponCurrency.isEmpty()) return null;
 
-			brdb._bIsStructuredNote = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bIsStructuredNote = org.drip.math.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("StructuredNote"));
 
-			brdb._bIsUnitTraded = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bIsUnitTraded = org.drip.math.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("UnitTraded"));
 
-			brdb._bIsReversibleConvertible = org.drip.quant.common.StringUtil.ParseFromUnitaryString
+			brdb._bIsReversibleConvertible = org.drip.math.common.StringUtil.ParseFromUnitaryString
 				(rs.getString ("ReverseConvertible"));
 
 			brdb._strTradeCurrency = rs.getString ("TradeCurrency");
 
 			if (null == brdb._strTradeCurrency || brdb._strTradeCurrency.isEmpty()) return null;
 
-			brdb._bIsBearer = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bIsBearer = org.drip.math.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("Bearer"));
 
-			brdb._bIsRegistered = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bIsRegistered = org.drip.math.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("Registered"));
 
-			brdb._bHasBeenCalled = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bHasBeenCalled = org.drip.math.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("Called"));
 
 			brdb._strIssuer = rs.getString ("Issuer");
@@ -702,10 +701,10 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 
 			brdb._dblCurrentCoupon = rs.getDouble ("CurrentCoupon");
 
-			brdb._bIsFloater = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bIsFloater = org.drip.math.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("Floater"));
 
-			brdb._bTradeStatus = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bTradeStatus = org.drip.math.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("TradeStatus"));
 
 			brdb._strCDRCountryCode = rs.getString ("CDRCountryCode");
@@ -717,13 +716,13 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 			brdb._dtFinalMaturity = org.drip.analytics.support.AnalyticsHelper.MakeJulianFromRSEntry
 				(rs.getDate ("FinalMaturity"));
 
-			brdb._bIsPrivatePlacement = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bIsPrivatePlacement = org.drip.math.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("PrivatePlacement"));
 
-			brdb._bIsPerpetual = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bIsPerpetual = org.drip.math.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("Perpetual"));
 
-			brdb._bIsDefaulted = org.drip.quant.common.StringUtil.ParseFromUnitaryString (rs.getString
+			brdb._bIsDefaulted = org.drip.math.common.StringUtil.ParseFromUnitaryString (rs.getString
 				("Defaulted"));
 
 			brdb._dblFloatSpread = rs.getDouble ("FloatSpread");
@@ -966,7 +965,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 		if (null == strSerializedBondRefDataBuilder || strSerializedBondRefDataBuilder.isEmpty())
 			throw new java.lang.Exception ("BondRefDataBuilder de-serializer: Cannot locate state");
 
-		java.lang.String[] astrField = org.drip.quant.common.StringUtil.Split
+		java.lang.String[] astrField = org.drip.math.common.StringUtil.Split
 			(strSerializedBondRefDataBuilder, getFieldDelimiter());
 
 		if (null == astrField || 76 > astrField.length)
@@ -1582,7 +1581,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the ISIN
+	 * Sets the ISIN
 	 * 
 	 * @param strISIN ISIN
 	 * 
@@ -1599,7 +1598,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the CUSIP
+	 * Sets the CUSIP
 	 * 
 	 * @param strCUSIP CUSIP
 	 * 
@@ -1616,7 +1615,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Bloomberg ID
+	 * Sets the Bloomberg ID
 	 * 
 	 * @param strBBGID Bloomberg ID String
 	 * 
@@ -1632,7 +1631,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Issuer Category
+	 * Sets the Issuer Category
 	 * 
 	 * @param strIssuerCategory Issuer Category
 	 * 
@@ -1648,7 +1647,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Issuer Ticker
+	 * Sets the Issuer Ticker
 	 * 
 	 * @param strTicker Ticker
 	 * 
@@ -1664,7 +1663,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Issuer Series
+	 * Sets the Issuer Series
 	 * 
 	 * @param strSeries series
 	 * 
@@ -1680,7 +1679,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Issuer Name
+	 * Sets the Issuer Name
 	 * 
 	 * @param strName Name
 	 * 
@@ -1696,7 +1695,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Issuer Short Name
+	 * Sets the Issuer Short Name
 	 * 
 	 * @param strShortName Short Name
 	 * 
@@ -1712,7 +1711,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Issuer Industry
+	 * Sets the Issuer Industry
 	 * 
 	 * @param strIssuerIndustry Issuer Industry
 	 * 
@@ -1728,7 +1727,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Coupon Type
+	 * Sets the Coupon Type
 	 * 
 	 * @param strCouponType Coupon Type
 	 * 
@@ -1744,7 +1743,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Maturity Type
+	 * Sets the Maturity Type
 	 * 
 	 * @param strMaturityType Maturity Type
 	 * 
@@ -1760,7 +1759,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Calculation Type
+	 * Sets the Calculation Type
 	 * 
 	 * @param strCalculationType Calculation Type
 	 * 
@@ -1776,7 +1775,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Day Count Code
+	 * Sets the Day Count Code
 	 * 
 	 * @param strDayCountCode Day Count Code
 	 * 
@@ -1803,7 +1802,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Market Issue Type
+	 * Sets the Market Issue Type
 	 * 
 	 * @param strMarketIssueType Market Issue Type
 	 * 
@@ -1819,7 +1818,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Issue Country Code
+	 * Sets the Issue Country Code
 	 * 
 	 * @param strIssueCountryCode Issue Country Code
 	 * 
@@ -1835,7 +1834,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Issue Country
+	 * Sets the Issue Country
 	 * 
 	 * @param strIssueCountry Issue Country
 	 * 
@@ -1851,7 +1850,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Collateral Type
+	 * Sets the Collateral Type
 	 * 
 	 * @param strCollateralType Collateral Type
 	 * 
@@ -1867,7 +1866,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Issue Amount
+	 * Sets the Issue Amount
 	 * 
 	 * @param strIssueAmount Issue Amount
 	 * 
@@ -1889,7 +1888,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Outstanding Amount
+	 * Sets the Outstanding Amount
 	 * 
 	 * @param strOutstandingAmount Outstanding Amount
 	 * 
@@ -1913,7 +1912,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Minimum Piece
+	 * Sets the Minimum Piece
 	 * 
 	 * @param strMinimumPiece Minimum Piece
 	 * 
@@ -1936,7 +1935,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Minimum Increment
+	 * Sets the Minimum Increment
 	 * 
 	 * @param strMinimumIncrement Minimum Increment
 	 * 
@@ -1960,7 +1959,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Par Amount
+	 * Sets the Par Amount
 	 * 
 	 * @param strParAmount Par Amount
 	 * 
@@ -1982,7 +1981,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Lead Manager
+	 * Sets the Lead Manager
 	 * 
 	 * @param strLeadManager Lead Manager
 	 * 
@@ -1998,7 +1997,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Exchange Code
+	 * Sets the Exchange Code
 	 * 
 	 * @param strExchangeCode Exchange Code
 	 * 
@@ -2014,7 +2013,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Redemption Value
+	 * Sets the Redemption Value
 	 * 
 	 * @param strRedemptionValue Redemption Value
 	 * 
@@ -2037,9 +2036,9 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Announce Date
+	 * Sets the Announce
 	 * 
-	 * @param strAnnounce Announce Date String
+	 * @param strAnnounce Announce
 	 * 
 	 * @return True (success), false (failure)
 	 */
@@ -2060,7 +2059,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the First Settle
+	 * Sets the First Settle
 	 * 
 	 * @param strFirstSettle First Settle
 	 * 
@@ -2083,7 +2082,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the First Coupon
+	 * Sets the First Coupon
 	 * 
 	 * @param strFirstCoupon First Coupon
 	 * 
@@ -2106,7 +2105,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Interest Accrual Start Date
+	 * Sets the Interest Accrual Start Date
 	 * 
 	 * @param strInterestAccrualStart Interest Accrual Start Date
 	 * 
@@ -2130,7 +2129,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Issue Date
+	 * Sets the Issue Date
 	 * 
 	 * @param strIssue Issue Date
 	 * 
@@ -2153,7 +2152,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Next Coupon Date
+	 * Sets the Next Coupon Date
 	 * 
 	 * @param strNextCouponDate Next Coupon Date
 	 * 
@@ -2177,7 +2176,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set whether is Callable
+	 * Sets whether is Callable
 	 * 
 	 * @param strCallable Callable?
 	 * 
@@ -2198,7 +2197,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set whether is Putable
+	 * Sets whether is Putable
 	 * 
 	 * @param strPutable Putable?
 	 * 
@@ -2219,7 +2218,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set whether is Sinkable
+	 * Sets whether is Sinkable
 	 * 
 	 * @param strSinkable Sinkable?
 	 * 
@@ -2240,7 +2239,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Bloomberg Parent
+	 * Sets the Bloomberg Parent
 	 * 
 	 * @param strBBGParent Bloomberg Parent?
 	 * 
@@ -2256,7 +2255,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Country Of Incorporation
+	 * Sets the Country Of Incorporation
 	 * 
 	 * @param strCountryOfIncorporation Country Of Incorporation
 	 * 
@@ -2273,7 +2272,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Industry Sector
+	 * Sets the Industry Sector
 	 * 
 	 * @param strIndustrySector Industry Sector
 	 * 
@@ -2289,7 +2288,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Industry Group
+	 * Sets the Industry Group
 	 * 
 	 * @param strIndustryGroup Industry Group
 	 * 
@@ -2305,7 +2304,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Industry Subgroup
+	 * Sets the Industry Subgroup
 	 * 
 	 * @param strIndustrySubgroup Industry Subgroup
 	 * 
@@ -2321,7 +2320,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Country Of Guarantor
+	 * Sets the Country Of Guarantor
 	 * 
 	 * @param strCountryOfGuarantor Country Of Guarantor
 	 * 
@@ -2337,7 +2336,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Country Of Domicile
+	 * Sets the Country Of Domicile
 	 * 
 	 * @param strCountryOfDomicile Country Of Domicile
 	 * 
@@ -2353,7 +2352,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Description
+	 * Sets the Description
 	 * 
 	 * @param strDescription Description
 	 * 
@@ -2369,7 +2368,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Security Type
+	 * Sets the Security Type
 	 * 
 	 * @param strSecurityType Security Type
 	 * 
@@ -2385,7 +2384,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Previous Coupon Date
+	 * Sets the Previous Coupon Date
 	 * 
 	 * @param strPrevCouponDate Previous Coupon Date
 	 * 
@@ -2409,7 +2408,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Unique Bloomberg ID
+	 * Sets the Unique Bloomberg ID
 	 * 
 	 * @param strBBGUniqueID BBGUniqueID
 	 * 
@@ -2425,7 +2424,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Long Company Name
+	 * Sets the Long Company Name
 	 * 
 	 * @param strLongCompanyName Long Company Name
 	 * 
@@ -2441,7 +2440,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Flag indicating Structured Note
+	 * Sets the Flag indicating Structured Note
 	 * 
 	 * @param strIsStructuredNote Flag indicating Structured Note
 	 * 
@@ -2462,7 +2461,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Flag indicating Unit Traded
+	 * Sets the Flag indicating Unit Traded
 	 * 
 	 * @param strIsUnitTraded Flag indicating Unit Traded
 	 * 
@@ -2483,7 +2482,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Flag indicating Reverse Convertible
+	 * Sets the Flag indicating Reverse Convertible
 	 * 
 	 * @param strIsReversibleConvertible Flag indicating Reverse Convertible
 	 * 
@@ -2504,7 +2503,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Redemption Currency
+	 * Sets the Redemption Currency
 	 * 
 	 * @param strRedemptionCurrency Redemption Currency
 	 * 
@@ -2520,7 +2519,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Coupon Currency
+	 * Sets the Coupon Currency
 	 * 
 	 * @param strCouponCurrency Coupon Currency
 	 * 
@@ -2536,7 +2535,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Trade Currency
+	 * Sets the Trade Currency
 	 * 
 	 * @param strTradeCurrency Trade Currency
 	 * 
@@ -2552,7 +2551,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Flag indicating Bearer Bond
+	 * Sets the Flag indicating Bearer Bond
 	 * 
 	 * @param strIsBearer Flag indicating Bearer Bond
 	 * 
@@ -2573,7 +2572,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Flag Registered
+	 * Sets the Flag Registered
 	 * 
 	 * @param strIsRegistered Flag indicating Is Registered
 	 * 
@@ -2594,7 +2593,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Flag indicating If bond has been called
+	 * Sets the Flag indicating If bond has been called
 	 * 
 	 * @param strHasBeenCalled Flag indicating If bond has been called
 	 * 
@@ -2615,7 +2614,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Issuer
+	 * Sets the Issuer
 	 * 
 	 * @param strIssuer Issuer Name
 	 * 
@@ -2631,7 +2630,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Penultimate Coupon Date
+	 * Sets the setPenultimateCouponDate
 	 * 
 	 * @param strPenultimateCouponDate setPenultimateCouponDate
 	 * 
@@ -2701,7 +2700,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Floater Flag
+	 * Sets the Floater Flag
 	 * 
 	 * @param strIsFloater Flag indicating Is Floater
 	 * 
@@ -2799,7 +2798,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Private Placement Flag
+	 * Sets the Private Placement Flag
 	 * 
 	 * @param strIsPrivatePlacement Flag indicating Is Private Placement
 	 * 
@@ -2820,7 +2819,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Perpetual Flag
+	 * Sets the Perpetual Flag
 	 * 
 	 * @param strIsPerpetual Flag indicating Is Perpetual
 	 * 
@@ -2841,7 +2840,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Defaulted Flag
+	 * Sets the Defaulted Flag
 	 * 
 	 * @param strIsDefaulted Flag indicating Is Defaulted
 	 * 
@@ -2862,7 +2861,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Float Spread
+	 * Sets the Float Spread
 	 * 
 	 * @param strFloatSpread Float Spread
 	 * 
@@ -2884,7 +2883,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Rate Index
+	 * Sets the Rate Index
 	 * 
 	 * @param strRateIndex Rate Index
 	 * 
@@ -2900,7 +2899,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Moodys Rating
+	 * Sets the Moodys Rating
 	 * 
 	 * @param strMoody Moodys Rating
 	 * 
@@ -2916,7 +2915,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the S&P Rating
+	 * Sets the S&P Rating
 	 * 
 	 * @param strSnP S&P Rating
 	 * 
@@ -2932,7 +2931,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the Fitch Rating
+	 * Sets the Fitch Rating
 	 * 
 	 * @param strFitch Fitch Rating
 	 * 
@@ -2948,7 +2947,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set Senior or Sub-ordinate
+	 * Sets Senior or Sub-ordinate
 	 * 
 	 * @param strSnrSub Senior or Sub-ordinate
 	 * 
@@ -2964,7 +2963,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set Issuer SPN
+	 * Sets Issuer SPN
 	 * 
 	 * @param strIssuerSPN Issuer SPN
 	 * 
@@ -2980,7 +2979,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set Issue Price
+	 * Sets Issue Price
 	 * 
 	 * @param strIssuePrice Issue Price
 	 * 
@@ -3002,7 +3001,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the coupon
+	 * Sets the coupon
 	 * 
 	 * @param strCoupon Coupon
 	 * 
@@ -3026,7 +3025,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Set the maturity
+	 * Sets the maturity
 	 * 
 	 * @param strMaturity maturity
 	 * 
@@ -3080,7 +3079,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Create an SQL Insert string for the given object
+	 * Creates an SQL Insert string for the given object
 	 * 
 	 * @return SQL Insert string
 	 */
@@ -3125,27 +3124,27 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 
 		sb.append ("'").append (_strCollateralType).append ("', ");
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblIssueAmount))
+		if (!org.drip.math.common.NumberUtil.IsValid (_dblIssueAmount))
 			sb.append ("null, ");
 		else
 			sb.append (_dblIssueAmount).append (", ");
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblOutstandingAmount))
+		if (!org.drip.math.common.NumberUtil.IsValid (_dblOutstandingAmount))
 			sb.append ("null, ");
 		else
 			sb.append (_dblOutstandingAmount).append (", ");
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblMinimumPiece))
+		if (!org.drip.math.common.NumberUtil.IsValid (_dblMinimumPiece))
 			sb.append ("null, ");
 		else
 			sb.append (_dblMinimumPiece).append (", ");
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblMinimumIncrement))
+		if (!org.drip.math.common.NumberUtil.IsValid (_dblMinimumIncrement))
 			sb.append ("null, ");
 		else
 			sb.append (_dblMinimumIncrement).append (", ");
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblParAmount))
+		if (!org.drip.math.common.NumberUtil.IsValid (_dblParAmount))
 			sb.append ("null, ");
 		else
 			sb.append (_dblParAmount).append (", ");
@@ -3231,7 +3230,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 
 		sb.append ("'").append (_strFloatCouponConvention).append ("', ");
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCurrentCoupon))
+		if (!org.drip.math.common.NumberUtil.IsValid (_dblCurrentCoupon))
 			sb.append ("null, ");
 		else
 			sb.append (_dblCurrentCoupon).append (", ");
@@ -3255,7 +3254,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 
 		sb.append ("'").append (_bIsDefaulted ? 1 : 0).append ("', ");
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblFloatSpread))
+		if (!org.drip.math.common.NumberUtil.IsValid (_dblFloatSpread))
 			sb.append ("null, ");
 		else
 			sb.append (_dblFloatSpread).append (", ");
@@ -3272,12 +3271,12 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 
 		sb.append ("'").append (_strIssuerSPN).append ("', ");
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblIssuePrice))
+		if (!org.drip.math.common.NumberUtil.IsValid (_dblIssuePrice))
 			sb.append ("null, ");
 		else
 			sb.append (_dblIssuePrice).append (", ");
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblCoupon))
+		if (!org.drip.math.common.NumberUtil.IsValid (_dblCoupon))
 			sb.append ("null, ");
 		else
 			sb.append (_dblCoupon).append (", ");
@@ -3291,7 +3290,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	/**
-	 * Create an SQL Delete string for the given object
+	 * Creates an SQL Delete string for the given object
 	 * 
 	 * @return SQL Delete string
 	 */
@@ -3946,8 +3945,7 @@ public class BondRefDataBuilder extends org.drip.service.stream.Serializer imple
 	}
 
 	@Override public org.drip.service.stream.Serializer deserialize (
-		final byte[] ab)
-	{
+		final byte[] ab) {
 		try {
 			return new BondRefDataBuilder (ab);
 		} catch (java.lang.Exception e) {

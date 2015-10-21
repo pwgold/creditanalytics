@@ -6,7 +6,6 @@ package org.drip.analytics.date;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -34,15 +33,11 @@ package org.drip.analytics.date;
 /**
  * Class provides a comprehensive representation of Julian date and date manipulation functionality. It
  * 	exports the following functionality:
- * 	- Explicit date construction, as well as date construction from several input string formats/today
- *  - Date Addition/Adjustment/Elapsed/Difference, add/subtract days/weeks/months/years and tenor codes
+ * 	- Explicit date construction, as well as date construction from several input string formats
+ *  - Date Addition/Adjustment, add/subtract days/weeks/months/years and tenor codes
  *  - Leap Year Functionality (number of leap days in the given interval, is the given year a leap year etc.)
  *  - Generate the subsequent IMM date (EDF/CME IMM date, CDS/Credit ISDA IMM date etc)
- *  - Year/Month/Day in numbers/characters
- *  - Days Elapsed/Remaining, is EOM
- *  - Comparison with the Other, equals/hash-code/comparator
- *  - Export the date to a variety of date formats (Oracle, Julian, Bloomberg)
- *  - Serialization/De-serialization to and from Byte Arrays
+ *  - Export the date to a variety of date formats.
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -182,26 +177,20 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 	private double _dblJulian = java.lang.Double.NaN;
 
 	/**
-	 * Convert YMD to a Julian double.
+	 * Converts YMD to a Julian double.
 	 * 
 	 * @param iYear Year
 	 * @param iMonth Month
 	 * @param iDay Day
 	 * 
 	 * @return double representing the Julian date
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
 	 */
 
 	public static double toJulian (
 		final int iYear,
 		final int iMonth,
-		final int iDay)
-		throws java.lang.Exception
+		final int iDay) 
 	{
-		if (0 > iYear || 0 > iMonth || 0 > iDay)
-			throw new java.lang.Exception ("JulianDate::toJulian => Invalid Inputs");
-
 		int iJulianYear = iYear;
 		int iJulianMonth = iMonth;
 
@@ -226,7 +215,7 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 	}
 
 	/**
-	 * Create a MM/DD/YYYY string from the input Julian double
+	 * Creates a MM/DD/YYYY string from the input Julian double
 	 * 
 	 * @param dblJulianIn double representing Julian date
 	 * 
@@ -236,7 +225,7 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 	public static java.lang.String fromJulian (
 		final double dblJulianIn)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblJulianIn)) return null;
+		if (!org.drip.math.common.NumberUtil.IsValid (dblJulianIn)) return null;
 
 		int iJA = (int) (dblJulianIn + HALFSECOND / 86400.0);
 
@@ -259,12 +248,12 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 
 		if (iYear <= 0) --iYear;
 
-		return org.drip.quant.common.FormatUtil.PrePad (iMonth) + "/" +
-			org.drip.quant.common.FormatUtil.PrePad (iDay) + "/" + iYear;
+		return org.drip.math.common.FormatUtil.PrePad (iMonth) + "/" +
+			org.drip.math.common.FormatUtil.PrePad (iDay) + "/" + iYear;
 	}
 
 	/**
-	 * Return the Year corresponding to the Julian double
+	 * Returns the year corresponding to the Julian double
 	 * 
 	 * @param dblJulianIn double representing the Julian date
 	 * 
@@ -277,8 +266,8 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 		final double dblJulianIn)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblJulianIn))
-			throw new java.lang.Exception ("JulianDate::Year => Invalid Input!");
+		if (!org.drip.math.common.NumberUtil.IsValid (dblJulianIn))
+			throw new java.lang.Exception ("JulianDate.Year got NaN input!");
 
 		int iJA = (int) (dblJulianIn + HALFSECOND / 86400.0);
 
@@ -317,8 +306,8 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 		final double dblJulianIn)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblJulianIn))
-			throw new java.lang.Exception ("JulianDate::Month => Invalid Input!");
+		if (!org.drip.math.common.NumberUtil.IsValid (dblJulianIn))
+			throw new java.lang.Exception ("JulianDate.Month got NaN input!");
 
 		int iJA = (int) (dblJulianIn + HALFSECOND / 86400.0);
 
@@ -338,7 +327,7 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 	}
 
 	/**
-	 * Return the day corresponding to the Julian double
+	 * Returns the day corresponding to the Julain double
 	 *  
 	 * @param dblJulianIn double representing the Julian date
 	 * 
@@ -351,8 +340,8 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 		final double dblJulianIn)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblJulianIn))
-			throw new java.lang.Exception ("JulianDate::Day => Invalid Input!");
+		if (!org.drip.math.common.NumberUtil.IsValid (dblJulianIn))
+			throw new java.lang.Exception ("JulianDate.Month got NaN input!");
 
 		int iJA = (int) (dblJulianIn + HALFSECOND / 86400.0);
 
@@ -369,7 +358,7 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 	}
 
 	/**
-	 * Number of days elapsed in the year represented by the given Julian date
+	 * Numbers of days elapsed in the year represented by the given Julian date
 	 * 
 	 * @param dblDate Double representing the Julian date
 	 * 
@@ -382,8 +371,8 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 		final double dblDate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblDate))
-			throw new java.lang.Exception ("JulianDate::DaysElapsed => Invalid Input!");
+		if (!org.drip.math.common.NumberUtil.IsValid (dblDate))
+			throw new java.lang.Exception ("JulianDate.DaysElapsed got NaN input!");
 
 		return (int) (dblDate - toJulian (Year (dblDate), JANUARY, 1));
 	}
@@ -402,14 +391,14 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 		final double dblDate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblDate))
-			throw new java.lang.Exception ("JulianDate::DaysRemaining => Invalid Input!");
+		if (!org.drip.math.common.NumberUtil.IsValid (dblDate))
+			throw new java.lang.Exception ("JulianDate.DaysRemaining got NaN input!");
 
 		return (int) (toJulian (Year (dblDate), DECEMBER, 31) - dblDate);
 	}
 
 	/**
-	 * Indicate if the year in the given Julian date is a leap year
+	 * Indicates if the year in the given Julian date is a leap year
 	 * 
 	 * @param dblDate Double representing the input Julian date
 	 * 
@@ -422,14 +411,14 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 		final double dblDate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblDate))
-			throw new java.lang.Exception ("JulianDate::IsLeapYear => Invalid Input!");
+		if (!org.drip.math.common.NumberUtil.IsValid (dblDate))
+			throw new java.lang.Exception ("JulianDate.IsLeapYear got NaN input!");
 
 		return 0 == (Year (dblDate) % 4);
 	}
 
 	/**
-	 * Indicate whether there is at least one leap day between 2 given Julian dates
+	 * Indicates whether there is at least one leap day between 2 given Julian dates
 	 *  
 	 * @param dblStart Double representing the starting Julian date
 	 * @param dblEnd Double representing the ending Julian date
@@ -447,9 +436,9 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 		final int iIncludeSide)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblStart) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.math.common.NumberUtil.IsValid (dblStart) || !org.drip.math.common.NumberUtil.IsValid
 			(dblEnd))
-			throw new java.lang.Exception ("JulianDate::ContainsFeb29 => Invalid Input!");
+			throw new java.lang.Exception ("JulianDate.ContainsFeb29 got NaN input!");
 
 		if (dblStart >= dblEnd) return false;
 
@@ -468,7 +457,7 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 	}
 
 	/**
-	 * Calculate how many leap days exist between the 2 given Julian days
+	 * Calculates how many leap days exist between the 2 given Julian days
 	 * 
 	 * @param dblStart Double representing the starting Julian date
 	 * @param dblEnd Double representing the ending Julian date
@@ -486,9 +475,9 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 		final int iIncludeSide)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblStart) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.math.common.NumberUtil.IsValid (dblStart) || !org.drip.math.common.NumberUtil.IsValid
 			(dblEnd))
-			throw new java.lang.Exception ("JulianDate::NumFeb29 => Invalid Input!");
+			throw new java.lang.Exception ("JulianDate.NumFeb29 got NaN input!");
 
 		int iNumFeb29 = 0;
 		boolean bLoop = true;
@@ -511,7 +500,7 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 	}
 
 	/**
-	 * Return the English word corresponding to the input integer month
+	 * Returns the english word corresponding to the input integer month
 	 *  
 	 * @param iMonth Integer representing the month
 	 * 
@@ -520,7 +509,7 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 	 * @throws java.lang.Exception Thrown if the input month is invalid
 	 */
 
-	public static final java.lang.String MonthChar (
+	public static java.lang.String getMonthChar (
 		final int iMonth)
 		throws java.lang.Exception
 	{
@@ -548,11 +537,11 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 
 		if (DECEMBER == iMonth) return "December";
 
-		throw new java.lang.Exception ("JulianDate::getMonthChar => Invalid Month: " + iMonth);
+		throw new java.lang.Exception ("Invalid month number " + iMonth);
 	}
 
 	/**
-	 * Return the Oracle DB trigram corresponding to the input integer month
+	 * Returns the Oracle DB trigram corresponding to the input integer month
 	 * 
 	 * @param iMonth Integer representing the month
 	 * 
@@ -562,8 +551,7 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 	 */
 
 	public static java.lang.String getMonthOracleChar (
-		final int iMonth)
-		throws java.lang.Exception
+		final int iMonth) throws java.lang.Exception
 	{
 		if (JANUARY == iMonth) return "JAN";
 
@@ -589,25 +577,24 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 
 		if (DECEMBER == iMonth) return "DEC";
 
-		throw new java.lang.Exception ("JulianDate::getMonthOracleChar => Invalid Month: " + iMonth);
+		throw new java.lang.Exception ("Invalid month number " + iMonth);
 	}
 
 	/**
-	 * Convert the month trigram/word to the corresponding month integer
+	 * Converts the month trigram/word to the corresponding month integer
 	 * 
-	 * @param strMonth Month trigram or English Word
+	 * @param strMonth Month trigram or english word
 	 * 
-	 * @return Integer representing the Month
+	 * @return Integer representing the month
 	 * 
-	 * @throws java.lang.Exception Thrown on Invalid Input Month
+	 * @throws java.lang.Exception Thrown on invalid input month
 	 */
 
-	public static final int MonthFromMonthChars (
+	public static int MonthFromMonthChars (
 		final java.lang.String strMonth)
 		throws java.lang.Exception
 	{
-		if (null == strMonth || strMonth.isEmpty())
-			throw new java.lang.Exception ("JulianDate::MonthFromMonthChars => Invalid Month!");
+		if (null == strMonth) throw new java.lang.Exception ("Null month!");
 
 		if (strMonth.equalsIgnoreCase ("JAN") || strMonth.equalsIgnoreCase ("JANUARY")) return JANUARY;
 
@@ -635,11 +622,11 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 
 		if (strMonth.equalsIgnoreCase ("DEC") || strMonth.equalsIgnoreCase ("DECEMBER")) return DECEMBER;
 
-		throw new java.lang.Exception ("JulianDate::MonthFromMonthChars => Invalid Month: " + strMonth);
+		throw new java.lang.Exception ("Invalid month " + strMonth);
 	}
 
 	/**
-	 * Get the English word for day corresponding to the input integer
+	 * Gets the english word for day corresponding to the input integer
 	 * 
 	 * @param iDay Integer representing the day
 	 * 
@@ -648,8 +635,9 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 	 * @throws java.lang.Exception Thrown if the input day is invalid
 	 */
 
-	public static java.lang.String DayChars (
+	public static java.lang.String getDayChars (
 		final int iDay)
+		throws java.lang.Exception
 	{
 		if (MONDAY == iDay) return "Monday";
 
@@ -665,11 +653,11 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 
 		if (SUNDAY == iDay) return "Sunday";
 
-		return "";
+		throw new java.lang.Exception ("Invalid WeekDay number " + iDay);
 	}
 
 	/**
-	 * Get the maximum number of days in the given month and year
+	 * Gets the maximum number of days in the given month and year
 	 * 
 	 * @param iMonth Integer representing the month
 	 * @param iYear Integer representing the year
@@ -679,14 +667,18 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 	 * @throws java.lang.Exception Thrown if inputs are invalid
 	 */
 
-	public static final int DaysInMonth (
+	public static int DaysInMonth (
 		final int iMonth,
 		final int iYear)
 		throws java.lang.Exception
 	{
 		if (JANUARY == iMonth) return 31;
 
-		if (FEBRUARY == iMonth) return 0 == (iYear % 4) ? 29 : 28;
+		if (FEBRUARY == iMonth) {
+			if (0 == (iYear % 4)) return 29;
+
+			return 28;
+		}
 
 		if (MARCH == iMonth) return 31;
 
@@ -708,11 +700,11 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 
 		if (DECEMBER == iMonth) return 31;
 
-		throw new java.lang.Exception ("JulianDate::DaysInMonth => Invalid Month: " + iMonth);
+		throw new java.lang.Exception ("Invalid Month: " + iMonth);
 	}
 
 	/**
-	 * Indicate if the given Julian double corresponds to an end of month day
+	 * Indicates if the given Julian double corresponds to an end of month day
 	 * 
 	 * @param dblDate Double representing the Julain date
 	 * 
@@ -725,14 +717,14 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 		final double dblDate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblDate))
-			throw new java.lang.Exception ("JulianDate::IsEOM => Invalid Date: " + dblDate);
+		if (!org.drip.math.common.NumberUtil.IsValid (dblDate))
+			throw new java.lang.Exception ("JulianDate.IsEOM got NaN input!");
 
 		return Day (dblDate) == DaysInMonth (Month (dblDate), Year (dblDate)) ? true : false;
 	}
 
 	/**
-	 * Return a Julian Date corresponding to today
+	 * Returns a Julian Date corresponding to today
 	 *  
 	 * @return JulianDate corresponding to today
 	 */
@@ -742,8 +734,8 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 		java.util.Date dtNow = new java.util.Date();
 
 		try {
-			return CreateFromYMD (org.drip.quant.common.DateUtil.GetYear (dtNow),
-				org.drip.quant.common.DateUtil.GetMonth (dtNow), org.drip.quant.common.DateUtil.GetDate
+			return CreateFromYMD (org.drip.math.common.DateUtil.GetYear (dtNow),
+				org.drip.math.common.DateUtil.GetMonth (dtNow), org.drip.math.common.DateUtil.GetDate
 					(dtNow));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -753,7 +745,7 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 	}
 
 	/**
-	 * Create a JulianDate from year, month, and date
+	 * Creates a JulianDate from year, month, and date
 	 *  
 	 * @param iYear Integer year
 	 * @param iMonth Integer month
@@ -777,7 +769,7 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 	}
 
 	/**
-	 * Create a JulianDate from a string containing date in the DDMMYYYY format
+	 * Creates a JulianDate from a string containing date in the DDMMYYYY format
 	 * 
 	 * @param strDate String containing date in the DDMMYYYY format
 	 * 
@@ -807,40 +799,6 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 	}
 
 	/**
-	 * Create a JulianDate from a string containing date in the DDMMYYYY format
-	 * 
-	 * @param strMDY String containing date in the MM/DD/YYYY format
-	 * @param strDelim String Delimiter
-	 * 
-	 * @return JulianDate
-	 */
-
-	public static final JulianDate CreateFromMDY (
-		final java.lang.String strMDY,
-		final java.lang.String strDelim)
-	{
-		if (null == strMDY || strMDY.isEmpty() || null == strDelim || strDelim.isEmpty()) return null;
-
-		java.lang.String[] astrParts = strMDY.split (strDelim);
-
-		if (3 != astrParts.length) return null;
-
-		try {
-			int iMonth = new java.lang.Integer (astrParts[0]);
-
-			int iDay = new java.lang.Integer (astrParts[1]);
-
-			int iYear = new java.lang.Integer (astrParts[2]);
-
-			return CreateFromYMD (iYear, iMonth, iDay);
-		} catch (java.lang.Exception e) {
-			if (s_bLog) e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
 	 * Create JulianDate from a double Julian
 	 * 
 	 * @param dblJulian Double representing the JulianDate
@@ -852,14 +810,14 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 		final double dblJulian)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblJulian))
-			throw new java.lang.Exception ("JulianDate ctr => Invalid Input!");
+		if (!org.drip.math.common.NumberUtil.IsValid (dblJulian))
+			throw new java.lang.Exception ("JulianDate ctr got NaN input!");
 
 		_dblJulian = dblJulian;
 	}
 
 	/**
-	 * Return the double Julian
+	 * Returns the double Julian
 	 * 
 	 * @return The double Julian
 	 */
@@ -890,7 +848,7 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 	}
 
 	/**
-	 * Subtract the given number of days and returns a new JulianDate
+	 * Subtracts the given number of days and returns a new JulianDate
 	 * 
 	 * @param iDays Integer representing the number of days to be subtracted
 	 * 
@@ -1071,7 +1029,7 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 	}
 
 	/**
-	 * Generate the First EDSF start date from this JulianDate
+	 * Generates the First EDSF start date from this JulianDate
 	 * 
 	 * @param iNumRollMonths Integer representing number of months to roll
 	 * 
@@ -1121,7 +1079,7 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 	}
 
 	/**
-	 * Generate the First Credit IMM roll date from this JulianDate
+	 * Generates the First Credit IMM roll date from this JulianDate
 	 * 
 	 * @param iNumRollMonths Integer representing number of months to roll
 	 * 
@@ -1171,7 +1129,7 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 	}
 
 	/**
-	 * Add the tenor to the JulianDate to create a new date
+	 * Adds the tenor to the JulianDate to create a new date
 	 * 
 	 * @param strTenor String representing the tenor to add
 	 * 
@@ -1200,8 +1158,6 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 
 		if ('w' == chTenor || 'W' == chTenor) return addDays (iTimeUnit * 7);
 
-		if ('l' == chTenor || 'L' == chTenor) return addDays (iTimeUnit * 28);
-
 		if ('m' == chTenor || 'M' == chTenor) return addMonths (iTimeUnit);
 
 		if ('y' == chTenor || 'Y' == chTenor) return addYears (iTimeUnit);
@@ -1212,34 +1168,7 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 	}
 
 	/**
-	 * Add the tenor to the JulianDate to create a new business date
-	 * 
-	 * @param strTenor The Tenor
-	 * @param strCalendarSet The Holiday Calendar Set
-	 * 
-	 * @return The new JulianDate
-	 */
-
-	public JulianDate addTenorAndAdjust (
-		final java.lang.String strTenor,
-		final java.lang.String strCalendarSet)
-	{
-		JulianDate dtNew = addTenor (strTenor);
-
-		if (null == dtNew) return null;
-
-		try {
-			return new JulianDate (org.drip.analytics.daycount.Convention.RollDate (dtNew.getJulian(),
-				org.drip.analytics.daycount.Convention.DR_FOLL, strCalendarSet));
-		} catch (java.lang.Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Subtract the tenor to the JulianDate to create a new date
+	 * Subtracts the tenor to the JulianDate to create a new date
 	 * 
 	 * @param strTenor String representing the tenor to add
 	 * 
@@ -1268,11 +1197,11 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 
 		if ('w' == chTenor || 'W' == chTenor) return addDays (-iTimeUnit * 7);
 
-		if ('l' == chTenor || 'L' == chTenor) return addDays (-iTimeUnit * 28);
-
 		if ('m' == chTenor || 'M' == chTenor) return addMonths (-iTimeUnit);
 
 		if ('y' == chTenor || 'Y' == chTenor) return addYears (-iTimeUnit);
+
+		System.out.println ("Unknown tenor format " + strTenor);
 
 		return null;
 	}
@@ -1291,13 +1220,13 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 		final JulianDate dt)
 		throws java.lang.Exception
 	{
-		if (null == dt) throw new java.lang.Exception ("JulianDate::daysDiff => Invalid Input!");
+		if (null == dt) throw new java.lang.Exception ("JulianDate.daysDiff got NaN date input!");
 
 		return (int) (_dblJulian - dt.getJulian());
 	}
 
 	/**
-	 * Return a trigram representation of date
+	 * Returns a trigram representation of date
 	 * 
 	 * @return String representing the trigram representation of date
 	 */
@@ -1315,7 +1244,7 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 	}
 
 	/**
-	 * Return a representation of date as YYYYMMDD
+	 * Returns a representation of date as YYYYMMDD
 	 * 
 	 * @param strDelimIn Field delimiter
 	 * 
@@ -1328,9 +1257,9 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 		java.lang.String strDelim = null == strDelimIn ? "" : strDelimIn;
 
 		try {
-			return org.drip.quant.common.FormatUtil.FormatDouble (Year (_dblJulian), 4, 0, 1.) + strDelim +
-				org.drip.quant.common.FormatUtil.FormatDouble (Month (_dblJulian), 2, 0, 1.) + strDelim +
-					org.drip.quant.common.FormatUtil.FormatDouble (Day (_dblJulian), 2, 0, 1.);
+			return org.drip.math.common.FormatUtil.FormatDouble (Year (_dblJulian), 4, 0, 1.) + strDelim +
+				org.drip.math.common.FormatUtil.FormatDouble (Month (_dblJulian), 2, 0, 1.) + strDelim +
+					org.drip.math.common.FormatUtil.FormatDouble (Day (_dblJulian), 2, 0, 1.);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -1366,5 +1295,11 @@ public class JulianDate implements java.lang.Comparable<JulianDate> {
 		if ((int) _dblJulian < (int) (dtOther._dblJulian)) return -1;
 
 		return 0;
+	}
+
+	public static final void main (
+		final java.lang.String[] astrArgs)
+	{
+		System.out.println (JulianDate.Today());
 	}
 }

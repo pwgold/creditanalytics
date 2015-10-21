@@ -6,7 +6,6 @@ package org.drip.product.creator;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -41,7 +40,7 @@ package org.drip.product.creator;
 public class CashBuilder {
 
 	/**
-	 * Create a cash product from effective date, tenor, IR curve name, and code.
+	 * Creates a cash product from effective date, tenor, IR curve name, and code.
 	 * 
 	 * @param dtEffective JulianDate specifying the effective date
 	 * @param strTenor String tenor
@@ -79,7 +78,7 @@ public class CashBuilder {
 	}
 
 	/**
-	 * Create a cash product from effective and maturity dates, and the IR curve
+	 * Creates a cash product from effective and maturity dates, and the IR curve
 	 * 
 	 * @param dtEffective Effective date
 	 * @param dtMaturity Maturity
@@ -114,7 +113,7 @@ public class CashBuilder {
 	}
 
 	/**
-	 * Create the cash product from the effective date, tenor, and the IR curve name.
+	 * Creates the cash product from the effective date, tenor, and the IR curve name.
 	 * 
 	 * @param dtEffective JulianDate Effective
 	 * @param strTenor String tenor

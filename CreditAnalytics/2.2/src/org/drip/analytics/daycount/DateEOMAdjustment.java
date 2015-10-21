@@ -6,7 +6,6 @@ package org.drip.analytics.daycount;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
@@ -31,19 +30,27 @@ package org.drip.analytics.daycount;
  */
 
 /**
- * This class holds the applicable adjustments for a given date pair. It exposes the following functionality:
- * 	- Static Methods for creating 30/360, 30/365, and EOMA Date Adjustments
- * 	- Export Anterior and Posterior EOM Adjustments
+ * This class holds the applicable anterior and posterior EOM adjustments for a given date pair.
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class DateEOMAdjustment {
-	private int _iD1Adj = 0;
-	private int _iD2Adj = 0;
 
 	/**
-	 * Construct a DateEOMAdjustment instance for the 30/365 day count
+	 * Anterior date adjustment
+	 */
+
+	public int _iD1Adj = 0;
+
+	/**
+	 * Posterior date adjustment
+	 */
+
+	public int _iD2Adj = 0;
+
+	/**
+	 * Constructs a DateEOMAdjustment instance for the 30/365 day count
 	 * 
 	 * @param dblStart Start Date
 	 * @param dblEnd End Date
@@ -61,7 +68,7 @@ public class DateEOMAdjustment {
 
 		if (!bApplyEOMAdj) return dm;
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblStart) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.math.common.NumberUtil.IsValid (dblStart) || !org.drip.math.common.NumberUtil.IsValid
 			(dblEnd))
 			return null;
 
@@ -97,7 +104,7 @@ public class DateEOMAdjustment {
 	}
 
 	/**
-	 * Construct a DateEOMAdjustment instance for the 30/360 day count
+	 * Constructs a DateEOMAdjustment instance for the 30/360 day count
 	 * 
 	 * @param dblStart Start Date
 	 * @param dblEnd End Date
@@ -115,7 +122,7 @@ public class DateEOMAdjustment {
 
 		if (!bApplyEOMAdj) return dm;
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblStart) || !org.drip.quant.common.NumberUtil.IsValid
+		if (!org.drip.math.common.NumberUtil.IsValid (dblStart) || !org.drip.math.common.NumberUtil.IsValid
 			(dblEnd))
 			return null;
 
@@ -153,7 +160,7 @@ public class DateEOMAdjustment {
 	}
 
 	/**
-	 * Construct a DateEOMAdjustment instance for all other day counts
+	 * Constructs a DateEOMAdjustment instance for all other day counts
 	 * 
 	 * @param dblStart Start Date
 	 * @param dblEnd End Date
@@ -172,8 +179,8 @@ public class DateEOMAdjustment {
 
 		if (!bApplyEOMAdj) return dm;
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblStart) || !org.drip.quant.common.NumberUtil.IsValid
-			(dblEnd) || !org.drip.quant.common.NumberUtil.IsValid (dblMaturity))
+		if (!org.drip.math.common.NumberUtil.IsValid (dblStart) || !org.drip.math.common.NumberUtil.IsValid
+			(dblEnd) || !org.drip.math.common.NumberUtil.IsValid (dblMaturity))
 			return null;
 
 		try {
@@ -195,25 +202,6 @@ public class DateEOMAdjustment {
 		return null;
 	}
 
-	/**
-	 * Retrieve the Anterior Date Adjustment
-	 * 
-	 * @return The Anterior Date Adjustment
-	 */
-
-	public int anterior()
-	{
-		return _iD1Adj;
-	}
-
-	/**
-	 * Retrieve the Posterior Date Adjustment
-	 * 
-	 * @return The Posterior Date Adjustment
-	 */
-
-	public int posterior()
-	{
-		return _iD2Adj;
+	private DateEOMAdjustment() {
 	}
 }

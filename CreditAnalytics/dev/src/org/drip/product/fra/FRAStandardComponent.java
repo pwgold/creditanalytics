@@ -123,11 +123,16 @@ public class FRAStandardComponent extends org.drip.product.rates.SingleStreamCom
 			double dblDV01 = 0.0001 * dblDCF * dcFunding.df (dblMaturityDate) / dcFunding.df (dblCashSettle)
 				* notional (dblValueDate);
 
-			double dblPV = dblDV01 * (dblQuantoAdjustedParForward - _dblStrike);
+			double dblLevelLift = dblQuantoAdjustedParForward - _dblStrike;
+			double dblPV = dblDV01 * dblLevelLift;
+			double dblLevelCapLift = dblLevelLift < 0. ? -1. * dblLevelLift : 0.;
+			double dblLevelFloorLift = dblLevelLift > 0. ? dblLevelLift : 0.;
 
 			double dblDCParForward = dcFunding.libor (dblEffectiveDate, dblMaturityDate);
 
 			mapResult.put ("additivequantoadjustment", dblQuantoAdjustedParForward - dblParForward);
+
+			mapResult.put ("caplift", dblLevelCapLift);
 
 			mapResult.put ("discountcurveadditivebasis", dblQuantoAdjustedParForward - dblDCParForward);
 
@@ -137,6 +142,8 @@ public class FRAStandardComponent extends org.drip.product.rates.SingleStreamCom
 			mapResult.put ("discountcurveparforward", dblDCParForward);
 
 			mapResult.put ("dv01", dblDV01);
+
+			mapResult.put ("floorlift", dblLevelFloorLift);
 
 			mapResult.put ("forward", dblParForward);
 
@@ -177,6 +184,8 @@ public class FRAStandardComponent extends org.drip.product.rates.SingleStreamCom
 
 		setstrMeasureNames.add ("CalcTime");
 
+		setstrMeasureNames.add ("CapLift");
+
 		setstrMeasureNames.add ("DiscountCurveAdditiveBasis");
 
 		setstrMeasureNames.add ("DiscountCurveMultiplicativeBasis");
@@ -184,6 +193,8 @@ public class FRAStandardComponent extends org.drip.product.rates.SingleStreamCom
 		setstrMeasureNames.add ("DiscountCurveParForward");
 
 		setstrMeasureNames.add ("DV01");
+
+		setstrMeasureNames.add ("FloorLift");
 
 		setstrMeasureNames.add ("Forward");
 

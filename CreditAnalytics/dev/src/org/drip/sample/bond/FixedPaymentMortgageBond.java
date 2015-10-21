@@ -3,10 +3,9 @@ package org.drip.sample.bond;
 
 import org.drip.analytics.cashflow.CompositePeriod;
 import org.drip.analytics.date.*;
-import org.drip.analytics.daycount.Convention;
 import org.drip.param.market.CurveSurfaceQuoteSet;
 import org.drip.param.valuation.ValuationParams;
-import org.drip.product.creator.BondBuilder;
+import org.drip.product.creator.FixedMortgageBondBuilder;
 import org.drip.product.definition.Bond;
 import org.drip.quant.common.FormatUtil;
 import org.drip.service.api.CreditAnalytics;
@@ -49,7 +48,7 @@ public class FixedPaymentMortgageBond {
 
 	private static final void BondMetrics (
 		final Bond bond,
-		final double dblNotional,
+		final double dblInitialNotional,
 		final JulianDate dtSettle,
 		final CurveSurfaceQuoteSet mktParams,
 		final double dblCleanPrice)
@@ -106,6 +105,10 @@ public class FixedPaymentMortgageBond {
 
 		JulianDate dtPreviousCouponDate = bond.previousCouponDate (dtSettle);
 
+		double dblCurrentPrincipal = bond.notional (dtPreviousCouponDate.julian()) * dblInitialNotional;
+
+		double dblAccruedAmount = dblAccrued * dblInitialNotional;
+
 		System.out.println ("\t-------------------------------------");
 
 		System.out.println ("\tAnalytics Metrics for " + bond.name());
@@ -114,7 +117,7 @@ public class FixedPaymentMortgageBond {
 
 		System.out.println ("\tPrice             : " + FormatUtil.FormatDouble (dblCleanPrice, 1, 4, 100.));
 
-		System.out.println ("\tYield             : " + FormatUtil.FormatDouble (dblYield, 1, 4, 100.) + "%");
+		System.out.println ("\tYield             : " + FormatUtil.FormatDouble (dblYield, 1, 2, 100.) + "%");
 
 		System.out.println ("\tSettle            :  " + dtSettle);
 
@@ -124,76 +127,23 @@ public class FixedPaymentMortgageBond {
 
 		System.out.println ("\tRisk              : " + FormatUtil.FormatDouble (dblRisk, 1, 4, 10000.));
 
-		System.out.println ("\tConvexity         : " + FormatUtil.FormatDouble (dblConvexity * dblNotional, 1, 4, 1.));
+		System.out.println ("\tConvexity         : " + FormatUtil.FormatDouble (dblConvexity * dblInitialNotional, 1, 4, 1.));
 
-		System.out.println ("\tDV01              : " + FormatUtil.FormatDouble (dblRisk * dblNotional, 1, 2, 1.));
+		System.out.println ("\tDV01              : " + FormatUtil.FormatDouble (dblRisk * dblInitialNotional, 1, 2, 1.));
 
 		System.out.println();
 
-		System.out.println ("\tPrevious Coupon Date :  " + dtPreviousCouponDate);
+		System.out.println ("\tPrevious Coupon Date : " + dtPreviousCouponDate);
 
-		System.out.println ("\tFace                 : " + FormatUtil.FormatDouble (dblNotional, 1, 2, 1.));
+		System.out.println ("\tFace                 : " + FormatUtil.FormatDouble (dblInitialNotional, 1, 2, 1.));
 
-		System.out.println ("\tPrincipal            : " + FormatUtil.FormatDouble (dblCleanPrice * dblNotional, 1, 2, 1.));
+		System.out.println ("\tCurrent Principal    : " + FormatUtil.FormatDouble (dblCurrentPrincipal, 1, 2, 1.));
 
-		System.out.println ("\tAccrued              : " + FormatUtil.FormatDouble (dblAccrued * dblNotional, 1, 2, 1.));
+		System.out.println ("\tAccrued              : " + FormatUtil.FormatDouble (dblAccruedAmount, 1, 6, 1.));
 
-		System.out.println ("\tTotal                : " + FormatUtil.FormatDouble ((dblCleanPrice + dblAccrued) * dblNotional, 1, 2, 1.));
+		System.out.println ("\tTotal                : " + FormatUtil.FormatDouble (dblCleanPrice * dblCurrentPrincipal + dblAccruedAmount, 1, 2, 1.));
 
 		System.out.println ("\tAccrual Days         : " + FormatUtil.FormatDouble (dtSettle.julian() - dtPreviousCouponDate.julian(), 1, 0, 1.));
-	}
-
-	private static final Bond FixedPaymentMortgageAmortizer (
-		final String strName,
-		final JulianDate dtEffective,
-		final int iNumPayment,
-		final String strDayCount,
-		final int iPayFrequency,
-		final double dblCouponRate,
-		final double dblFixedMonthlyAmount,
-		final double dblBondNotional)
-		throws Exception
-	{
-		double dblOutstandingPrincipalPrev = 1.;
-		JulianDate[] adt = new JulianDate[iNumPayment];
-		double[] adblCouponAmount = new double[iNumPayment];
-		double[] adblPrincipalAmount = new double[iNumPayment];
-		double dblTotalMonthlyPayment = dblFixedMonthlyAmount / dblBondNotional;
-
-		for (int i = 0; i < iNumPayment; ++i) {
-			adt[i] = dtEffective.addMonths (i + 1);
-
-			JulianDate dtPrev = 0 == i ? dtEffective : adt[i - 1];
-
-			if (0 != i) dblOutstandingPrincipalPrev -= adblPrincipalAmount[i - 1];
-
-			adblCouponAmount[i] = dblCouponRate;
-
-			double dblPeriodDCF = Convention.YearFraction (
-				dtPrev.julian(),
-				adt[i].julian(),
-				strDayCount,
-				false,
-				null,
-				""
-			);
-
-			double dblPeriodCoupon = dblOutstandingPrincipalPrev * adblCouponAmount[i] * dblPeriodDCF;
-			adblPrincipalAmount[i] = dblTotalMonthlyPayment - dblPeriodCoupon;
-		}
-
-		return BondBuilder.CreateBondFromCF (
-			strName,				// Name
-			dtEffective,			// Effective
-			"USD",					// Currency
-			"", 					// Credit Curve
-			strDayCount,			// Day Count
-			iPayFrequency,			// Frequency
-			adt,					// Array of dates
-			adblCouponAmount,		// Array of coupon amount
-			adblPrincipalAmount,	// Array of principal amount
-			true					// Principal is an outstanding notional
-		);
 	}
 
 	public static void main (
@@ -202,60 +152,74 @@ public class FixedPaymentMortgageBond {
 	{
 		CreditAnalytics.Init ("");
 
-		double dblNotional = 1.;
-		double dblCouponRate = 0.1299;
-		double dblBondNotional = 6000.;
-		double dblFixedMonthlyAmount = 202.13;
+		double dblBeginPrincipalFactor = 1.;
+		double dblCouponRate = 0.0924;
+		double dblServiceFeeRate = 0.00;
+		double dblBondNotional = 10131.81;
 		String strDayCount = "Act/365";
+		String strCurrency = "USD";
 		int iNumPayment = 36;
 		int iPayFrequency = 12;
+		double dblFixedMonthlyAmount = 638.23;
 
-		JulianDate dtEffective = DateUtil.CreateFromYMD (
-			2013,
-			DateUtil.AUGUST,
-			19
+		double dblFixedPaymentAmount = FixedMortgageBondBuilder.ConstantUniformPaymentAmount (
+			dblBondNotional,
+			dblCouponRate,
+			iNumPayment / iPayFrequency
 		);
 
-		Bond bond = FixedPaymentMortgageAmortizer (
+		JulianDate dtEffective = DateUtil.CreateFromYMD (
+			2015,
+			DateUtil.MARCH,
+			23
+		);
+
+		Bond bond = FixedMortgageBondBuilder.Create (
 			"FPMA 12.99 2016",
 			dtEffective,
+			strCurrency,
 			iNumPayment,
 			strDayCount,
 			iPayFrequency,
 			dblCouponRate,
+			0.,
 			dblFixedMonthlyAmount,
 			dblBondNotional
 		);
 
-		System.out.println ("\n\n\t|---------------------------------------------------------------------------------------------------------------------||");
+		System.out.println ("\n\n\t|------------------------------------------------------------------------------------------------------------------------------------||");
 
-		System.out.println ("\t|                                         FIXED CASH-FLOW MORTGAGE BOND ANALYTICS                                     ||");
+		System.out.println ("\t|                                         FIXED CASH-FLOW MORTGAGE BOND ANALYTICS                                                    ||");
 
-		System.out.println ("\t|                                         ----- --------- -------- ---- ---------                                     ||");
+		System.out.println ("\t|                                         ----- --------- -------- ---- ---------                                                    ||");
 
-		System.out.println ("\t|    L -> R:                                                                                                          ||");
+		System.out.println ("\t|    L -> R:                                                                                                                         ||");
 
-		System.out.println ("\t|            - Start Date                                                                                             ||");
+		System.out.println ("\t|            - Start Date                                                                                                            ||");
 
-		System.out.println ("\t|            - End Date                                                                                               ||");
+		System.out.println ("\t|            - End Date                                                                                                              ||");
 
-		System.out.println ("\t|            - Pay Date                                                                                               ||");
+		System.out.println ("\t|            - Pay Date                                                                                                              ||");
 
-		System.out.println ("\t|            - Principal Factor                                                                                       ||");
+		System.out.println ("\t|            - Principal Factor                                                                                                      ||");
 
-		System.out.println ("\t|            - Accrual Days                                                                                           ||");
+		System.out.println ("\t|            - Accrual Days                                                                                                          ||");
 
-		System.out.println ("\t|            - Accrual Fraction                                                                                       ||");
+		System.out.println ("\t|            - Accrual Fraction                                                                                                      ||");
 
-		System.out.println ("\t|            - Coupon Rate (%)                                                                                        ||");
+		System.out.println ("\t|            - Coupon Rate (%)                                                                                                       ||");
 
-		System.out.println ("\t|            - Coupon Amount                                                                                          ||");
+		System.out.println ("\t|            - Coupon Amount                                                                                                         ||");
 
-		System.out.println ("\t|            - Principal Amount                                                                                       ||");
+		System.out.println ("\t|            - Fee Rate (%)                                                                                                          ||");
 
-		System.out.println ("\t|            - Total Amount                                                                                           ||");
+		System.out.println ("\t|            - Fee Amount                                                                                                            ||");
 
-		System.out.println ("\t|---------------------------------------------------------------------------------------------------------------------||");
+		System.out.println ("\t|            - Principal Amount                                                                                                      ||");
+
+		System.out.println ("\t|            - Total Amount                                                                                                          ||");
+
+		System.out.println ("\t|------------------------------------------------------------------------------------------------------------------------------------||");
 
 		for (CompositePeriod p : bond.couponPeriods()) {
 			double dblPeriodCouponRate = p.couponMetrics (
@@ -265,31 +229,37 @@ public class FixedPaymentMortgageBond {
 
 			double dblCouponDCF = p.couponDCF();
 
-			double dblEndNotional = bond.notional (p.endDate());
+			double dblEndPrincipalFactor = bond.notional (p.endDate());
 
-			double dblNotionalAmount = (dblNotional - dblEndNotional) * dblBondNotional;
+			double dblPrincipalAmount = (dblBeginPrincipalFactor - dblEndPrincipalFactor) * dblBondNotional;
 
-			double dblCouponAmount = dblNotional * dblPeriodCouponRate * dblCouponDCF * dblBondNotional;
+			double dblCouponAmount = dblBeginPrincipalFactor * dblPeriodCouponRate * dblCouponDCF * dblBondNotional;
 
 			System.out.println ("\t| [" +
 				DateUtil.FromJulian (p.startDate()) + " -> " +
 				DateUtil.FromJulian (p.endDate()) + "] => " +
 				DateUtil.FromJulian (p.payDate()) + " | " +
-				FormatUtil.FormatDouble (dblNotional, 1, 8, 1.) + " | " +
+				FormatUtil.FormatDouble (dblBeginPrincipalFactor, 1, 4, 1.) + " | " +
 				FormatUtil.FormatDouble (dblCouponDCF * 365, 1, 0, 1.) + " | " +
 				FormatUtil.FormatDouble (dblCouponDCF, 1, 10, 1.) + " | " +
 				FormatUtil.FormatDouble (dblPeriodCouponRate, 2, 2, 100.) + "% | " +
 				FormatUtil.FormatDouble (dblCouponAmount, 2, 2, 1.) + " | " +
-				FormatUtil.FormatDouble (dblNotionalAmount, 2, 2, 1.) + " | " +
-				FormatUtil.FormatDouble (dblNotionalAmount + dblCouponAmount, 2, 2, 1.) + " ||"
+				FormatUtil.FormatDouble (dblServiceFeeRate, 2, 2, 100.) + "% | " +
+				FormatUtil.FormatDouble (dblCouponAmount * dblServiceFeeRate / dblPeriodCouponRate, 2, 2, 1.) + " | " +
+				FormatUtil.FormatDouble (dblPrincipalAmount, 2, 2, 1.) + " | " +
+				FormatUtil.FormatDouble (dblPrincipalAmount + dblCouponAmount, 2, 2, 1.) + " ||"
 			);
 
-			dblNotional = dblEndNotional;
+			dblBeginPrincipalFactor = dblEndPrincipalFactor;
 		}
 
-		System.out.println ("\t|---------------------------------------------------------------------------------------------------------------------||\n\n");
+		System.out.println ("\t|------------------------------------------------------------------------------------------------------------------------------------||\n\n");
 
-		JulianDate dtSettle = DateUtil.Today();
+		JulianDate dtSettle = DateUtil.CreateFromYMD (
+			2015,
+			DateUtil.MARCH,
+			31
+		);
 
 		double dblCleanPrice = 1.00; // PAR
 
@@ -302,5 +272,33 @@ public class FixedPaymentMortgageBond {
 			mktParams,
 			dblCleanPrice
 		);
+
+		Bond bondFeeAdjusted = FixedMortgageBondBuilder.Create (
+			"FPMA 12.99 2016",
+			dtEffective,
+			strCurrency,
+			iNumPayment,
+			strDayCount,
+			iPayFrequency,
+			dblCouponRate,
+			dblServiceFeeRate,
+			dblFixedMonthlyAmount,
+			dblBondNotional
+		);
+
+		double dblYieldFeeAdjusted = bondFeeAdjusted.yieldFromPrice (
+			new ValuationParams (
+				dtSettle,
+				dtSettle,
+				bond.currency()
+			),
+			mktParams,
+			null,
+			dblCleanPrice
+		);
+
+		System.out.println ("\tFee Adjusted Yield   : " + FormatUtil.FormatDouble (dblYieldFeeAdjusted, 1, 2, 100.) + "%");
+
+		System.out.println ("\n\tUniform Constant Mortgage Amount => " + FormatUtil.FormatDouble (dblFixedPaymentAmount, 1, 2, 1.));
 	}
 }

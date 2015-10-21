@@ -152,8 +152,8 @@ public abstract class MultivariateRandom extends org.drip.function.definition.Rd
 
 		if (0 >= iNumNonTargetVariate) return null;
 
-		org.drip.analytics.support.SequenceIndexIterator sii =
-			org.drip.analytics.support.SequenceIndexIterator.Standard (iNumNonTargetVariate,
+		org.drip.spaces.iterator.SequenceIndexIterator sii =
+			org.drip.spaces.iterator.SequenceIndexIterator.Standard (iNumNonTargetVariate,
 				aSSAM[0].sequence().length);
 
 		if (null == sii) return null;
@@ -259,8 +259,8 @@ public abstract class MultivariateRandom extends org.drip.function.definition.Rd
 
 		if (0 >= iNumNonTargetVariate) return null;
 
-		org.drip.analytics.support.SequenceIndexIterator sii =
-			org.drip.analytics.support.SequenceIndexIterator.Standard (iNumNonTargetVariate,
+		org.drip.spaces.iterator.SequenceIndexIterator sii =
+			org.drip.spaces.iterator.SequenceIndexIterator.Standard (iNumNonTargetVariate,
 				aSSAM[0].sequence().length);
 
 		if (null == sii) return null;

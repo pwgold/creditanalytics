@@ -6,7 +6,6 @@ package org.drip.param.market;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -41,7 +40,7 @@ package org.drip.param.market;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CreditCurveScenarioContainer extends org.drip.param.definition.ScenarioCreditCurve {
+public class CreditCurveScenarioContainer extends org.drip.param.definition.CreditScenarioCurve {
 	private static final boolean s_bBlog = false;
 
 	private double _dblCouponBump = 0.0001;
@@ -51,7 +50,7 @@ public class CreditCurveScenarioContainer extends org.drip.param.definition.Scen
 	private org.drip.analytics.definition.CreditCurve _ccBumpDn = null;
 	private org.drip.analytics.definition.CreditCurve _ccRecoveryUp = null;
 	private org.drip.analytics.definition.CreditCurve _ccRecoveryDn = null;
-	private org.drip.state.estimator.CreditCurveScenarioGenerator _ccsg = null;
+	private org.drip.analytics.calibration.CreditCurveScenarioGenerator _ccsg = null;
 	private org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.definition.CreditCurve>
 		_mapCustomCC = null;
 	private org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.definition.CreditCurve>
@@ -60,8 +59,8 @@ public class CreditCurveScenarioContainer extends org.drip.param.definition.Scen
 		_mapTenorCCBumpDn = null;
 
 	/**
-	 * Construct CreditCurveScenarioContainer from the array of calibration instruments, the coupon bump
-	 * 	parameter, and the recovery bump parameter
+	 * Constructs CreditCurveScenarioContainer from the array of calibration instruments, the coupon bump
+	 * 		parameter, and the recovery bump parameter
 	 * 
 	 * @param aCalibInst Array of calibration instruments
 	 * @param dblCouponBump Coupon Bump
@@ -76,19 +75,19 @@ public class CreditCurveScenarioContainer extends org.drip.param.definition.Scen
 		final double dblRecoveryBump)
 		throws java.lang.Exception
 	{
-		if (null == aCalibInst || 0 == aCalibInst.length || !org.drip.quant.common.NumberUtil.IsValid
-			(_dblCouponBump = dblCouponBump) || !org.drip.quant.common.NumberUtil.IsValid (_dblRecoveryBump =
+		if (null == aCalibInst || 0 == aCalibInst.length || !org.drip.math.common.NumberUtil.IsValid
+			(_dblCouponBump = dblCouponBump) || !org.drip.math.common.NumberUtil.IsValid (_dblRecoveryBump =
 				dblRecoveryBump) || null == (_ccsg = new
-					org.drip.state.estimator.CreditCurveScenarioGenerator (aCalibInst)))
+					org.drip.analytics.calibration.CreditCurveScenarioGenerator (aCalibInst)))
 			throw new java.lang.Exception ("CreditCurveScenarioContainer ctr => Invalid Inputs!");
 	}
 
 	@Override public boolean cookScenarioCC (
 		final java.lang.String strName,
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.analytics.rates.DiscountCurve dc,
-		final org.drip.analytics.rates.DiscountCurve dcTSY,
-		final org.drip.analytics.rates.DiscountCurve dcEDSF,
+		final org.drip.analytics.definition.DiscountCurve dc,
+		final org.drip.analytics.definition.DiscountCurve dcTSY,
+		final org.drip.analytics.definition.DiscountCurve dcEDSF,
 		final double[] adblQuotes,
 		final double dblRecovery,
 		final java.lang.String[] astrCalibMeasure,
@@ -99,7 +98,7 @@ public class CreditCurveScenarioContainer extends org.drip.param.definition.Scen
 		final int iCCScenario)
 	{
 		if (null == _ccsg || null == dc || null == adblQuotes || 0 == adblQuotes.length ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblRecovery) || null == astrCalibMeasure || 0 ==
+			!org.drip.math.common.NumberUtil.IsValid (dblRecovery) || null == astrCalibMeasure || 0 ==
 				astrCalibMeasure.length || astrCalibMeasure.length != adblQuotes.length) {
 			if (s_bBlog)
 				System.out.println ("Bad CreditCurveScenarioContainer.cookScenarioCC Input params!");
@@ -115,7 +114,7 @@ public class CreditCurveScenarioContainer extends org.drip.param.definition.Scen
 			return false;
 		}
 
-		if (0 != (org.drip.param.definition.ScenarioCreditCurve.CC_FLAT_UP & iCCScenario)) {
+		if (0 != (org.drip.param.definition.CreditScenarioCurve.CC_FLAT_UP & iCCScenario)) {
 			if (null == (_ccBumpUp = _ccsg.createCC (strName, valParams, dc, dcTSY, dcEDSF,
 				org.drip.analytics.support.AnalyticsHelper.BumpQuotes (adblQuotes, _dblCouponBump, false),
 					dblRecovery, astrCalibMeasure, mmFixings, quotingParams, bFlat))) {
@@ -126,7 +125,7 @@ public class CreditCurveScenarioContainer extends org.drip.param.definition.Scen
 			}
 		}
 
-		if (0 != (org.drip.param.definition.ScenarioCreditCurve.CC_FLAT_DN & iCCScenario)) {
+		if (0 != (org.drip.param.definition.CreditScenarioCurve.CC_FLAT_DN & iCCScenario)) {
 			if (null == (_ccBumpDn = _ccsg.createCC (strName, valParams, dc, dcTSY, dcEDSF,
 				org.drip.analytics.support.AnalyticsHelper.BumpQuotes (adblQuotes, -_dblCouponBump,
 					false), dblRecovery, astrCalibMeasure, mmFixings, quotingParams, bFlat))) {
@@ -137,7 +136,7 @@ public class CreditCurveScenarioContainer extends org.drip.param.definition.Scen
 			}
 		}
 
-		if (0 != (org.drip.param.definition.ScenarioCreditCurve.CC_TENOR_UP & iCCScenario)) {
+		if (0 != (org.drip.param.definition.CreditScenarioCurve.CC_TENOR_UP & iCCScenario)) {
 			if (null == (_mapTenorCCBumpUp = _ccsg.createTenorCCMap (strName, valParams, dc, dcTSY, dcEDSF,
 				adblQuotes, _dblCouponBump, dblRecovery, astrCalibMeasure, mmFixings, quotingParams, bFlat)))
 			{
@@ -149,7 +148,7 @@ public class CreditCurveScenarioContainer extends org.drip.param.definition.Scen
 			}
 		}
 
-		if (0 != (org.drip.param.definition.ScenarioCreditCurve.CC_TENOR_DN & iCCScenario)) {
+		if (0 != (org.drip.param.definition.CreditScenarioCurve.CC_TENOR_DN & iCCScenario)) {
 			if (null == (_mapTenorCCBumpDn = _ccsg.createTenorCCMap (strName, valParams, dc, dcTSY, dcEDSF,
 				adblQuotes, -_dblCouponBump, dblRecovery, astrCalibMeasure, mmFixings, quotingParams,
 					bFlat))) {
@@ -161,7 +160,7 @@ public class CreditCurveScenarioContainer extends org.drip.param.definition.Scen
 			}
 		}
 
-		if (0 != (org.drip.param.definition.ScenarioCreditCurve.CC_RR_FLAT_UP & iCCScenario)) {
+		if (0 != (org.drip.param.definition.CreditScenarioCurve.CC_RR_FLAT_UP & iCCScenario)) {
 			if (null == (_ccRecoveryUp = _ccsg.createCC (strName, valParams, dc, dcTSY, dcEDSF, adblQuotes,
 				dblRecovery + _dblRecoveryBump, astrCalibMeasure, mmFixings, quotingParams, bFlat))) {
 				if (s_bBlog)
@@ -171,7 +170,7 @@ public class CreditCurveScenarioContainer extends org.drip.param.definition.Scen
 			}
 		}
 
-		if (0 != (org.drip.param.definition.ScenarioCreditCurve.CC_RR_FLAT_DN & iCCScenario)) {
+		if (0 != (org.drip.param.definition.CreditScenarioCurve.CC_RR_FLAT_DN & iCCScenario)) {
 			if (null == (_ccRecoveryDn = _ccsg.createCC (strName, valParams, dc, dcTSY, dcEDSF, adblQuotes,
 				dblRecovery - _dblRecoveryBump, astrCalibMeasure, mmFixings, quotingParams, bFlat))) {
 				if (s_bBlog)
@@ -188,9 +187,9 @@ public class CreditCurveScenarioContainer extends org.drip.param.definition.Scen
 		final java.lang.String strName,
 		final java.lang.String strCustomName,
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.analytics.rates.DiscountCurve dc,
-		final org.drip.analytics.rates.DiscountCurve dcTSY,
-		final org.drip.analytics.rates.DiscountCurve dcEDSF,
+		final org.drip.analytics.definition.DiscountCurve dc,
+		final org.drip.analytics.definition.DiscountCurve dcTSY,
+		final org.drip.analytics.definition.DiscountCurve dcEDSF,
 		final double[] adblQuotes,
 		final double dblRecovery,
 		final java.lang.String[] astrCalibMeasure,
@@ -198,30 +197,30 @@ public class CreditCurveScenarioContainer extends org.drip.param.definition.Scen
 			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>> mmFixings,
 		final org.drip.param.valuation.QuotingParams quotingParams,
 		final boolean bFlat,
-		final org.drip.param.definition.ResponseValueTweakParams mmtpDC,
-		final org.drip.param.definition.ResponseValueTweakParams mmtpTSY,
-		final org.drip.param.definition.ResponseValueTweakParams mmtpEDSF,
-		final org.drip.param.definition.ResponseValueTweakParams mmtpCC)
+		final org.drip.param.definition.NodeTweakParams ntpDC,
+		final org.drip.param.definition.NodeTweakParams ntpTSY,
+		final org.drip.param.definition.NodeTweakParams ntpEDSF,
+		final org.drip.param.definition.NodeTweakParams ntpCC)
 	{
 		if (null == strCustomName || strCustomName.isEmpty() || null == _ccsg || null == dc || null ==
-			adblQuotes || 0 == adblQuotes.length || !org.drip.quant.common.NumberUtil.IsValid (dblRecovery) ||
+			adblQuotes || 0 == adblQuotes.length || !org.drip.math.common.NumberUtil.IsValid (dblRecovery) ||
 				null == astrCalibMeasure || 0 == astrCalibMeasure.length || astrCalibMeasure.length !=
-					adblQuotes.length || (null == mmtpDC && null == mmtpTSY && null == mmtpEDSF && null ==
-						mmtpCC)) {
+					adblQuotes.length || (null == ntpDC && null == ntpTSY && null == ntpEDSF && null ==
+						ntpCC)) {
 			if (s_bBlog)
 				System.out.println ("CreditCurveScenarioContainer.cookCustomCC => Bad Input params!");
 
 			return false;
 		}
 
-		org.drip.analytics.rates.DiscountCurve dcAdj = (org.drip.analytics.rates.DiscountCurve)
-			dc.customTweakManifestMeasure (mmtpDC);
+		org.drip.analytics.definition.DiscountCurve dcAdj = (org.drip.analytics.definition.DiscountCurve)
+			dc.createTweakedCurve (ntpDC);
 
-		org.drip.analytics.rates.DiscountCurve dcTSYAdj = (org.drip.analytics.rates.DiscountCurve)
-			dcTSY.customTweakManifestMeasure (mmtpTSY);
+		org.drip.analytics.definition.DiscountCurve dcTSYAdj = (org.drip.analytics.definition.DiscountCurve)
+			dcTSY.createTweakedCurve (ntpTSY);
 
-		org.drip.analytics.rates.DiscountCurve dcEDSFAdj = (org.drip.analytics.rates.DiscountCurve)
-			dcEDSF.customTweakManifestMeasure (mmtpEDSF);
+		org.drip.analytics.definition.DiscountCurve dcEDSFAdj = (org.drip.analytics.definition.DiscountCurve)
+			dcEDSF.createTweakedCurve (ntpEDSF);
 
 		org.drip.analytics.definition.CreditCurve ccBaseCustom = _ccsg.createCC (strName, valParams, null ==
 			dcAdj ? dc : dcAdj, null == dcTSYAdj ? dcTSY : dcTSYAdj, null == dcEDSFAdj ? dcEDSF : dcEDSFAdj,
@@ -240,7 +239,7 @@ public class CreditCurveScenarioContainer extends org.drip.param.definition.Scen
 				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.definition.CreditCurve>();
 
 		org.drip.analytics.definition.CreditCurve ccCustom = (org.drip.analytics.definition.CreditCurve)
-			ccBaseCustom.customTweakManifestMeasure (mmtpCC);
+			ccBaseCustom.createTweakedCurve (ntpCC);
 
 		if (null == ccCustom)
 			_mapCustomCC.put (strCustomName, ccBaseCustom);

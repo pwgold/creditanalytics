@@ -6,7 +6,6 @@ package org.drip.product.credit;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -638,7 +637,7 @@ public class BondBasket extends org.drip.product.definition.BasketProduct {
 		if (null == strSerializedBasketBond || strSerializedBasketBond.isEmpty())
 			throw new java.lang.Exception ("BondBasket de-serializer: Cannot locate state");
 
-		java.lang.String[] astrField = org.drip.quant.common.StringUtil.Split (strSerializedBasketBond,
+		java.lang.String[] astrField = org.drip.math.common.StringUtil.Split (strSerializedBasketBond,
 			getFieldDelimiter());
 
 		if (null == astrField || 6 > astrField.length)
@@ -662,7 +661,7 @@ public class BondBasket extends org.drip.product.definition.BasketProduct {
 			org.drip.service.stream.Serializer.NULL_SER_STRING.equalsIgnoreCase (astrField[3]))
 			throw new java.lang.Exception ("BondBasket de-serializer: Cannot locate component bonds");
 
-		java.lang.String[] astrBondRecord = org.drip.quant.common.StringUtil.Split (astrField[3],
+		java.lang.String[] astrBondRecord = org.drip.math.common.StringUtil.Split (astrField[3],
 			getCollectionRecordDelimiter());
 
 		if (null == astrBondRecord || 0 == astrBondRecord.length)
@@ -682,7 +681,7 @@ public class BondBasket extends org.drip.product.definition.BasketProduct {
 			org.drip.service.stream.Serializer.NULL_SER_STRING.equalsIgnoreCase (astrField[4]))
 			throw new java.lang.Exception ("BondBasket de-serializer: Cannot locate component weights");
 
-		java.lang.String[] astrWeightRecord = org.drip.quant.common.StringUtil.Split (astrField[4],
+		java.lang.String[] astrWeightRecord = org.drip.math.common.StringUtil.Split (astrField[4],
 			getCollectionRecordDelimiter());
 
 		if (null == astrWeightRecord || 0 == astrWeightRecord.length)
@@ -727,7 +726,7 @@ public class BondBasket extends org.drip.product.definition.BasketProduct {
 	{
 		if (null == strName || strName.isEmpty() || null == aBond || 0 == aBond.length || null == adblWeights
 			|| 0 == adblWeights.length || aBond.length != adblWeights.length || null == dtEffective)
-			throw new java.lang.Exception ("BasketBond ctr: Invalid inputs");
+			throw new java.lang.Exception ("Invalid inputs into BasketBond!");
 
 		_aBond = aBond;
 		_strName = strName;
@@ -737,13 +736,13 @@ public class BondBasket extends org.drip.product.definition.BasketProduct {
 		_adblNormWeights = new double[adblWeights.length];
 
 		for (int i = 0; i < adblWeights.length; ++i) {
-			if (!org.drip.quant.common.NumberUtil.IsValid (adblWeights[i]))
-				throw new java.lang.Exception ("BasketBond ctr: Invalid weights");
+			if (!org.drip.math.common.NumberUtil.IsValid (adblWeights[i]))
+				throw new java.lang.Exception ("Invalid BondBasket weights!");
 
 			dblCumulativeWeight += adblWeights[i];
 		}
 
-		if (0. == dblCumulativeWeight) throw new java.lang.Exception ("BasketBond ctr: Invalid weights");
+		if (0. == dblCumulativeWeight) throw new java.lang.Exception ("Invalid BondBasket weights!");
 
 		for (int i = 0; i < adblWeights.length; ++i)
 			_adblNormWeights[i] = adblWeights[i] / dblCumulativeWeight;
@@ -839,8 +838,7 @@ public class BondBasket extends org.drip.product.definition.BasketProduct {
 	}
 
 	@Override public org.drip.service.stream.Serializer deserialize (
-		final byte[] ab)
-	{
+		final byte[] ab) {
 		try {
 			return new BondBasket (ab);
 		} catch (java.lang.Exception e) {

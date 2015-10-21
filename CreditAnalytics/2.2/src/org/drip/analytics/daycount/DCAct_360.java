@@ -6,7 +6,6 @@ package org.drip.analytics.daycount;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
@@ -46,12 +45,12 @@ public class DCAct_360 implements org.drip.analytics.daycount.DCFCalculator {
 	{
 	}
 
-	@Override public java.lang.String baseCalculationType()
+	@Override public java.lang.String getBaseCalculationType()
 	{
 		return "DCAct_360";
 	}
 
-	@Override public java.lang.String[] alternateNames()
+	@Override public java.lang.String[] getAlternateNames()
 	{
 		return new java.lang.String[] {"Actual/360 Fixed", "Act/360", "A/360", "French", "US:WIB Act/360",
 			"DCAct_360"};
@@ -71,7 +70,7 @@ public class DCAct_360 implements org.drip.analytics.daycount.DCFCalculator {
 		if (null == dm)
 			throw new java.lang.Exception ("DCAct_360.yearFraction: Cannot create DateEOMAdjustment!");
 
-		return (dblEnd - dblStart + dm.posterior() - dm.anterior()) / 360.;
+		return (dblEnd - dblStart + dm._iD2Adj - dm._iD1Adj) / 360.;
 	}
 
 	@Override public int daysAccrued (
@@ -88,6 +87,6 @@ public class DCAct_360 implements org.drip.analytics.daycount.DCFCalculator {
 		if (null == dm)
 			throw new java.lang.Exception ("DCAct_360.daysAccrued: Cannot create DateEOMAdjustment!");
 
-		return (int) (dblEnd - dblStart + dm.posterior() - dm.anterior());
+		return (int) (dblEnd - dblStart + dm._iD2Adj - dm._iD1Adj);
 	}
 }

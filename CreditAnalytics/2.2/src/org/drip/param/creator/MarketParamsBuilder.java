@@ -6,7 +6,6 @@ package org.drip.param.creator;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
@@ -40,7 +39,7 @@ package org.drip.param.creator;
 public class MarketParamsBuilder {
 
 	/**
-	 * Create MarketParams from the array of calibration instruments
+	 * Creates MarketParams from the array of calibration instruments
 	 * 
 	 * @return MarketParams object
 	 */

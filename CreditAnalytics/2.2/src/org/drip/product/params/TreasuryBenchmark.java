@@ -6,7 +6,6 @@ package org.drip.product.params;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -33,8 +32,7 @@ package org.drip.product.params;
 
 /**
  * TreasuryBenchmark contains component treasury benchmark parameters - the treasury benchmark set, and the
- *  names of the treasury and the EDSF IR curves. It also exports serialization into and de-serialization out
- *  of byte arrays.
+ *  names of the treasury and the EDSF IR curves.
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -61,7 +59,7 @@ public class TreasuryBenchmark extends org.drip.service.stream.Serializer implem
 	public java.lang.String _strIREDSF = "";
 
 	/**
-	 * Create the TreasuryBenchmark object from the treasury benchmark set, and the names of the
+	 * Creates the TreasuryBenchmark object from the treasury benchmark set, and the names of the
 	 * 	treasury and the EDF IR curves.
 	 * 
 	 * @param tsyBmkSet Treasury Benchmark Set
@@ -105,7 +103,7 @@ public class TreasuryBenchmark extends org.drip.service.stream.Serializer implem
 		if (null == strSerializedTreasuryBenchmark || strSerializedTreasuryBenchmark.isEmpty())
 			throw new java.lang.Exception ("TreasuryBenchmark de-serializer: Cannot locate state");
 
-		java.lang.String[] astrField = org.drip.quant.common.StringUtil.Split (strSerializedTreasuryBenchmark,
+		java.lang.String[] astrField = org.drip.math.common.StringUtil.Split (strSerializedTreasuryBenchmark,
 			getFieldDelimiter());
 
 		if (null == astrField || 4 > astrField.length)

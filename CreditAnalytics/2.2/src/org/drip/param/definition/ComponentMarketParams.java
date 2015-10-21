@@ -6,7 +6,6 @@ package org.drip.param.definition;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -43,7 +42,7 @@ package org.drip.param.definition;
 public abstract class ComponentMarketParams extends org.drip.service.stream.Serializer {
 
 	/**
-	 * Retrieve the Component Credit Curve
+	 * Retrieves the Component Credit Curve
 	 * 
 	 * @return Component Credit Curve
 	 */
@@ -51,7 +50,7 @@ public abstract class ComponentMarketParams extends org.drip.service.stream.Seri
 	public abstract org.drip.analytics.definition.CreditCurve getCreditCurve();
 
 	/**
-	 * (Re)-set the Component Credit Curve
+	 * (Re)-sets the Component Credit Curve
 	 * 
 	 * @param cc Component Credit Curve
 	 * 
@@ -62,34 +61,34 @@ public abstract class ComponentMarketParams extends org.drip.service.stream.Seri
 		final org.drip.analytics.definition.CreditCurve cc);
 
 	/**
-	 * Retrieve the Component Discount Curve
+	 * Retrieves the Component Discount Curve
 	 * 
 	 * @return Component Discount Curve
 	 */
 
-	public abstract org.drip.analytics.rates.DiscountCurve getDiscountCurve();
+	public abstract org.drip.analytics.definition.DiscountCurve getDiscountCurve();
 
 	/**
-	 * (Re)-set the Component Forward Curve
+	 * (Re)-sets the Component Forward Discount Curve
 	 * 
-	 * @param fc Component Forward Curve
+	 * @param dcForward Component Forward Discount Curve
 	 * 
 	 * @return TRUE => Successfully set
 	 */
 
-	public abstract boolean setForwardCurve (
-		final org.drip.analytics.rates.ForwardCurve fc);
+	public abstract boolean setForwardDiscountCurve (
+		final org.drip.analytics.definition.DiscountCurve dcForward);
 
 	/**
-	 * Retrieve the Component Forward Curve
+	 * Retrieves the Component Forward Discount Curve
 	 * 
-	 * @return Component Forward Curve
+	 * @return Component Forward Discount Curve
 	 */
 
-	public abstract org.drip.analytics.rates.ForwardCurve getForwardCurve();
+	public abstract org.drip.analytics.definition.DiscountCurve getForwardDiscountCurve();
 
 	/**
-	 * (Re)-set the Component Discount Curve
+	 * (Re)-sets the Component Discount Curve
 	 * 
 	 * @param dc Component Discount Curve
 	 * 
@@ -97,18 +96,18 @@ public abstract class ComponentMarketParams extends org.drip.service.stream.Seri
 	 */
 
 	public abstract boolean setDiscountCurve (
-		final org.drip.analytics.rates.DiscountCurve dc);
+		final org.drip.analytics.definition.DiscountCurve dc);
 
 	/**
-	 * Retrieve the Component TSY Discount Curve
+	 * Retrieves the Component TSY Discount Curve
 	 * 
 	 * @return Component TSY Discount Curve
 	 */
 
-	public abstract org.drip.analytics.rates.DiscountCurve getTSYDiscountCurve();
+	public abstract org.drip.analytics.definition.DiscountCurve getTSYDiscountCurve();
 
 	/**
-	 * (Re)-set the Component TSY Discount Curve
+	 * (Re)-sets the Component TSY Discount Curve
 	 * 
 	 * @param dcTSY Component TSY Discount Curve
 	 * 
@@ -116,18 +115,18 @@ public abstract class ComponentMarketParams extends org.drip.service.stream.Seri
 	 */
 
 	public abstract boolean setTSYDiscountCurve (
-		final org.drip.analytics.rates.DiscountCurve dcTSY);
+		final org.drip.analytics.definition.DiscountCurve dcTSY);
 
 	/**
-	 * Retrieve the Component EDSF Discount Curve
+	 * Retrieves the Component EDSF Discount Curve
 	 * 
 	 * @return Component EDSF Discount Curve
 	 */
 
-	public abstract org.drip.analytics.rates.DiscountCurve getEDSFDiscountCurve();
+	public abstract org.drip.analytics.definition.DiscountCurve getEDSFDiscountCurve();
 
 	/**
-	 * (Re)-set the Component EDSF Discount Curve
+	 * (Re)-sets the Component EDSF Discount Curve
 	 * 
 	 * @param dcEDSF Component EDSF Discount Curve
 	 * 
@@ -135,10 +134,10 @@ public abstract class ComponentMarketParams extends org.drip.service.stream.Seri
 	 */
 
 	public abstract boolean setEDSFDiscountCurve (
-		final org.drip.analytics.rates.DiscountCurve dcEDSF);
+		final org.drip.analytics.definition.DiscountCurve dcEDSF);
 
 	/**
-	 * Retrieve the Component Quote
+	 * Retrieves the Component Quote
 	 * 
 	 * @return Component Quote
 	 */
@@ -146,7 +145,7 @@ public abstract class ComponentMarketParams extends org.drip.service.stream.Seri
 	public abstract org.drip.param.definition.ComponentQuote getComponentQuote();
 
 	/**
-	 * (Re)-set the Component Quote
+	 * (Re)-sets the Component Quote
 	 * 
 	 * @param compQuote Component Quote
 	 * 
@@ -157,17 +156,16 @@ public abstract class ComponentMarketParams extends org.drip.service.stream.Seri
 		final org.drip.param.definition.ComponentQuote compQuote);
 
 	/**
-	 * Retrieve the TSY Benchmark Quotes
+	 * Retrieves the TSY Benchmark Quotes
 	 * 
 	 * @return TSY Benchmark Quotes
 	 */
 
-	public abstract
-		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.param.definition.ComponentQuote>
-			getTSYBenchmarkQuotes();
+	public abstract org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.param.definition.ComponentQuote>
+		getTSYBenchmarkQuotes();
 
 	/**
-	 * Retrieve the Fixings
+	 * Retrieves the Fixings
 	 * 
 	 * @return The Fixings Object
 	 */
@@ -176,7 +174,7 @@ public abstract class ComponentMarketParams extends org.drip.service.stream.Seri
 		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>> getFixings();
 
 	/**
-	 * (Re)-set the Fixings
+	 * (Re)-sets the Fixings
 	 * 
 	 * @param mmFixings Fixings
 	 * 

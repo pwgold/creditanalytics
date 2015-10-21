@@ -6,7 +6,6 @@ package org.drip.regression.spline;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
@@ -33,7 +32,7 @@ package org.drip.regression.spline;
 /**
  * BasisSplineRegressor implements the custom basis spline regressor for the given basis spline. As part of
  *  the regression run, it executes the following:
- *  - Calibrate and compute the left and the right Jacobian.
+ *  - Calibrate and compute the left and he right Jacobian.
  *  - Reset right node and re-run calibration.
  *  - Compute an intermediate value Jacobian.
  *
@@ -42,14 +41,14 @@ package org.drip.regression.spline;
 
 public class BasisSplineRegressor extends org.drip.regression.core.UnitRegressionExecutor {
 	private java.lang.String _strName = "";
-	private org.drip.spline.segment.ConstitutiveState _seg1 = null;
-	private org.drip.spline.segment.ConstitutiveState _seg2 = null;
-	private org.drip.quant.calculus.WengertJacobian _wjLeft = null;
-	private org.drip.quant.calculus.WengertJacobian _wjRight = null;
-	private org.drip.quant.calculus.WengertJacobian _wjValue = null;
+	private org.drip.math.grid.Segment _seg1 = null;
+	private org.drip.math.grid.Segment _seg2 = null;
+	private org.drip.math.calculus.WengertJacobian _wjLeft = null;
+	private org.drip.math.calculus.WengertJacobian _wjRight = null;
+	private org.drip.math.calculus.WengertJacobian _wjValue = null;
 
 	/**
-	 * Create an instance of Polynomial BasisSplineRegressor
+	 * Creates an instance of Polynomial BasisSplineRegressor
 	 * 
 	 * @param strName Regressor Name
 	 * @param strScenarioName Regressor Scenario Name
@@ -66,11 +65,11 @@ public class BasisSplineRegressor extends org.drip.regression.core.UnitRegressio
 		final int iCk)
 	{
 		try {
-			org.drip.spline.basis.FunctionSet fs =
-				org.drip.spline.basis.FunctionSetBuilder.PolynomialBasisSet (new
-					org.drip.spline.basis.PolynomialFunctionSetParams (iNumBasis));
+			org.drip.math.function.AbstractUnivariate[] aAU =
+				org.drip.math.spline.SegmentBasisSetBuilder.PolynomialBasisSet (new
+					org.drip.math.spline.PolynomialBasisSetParams (iNumBasis));
 
-			return null == fs ? null : new BasisSplineRegressor (strName, strScenarioName, fs, iCk);
+			return null == aAU ? null : new BasisSplineRegressor (strName, strScenarioName, aAU, iCk);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -79,7 +78,7 @@ public class BasisSplineRegressor extends org.drip.regression.core.UnitRegressio
 	}
 
 	/**
-	 * Create an instance of Bernstein Polynomial BasisSplineRegressor
+	 * Creates an instance of Bernstein Polynomial BasisSplineRegressor
 	 * 
 	 * @param strName Regressor Name
 	 * @param strScenarioName Regressor Scenario Name
@@ -96,11 +95,11 @@ public class BasisSplineRegressor extends org.drip.regression.core.UnitRegressio
 		final int iCk)
 	{
 		try {
-			org.drip.spline.basis.FunctionSet fs =
-				org.drip.spline.basis.FunctionSetBuilder.BernsteinPolynomialBasisSet (new
-					org.drip.spline.basis.PolynomialFunctionSetParams (iNumBasis));
+			org.drip.math.function.AbstractUnivariate[] aAU =
+				org.drip.math.spline.SegmentBasisSetBuilder.BernsteinPolynomialBasisSet (new
+					org.drip.math.spline.PolynomialBasisSetParams (iNumBasis));
 
-			return null == fs ? null : new BasisSplineRegressor (strName, strScenarioName, fs, iCk);
+			return null == aAU ? null : new BasisSplineRegressor (strName, strScenarioName, aAU, iCk);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -109,7 +108,7 @@ public class BasisSplineRegressor extends org.drip.regression.core.UnitRegressio
 	}
 
 	/**
-	 * Create an instance of Exponential BasisSplineRegressor
+	 * Creates an instance of Exponential BasisSplineRegressor
 	 * 
 	 * @param strName Regressor Name
 	 * @param strScenarioName Regressor Scenario Name
@@ -124,11 +123,11 @@ public class BasisSplineRegressor extends org.drip.regression.core.UnitRegressio
 		final double dblTension)
 	{
 		try {
-			org.drip.spline.basis.FunctionSet fs =
-				org.drip.spline.basis.FunctionSetBuilder.ExponentialTensionBasisSet (new
-					org.drip.spline.basis.ExponentialTensionSetParams (dblTension));
+			org.drip.math.function.AbstractUnivariate[] aAU =
+				org.drip.math.spline.SegmentBasisSetBuilder.ExponentialTensionBasisSet (new
+					org.drip.math.spline.ExponentialTensionBasisSetParams (dblTension));
 
-			return null == fs ? null : new BasisSplineRegressor (strName, strScenarioName, fs, 2);
+			return null == aAU ? null : new BasisSplineRegressor (strName, strScenarioName, aAU, 2);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -137,7 +136,7 @@ public class BasisSplineRegressor extends org.drip.regression.core.UnitRegressio
 	}
 
 	/**
-	 * Create an instance of Hyperbolic BasisSplineRegressor
+	 * Creates an instance of Hyperbolic BasisSplineRegressor
 	 * 
 	 * @param strName Regressor Name
 	 * @param strScenarioName Regressor Scenario Name
@@ -152,11 +151,11 @@ public class BasisSplineRegressor extends org.drip.regression.core.UnitRegressio
 		final double dblTension)
 	{
 		try {
-			org.drip.spline.basis.FunctionSet fs =
-				org.drip.spline.basis.FunctionSetBuilder.HyperbolicTensionBasisSet (new
-					org.drip.spline.basis.ExponentialTensionSetParams (dblTension));
+			org.drip.math.function.AbstractUnivariate[] aAU =
+				org.drip.math.spline.SegmentBasisSetBuilder.HyperbolicTensionBasisSet (new
+					org.drip.math.spline.ExponentialTensionBasisSetParams (dblTension));
 
-			return null == fs ? null : new BasisSplineRegressor (strName, strScenarioName, fs, 2);
+			return null == aAU ? null : new BasisSplineRegressor (strName, strScenarioName, aAU, 2);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -165,7 +164,7 @@ public class BasisSplineRegressor extends org.drip.regression.core.UnitRegressio
 	}
 
 	/**
-	 * Create an instance of the Kaklis-Pandelis BasisSplineRegressor
+	 * Creates an instance of the Kaklis-Pandelis BasisSplineRegressor
 	 * 
 	 * @param strName Regressor Name
 	 * @param strScenarioName Regressor Scenario Name
@@ -180,11 +179,11 @@ public class BasisSplineRegressor extends org.drip.regression.core.UnitRegressio
 		final int iKPPolynomialTension)
 	{
 		try {
-			org.drip.spline.basis.FunctionSet fs =
-				org.drip.spline.basis.FunctionSetBuilder.KaklisPandelisBasisSet (new
-					org.drip.spline.basis.KaklisPandelisSetParams (iKPPolynomialTension));
+			org.drip.math.function.AbstractUnivariate[] aAU =
+				org.drip.math.spline.SegmentBasisSetBuilder.KaklisPandelisBasisSet (new
+					org.drip.math.spline.KaklisPandelisBasisSetParams (iKPPolynomialTension));
 
-			return null == fs ? null : new BasisSplineRegressor (strName, strScenarioName, fs, 2);
+			return null == aAU ? null : new BasisSplineRegressor (strName, strScenarioName, aAU, 2);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -192,25 +191,26 @@ public class BasisSplineRegressor extends org.drip.regression.core.UnitRegressio
 		return null;
 	}
 
-	protected BasisSplineRegressor (
+	private BasisSplineRegressor (
 		final java.lang.String strName,
 		final java.lang.String strScenarioName,
-		final org.drip.spline.basis.FunctionSet fs,
+		final org.drip.math.function.AbstractUnivariate[] aAU,
 		final int iCk)
 		throws java.lang.Exception
 	{
 		super (strName, strScenarioName);
 
-		org.drip.spline.params.SegmentDesignInelasticControl segParams =
-			org.drip.spline.params.SegmentDesignInelasticControl.Create (iCk, 2);
+		if (null == (_strName = strName) || _strName.isEmpty())
+			throw new java.lang.Exception ("BasisSplineRegressor ctr: Invalid Input");
 
-		org.drip.spline.params.ResponseScalingShapeControl rssc = new
-			org.drip.spline.params.ResponseScalingShapeControl (true, new
-				org.drip.quant.function1D.QuadraticRationalShapeControl (1.));
+		org.drip.math.spline.SegmentInelasticParams segParams = new
+			org.drip.math.spline.SegmentInelasticParams (iCk, null);
 
-		if (null == (_seg1 = org.drip.spline.segment.ConstitutiveState.Create (1.0, 3.0, fs, rssc,
-			segParams)) || null == (_seg2 = org.drip.spline.segment.ConstitutiveState.Create (3.0, 6.0, fs,
-				rssc, segParams)))
+		org.drip.math.function.AbstractUnivariate rsc = new org.drip.math.function.RationalShapeControl (1.);
+
+		if (null == (_seg1 = org.drip.math.spline.SegmentBasisSetBuilder.CreateCk (1.0, 3.0, aAU, rsc,
+			segParams)) || null == (_seg2 = org.drip.math.spline.SegmentBasisSetBuilder.CreateCk (3.0, 6.0,
+				aAU, rsc, segParams)))
 			throw new java.lang.Exception ("BasisSplineRegressor ctr: Cant create the segments");
 	}
 
@@ -222,11 +222,9 @@ public class BasisSplineRegressor extends org.drip.regression.core.UnitRegressio
 	@Override public boolean execRegression()
 	{
 		try {
-			return null != (_wjLeft = _seg1.jackDCoeffDEdgeParams (25., java.lang.Double.NaN, 0.,
-				java.lang.Double.NaN, 20.25, java.lang.Double.NaN, null, null)) && null != (_wjRight =
-					_seg2.jackDCoeffDEdgeParams (_seg1, 16., java.lang.Double.NaN, null, null)) &&
-						_seg2.calibrate (_seg1, 14., java.lang.Double.NaN, null, null) && null != (_wjValue =
-							_seg2.jackDResponseDEdgeInputs (5., 1));
+			return null != (_wjLeft = _seg1.calibrateJacobian (25., 0., 20.25)) && null !=
+				(_wjRight = _seg2.calibrateJacobian (_seg1, 16.)) && _seg2.calibrate (_seg1,
+					14.) && null != (_wjValue = _seg2.calcValueJacobian (5.));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -238,23 +236,23 @@ public class BasisSplineRegressor extends org.drip.regression.core.UnitRegressio
 		final org.drip.regression.core.RegressionRunDetail rnvd)
 	{
 		try {
-			if (!rnvd.set (_strName + "_Seg1_1_0", "" + _seg1.responseValue (1.))) return false;
+			if (!rnvd.set (_strName + "_Seg1_1_0", "" + _seg1.calcValue (1.))) return false;
 
-			if (!rnvd.set (_strName + "_Seg1_3_0", "" + _seg1.responseValue (3.))) return false;
+			if (!rnvd.set (_strName + "_Seg1_3_0", "" + _seg1.calcValue (3.))) return false;
 
 			if (!rnvd.set (_strName + "_Seg1_Jack", _wjLeft.displayString()));
 
-			if (!rnvd.set (_strName + "_Seg1_Head_Jack", _seg1.jackDCoeffDEdgeInputs().displayString()));
+			if (!rnvd.set (_strName + "_Seg1_Head_Jack", _seg1.calcJacobian().displayString()));
 
 			if (!rnvd.set (_strName + "_Seg1_Monotone", _seg1.monotoneType().toString()));
 
-			if (!rnvd.set (_strName + "_Seg2_3_0", "" + _seg2.responseValue (3.))) return false;
+			if (!rnvd.set (_strName + "_Seg2_3_0", "" + _seg2.calcValue (3.))) return false;
 
-			if (!rnvd.set (_strName + "_Seg2_6_0", "" + _seg2.responseValue (6.))) return false;
+			if (!rnvd.set (_strName + "_Seg2_6_0", "" + _seg2.calcValue (6.))) return false;
 
 			if (!rnvd.set (_strName + "_Seg2_Jack", _wjRight.displayString()));
 
-			if (!rnvd.set (_strName + "_Seg2_Head_Jack", _seg2.jackDCoeffDEdgeInputs().displayString()));
+			if (!rnvd.set (_strName + "_Seg2_Head_Jack", _seg2.calcJacobian().displayString()));
 
 			if (!rnvd.set (_strName + "_Seg2_Monotone", _seg2.monotoneType().toString()));
 

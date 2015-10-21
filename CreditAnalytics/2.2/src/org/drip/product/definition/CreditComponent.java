@@ -6,7 +6,6 @@ package org.drip.product.definition;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -33,7 +32,7 @@ package org.drip.product.definition;
 
 /**
  * CreditComponent is the base abstract class on top of which all credit components are implemented. Its
- * 	methods expose Credit Valuation Parameters, product specific recovery, and coupon/loss cash flows.
+ * 	methods expose Credit Valuation Parameters, and coupon/loss cash flows.
  *  
  * @author Lakshmi Krishnamurthy
  */
@@ -41,7 +40,7 @@ package org.drip.product.definition;
 public abstract class CreditComponent extends org.drip.product.definition.CalibratableComponent {
 
 	/**
-	 * Get the coupon flow for the credit component
+	 * Gets the coupon flow for the credit component
 	 * 
 	 * @param valParams ValuationParams
 	 * @param pricerParams PricerParams
@@ -50,13 +49,13 @@ public abstract class CreditComponent extends org.drip.product.definition.Calibr
 	 * @return List of ProductCouponPeriodCurveMeasures
 	 */
 
-	public abstract java.util.List<org.drip.analytics.period.CashflowPeriodCurveFactors> getCouponFlow (
+	public abstract java.util.List<org.drip.analytics.period.CouponPeriodCurveFactors> getCouponFlow (
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.PricerParams pricerParams,
 		final org.drip.param.definition.ComponentMarketParams mktParams);
 
 	/**
-	 * Generate the loss flow for the credit component based on the pricer parameters
+	 * Generates the loss flow for the credit component based on the pricer parameters
 	 * 
 	 * @param valParams ValuationParams
 	 * @param pricerParams PricerParams

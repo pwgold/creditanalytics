@@ -6,7 +6,6 @@ package org.drip.param.market;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
  * This file is part of CreditAnalytics, a free-software/open-source library for fixed income analysts and
@@ -105,7 +104,7 @@ public class ComponentTickQuote extends org.drip.service.stream.Serializer {
 		if (null == strSerializedComponentTickQuote || strSerializedComponentTickQuote.isEmpty())
 			throw new java.lang.Exception ("ComponentTickQuote de-serializer: Cannot locate state");
 
-		java.lang.String[] astrField = org.drip.quant.common.StringUtil.Split
+		java.lang.String[] astrField = org.drip.math.common.StringUtil.Split
 			(strSerializedComponentTickQuote, getFieldDelimiter());
 
 		if (null == astrField || 6 > astrField.length)

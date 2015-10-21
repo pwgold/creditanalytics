@@ -6,7 +6,6 @@ package org.drip.param.definition;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
@@ -32,9 +31,8 @@ package org.drip.param.definition;
 
 /**
  * BasketMarketParams class extends the BaketMarketParamsRef for a specific scenario. It provides access to
- *  maps holding named discount curves, named forward curves, named credit curves, named treasury quotes,
- *  named component quotes, and fixings objects, and retrieve the component market parameters from the
- *  specified reference.
+ *  maps holding named discount curves, named credit curves, named treasury quote, named component quote, and
+ * 	fixings object.
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -42,7 +40,7 @@ package org.drip.param.definition;
 public abstract class BasketMarketParams extends org.drip.service.stream.Serializer {
 
 	/**
-	 * Add a named discount curve
+	 * Adds a named discount curve
 	 * 
 	 * @param strName Name
 	 * @param dc Discount Curve
@@ -50,25 +48,12 @@ public abstract class BasketMarketParams extends org.drip.service.stream.Seriali
 	 * @return Success (true) or Failure (false)
 	 */
 
-	public abstract boolean addDiscountCurve (
+	public abstract boolean addDC (
 		final java.lang.String strName,
-		final org.drip.analytics.rates.DiscountCurve dc);
+		final org.drip.analytics.definition.DiscountCurve dc);
 
 	/**
-	 * Add a named Forward curve
-	 * 
-	 * @param strName Name
-	 * @param fc Forward Curve
-	 * 
-	 * @return Success (true) or Failure (false)
-	 */
-
-	public abstract boolean addForwardCurve (
-		final java.lang.String strName,
-		final org.drip.analytics.rates.ForwardCurve fc);
-
-	/**
-	 * Add a named credit curve
+	 * Adds a named credit curve
 	 * 
 	 * @param strName Name
 	 * @param cc Credit Curve
@@ -76,41 +61,30 @@ public abstract class BasketMarketParams extends org.drip.service.stream.Seriali
 	 * @return Success (true) or Failure (false)
 	 */
 
-	public abstract boolean addCreditCurve (
+	public abstract boolean addCC (
 		final java.lang.String strName,
 		final org.drip.analytics.definition.CreditCurve cc);
 
 	/**
-	 * Retrieve a named discount curve
+	 * Retrieves a named discount curve
 	 * 
 	 * @param strName Name
 	 * 
 	 * @return Discount Curve
 	 */
 
-	public abstract org.drip.analytics.rates.DiscountCurve getDiscountCurve (
+	public abstract org.drip.analytics.definition.DiscountCurve getDC (
 		final java.lang.String strName);
 
 	/**
-	 * Retrieve the Named Forward Curve
-	 * 
-	 * @param strName Name
-	 * 
-	 * @return The Forward Curve
-	 */
-
-	public abstract org.drip.analytics.rates.ForwardCurve getForwardCurve (
-		final java.lang.String strName);
-
-	/**
-	 * Retrieve a named credit curve
+	 * Retrieves a named credit curve
 	 * 
 	 * @param strName Name
 	 * 
 	 * @return Credit Curve
 	 */
 
-	public abstract org.drip.analytics.definition.CreditCurve getCreditCurve (
+	public abstract org.drip.analytics.definition.CreditCurve getCC (
 		final java.lang.String strName);
 
 	/**
@@ -138,7 +112,7 @@ public abstract class BasketMarketParams extends org.drip.service.stream.Seriali
 		final java.lang.String strName);
 
 	/**
-	 * Retrieve the basket component's market parameters
+	 * Retrieves the basket component's market parameters
 	 * 
 	 * @param compRef The component's ComponentMarketParamRef
 	 * 

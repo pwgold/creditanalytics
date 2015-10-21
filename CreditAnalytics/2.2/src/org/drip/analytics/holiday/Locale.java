@@ -7,7 +7,6 @@ package org.drip.analytics.holiday;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -45,7 +44,7 @@ public class Locale {
 	private java.util.Set<Base> _setHolidays = new java.util.HashSet<Base>();
 
 	/**
-	 * Construct an empty LocHolidays instance
+	 * Constructs an empty LocHolidays instance
 	 */
 
 	public Locale()
@@ -53,7 +52,7 @@ public class Locale {
 	}
 
 	/**
-	 * Add the array of weekend days
+	 * Adds the array of weekend days
 	 * 
 	 * @param aiDays Array of weekend days
 	 * 
@@ -63,17 +62,15 @@ public class Locale {
 	public boolean addWeekend (
 		final int[] aiDays)
 	{
-		try {
-			return null != (_wkend = new Weekend (aiDays));
-		} catch (java.lang.Exception e) {
-			e.printStackTrace();
-		}
+		if (null == aiDays || 0 == aiDays.length) return false;
 
-		return false;
+		if (null == (_wkend = new Weekend (aiDays))) return false;
+
+		return true;
 	}
 
 	/**
-	 * Add the regular SATURDAY/SUNDAY weekend
+	 * Adds the regular SATURDAY/SUNDAY weekend
 	 * 
 	 * @return Succeeded (true), failure (false)
 	 */
@@ -86,7 +83,7 @@ public class Locale {
 	}
 
 	/**
-	 * Add the given date as a static holiday
+	 * Adds the given date as a static holiday
 	 * 
 	 * @param dt Date
 	 * @param strDescription Description
@@ -112,7 +109,7 @@ public class Locale {
 	}
 
 	/**
-	 * Add the given string date as a static holiday
+	 * Adds the given string date as a static holiday
 	 * 
 	 * @param strDate Date string
 	 * @param strDescription Description
@@ -135,7 +132,7 @@ public class Locale {
 	}
 
 	/**
-	 * Add a fixed holiday from the day and month
+	 * Adds a fixed holiday from the day and month
 	 * 
 	 * @param iDay Day
 	 * @param iMonth Month
@@ -155,7 +152,7 @@ public class Locale {
 	}
 
 	/**
-	 * Add a floating holiday from the week in month, the day in week, the month, and whether holidays are
+	 * Adds a floating holiday from the week in month, the day in week, the month, and whether holidays are
 	 * 		calculated from front/back.
 	 * 
 	 * @param iWeekInMonth Week in the Month
@@ -181,7 +178,7 @@ public class Locale {
 	}
 
 	/**
-	 * Return the weekend
+	 * Returns the weekend
 	 * 
 	 * @return Weekend
 	 */
@@ -192,7 +189,7 @@ public class Locale {
 	}
 
 	/**
-	 * Return the set of week day holidays
+	 * Returns the set of week day holidays
 	 * 
 	 * @return Set of hoidays
 	 */

@@ -6,7 +6,6 @@ package org.drip.product.creator;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -41,7 +40,7 @@ package org.drip.product.creator;
 public class FXSpotBuilder {
 
 	/**
-	 * Create the FX spot object from the spot date and the currency pair.
+	 * Creates the FX spot object from the spot date and the currency pair.
 	 * 
 	 * @param dtSpot Spot date
 	 * @param ccyPair CurrencyPair

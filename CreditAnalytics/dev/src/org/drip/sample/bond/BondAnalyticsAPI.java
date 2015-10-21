@@ -332,6 +332,8 @@ public class BondAnalyticsAPI {
 				"USD",					// Currency
 				strCreditCurve, 		// Credit Curve
 				"30/360",				// Day Count
+				1.,						// Initial Notional
+				0.05,					// Coupon Rate
 				2,						// Frequency
 				adt,					// Array of dates
 				adblCouponAmount,		// Array of coupon amount

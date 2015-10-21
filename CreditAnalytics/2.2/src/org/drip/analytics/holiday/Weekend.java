@@ -6,7 +6,6 @@ package org.drip.analytics.holiday;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -32,31 +31,26 @@ package org.drip.analytics.holiday;
  */
 
 /**
- * Weekend holds the left and the right weekend days. It provides functionality to retrieve them, check if
- *  the given day is a weekend, and serialize/de-serialize weekend days.
+ * Weekend holds the left and the right weekend days
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class Weekend extends org.drip.service.stream.Serializer {
-	private int[] _aiDay = null;
+	private int[] _aiDays = null;
 
 	/**
-	 * Create a Weekend Instance with SATURDAY and SUNDAY
+	 * Creates a Weekend with SATURDAY and SUNDAY
 	 * 
 	 * @return Weekend object
 	 */
 
 	public static final Weekend StandardWeekend()
 	{
-		try {
-			return new Weekend (new int[] {org.drip.analytics.date.JulianDate.SUNDAY,
-				org.drip.analytics.date.JulianDate.SATURDAY});
-		} catch (java.lang.Exception e) {
-			e.printStackTrace();
-		}
+		int[] aiWeekend = new int[] {org.drip.analytics.date.JulianDate.SUNDAY,
+			org.drip.analytics.date.JulianDate.SATURDAY};
 
-		return null;
+		return new Weekend (aiWeekend);
 	}
 
 	/**
@@ -85,7 +79,7 @@ public class Weekend extends org.drip.service.stream.Serializer {
 			org.drip.service.stream.Serializer.NULL_SER_STRING.equalsIgnoreCase (strWH))
 			throw new java.lang.Exception ("Weekend de-serializer: Cannot locate state");
 
-		java.lang.String[] astrField = org.drip.quant.common.StringUtil.Split (strWH, getFieldDelimiter());
+		java.lang.String[] astrField = org.drip.math.common.StringUtil.Split (strWH, getFieldDelimiter());
 
 		if (null == astrField || 2 > astrField.length)
 			throw new java.lang.Exception ("Weekend de-serialize: Invalid number of fields");
@@ -95,49 +89,42 @@ public class Weekend extends org.drip.service.stream.Serializer {
 		java.util.List<java.lang.Integer> lsi = new java.util.ArrayList<java.lang.Integer>();
 
 		if (org.drip.service.stream.Serializer.NULL_SER_STRING.equalsIgnoreCase (astrField[1]) ||
-			!org.drip.quant.common.StringUtil.IntegerListFromString (lsi, astrField[1],
+			!org.drip.math.common.StringUtil.IntegerListFromString (lsi, astrField[1],
 				getCollectionRecordDelimiter()))
 			throw new java.lang.Exception ("Weekend de-serializer: Cannot decode state");
 
-		_aiDay = new int[lsi.size()];
+		_aiDays = new int[lsi.size()];
 
-		for (int i = 0; i < _aiDay.length; ++i)
-			_aiDay[i] = lsi.get (i);
+		for (int i = 0; i < _aiDays.length; ++i)
+			_aiDays[i] = lsi.get (i);
 	}
 
 	/**
-	 * Create the weekend instance object from the array of the weekend days
+	 * Creates the weekend instance object from the array of the weekend days
 	 * 
-	 * @param aiDay Array of the weekend days
-	 * 
-	 * @throws java.lang.Exception Thrown if cannot properly de-serialize Weekend
+	 * @param aiDays Array of the weekend days
 	 */
 
 	public Weekend (
-		final int[] aiDay)
-		throws java.lang.Exception
+		final int[] aiDays)
 	{
-		if (null == aiDay) throw new java.lang.Exception ("Weekend ctr: Invalid Inputs");
+		if (null == aiDays || 0 == aiDays.length) return;
 
-		int iNumWeekendDays = aiDay.length;;
+		_aiDays = new int[aiDays.length];
 
-		if (0 == iNumWeekendDays) throw new java.lang.Exception ("Weekend ctr: Invalid Inputs");
-
-		_aiDay = new int[iNumWeekendDays];
-
-		for (int i = 0; i < iNumWeekendDays; ++i)
-			_aiDay[i] = aiDay[i];
+		for (int i = 0; i < aiDays.length; ++i)
+			_aiDays[i] = aiDays[i];
 	}
 
 	/**
-	 * Retrieve the weekend days
+	 * Retrieves the weekend days
 	 * 
 	 * @return Array of the weekend days
 	 */
 
 	public int[] getDays()
 	{
-		return _aiDay;
+		return _aiDays;
 	}
 
 	/**
@@ -151,9 +138,9 @@ public class Weekend extends org.drip.service.stream.Serializer {
 	public boolean isLeftWeekend (
 		final double dblDate)
 	{
-		if (null == _aiDay || 0 == _aiDay.length) return false;
+		if (null == _aiDays || 0 == _aiDays.length) return false;
 
-		if (_aiDay[0] == (dblDate % 7)) return true;
+		if (_aiDays[0] == (dblDate % 7)) return true;
 
 		return false;
 	}
@@ -169,9 +156,9 @@ public class Weekend extends org.drip.service.stream.Serializer {
 	public boolean isRightWeekend (
 		final double dblDate)
 	{
-		if (null == _aiDay || 1 >= _aiDay.length) return false;
+		if (null == _aiDays || 1 >= _aiDays.length) return false;
 
-		if (_aiDay[1] == (dblDate % 7)) return true;
+		if (_aiDays[1] == (dblDate % 7)) return true;
 
 		return false;
 	}
@@ -196,10 +183,10 @@ public class Weekend extends org.drip.service.stream.Serializer {
 
 		sb.append (org.drip.service.stream.Serializer.VERSION + getFieldDelimiter());
 
-		for (int i = 0; i < _aiDay.length; ++i) {
+		for (int i = 0; i < _aiDays.length; ++i) {
 			if (0 != i) sb.append (getCollectionRecordDelimiter());
 
-			sb.append (_aiDay[i]);
+			sb.append (_aiDays[i]);
 		}
 
 		return sb.append (getObjectTrailer()).toString().getBytes();

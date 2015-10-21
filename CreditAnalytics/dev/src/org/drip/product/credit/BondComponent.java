@@ -1640,21 +1640,19 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 			double dblStartDate = period.startDate();
 
-			if (dblEndDate < dblDate) continue;
+			if (dblStartDate < dblDate && dblEndDate >= dblDate) {
+				org.drip.analytics.output.CompositePeriodCouponMetrics pcm = couponMetrics (dblEndDate, new
+					org.drip.param.valuation.ValuationParams (dt, dt, ""), csqs);
 
-			org.drip.analytics.output.CompositePeriodCouponMetrics pcm = couponMetrics (dblEndDate, new
-				org.drip.param.valuation.ValuationParams (dt, dt, ""), csqs);
+				if (null == pcm) throw new java.lang.Exception ("BondComponent::accrued => No PCM");
 
-			if (null == pcm) throw new java.lang.Exception ("BondComponent::accrued => No PCM");
+				double dblCoupon = pcm.rate();
 
-			double dblCoupon = pcm.rate();
+				if (!org.drip.quant.common.NumberUtil.IsValid (dblCoupon))
+					throw new java.lang.Exception ("BondComponent::accrued => Invalid Coupon For " + dt);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblCoupon)) return java.lang.Double.NaN;
-
-			if (dblStartDate < dblDate && dblEndDate >= dblDate)
 				return period.accrualDCF (dblDate) * dblCoupon * notional (dblStartDate);
-
-			return 0.;
+			}
 		}
 
 		return 0.;

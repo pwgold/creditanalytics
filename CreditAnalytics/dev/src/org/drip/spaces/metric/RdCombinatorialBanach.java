@@ -120,7 +120,7 @@ public class RdCombinatorialBanach extends org.drip.spaces.tensor.RdCombinatoria
 	{
 		if (null == _distRd) return null;
 
-		org.drip.spaces.tensor.RdCombinatorialIterator crmi = iterator();
+		org.drip.spaces.iterator.RdSpanningCombinatorialIterator crmi = iterator();
 
 		double[] adblVariate = crmi.cursorVariates();
 
@@ -170,7 +170,7 @@ public class RdCombinatorialBanach extends org.drip.spaces.tensor.RdCombinatoria
 			throw new java.lang.Exception
 				("RdCombinatorialBanach::populationMetricNorm => No Multivariate Distribution");
 
-		org.drip.spaces.tensor.RdCombinatorialIterator crmi = iterator();
+		org.drip.spaces.iterator.RdSpanningCombinatorialIterator crmi = iterator();
 
 		double[] adblVariate = crmi.cursorVariates();
 
@@ -201,7 +201,7 @@ public class RdCombinatorialBanach extends org.drip.spaces.tensor.RdCombinatoria
 			throw new java.lang.Exception
 				("RdCombinatorialBanach::borelMeasureSpaceExpectation => Invalid Inputs");
 
-		org.drip.spaces.tensor.RdCombinatorialIterator crmi = iterator();
+		org.drip.spaces.iterator.RdSpanningCombinatorialIterator crmi = iterator();
 
 		double[] adblVariate = crmi.cursorVariates();
 

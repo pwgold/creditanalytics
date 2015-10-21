@@ -6,7 +6,6 @@ package org.drip.regression.core;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
@@ -60,7 +59,7 @@ public abstract class UnitRegressionExecutor implements org.drip.regression.core
 	{
 		if (null == (_strRegressorName = strRegressorName) || strRegressorName.isEmpty() || null ==
 			(_strRegressorSet = strRegressorSet) || _strRegressorSet.isEmpty())
-			throw new java.lang.Exception ("UnitRegressionExecutor ctr: Invalid inputs");
+			throw new java.lang.Exception ("Invalid inputs into the unit Regressor exec constructor!");
 	}
 
 	/**
@@ -75,7 +74,7 @@ public abstract class UnitRegressionExecutor implements org.drip.regression.core
 	}
 
 	/**
-	 * Execute the regression call within this function
+	 * Executes the regression call within this function
 	 * 
 	 * @return The result of the regression
 	 */

@@ -6,7 +6,6 @@ package org.drip.product.definition;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -43,7 +42,7 @@ package org.drip.product.definition;
 public abstract class FXForward extends org.drip.service.stream.Serializer {
 
 	/**
-	 * Get the primary code
+	 * Gets the primary code
 	 * 
 	 * @return Primary Code string
 	 */
@@ -51,7 +50,7 @@ public abstract class FXForward extends org.drip.service.stream.Serializer {
 	public abstract java.lang.String getPrimaryCode();
 
 	/**
-	 * Set the primary code
+	 * Sets the primary code
 	 * 
 	 * @param strCode Primary Code String
 	 */
@@ -60,7 +59,7 @@ public abstract class FXForward extends org.drip.service.stream.Serializer {
 		final java.lang.String strCode);
 
 	/**
-	 * Get the array of secondary code
+	 * Gets the array of secondary code
 	 * 
 	 * @return Array of secondary code string
 	 */
@@ -68,7 +67,7 @@ public abstract class FXForward extends org.drip.service.stream.Serializer {
 	public abstract java.lang.String[] getSecondaryCode();
 
 	/**
-	 * Get the Effective Date
+	 * Gets the Effective Date
 	 * 
 	 * @return Effective Date
 	 */
@@ -76,7 +75,7 @@ public abstract class FXForward extends org.drip.service.stream.Serializer {
 	public abstract org.drip.analytics.date.JulianDate getEffectiveDate();
 
 	/**
-	 * Get the Maturity Date
+	 * Gets the Maturity Date
 	 * 
 	 * @return Maturity Date
 	 */
@@ -107,14 +106,14 @@ public abstract class FXForward extends org.drip.service.stream.Serializer {
 
 	public abstract double implyFXForward (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.analytics.rates.DiscountCurve dcNum,
-		final org.drip.analytics.rates.DiscountCurve dcDenom,
+		final org.drip.analytics.definition.DiscountCurve dcNum,
+		final org.drip.analytics.definition.DiscountCurve dcDenom,
 		final double dblFXSpot,
 		final boolean bFwdAsPIP)
 		throws java.lang.Exception;
 
 	/**
-	 * Calculate the basis to either the numerator or the denominator discount curve
+	 * Calculates the basis to either the numerator or the denominator discount curve
 	 * 
 	 * @param valParams ValuationParams
 	 * @param dcNum Discount Curve for the numerator
@@ -131,8 +130,8 @@ public abstract class FXForward extends org.drip.service.stream.Serializer {
 
 	public abstract double calcDCBasis (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.analytics.rates.DiscountCurve dcNum,
-		final org.drip.analytics.rates.DiscountCurve dcDenom,
+		final org.drip.analytics.definition.DiscountCurve dcNum,
+		final org.drip.analytics.definition.DiscountCurve dcDenom,
 		final double dblFXSpot,
 		final double dblMarketFXFwdPrice,
 		final boolean bBasisOnDenom)
@@ -151,7 +150,7 @@ public abstract class FXForward extends org.drip.service.stream.Serializer {
 
 	public abstract org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> value (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.analytics.rates.DiscountCurve dcNum,
-		final org.drip.analytics.rates.DiscountCurve dcDenom,
+		final org.drip.analytics.definition.DiscountCurve dcNum,
+		final org.drip.analytics.definition.DiscountCurve dcDenom,
 		final double dblFXSpot);
 }

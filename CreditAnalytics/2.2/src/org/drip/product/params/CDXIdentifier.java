@@ -6,7 +6,6 @@ package org.drip.product.params;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
@@ -33,7 +32,6 @@ package org.drip.product.params;
 /**
  * CDXIdentifier implements the creation and the static details of the all the NA, EU, SovX, EMEA, and ASIA
  *	standardized CDS indexes. It contains the index, the tenor, the series, and the version of a given CDX.
- *  It exports serialization into and de-serialization out of byte arrays.
  *  
  * @author Lakshmi Krishnamurthy
  */
@@ -45,7 +43,7 @@ public class CDXIdentifier extends org.drip.service.stream.Serializer {
 	public java.lang.String _strTenor = "";
 
 	/**
-	 * Create the CDX Identifier from the CDX Code
+	 * Creates the CDX Identifier from the CDX Code
 	 * 
 	 * @param strCode The CDX Code
 	 * 
@@ -73,7 +71,7 @@ public class CDXIdentifier extends org.drip.service.stream.Serializer {
 	}
 
 	/**
-	 * Create the CDX identifier from the CDX index, series, tenor, and the version
+	 * Creates the CDX identifier from the CDX index, series, tenor, and the version
 	 * 
 	 * @param iSeries CDX Series
 	 * @param iVersion CDX Version
@@ -124,7 +122,7 @@ public class CDXIdentifier extends org.drip.service.stream.Serializer {
 		if (null == strSerializedCDXIdentifier || strSerializedCDXIdentifier.isEmpty())
 			throw new java.lang.Exception ("CDXIdentifier de-serializer: Cannot locate state");
 
-		java.lang.String[] astrField = org.drip.quant.common.StringUtil.Split (strSerializedCDXIdentifier,
+		java.lang.String[] astrField = org.drip.math.common.StringUtil.Split (strSerializedCDXIdentifier,
 			getFieldDelimiter());
 
 		if (null == astrField || 5 > astrField.length)
@@ -158,7 +156,7 @@ public class CDXIdentifier extends org.drip.service.stream.Serializer {
 	}
 
 	/**
-	 * Return the CDX code string composed off of the index, tenor, series, and the version
+	 * Returns the CDX code string composed off of the index, tenor, series, and the version
 	 * 
 	 * @return The CDX Code string
 	 */

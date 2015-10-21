@@ -55,7 +55,17 @@ public class EnvManager {
 	{
 		org.drip.analytics.support.Logger.Init (strConfig);
 
-		org.drip.analytics.daycount.Convention.Init (strConfig);
+		if (!org.drip.service.env.CacheManager.Init()) {
+			System.out.println ("EnvManager::InitEnv => Cannot Initialize Cache Manager!");
+
+			return null;
+		}
+
+		if (!org.drip.analytics.daycount.Convention.Init (strConfig)) {
+			System.out.println ("EnvManager::InitEnv => Cannot Initialize Day Count Conventions!");
+
+			return null;
+		}
 
 		if (!org.drip.service.env.StandardCDXManager.InitStandardCDXSeries()) {
 			System.out.println ("EnvManager::InitEnv => Cannot Initialize standard CDX Indexes!");

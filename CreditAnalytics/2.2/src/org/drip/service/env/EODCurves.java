@@ -6,7 +6,6 @@ package org.drip.service.env;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -207,8 +206,8 @@ public class EODCurves {
 	}
 
 	/**
-	 * Build the credit curve's CreditScenarioCurve for the given EOD and currency from the corresponding
-	 *  marks
+	 * Builds the credit curve's CreditScenarioCurve for the given EOD and currency from the
+	 *  corresponding marks
 	 * 
 	 * @param stmt SQL Statement representing executable query
 	 * @param dtEOD EOD Date
@@ -219,10 +218,10 @@ public class EODCurves {
 	 * @return The CreditScenarioCurve object
 	 */
 
-	public static final org.drip.param.definition.ScenarioCreditCurve BuildEODCreditCurve (
+	public static final org.drip.param.definition.CreditScenarioCurve BuildEODCreditCurve (
 		final java.sql.Statement stmt,
 		final org.drip.analytics.date.JulianDate dtEOD,
-		final org.drip.analytics.rates.DiscountCurve dc,
+		final org.drip.analytics.definition.DiscountCurve dc,
 		final java.lang.String strSPN,
 		final java.lang.String strCurrency)
 	{
@@ -234,7 +233,7 @@ public class EODCurves {
 		java.sql.ResultSet rsCDSPoints = null;
 		double dblRecovery = java.lang.Double.NaN;
 		java.lang.String[] astrCalibMeasure = new java.lang.String[20];
-		org.drip.param.definition.ScenarioCreditCurve ccsc = null;
+		org.drip.param.definition.CreditScenarioCurve ccsc = null;
 		org.drip.product.definition.CalibratableComponent[] aCDS = new
 			org.drip.product.definition.CreditDefaultSwap[20];
 
@@ -393,7 +392,7 @@ public class EODCurves {
 	}
 
 	/**
-	 * Add the TSY quotes to the specified MPC
+	 * Adds the TSY quotes to the specified MPC
 	 * 
 	 * @param mpc MPC
 	 * @param stmt SQL statement object to retrieve the MPC quotes from
@@ -515,7 +514,7 @@ public class EODCurves {
 	}
 
 	/**
-	 * Retrieve the treasury quotes for the specified EOD and currency
+	 * Retrieves the treasury quotes for the specified EOD and currency
 	 * 
 	 * @param stmt SQL Statement
 	 * @param dtEOD EOD
@@ -709,7 +708,7 @@ public class EODCurves {
 	}
 
 	/**
-	 * Build the closing IRCurveScenarioContainer for the specific discount curve instruments given the EOD
+	 * Builds the closing IRCurveScenarioContainer for the specific discount curve instruments given the EOD
 	 *  and the currency
 	 *  
 	 * @param mmFixings The fixings object
@@ -723,7 +722,7 @@ public class EODCurves {
 	 * @return The IRCurveScenarioContainer object
 	 */
 
-	public static final org.drip.param.definition.ScenarioDiscountCurve BuildEODIRCurveOfCode (
+	public static final org.drip.param.definition.RatesScenarioCurve BuildEODIRCurveOfCode (
 		final java.util.Map<org.drip.analytics.date.JulianDate,
 			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>> mmFixings,
 		final java.sql.Statement stmt,
@@ -743,7 +742,7 @@ public class EODCurves {
 
 		int i = 0;
 		java.sql.ResultSet rsCurvePoints = null;
-		org.drip.param.definition.ScenarioDiscountCurve ircsc = null;
+		org.drip.param.definition.RatesScenarioCurve ircsc = null;
 
 		boolean bTSY = strInstrSetType.equalsIgnoreCase ("government");
 
@@ -867,7 +866,7 @@ public class EODCurves {
 
 		try {
 			(ircsc = org.drip.param.creator.RatesScenarioCurveBuilder.FromIRCSG (strCurveName,
-				org.drip.state.creator.DiscountCurveBuilder.BOOTSTRAP_MODE_CONSTANT_FORWARD,
+				org.drip.analytics.creator.DiscountCurveBuilder.BOOTSTRAP_MODE_CONSTANT_FORWARD,
 					aCompCalib)).cookScenarioDC (new org.drip.param.valuation.ValuationParams (dtEOD,
 						dtEOD.addBusDays (3, strCurrency), "USD"), null, null, adblCompCalibValue, 0.0001,
 							astrCalibMeasure, mmFixings, null, s_iIRCalibMode);
@@ -881,7 +880,7 @@ public class EODCurves {
 	}
 
 	/**
-	 * Build the closing IRCurveScenarioContainer for the specific discount curve instrument set type
+	 * Builds the closing IRCurveScenarioContainer for the specific discount curve instrument set type
 	 * 	(treasury or rates instruments), given the EOD and the currency
 	 *  
 	 * @param mmFixings The fixings object
@@ -894,7 +893,7 @@ public class EODCurves {
 	 * @return The IRCurveScenarioContainer object
 	 */
 
-	public static final org.drip.param.definition.ScenarioDiscountCurve BuildEODIRCurve (
+	public static final org.drip.param.definition.RatesScenarioCurve BuildEODIRCurve (
 		final java.util.Map<org.drip.analytics.date.JulianDate,
 			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>> mmFixings,
 		final java.sql.Statement stmt,
@@ -910,7 +909,7 @@ public class EODCurves {
 
 		int i = 0;
 		java.sql.ResultSet rsCurvePoints = null;
-		org.drip.param.definition.ScenarioDiscountCurve ircsc = null;
+		org.drip.param.definition.RatesScenarioCurve ircsc = null;
 
 		boolean bTSY = strInstrSetType.equalsIgnoreCase ("government");
 
@@ -1086,7 +1085,7 @@ public class EODCurves {
 
 		try {
 			(ircsc = org.drip.param.creator.RatesScenarioCurveBuilder.FromIRCSG (strCurveName,
-				org.drip.state.creator.DiscountCurveBuilder.BOOTSTRAP_MODE_CONSTANT_FORWARD,
+				org.drip.analytics.creator.DiscountCurveBuilder.BOOTSTRAP_MODE_CONSTANT_FORWARD,
 					aCompCalib)).cookScenarioDC (new org.drip.param.valuation.ValuationParams (dtEOD,
 						dtEOD.addBusDays (3, strCurrency), "USD"), null, null, adblCompCalibValue, 0.0001,
 							astrCalibMeasure, mmFixings, null, s_iIRCalibMode);
@@ -1100,7 +1099,7 @@ public class EODCurves {
 	}
 
 	/**
-	 * Create the named base IR curve based on the set of instruments and their types for a given EOD
+	 * Creates the named base IR curve based on the set of instruments and their types for a given EOD
 	 * 
 	 * @param stmt SQL Statement representing the executable query
 	 * @param dtEOD EOD Date
@@ -1111,7 +1110,7 @@ public class EODCurves {
 	 * @return The discount curve
 	 */
 
-	public static final org.drip.analytics.rates.DiscountCurve LoadEODIR (
+	public static final org.drip.analytics.definition.DiscountCurve LoadEODIR (
 		final java.sql.Statement stmt,
 		final org.drip.analytics.date.JulianDate dtEOD,
 		final java.lang.String strCurrency,
@@ -1134,7 +1133,7 @@ public class EODCurves {
 
 		mmFixings.put (dtEOD.addDays (2), mIndexFixings);
 
-		org.drip.param.definition.ScenarioDiscountCurve ircsg = BuildEODIRCurve (mmFixings, stmt, dtEOD,
+		org.drip.param.definition.RatesScenarioCurve ircsg = BuildEODIRCurve (mmFixings, stmt, dtEOD,
 			strCurrency, strInstrType, strCurveName);
 
 		if (null == ircsg || null == ircsg.getDCBase()) return null;
@@ -1143,7 +1142,7 @@ public class EODCurves {
 	}
 
 	/**
-	 * Build the closing IRCurveScenarioContainer for the specific discount curve instrument set type
+	 * Builds the closing IRCurveScenarioContainer for the specific discount curve instrument set type
 	 * 	(treasury or rates instruments), the given EOD, and the currency, and loads it to the input MPC
 	 * 
 	 * @param mpc org.drip.param.definition.MarketParams to be loaded into
@@ -1170,7 +1169,7 @@ public class EODCurves {
 
 		long lStart = System.nanoTime();
 
-		org.drip.param.definition.ScenarioDiscountCurve ircsg = BuildEODIRCurve (mpc.getFixings(), stmt, dtEOD,
+		org.drip.param.definition.RatesScenarioCurve ircsg = BuildEODIRCurve (mpc.getFixings(), stmt, dtEOD,
 			strCurrency, strInstrType, strCurveName);
 
 		if (null == ircsg) return false;
@@ -1184,7 +1183,7 @@ public class EODCurves {
 	}
 
 	/**
-	 * Build the closing IRCurveScenarioContainer for the specific discount curve instrument set (cash or
+	 * Builds the closing IRCurveScenarioContainer for the specific discount curve instrument set (cash or
 	 *  EDF or swaps), the EOD, and the currency, and loads it to the input MPC
 	 * 
 	 * @param mpc org.drip.param.definition.MarketParams to be loaded into
@@ -1217,7 +1216,7 @@ public class EODCurves {
 
 		long lStart = System.nanoTime();
 
-		org.drip.param.definition.ScenarioDiscountCurve ircsg = BuildEODIRCurveOfCode (mpc.getFixings(), stmt,
+		org.drip.param.definition.RatesScenarioCurve ircsg = BuildEODIRCurveOfCode (mpc.getFixings(), stmt,
 			dtEOD, strCurrency, strInstrCode, strInstrType, strCurveName);
 
 		if (null == ircsg) {
@@ -1239,7 +1238,7 @@ public class EODCurves {
 	}
 
 	/**
-	 * Build the complete set of treasury EOD curves for the given currency, and loads them to the MPC
+	 * Builds the complete set of treasury EOD curves for the given currency, and loads them to the MPC
 	 * 
 	 * @param mpc org.drip.param.definition.MarketParams to be loaded into
 	 * @param stmt SQL Statement containing the executable query
@@ -1262,7 +1261,7 @@ public class EODCurves {
 	}
 
 	/**
-	 * Build the complete set of rates EOD curves for the given currency, and loads them to the MPC
+	 * Builds the complete set of rates EOD curves for the given currency, and loads them to the MPC
 	 * 
 	 * @param mpc org.drip.param.definition.MarketParams to be loaded into
 	 * @param stmt SQL Statement containing the executable query
@@ -1311,7 +1310,7 @@ public class EODCurves {
 	}
 
 	/**
-	 * Build the EOD credit curve, and loads it to the MPC
+	 * Builds the EOD credit curve, and loads it to the MPC
 	 * 
 	 * @param mpc org.drip.param.definition.MarketParams to be loaded into
 	 * @param stmt SQL Statement containing the executable query
@@ -1334,7 +1333,7 @@ public class EODCurves {
 				(strCurrency) || null == mpc.getIRSG().get (strCurrency).getDCBase())
 			return false;
 
-		org.drip.param.definition.ScenarioCreditCurve ccsg = BuildEODCreditCurve (stmt, dtEOD,
+		org.drip.param.definition.CreditScenarioCurve ccsg = BuildEODCreditCurve (stmt, dtEOD,
 			mpc.getIRSG().get (strCurrency).getDCBase(), strSPN, strCurrency);
 
 		if (null == ccsg) return false;

@@ -6,7 +6,6 @@ package org.drip.product.creator;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -32,9 +31,8 @@ package org.drip.product.creator;
  */
 
 /**
- * EDFutureBuilder contains the suite of helper functions for creating the EDFuture product and product pack
- *  from the parameters/codes/byte array streams. It also contains function to construct EDF codes and the
- *  EDF product from code.
+ * EDFutureBuilder contains the suite of helper functions for creating the EDFuture product from the
+ * 	parameters/codes/byte array streams.
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -84,7 +82,7 @@ public class EDFutureBuilder {
 	}
 
 	/**
-	 * Generate a EDF pack with the specified number of contracts
+	 * Generates a EDF pack with the specified number of contracts
 	 * 
 	 * @param dt Spot date specifying the contract issue
 	 * @param iNumEDF Number of contracts
@@ -124,7 +122,7 @@ public class EDFutureBuilder {
 	}
 
 	/**
-	 * Create an EDF product from the effective and maturity dates, and the IR curve
+	 * Creates an EDF product from the effective and maturity dates, and the IR curve
 	 * 
 	 * @param dtEffective JulianDate effective
 	 * @param dtMaturity JulianDate Maturity
@@ -153,7 +151,7 @@ public class EDFutureBuilder {
 	}
 
 	/**
-	 * Create an EDF product from the effective date, the tenor, and the IR curve
+	 * Creates an EDF product from the effective date, the tenor, and the IR curve
 	 * 
 	 * @param dtEffective JulianDate effective
 	 * @param strTenor Tenor string
@@ -182,7 +180,7 @@ public class EDFutureBuilder {
 	}
 
 	/**
-	 * Create an EDF product from the effective date, the product code, and the IR curve
+	 * Creates an EDF product from the effective date, the product code, and the IR curve
 	 * 
 	 * @param strFullEDCode EDF product code
 	 * @param dt JulianDate effective

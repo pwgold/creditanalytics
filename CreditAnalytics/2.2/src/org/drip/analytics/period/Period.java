@@ -6,7 +6,6 @@ package org.drip.analytics.period;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -33,10 +32,8 @@ package org.drip.analytics.period;
 
 /**
  * 
- * Period serves as a holder for the period dates. It implements the following functionality:
- * 	- API for period start/end, period accrual start/end, pay, and period day count fraction/containment
- *  - Comparison with the Other, equals/hash-code/comparator
- *  - Serialization/De-serialization to and from Byte Arrays
+ * Period serves as a holder for the period dates: period start/end, period accrual start/end, pay, and
+ * 	full period day count fraction.
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -50,7 +47,7 @@ public class Period extends org.drip.service.stream.Serializer implements java.l
 	protected double _dblAccrualStart = java.lang.Double.NaN;
 
 	/**
-	 * Construct a period object instance from the corresponding date parameters
+	 * Constructs a period object instance from the corresponding date parameters
 	 * 
 	 * @param dblStart Period Start Date
 	 * @param dblEnd Period End Date
@@ -71,11 +68,11 @@ public class Period extends org.drip.service.stream.Serializer implements java.l
 		final double dblDCF)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblStart = dblStart) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblEnd = dblEnd) ||
-				!org.drip.quant.common.NumberUtil.IsValid (_dblAccrualStart = dblAccrualStart) ||
-					!org.drip.quant.common.NumberUtil.IsValid (_dblAccrualEnd = dblAccrualEnd) ||
-						!org.drip.quant.common.NumberUtil.IsValid (_dblDCF = dblDCF) || dblStart > dblEnd ||
+		if (!org.drip.math.common.NumberUtil.IsValid (_dblStart = dblStart) ||
+			!org.drip.math.common.NumberUtil.IsValid (_dblEnd = dblEnd) ||
+				!org.drip.math.common.NumberUtil.IsValid (_dblAccrualStart = dblAccrualStart) ||
+					!org.drip.math.common.NumberUtil.IsValid (_dblAccrualEnd = dblAccrualEnd) ||
+						!org.drip.math.common.NumberUtil.IsValid (_dblDCF = dblDCF) || dblStart > dblEnd ||
 							dblAccrualStart > dblAccrualEnd) {
 			System.out.println (org.drip.analytics.date.JulianDate.fromJulian (dblStart) + "=>" +
 				org.drip.analytics.date.JulianDate.fromJulian (dblEnd));
@@ -112,7 +109,7 @@ public class Period extends org.drip.service.stream.Serializer implements java.l
 		if (null == strPeriod || strPeriod.isEmpty())
 			throw new java.lang.Exception ("Period de-serializer: Cannot locate state");
 
-		java.lang.String[] astrField = org.drip.quant.common.StringUtil.Split (strPeriod,
+		java.lang.String[] astrField = org.drip.math.common.StringUtil.Split (strPeriod,
 			super.getFieldDelimiter());
 
 		if (null == astrField || 7 > astrField.length)
@@ -158,7 +155,7 @@ public class Period extends org.drip.service.stream.Serializer implements java.l
 	}
 
 	/**
-	 * Return the period Start Date
+	 * Returns the period Start Date
 	 * 
 	 * @return Period Start Date
 	 */
@@ -169,7 +166,7 @@ public class Period extends org.drip.service.stream.Serializer implements java.l
 	}
 
 	/**
-	 * Return the period End Date
+	 * Returns the period End Date
 	 * 
 	 * @return Period End Date
 	 */
@@ -180,7 +177,7 @@ public class Period extends org.drip.service.stream.Serializer implements java.l
 	}
 
 	/**
-	 * Return the period Accrual Start Date
+	 * Returns the period Accrual Start Date
 	 * 
 	 * @return Period Accrual Start Date
 	 */
@@ -199,14 +196,14 @@ public class Period extends org.drip.service.stream.Serializer implements java.l
 	public boolean setAccrualStartDate (
 		final double dblAccrualStart)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblAccrualStart)) return false;
+		if (!org.drip.math.common.NumberUtil.IsValid (dblAccrualStart)) return false;
 
 		_dblAccrualStart = dblAccrualStart;
 		return true;
 	}
 
 	/**
-	 * Return the period Accrual End Date
+	 * Returns the period Accrual End Date
 	 * 
 	 * @return Period Accrual End Date
 	 */
@@ -217,7 +214,7 @@ public class Period extends org.drip.service.stream.Serializer implements java.l
 	}
 
 	/**
-	 * Return the period Reset Date
+	 * Returns the period Reset Date
 	 * 
 	 * @return Period Reset Date
 	 */
@@ -228,7 +225,7 @@ public class Period extends org.drip.service.stream.Serializer implements java.l
 	}
 
 	/**
-	 * Return the period Pay Date
+	 * Returns the period Pay Date
 	 * 
 	 * @return Period Pay Date
 	 */
@@ -247,7 +244,7 @@ public class Period extends org.drip.service.stream.Serializer implements java.l
 	public boolean setPayDate (
 		final double dblPay)
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblPay)) return false;
+		if (!org.drip.math.common.NumberUtil.IsValid (dblPay)) return false;
 
 		_dblPay = dblPay;
 		return true;
@@ -265,7 +262,7 @@ public class Period extends org.drip.service.stream.Serializer implements java.l
 		final double dblAccrualEnd)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblAccrualEnd))
+		if (!org.drip.math.common.NumberUtil.IsValid (dblAccrualEnd))
 			throw new java.lang.Exception ("Period::getAccrualDCF => Invalid Inputs");
 
 		if (_dblAccrualStart > dblAccrualEnd || dblAccrualEnd > _dblAccrualEnd)
@@ -275,7 +272,7 @@ public class Period extends org.drip.service.stream.Serializer implements java.l
 	}
 
 	/**
-	 * Get the coupon DCF
+	 * Gets the coupon DCF
 	 * 
 	 * @return The coupon DCF
 	 */
@@ -286,7 +283,7 @@ public class Period extends org.drip.service.stream.Serializer implements java.l
 	}
 	
 	/**
-	 * Check whether the supplied date is inside the period specified
+	 * Checks whether the supplied date is inside the period specified
 	 * 
 	 * @param dblDate Date input
 	 * 
@@ -299,7 +296,7 @@ public class Period extends org.drip.service.stream.Serializer implements java.l
 		final double dblDate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblDate))
+		if (!org.drip.math.common.NumberUtil.IsValid (dblDate))
 			throw new java.lang.Exception ("Period::contains => Invalid Inputs");
 
 		if (_dblStart > dblDate || dblDate > _dblEnd) return false;
@@ -328,7 +325,6 @@ public class Period extends org.drip.service.stream.Serializer implements java.l
 
 		return sb.append (super.getObjectTrailer()).toString().getBytes();
 	}
-
 	@Override public int hashCode()
 	{
 		long lBits = java.lang.Double.doubleToLongBits ((int) _dblPay);

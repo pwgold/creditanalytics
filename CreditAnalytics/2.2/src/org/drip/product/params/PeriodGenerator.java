@@ -6,7 +6,6 @@ package org.drip.product.params;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -59,7 +58,7 @@ public class PeriodGenerator extends PeriodSet {
 	private org.drip.analytics.daycount.DateAdjustParams _dapAccrualStart = null;
 
 	/**
-	 * Generate the coupon periods from the date rules and the date adjustment rules for the different
+	 * Generates the coupon periods from the date rules and the date adjustment rules for the different
 	 * 	period dates
 	 * 
 	 * @param dblMaturity Maturity Date
@@ -159,8 +158,8 @@ public class PeriodGenerator extends PeriodSet {
 
 	@Override public boolean validate()
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (_dblEffective) ||
-			!org.drip.quant.common.NumberUtil.IsValid (_dblMaturity))
+		if (!org.drip.math.common.NumberUtil.IsValid (_dblEffective) ||
+			!org.drip.math.common.NumberUtil.IsValid (_dblMaturity))
 			return false;
 
 		if (null == _dapPay)
@@ -173,12 +172,12 @@ public class PeriodGenerator extends PeriodSet {
 					+ " ...");
 
 		if (0 == _iFreq) {
-			if (null == (_lsCouponPeriod = org.drip.analytics.period.CashflowPeriod.GetSinglePeriod
+			if (null == (_lsCouponPeriod = org.drip.analytics.period.CouponPeriod.GetSinglePeriod
 				(_dblEffective, _dblMaturity, _strCalendar)))
 				return false;
 		} else {
 			if (_bPeriodsFromForward) {
-				if (null == (_lsCouponPeriod = org.drip.analytics.period.CashflowPeriod.GeneratePeriodsForward
+				if (null == (_lsCouponPeriod = org.drip.analytics.period.CouponPeriod.GeneratePeriodsForward
 						(_dblEffective, // Effective
 -						_dblMaturity, // Maturity
 						_dapEffective, // Effective DAP
@@ -199,7 +198,7 @@ public class PeriodGenerator extends PeriodSet {
 						|| 0 == _lsCouponPeriod.size())
 						return false;
 			} else {
-				if (null == (_lsCouponPeriod = org.drip.analytics.period.CashflowPeriod.GeneratePeriodsBackward
+				if (null == (_lsCouponPeriod = org.drip.analytics.period.CouponPeriod.GeneratePeriodsBackward
 					(_dblEffective, // Effective
 					_dblMaturity, // Maturity
 					_dapEffective, // Effective DAP
@@ -224,16 +223,16 @@ public class PeriodGenerator extends PeriodSet {
 			}
 		}
 
-		if (org.drip.quant.common.NumberUtil.IsValid (_dblFirstCouponDate))
+		if (org.drip.math.common.NumberUtil.IsValid (_dblFirstCouponDate))
 			_lsCouponPeriod.get (0).setPayDate (_dblFirstCouponDate);
 
-		if (org.drip.quant.common.NumberUtil.IsValid (_dblInterestAccrualStart))
+		if (org.drip.math.common.NumberUtil.IsValid (_dblInterestAccrualStart))
 			_lsCouponPeriod.get (0).setAccrualStartDate (_dblInterestAccrualStart);
 
 		return true;
 	}
 
-	@Override public java.util.List<org.drip.analytics.period.CashflowPeriod> getPeriods()
+	@Override public java.util.List<org.drip.analytics.period.CouponPeriod> getPeriods()
 	{
 		return _lsCouponPeriod;
 	}

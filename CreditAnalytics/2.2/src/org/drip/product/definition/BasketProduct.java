@@ -6,7 +6,6 @@ package org.drip.product.definition;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -220,14 +219,14 @@ public abstract class BasketProduct extends org.drip.service.stream.Serializer i
 
 			if (null != bmpTenorUp && null != compCurve && null != compCurve._cc && null !=
 				compCurve._strName && !compCurve._strName.isEmpty()) {
-				ccVirginUp = bmpTenorUp.getCreditCurve (compCurve._strName);
+				ccVirginUp = bmpTenorUp.getCC (compCurve._strName);
 
-				bmpTenorUp.addCreditCurve (compCurve._strName, compCurve._cc);
+				bmpTenorUp.addCC (compCurve._strName, compCurve._cc);
 
 				if (null != bmpTenorDown) {
-					ccVirginDown = bmpTenorDown.getCreditCurve (compCurve._strName);
+					ccVirginDown = bmpTenorDown.getCC (compCurve._strName);
 
-					bmpTenorDown.addCreditCurve (compCurve._strName, compCurve._cc);
+					bmpTenorDown.addCC (compCurve._strName, compCurve._cc);
 				}
 			}
 
@@ -236,11 +235,11 @@ public abstract class BasketProduct extends org.drip.service.stream.Serializer i
 
 			if (null != bmpTenorUp && null != compCurve && null != compCurve._strName &&
 				!compCurve._strName.isEmpty() && null != ccVirginUp)
-				bmpTenorUp.addCreditCurve (compCurve._strName, ccVirginUp);
+				bmpTenorUp.addCC (compCurve._strName, ccVirginUp);
 
 			if (null != bmpTenorDown && null != compCurve && null != compCurve._strName &&
 				!compCurve._strName.isEmpty() && null != ccVirginDown)
-				bmpTenorDown.addCreditCurve (compCurve._strName, ccVirginDown);
+				bmpTenorDown.addCC (compCurve._strName, ccVirginDown);
 		}
 
 		if (0 == mapTenorDGMM.size()) return null;
@@ -290,8 +289,8 @@ public abstract class BasketProduct extends org.drip.service.stream.Serializer i
 
 		if (null == mapESComponentBMP || 0 == mapESComponentBMP.size()) return null;
 
-		org.drip.analytics.support.CaseInsensitiveTreeMap<TenorDeltaGammaMeasureMap> mapComponentTenorDGMM =
-			new org.drip.analytics.support.CaseInsensitiveTreeMap<TenorDeltaGammaMeasureMap>();
+		org.drip.analytics.support.CaseInsensitiveTreeMap<TenorDeltaGammaMeasureMap> mapComponentTenorDGMM = new
+			org.drip.analytics.support.CaseInsensitiveTreeMap<TenorDeltaGammaMeasureMap>();
 
 		for (java.util.Map.Entry<java.lang.String, org.drip.param.definition.BasketMarketParams>
 			meComponentBMP : mapESComponentBMP) {
@@ -306,7 +305,7 @@ public abstract class BasketProduct extends org.drip.service.stream.Serializer i
 			if (null != bmpComponent)
 				mapComponentTenorDGMM.put (strComponentName, accumulateTenorDeltaGammaMeasures (valParams,
 					pricerParams, mapTenorUpBMP, mapTenorDownBMP, quotingParams, mapBaseMeasures, new
-						ComponentCurve (strComponentName, bmpComponent.getCreditCurve (strComponentName))));
+						ComponentCurve (strComponentName, bmpComponent.getCC (strComponentName))));
 		}
 
 		if (0 == mapComponentTenorDGMM.size()) return null;
@@ -358,7 +357,7 @@ public abstract class BasketProduct extends org.drip.service.stream.Serializer i
 		final java.lang.String strMeasureName);
 
 	/**
-	 * Return the basket name
+	 * Returns the basket name
 	 * 
 	 * @return Name of the basket product
 	 */
@@ -366,7 +365,7 @@ public abstract class BasketProduct extends org.drip.service.stream.Serializer i
 	public abstract java.lang.String getName();
 
 	/**
-	 * Return the Components in the Basket
+	 * Returns the Components in the Basket
 	 * 
 	 * @return Components in the Basket
 	 */
@@ -418,7 +417,7 @@ public abstract class BasketProduct extends org.drip.service.stream.Serializer i
 
 			sIR.add (aComp[i].getIRCurveName());
 
-			sIR.add (aComp[i].getForwardCurveName());
+			sIR.add (aComp[i].getRatesForwardCurveName());
 
 			sIR.add (aComp[i].getTreasuryCurveName());
 		}
@@ -441,7 +440,7 @@ public abstract class BasketProduct extends org.drip.service.stream.Serializer i
 	}
 
 	/**
-	 * Return the initial notional of the basket product
+	 * Returns the initial notional of the basket product
 	 * 
 	 * @return Initial notional of the basket product
 	 * 
@@ -463,7 +462,7 @@ public abstract class BasketProduct extends org.drip.service.stream.Serializer i
 	}
 
 	/**
-	 * Retrieve the notional at the given date
+	 * Retrieves the notional at the given date
 	 * 
 	 * @param dblDate Double JulianDate
 	 * 
@@ -488,7 +487,7 @@ public abstract class BasketProduct extends org.drip.service.stream.Serializer i
 	}
 
 	/**
-	 * Retrieve the time-weighted notional between 2 given dates
+	 * Retrieves the time-weighted notional between 2 given dates
 	 * 
 	 * @param dblDate1 Double JulianDate first
 	 * @param dblDate2 Double JulianDate second
@@ -515,7 +514,7 @@ public abstract class BasketProduct extends org.drip.service.stream.Serializer i
 	}
 
 	/**
-	 * Retrieve the basket product's coupon amount at the given date
+	 * Retrieves the basket product's coupon amount at the given date
 	 * 
 	 * @param dblDate Double JulianDate
 	 * @param bmp Basket Market Parameters
@@ -532,7 +531,7 @@ public abstract class BasketProduct extends org.drip.service.stream.Serializer i
 	{
 		double dblNotional = getNotional (dblDate);
 
-		if (null == bmp || 0. == dblNotional || !org.drip.quant.common.NumberUtil.IsValid (dblNotional))
+		if (null == bmp || 0. == dblNotional || !org.drip.math.common.NumberUtil.IsValid (dblNotional))
 			throw new java.lang.Exception ("BasketProduct::getCoupon => Cannot extract basket notional");
 
 		org.drip.product.definition.Component[] aComp = getComponents();
@@ -570,7 +569,7 @@ public abstract class BasketProduct extends org.drip.service.stream.Serializer i
 	}
 
 	/**
-	 * Return the maturity date of the basket product
+	 * Returns the maturity date of the basket product
 	 * 
 	 * @return Maturity date of the basket product
 	 */
@@ -593,22 +592,22 @@ public abstract class BasketProduct extends org.drip.service.stream.Serializer i
 	}
 
 	/**
-	 * Get the basket product's coupon periods
+	 * Gets the basket product's coupon periods
 	 * 
 	 * @return List of CouponPeriods
 	 */
 
-	public java.util.List<org.drip.analytics.period.CashflowPeriod> getCouponPeriod()
+	public java.util.List<org.drip.analytics.period.CouponPeriod> getCouponPeriod()
 	{
-		java.util.Set<org.drip.analytics.period.CashflowPeriod> setPeriod =
+		java.util.Set<org.drip.analytics.period.CouponPeriod> setPeriod =
 			org.drip.analytics.support.AnalyticsHelper.AggregateComponentPeriods (getComponents());
 
 		if (null == setPeriod || 0 == setPeriod.size()) return null;
 
-		java.util.List<org.drip.analytics.period.CashflowPeriod> lsCouponPeriod = new
-			java.util.ArrayList<org.drip.analytics.period.CashflowPeriod>();
+		java.util.List<org.drip.analytics.period.CouponPeriod> lsCouponPeriod = new
+			java.util.ArrayList<org.drip.analytics.period.CouponPeriod>();
 
-		for (org.drip.analytics.period.CashflowPeriod p : setPeriod) {
+		for (org.drip.analytics.period.CouponPeriod p : setPeriod) {
 			if (null != p) lsCouponPeriod.add (p);
 		}
 
@@ -616,7 +615,7 @@ public abstract class BasketProduct extends org.drip.service.stream.Serializer i
 	}
 
 	/**
-	 * Get the first coupon date
+	 * Gets the first coupon date
 	 * 
 	 * @return First Coupon Date
 	 */
@@ -638,7 +637,7 @@ public abstract class BasketProduct extends org.drip.service.stream.Serializer i
 	}
 
 	/**
-	 * Generate a full list of the basket product measures for the full input set of market parameters
+	 * Generates a full list of the basket product measures for the full input set of market parameters
 	 * 
 	 * @param valParams ValuationParams
 	 * @param pricerParams PricerParams
@@ -706,7 +705,7 @@ public abstract class BasketProduct extends org.drip.service.stream.Serializer i
 	}
 
 	/**
-	 * Calculate the value of the given basket product measure
+	 * Calculates the value of the given basket product measure
 	 * 
 	 * @param valParams ValuationParams
 	 * @param pricerParams PricerParams
@@ -731,7 +730,7 @@ public abstract class BasketProduct extends org.drip.service.stream.Serializer i
 	}
 
 	/**
-	 * Generate a full list of the basket product measures for the set of scenario market parameters present
+	 * Generates a full list of the basket product measures for the set of scenario market parameters present
 	 * 	in the org.drip.param.definition.MarketParams
 	 * 
 	 * @param valParams ValuationParams
@@ -779,11 +778,11 @@ public abstract class BasketProduct extends org.drip.service.stream.Serializer i
 		if (null != dgmmRecovery && null != (bkop._mFlatRRDelta = dgmmRates._mapDelta))
 			bkop._mFlatRRGamma = dgmmRates._mapGamma;
 
-		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.param.definition.BasketMarketParams>
-			mapBMPIRTenorUp = mpc.getIRBumpBMP (this, true);
+		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.param.definition.BasketMarketParams> mapBMPIRTenorUp =
+			mpc.getIRBumpBMP (this, true);
 
-		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.param.definition.BasketMarketParams>
-			mapBMPIRTenorDown = mpc.getIRBumpBMP (this, false);
+		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.param.definition.BasketMarketParams> mapBMPIRTenorDown =
+			mpc.getIRBumpBMP (this, false);
 
 		TenorDeltaGammaMeasureMap mapDGMMRatesTenor = accumulateTenorDeltaGammaMeasures (valParams,
 			pricerParams, mapBMPIRTenorUp, mapBMPIRTenorDown, quotingParams, bkop._mBase, null);
@@ -839,19 +838,6 @@ public abstract class BasketProduct extends org.drip.service.stream.Serializer i
 		return bkop;
 	}
 
-	/**
-	 * Compute Basket's Custom Scenario Measures
-	 * 
-	 * @param valParams Valuation Parameters
-	 * @param pricerParams Pricer Parameters
-	 * @param mpc Market Parameters Container
-	 * @param strCustomScenName Custom Scenario Name
-	 * @param quotingParams Quoting Parameters
-	 * @param mapBase Map of Base Measures
-	 * 
-	 * @return Basket's Custom Scenario Measures
-	 */
-
 	public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> calcCustomScenarioMeasures (
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.PricerParams pricerParams,
@@ -875,8 +861,8 @@ public abstract class BasketProduct extends org.drip.service.stream.Serializer i
 
 		if (null == bmpScen) return null;
 
-		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapScenMeasures = value
-			(valParams, pricerParams, bmpScen, quotingParams);
+		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapScenMeasures = value (valParams,
+			pricerParams, bmpScen, quotingParams);
 
 		if (null == mapScenMeasures || null != mapScenMeasures.entrySet()) return null;
 

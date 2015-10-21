@@ -6,7 +6,6 @@ package org.drip.analytics.holset;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -38,10 +37,13 @@ package org.drip.analytics.holset;
  * @author Lakshmi Krishnamurthy
  */
 
+/**
+ * @author owner
+ *
+ */
 public interface LocationHoliday {
-
 	/**
-	 * Retrieve the holiday location
+	 * Retrieves the holiday location
 	 * 
 	 * @return HolidayLocation
 	 */
@@ -49,7 +51,7 @@ public interface LocationHoliday {
 	public java.lang.String getHolidayLoc();
 
 	/**
-	 * Return the Locale instance for this location
+	 * Returns the Locale instance for this location
 	 * 
 	 * @return Locale instance
 	 */

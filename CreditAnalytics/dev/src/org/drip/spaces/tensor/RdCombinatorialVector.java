@@ -72,7 +72,7 @@ public class RdCombinatorialVector extends org.drip.spaces.tensor.RdAggregate {
 	 * @return The Multidimensional Iterator associated with the Underlying Vector Space
 	 */
 
-	public org.drip.spaces.tensor.RdCombinatorialIterator iterator()
+	public org.drip.spaces.iterator.RdSpanningCombinatorialIterator iterator()
 	{
 		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GV = vectorSpaces();
 
@@ -83,7 +83,7 @@ public class RdCombinatorialVector extends org.drip.spaces.tensor.RdAggregate {
 		for (int i = 0; i < iDimension; ++i)
 			aR1CV[i] = (org.drip.spaces.tensor.R1CombinatorialVector) aR1GV[i];
 
-		return org.drip.spaces.tensor.RdCombinatorialIterator.Standard (aR1CV);
+		return org.drip.spaces.iterator.RdSpanningCombinatorialIterator.Standard (aR1CV);
 	}
 
 	@Override public double[] leftDimensionEdge()

@@ -34,17 +34,17 @@ All you need is to install is a single jar file. Really.
 
 It is called drip.jar (with version info appended). This contains the complete suite of the entire CreditAnalytics analytics. Drop this in the classpath.
 
-If you wish to get bond ref data or closing marks, you may optionally need Ojdbc14.jar - the Oracle JDBC drivers needed for access to the reference data. Again in your classpath it goes.
+You may optionally need Ojdbc14.jar - the Oracle JDBC drivers needed for access to the reference data. Again in your classpath it goes.
 
 
 Configuring is simple too, 
 
-Built-in configuration covers a humoungous variety of day count conventions, calendars, and date adjustment rules. Unsatisfied with any factory calendar default? Examine it first by using one of the API calls, then muck with appropriate Config.xml entry in the config directory, and use this file as the start up.
+Built-in configuration covers a humoungous variety of day count conventions, calendars, and date adjustment rules. Unhappy with any factory default? Examine it first by using one of the API calls, then muck with appropriate Config.xml entry in the config directory, and use this file as the start up.
 
 
 After installation, start by
 
- ... altering the entries in the Config.xml file (you can rename it, as long you identify the full path in the initializer - see below). Of course, you don't even need a configuration file - in which case the settings default to the values provided in the previous section.
+ ... altering the entries provided in the Config.xml file (you can rename it, as long you identify the full path in the initializer - see below). Of course, you don't even need a configuration file - in which case the settings default to the values provided in the previous section.
 
 The sample FIFull.java is the place to start. It contains a comprehensive set of illustrated usage of all the CreditAnalytics API calls.
 

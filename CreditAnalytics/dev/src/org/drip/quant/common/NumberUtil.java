@@ -313,6 +313,37 @@ public class NumberUtil {
 	}
 
 	/**
+	 * Print the contents of the 1D array to the Specified Decimal Location
+	 * 
+	 * @param strName Label Name
+	 * @param adblA The 1D array
+	 * @param iNumDecimal Number of Decimal Places to Display
+	 * @param bBailOnNaN Bail on encountering an NaN
+	 * 
+	 * @return TRUE => Print Successful
+	 */
+
+	public static final boolean Print1DArray (
+		final java.lang.String strName,
+		final double[] adblA,
+		final int iNumDecimal,
+		final boolean bBailOnNaN)
+	{
+		if (null == adblA || 0 == adblA.length) return false;
+
+		int iSize = adblA.length;
+
+		for (int i = 0; i < iSize; ++i) {
+			if (!org.drip.quant.common.NumberUtil.IsValid (adblA[i]) && bBailOnNaN) return false;
+
+			System.out.println (strName + "[" + i + "] = " + org.drip.quant.common.FormatUtil.FormatDouble
+				(adblA[i], 1, iNumDecimal, 1.));
+		}
+
+		return true;
+	}
+
+	/**
 	 * Print the contents of the 2D array
 	 * 
 	 * @param strName Label Name

@@ -6,7 +6,6 @@ package org.drip.analytics.definition;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -36,7 +35,7 @@ package org.drip.analytics.definition;
  * 	the following functionality:
  * 	- Retrieve the spot parameters (FX Spot, Spot Date, and the currency pair)
  *  - Indicate if the basis has been bootstrapped
- *  - Calculate the Complete set of FX Forward corresponding to each basis node
+ *  - Calculate the Full set of FX Forward corresponding to each basis node
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -45,39 +44,39 @@ public abstract class FXBasisCurve extends org.drip.service.stream.Serializer im
 	org.drip.analytics.definition.Curve {
 
 	/**
+	 * Returns the currency pair instance
+	 * 
+	 * @return CurrencyPair object instance
+	 */
+
+	public abstract org.drip.product.params.CurrencyPair getCurrencyPair();
+
+	/**
 	 * Returns the Spot Date
 	 * 
 	 * @return Spot Date
 	 */
 
-	public abstract org.drip.analytics.date.JulianDate spotDate();
+	public abstract org.drip.analytics.date.JulianDate getSpotDate();
 
 	/**
-	 * Get the FX Spot
+	 * Gets the FX Spot
 	 * 
 	 * @return FX Spot
 	 */
 
-	public abstract double fxSpot();
+	public abstract double getFXSpot();
 
 	/**
-	 * Return the currency pair instance
-	 * 
-	 * @return CurrencyPair object instance
-	 */
-
-	public abstract org.drip.product.params.CurrencyPair currencyPair();
-
-	/**
-	 * Return if the inputs are for bootstrapped FX basis
+	 * Returns if the inputs are for bootstrapped FX basis
 	 * 
 	 * @return True if the inputs are for bootstrapped FX basis
 	 */
 
-	public abstract boolean isBasisBootstrapped();
+	public abstract boolean IsBasisBootstrapped();
 
 	/**
-	 * Return the array of full FX Forwards
+	 * Returns the array of full FX Forwards
 	 * 
 	 * @param valParam ValuationParams
 	 * @param dcNum Discount Curve Numerator
@@ -88,10 +87,10 @@ public abstract class FXBasisCurve extends org.drip.service.stream.Serializer im
 	 * @return Array of FXForward
 	 */
 
-	public abstract double[] fxForward (
+	public abstract double[] getFullFXFwd (
 		final org.drip.param.valuation.ValuationParams valParam,
-		final org.drip.analytics.rates.DiscountCurve dcNum,
-		final org.drip.analytics.rates.DiscountCurve dcDenom,
+		final org.drip.analytics.definition.DiscountCurve dcNum,
+		final org.drip.analytics.definition.DiscountCurve dcDenom,
 		final boolean bBasisOnDenom,
 		final boolean bFwdAsPIP);
 }

@@ -6,7 +6,6 @@ package org.drip.product.params;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -33,8 +32,7 @@ package org.drip.product.params;
 
 /**
  * RatesSetting contains the rate related valuation parameters - the discount curves to be used for
- *  discounting the coupon, the redemption, the principal, and the settle cash flows. It exports
- *  serialization into and de-serialization out of byte arrays.
+ *  discounting the coupon, the redemption, the principal, and the settle cash flows.
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -115,7 +113,7 @@ public class RatesSetting extends org.drip.service.stream.Serializer implements
 			throw new java.lang.Exception
 				("RatesSetting de-serializer: Cannot locate state");
 
-		java.lang.String[] astrField = org.drip.quant.common.StringUtil.Split (strSerializedRatesSetting,
+		java.lang.String[] astrField = org.drip.math.common.StringUtil.Split (strSerializedRatesSetting,
 			getFieldDelimiter());
 
 		if (null == astrField || 5 > astrField.length)

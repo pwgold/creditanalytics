@@ -375,8 +375,6 @@ class BondRefData {
 			if (null == brdb || null == bpb) ++iNumFailedToLoad;
 		}
 
-		inBondFODATA.close();
-
 		System.out.println (iNumFailedToLoad + " out of " + iNumBonds + " failed to load");
 
 		System.out.println ("There were " + iNumFloaters + " floaters!");

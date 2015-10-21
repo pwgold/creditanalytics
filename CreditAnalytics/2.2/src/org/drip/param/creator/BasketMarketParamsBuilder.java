@@ -6,7 +6,6 @@ package org.drip.param.creator;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
@@ -40,21 +39,18 @@ package org.drip.param.creator;
 public class BasketMarketParamsBuilder {
 
 	/**
-	 * Construct a BasketMarketParams instance from the map of discount curve, the map of Forward curve, the
-	 *  map of credit curve, and a double map of date/rate index and fixings.
+	 * Constructs the BasketMarketParams object from the map of discount curve, the map of credit curve, and
+	 * 	a double map of date/rate index and fixings.
 	 * 
 	 * @param mapDC Map of discount curve
-	 * @param mapFC Map of Forward Curve
 	 * @param mapCC Map of Credit curve
 	 * @param mapCQComp Map of component quotes
 	 * @param mmFixings Double map of date/rate index and fixings
 	 */
 
 	public static final org.drip.param.definition.BasketMarketParams CreateBasketMarketParams (
-		final org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.rates.DiscountCurve>
+		final org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.definition.DiscountCurve>
 			mapDC,
-		final org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.rates.ForwardCurve>
-			mapFC,
 		final org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.definition.CreditCurve>
 			mapCC,
 		final org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.param.definition.ComponentQuote>
@@ -63,7 +59,7 @@ public class BasketMarketParamsBuilder {
 			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>> mmFixings)
 	{
 		try {
-			return new org.drip.param.market.BasketMarketParamSet (mapDC, mapFC, mapCC, mapCQComp, mmFixings);
+			return new org.drip.param.market.BasketMarketParamSet (mapDC, mapCC, mapCQComp, mmFixings);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -72,7 +68,7 @@ public class BasketMarketParamsBuilder {
 	}
 
 	/**
-	 * Construct an empty instance of the BasketMarketParams object.
+	 * Constructs the empty BasketMarketParams object.
 	 * 
 	 * @return Instance of the Basket Market Params interface
 	 */
@@ -80,7 +76,7 @@ public class BasketMarketParamsBuilder {
 	public static final org.drip.param.definition.BasketMarketParams CreateBasketMarketParams()
 	{
 		try {
-			return new org.drip.param.market.BasketMarketParamSet (null, null, null, null, null);
+			return new org.drip.param.market.BasketMarketParamSet (null, null, null, null);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}

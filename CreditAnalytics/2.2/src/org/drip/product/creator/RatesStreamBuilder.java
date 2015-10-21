@@ -6,7 +6,6 @@ package org.drip.product.creator;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -44,7 +43,7 @@ package org.drip.product.creator;
 public class RatesStreamBuilder {
 
 	/**
-	 * Create a Fixed Stream instance from effective/maturity dates, coupon, and IR curve name
+	 * Creates a Fixed Stream instance from effective/maturity dates, coupon, and IR curve name
 	 * 
 	 * @param dtEffective JulianDate effective
 	 * @param dtMaturity JulianDate maturity
@@ -68,7 +67,7 @@ public class RatesStreamBuilder {
 					strCalendar);
 
 			return new org.drip.product.rates.FixedStream (dtEffective.getJulian(), dtMaturity.getJulian(),
-				dblCoupon, 2, "30/360", "30/360", false, null, dap, dap, dap, dap, dap, null, null, 100.,
+				dblCoupon, 2, "30/360", "30/360", false, null, null, dap, dap, dap, dap, null, null, 100.,
 					strIR, strCalendar);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -78,8 +77,8 @@ public class RatesStreamBuilder {
 	}
 
 	/**
-	 * Create a Floating Stream instance from effective/maturity dates, coupon, IR curve name, and floater
-	 *  index
+	 * Creates a Floating Stream instance from effective/maturity dates, coupon, IR curve name, and
+	 * 	floater index
 	 * 
 	 * @param dtEffective JulianDate effective
 	 * @param dtMaturity JulianDate maturity
@@ -105,9 +104,8 @@ public class RatesStreamBuilder {
 					strCalendar);
 
 			return new org.drip.product.rates.FloatingStream (dtEffective.getJulian(),
-				dtMaturity.getJulian(), 0., org.drip.product.params.FloatingRateIndex.Create
-					(strFloatingRateIndex), 4, "Act/360", "Act/360", false, null, dap, dap, dap, dap, dap,
-						dap, null, null, -100., strIR, strCalendar);
+				dtMaturity.getJulian(), 0., 4, "Act/360", "Act/360", strFloatingRateIndex, false, null, null,
+					dap, dap, dap, dap, null, null, null, -100., strIR, strCalendar);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -116,7 +114,7 @@ public class RatesStreamBuilder {
 	}
 
 	/**
-	 * Create an IRS product from effective/maturity dates, coupon, and IR curve name/rate index
+	 * Creates an IRS product from effective/maturity dates, coupon, and IR curve name/rate index
 	 * 
 	 * @param dtEffective JulianDate effective
 	 * @param dtMaturity JulianDate maturity
@@ -137,7 +135,7 @@ public class RatesStreamBuilder {
 		final java.lang.String strCalendar)
 	{
 		if (null == dtEffective || null == dtMaturity || null == strIR || strIR.isEmpty() ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblCoupon)) return null;
+			!org.drip.math.common.NumberUtil.IsValid (dblCoupon)) return null;
 
 		try {
 			org.drip.product.definition.RatesComponent fixStream = CreateFixedStream (dtEffective,
@@ -160,7 +158,7 @@ public class RatesStreamBuilder {
 	}
 
 	/**
-	 * Create an IRS product from effective date, tenor, coupon, and IR curve name/rate index
+	 * Creates an IRS product from effective date, tenor, coupon, and IR curve name/rate index
 	 * 
 	 * @param dtEffective JulianDate effective
 	 * @param strTenor String tenor
@@ -181,7 +179,7 @@ public class RatesStreamBuilder {
 		final java.lang.String strCalendar)
 	{
 		if (null == dtEffective || null == strTenor || strTenor.isEmpty() || null == strIR || strIR.isEmpty()
-			|| !org.drip.quant.common.NumberUtil.IsValid (dblCoupon)) return null;
+			|| !org.drip.math.common.NumberUtil.IsValid (dblCoupon)) return null;
 
 		try {
 			org.drip.product.definition.RatesComponent fixStream = CreateFixedStream (dtEffective,

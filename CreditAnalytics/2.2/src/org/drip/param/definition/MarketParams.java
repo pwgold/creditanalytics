@@ -6,7 +6,6 @@ package org.drip.param.definition;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
@@ -34,7 +33,6 @@ package org.drip.param.definition;
  * MarketParams is the place holder for the comprehensive suite of the market set of curves for the given
  * 	date. It exports the following functionality:
  * 	- add/remove/retrieve scenario discount curve
- * 	- add/remove/retrieve scenario forward curve
  * 	- add/remove/retrieve scenario zero curve
  * 	- add/remove/retrieve scenario credit curve
  * 	- add/remove/retrieve scenario recovery curve
@@ -53,7 +51,7 @@ package org.drip.param.definition;
 public abstract class MarketParams {
 
 	/**
-	 * Add the named scenario DC
+	 * Adds the named scenario DC
 	 * 
 	 * @param strName Name
 	 * @param irsg Corresponding IRCurveScenarioContainer instance
@@ -63,10 +61,10 @@ public abstract class MarketParams {
 
 	public abstract boolean addScenDC (
 		final java.lang.String strName,
-		final org.drip.param.definition.ScenarioDiscountCurve irsg);
+		final org.drip.param.definition.RatesScenarioCurve irsg);
 
 	/**
-	 * Remove the named scenario DC
+	 * Removes the named scenario DC
 	 * 
 	 * @param strName Name
 	 * 
@@ -77,31 +75,7 @@ public abstract class MarketParams {
 		final java.lang.String strName);
 
 	/**
-	 * Add Named Scenario Forward Curve
-	 * 
-	 * @param strName Name
-	 * @param sfc Scenario Forward Curve Instance
-	 * 
-	 * @return Added successfully (true)
-	 */
-
-	public abstract boolean addScenFC (
-		final java.lang.String strName,
-		final org.drip.param.definition.ScenarioForwardCurve sfc);
-
-	/**
-	 * Remove the Named Scenario Forward Curve
-	 * 
-	 * @param strName Name
-	 * 
-	 * @return Removed successfully (true)
-	 */
-
-	public abstract boolean removeScenFC (
-		final java.lang.String strName);
-
-	/**
-	 * Add the named scenario CC
+	 * Adds the named scenario CC
 	 * 
 	 * @param strName Name
 	 * @param ccsg Corresponding org.drip.param.definition.CreditScenarioCurve instance
@@ -111,7 +85,7 @@ public abstract class MarketParams {
 
 	public abstract boolean addScenCC (
 		final java.lang.String strName,
-		final org.drip.param.definition.ScenarioCreditCurve ccsg);
+		final org.drip.param.definition.CreditScenarioCurve ccsg);
 
 	/**
 	 * Removes the named scenario CC
@@ -125,7 +99,7 @@ public abstract class MarketParams {
 		final java.lang.String strName);
 
 	/**
-	 * Add the named Treasury Quote
+	 * Adds the named Treasury Quote
 	 * 
 	 * @param strBenchmark Name
 	 * @param cqTSY Treasury Quote
@@ -138,7 +112,7 @@ public abstract class MarketParams {
 		final org.drip.param.definition.ComponentQuote cqTSY);
 
 	/**
-	 * Remove the named Treasury Quote
+	 * Removes the named Treasury Quote
 	 * 
 	 * @param strBenchmark Name
 	 * 
@@ -149,7 +123,7 @@ public abstract class MarketParams {
 		final java.lang.String strBenchmark);
 
 	/**
-	 * Set the full set of named Treasury Quote Map
+	 * Sets the full set of named Treasury Quote Map
 	 * 
 	 * @param mapCQTSY Named Treasury Quote Map
 	 * 
@@ -161,7 +135,7 @@ public abstract class MarketParams {
 			mapCQTSY);
 
 	/**
-	 * Get the named Treasury Quote Map corresponding to the desired benchmark
+	 * Gets the named Treasury Quote Map corresponding to the desired benchmark
 	 * 
 	 * @param strBenchmark The treasury benchmark
 	 * 
@@ -172,7 +146,7 @@ public abstract class MarketParams {
 		final java.lang.String strBenchmark);
 
 	/**
-	 * Get the full set of named Treasury Quote Map
+	 * Gets the full set of named Treasury Quote Map
 	 * 
 	 * @return Named Treasury Quote Map
 	 */
@@ -181,7 +155,7 @@ public abstract class MarketParams {
 		getTSYQuotes();
 
 	/**
-	 * Add the fixing for the given rate index and the given date
+	 * Adds the fixing for the given rate index and the given date
 	 * 
 	 * @param dtFix The fixing date
 	 * @param strIndex The Rate Index
@@ -196,7 +170,7 @@ public abstract class MarketParams {
 		final double dblFixing);
 
 	/**
-	 * Remove the fixing corresponding to the given date and index
+	 * Removes the fixing corresponding to the given date and index
 	 * 
 	 * @param dtFix Fixing date
 	 * @param strIndex Rate Index
@@ -209,7 +183,7 @@ public abstract class MarketParams {
 		final java.lang.String strIndex);
 
 	/**
-	 * Retrieve the fixings double map
+	 * Retrieves the fixings double map
 	 * 
 	 * @return The fixings Map
 	 */
@@ -219,7 +193,7 @@ public abstract class MarketParams {
 			getFixings();
 
 	/**
-	 * Add the component quote
+	 * Adds the component quote
 	 * 
 	 * @param strCompID Component ID
 	 * @param cqComp Component Quote
@@ -232,7 +206,7 @@ public abstract class MarketParams {
 		final org.drip.param.definition.ComponentQuote cqComp);
 
 	/**
-	 * Remove the component quote
+	 * Removes the component quote
 	 * 
 	 * @param strCompID Component ID
 	 * 
@@ -243,7 +217,7 @@ public abstract class MarketParams {
 		final java.lang.String strCompID);
 
 	/**
-	 * Add the full map of component quotes
+	 * Adds the full map of component quotes
 	 * 
 	 * @param mCompQuotes Map of Component Quotes
 	 * 
@@ -255,7 +229,7 @@ public abstract class MarketParams {
 			mCompQuotes);
 
 	/**
-	 * Retrieve the quote for the given component
+	 * Retrieves the quote for the given component
 	 * 
 	 * @param strCompID Component ID
 	 * 
@@ -266,7 +240,7 @@ public abstract class MarketParams {
 		final java.lang.String strCompID);
 
 	/**
-	 * Retrieve the full map of component quotes
+	 * Retrieves the full map of component quotes
 	 * 
 	 * @return mCompQuotes Map of Component Quotes
 	 */
@@ -275,7 +249,7 @@ public abstract class MarketParams {
 		getCompQuotes();
 
 	/**
-	 * Add the named scenario BMP
+	 * Adds the named scenario BMP
 	 * 
 	 * @param strScenarioName Scenario Name
 	 * @param bmp BasketMarketParams
@@ -288,7 +262,7 @@ public abstract class MarketParams {
 		final org.drip.param.definition.BasketMarketParams bmp);
 
 	/**
-	 * Retrieve the Named Scenario BMP
+	 * Retrieves the Named Scenario BMP
 	 * 
 	 * @param strScenarioName Scenario Name
 	 * 
@@ -299,7 +273,7 @@ public abstract class MarketParams {
 		final java.lang.String strScenarioName);
 
 	/**
-	 * Add the named scenario CMP
+	 * Adds the named scenario CMP
 	 * 
 	 * @param strScenarioName Scenario Name
 	 * @param cmp BasketMarketParams
@@ -312,7 +286,7 @@ public abstract class MarketParams {
 		final org.drip.param.definition.ComponentMarketParams cmp);
 
 	/**
-	 * Retrieve the Named Scenario CMP
+	 * Retrieves the Named Scenario CMP
 	 * 
 	 * @param strScenarioName Scenario Name
 	 * 
@@ -323,7 +297,7 @@ public abstract class MarketParams {
 		final java.lang.String strScenarioName);
 
 	/**
-	 * Get the ComponentMarketParams corresponding to the component and the scenario
+	 * Gets the ComponentMarketParams corresponding to the component and the scenario
 	 * 
 	 * @param comp Component
 	 * @param strScen Scenario
@@ -336,7 +310,7 @@ public abstract class MarketParams {
 		final java.lang.String strScen);
 
 	/**
-	 * Get the map of tenor IR bumped ComponentMarketParams corresponding to the component
+	 * Gets the map of tenor IR bumped ComponentMarketParams corresponding to the component
 	 * 
 	 * @param comp Component
 	 * @param bBumpUp Bump up (True)
@@ -351,22 +325,7 @@ public abstract class MarketParams {
 				final boolean bBumpUp);
 
 	/**
-	 * Get the Map of Tenor Forward Rate bumped ComponentMarketParams corresponding to the component
-	 * 
-	 * @param comp Component
-	 * @param bBumpUp Bump up (True)
-	 * 
-	 * @return Map of the Tenor Forward Rate bumped ComponentMarketParams
-	 */
-
-	public abstract
-		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.param.definition.ComponentMarketParams>
-			getForwardTenorCMP (
-				final org.drip.product.definition.Component comp,
-				final boolean bBumpUp);
-
-	/**
-	 * Get the map of tenor credit bumped ComponentMarketParams corresponding to the component
+	 * Gets the map of tenor credit bumped ComponentMarketParams corresponding to the component
 	 *  
 	 * @param comp Component
 	 * @param bBumpUp Bump up (True)
@@ -405,21 +364,6 @@ public abstract class MarketParams {
 	public abstract
 		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.param.definition.BasketMarketParams>
 			getIRBumpBMP (
-				final org.drip.product.definition.BasketProduct bp,
-				final boolean bBump);
-
-	/**
-	 * Get the Map of Forward Rate Tenor Bumped Curves for the given Basket Product
-	 * 
-	 * @param bp BasketProduct
-	 * @param bBump True (Bump Up), False (Bump Down)
-	 * 
-	 * @return Map of the IR Tenor bumped curves
-	 */
-
-	public abstract
-		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.param.definition.BasketMarketParams>
-			getForwardBumpBMP (
 				final org.drip.product.definition.BasketProduct bp,
 				final boolean bBump);
 
@@ -484,22 +428,22 @@ public abstract class MarketParams {
 				final boolean bBump);
 
 	/**
-	 * Retrieve the map of RatesScenarioCurve
+	 * Retrieves the map of RatesScenarioCurve
 	 * 
 	 * @return Map of RatesScenarioCurve
 	 */
 
 	public abstract
-		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.param.definition.ScenarioDiscountCurve>
+		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.param.definition.RatesScenarioCurve>
 			getIRSG();
 
 	/**
-	 * Retrieve the map of org.drip.param.definition.CreditScenarioCurve
+	 * Retrieves the map of org.drip.param.definition.CreditScenarioCurve
 	 * 
 	 * @return Map of org.drip.param.definition.CreditScenarioCurve
 	 */
 
 	public abstract
-		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.param.definition.ScenarioCreditCurve>
+		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.param.definition.CreditScenarioCurve>
 			getCCSG();
 }

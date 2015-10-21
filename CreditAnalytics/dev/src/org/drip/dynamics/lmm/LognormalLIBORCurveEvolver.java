@@ -57,29 +57,6 @@ public class LognormalLIBORCurveEvolver implements org.drip.dynamics.evolution.C
 	private org.drip.spline.params.SegmentCustomBuilderControl[] _aSCBCInstantaneousNominalForward = null;
 	private org.drip.spline.params.SegmentCustomBuilderControl[] _aSCBCInstantaneousEffectiveForward = null;
 
-	class TenorDate {
-		double[] _adblLIBOR = null;
-		double[] _adblTenorDate = null;
-
-		TenorDate (
-			final double[] adblTenorDate,
-			final double[] adblLIBOR)
-		{
-			_adblLIBOR = adblLIBOR;
-			_adblTenorDate = adblTenorDate;
-		}
-
-		double[] tenorDates()
-		{
-			return _adblTenorDate;
-		}
-
-		double[] liborRates()
-		{
-			return _adblLIBOR;
-		}
-	};
-
 	/**
 	 * Create a LognormalLIBORCurveEvolver Instance
 	 * 
@@ -273,6 +250,69 @@ public class LognormalLIBORCurveEvolver implements org.drip.dynamics.evolution.C
 							(dblDCF * dblContinuousForwardRateEvolved) - 1.) / dblDCF, java.lang.Math.sqrt
 								(dblLognormalPointVolatilityModulus), java.lang.Math.sqrt
 									(dblContinuousForwardVolatilityModulus));
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	private org.drip.dynamics.lmm.PathwiseQMRealization simulateLIBOR (
+		final double dblEvolutionDate,
+		final double dblViewDate,
+		final double dblEvolutionIncrement,
+		final double dblEvolutionIncrementSQRT,
+		final org.drip.analytics.rates.ForwardCurve fc,
+		final java.lang.String strForwardTenor,
+		final double dblForwardDCF,
+		final org.drip.dynamics.lmm.LognormalLIBORVolatility llv)
+	{
+		double[] adblLIBOR = new double[_iNumForwardTenor + 1];
+		double[] adblTenorDate = new double[_iNumForwardTenor + 1];
+
+		double[] adblMultivariateRandom = llv.msg().random();
+
+		try {
+			org.drip.analytics.date.JulianDate dtTargetPoint = new org.drip.analytics.date.JulianDate
+				(dblViewDate);
+
+			for (int i = 0; i <= _iNumForwardTenor; ++i) {
+				double dblTargetPointDate = dtTargetPoint.julian();
+
+				double[] adblLognormalFactorPointVolatility = llv.factorPointVolatility (dblEvolutionDate,
+					dblTargetPointDate);
+
+				double[] adblContinuousForwardVolatility = llv.continuousForwardVolatility
+					(dblTargetPointDate, fc);
+
+				double dblCrossVolatilityDotProduct = 0.;
+				double dblLognormalPointVolatilityModulus = 0.;
+				double dblLIBORVolatilityMultiFactorRandom = 0.;
+				int iNumFactor = adblLognormalFactorPointVolatility.length;
+
+				for (int j = 0; j < iNumFactor; ++j) {
+					dblLognormalPointVolatilityModulus += adblLognormalFactorPointVolatility[j] *
+						adblLognormalFactorPointVolatility[j];
+					dblCrossVolatilityDotProduct += adblLognormalFactorPointVolatility[j] *
+						adblContinuousForwardVolatility[j];
+					dblLIBORVolatilityMultiFactorRandom += adblLognormalFactorPointVolatility[j] *
+						adblMultivariateRandom[j] * dblEvolutionIncrementSQRT;
+				}
+
+				double dblLIBOR = fc.forward (dblTargetPointDate);
+
+				double dblLIBORDCF = dblForwardDCF * dblLIBOR;
+				adblTenorDate[i] = dblTargetPointDate;
+
+				adblLIBOR[i] = dblLIBOR + dblEvolutionIncrement * (forwardDerivative (fc, dblTargetPointDate)
+					+ dblLIBOR * dblCrossVolatilityDotProduct + (dblLognormalPointVolatilityModulus *
+						dblLIBOR * dblLIBORDCF / (1. + dblLIBORDCF))) + dblLIBOR *
+							dblLIBORVolatilityMultiFactorRandom;
+
+				dtTargetPoint = dtTargetPoint.addTenor (strForwardTenor);
+			}
+
+			return new org.drip.dynamics.lmm.PathwiseQMRealization (adblTenorDate, adblLIBOR);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -593,69 +633,6 @@ public class LognormalLIBORCurveEvolver implements org.drip.dynamics.evolution.C
 		return null;
 	}
 
-	private TenorDate simulateLIBOR (
-		final double dblEvolutionDate,
-		final double dblViewDate,
-		final double dblEvolutionIncrement,
-		final double dblEvolutionIncrementSQRT,
-		final org.drip.analytics.rates.ForwardCurve fc,
-		final java.lang.String strForwardTenor,
-		final double dblForwardDCF,
-		final org.drip.dynamics.lmm.LognormalLIBORVolatility llv)
-	{
-		double[] adblLIBOR = new double[_iNumForwardTenor + 1];
-		double[] adblTenorDate = new double[_iNumForwardTenor + 1];
-
-		double[] adblMultivariateRandom = llv.msg().random();
-
-		try {
-			org.drip.analytics.date.JulianDate dtTargetPoint = new org.drip.analytics.date.JulianDate
-				(dblViewDate);
-
-			for (int i = 0; i <= _iNumForwardTenor; ++i) {
-				double dblTargetPointDate = dtTargetPoint.julian();
-
-				double[] adblLognormalFactorPointVolatility = llv.factorPointVolatility (dblEvolutionDate,
-					dblTargetPointDate);
-
-				double[] adblContinuousForwardVolatility = llv.continuousForwardVolatility
-					(dblTargetPointDate, fc);
-
-				double dblCrossVolatilityDotProduct = 0.;
-				double dblLognormalPointVolatilityModulus = 0.;
-				double dblLIBORVolatilityMultiFactorRandom = 0.;
-				int iNumFactor = adblLognormalFactorPointVolatility.length;
-
-				for (int j = 0; j < iNumFactor; ++j) {
-					dblLognormalPointVolatilityModulus += adblLognormalFactorPointVolatility[j] *
-						adblLognormalFactorPointVolatility[j];
-					dblCrossVolatilityDotProduct += adblLognormalFactorPointVolatility[j] *
-						adblContinuousForwardVolatility[j];
-					dblLIBORVolatilityMultiFactorRandom += adblLognormalFactorPointVolatility[j] *
-						adblMultivariateRandom[j] * dblEvolutionIncrementSQRT;
-				}
-
-				double dblLIBOR = fc.forward (dblTargetPointDate);
-
-				double dblLIBORDCF = dblForwardDCF * dblLIBOR;
-				adblTenorDate[i] = dblTargetPointDate;
-
-				adblLIBOR[i] = dblLIBOR + dblEvolutionIncrement * (forwardDerivative (fc, dblTargetPointDate)
-					+ dblLIBOR * dblCrossVolatilityDotProduct + (dblLognormalPointVolatilityModulus *
-						dblLIBOR * dblLIBORDCF / (1. + dblLIBORDCF))) + dblLIBOR *
-							dblLIBORVolatilityMultiFactorRandom;
-
-				dtTargetPoint = dtTargetPoint.addTenor (strForwardTenor);
-			}
-
-			return new TenorDate (adblTenorDate, adblLIBOR);
-		} catch (java.lang.Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
 	@Override public double[][] simulatePrincipalMetric (
 		final double dblEvolutionStartDate,
 		final double dblEvolutionFinishDate,
@@ -687,7 +664,6 @@ public class LognormalLIBORCurveEvolver implements org.drip.dynamics.evolution.C
 			1;
 		double[][] aadblTenorLIBOR = new double[iNumTimeStep][_iNumForwardTenor + 1];
 		double dblAnnualEvolutionIncrement = dblEvolutionIncrement / 365.;
-		org.drip.analytics.rates.ForwardCurve fcLIBOR = fc;
 		double dblForwardDCF = java.lang.Double.NaN;
 
 		double dblAnnualEvolutionIncrementSQRT = java.lang.Math.sqrt (dblAnnualEvolutionIncrement);
@@ -710,22 +686,24 @@ public class LognormalLIBORCurveEvolver implements org.drip.dynamics.evolution.C
 
 		for (int iSimulationIndex = 0; iSimulationIndex < iNumSimulation; ++iSimulationIndex) {
 			int iEvolutionTimeIndex = 0;
+			org.drip.analytics.rates.ForwardCurve fcLIBOR = fc;
 
 			for (double dblEvolutionDate = dblEvolutionStartDate; dblEvolutionDate <= dblEvolutionFinishDate;
 				dblEvolutionDate += dblEvolutionIncrement) {
-				TenorDate td = simulateLIBOR (dblEvolutionDate, dblViewDate, dblAnnualEvolutionIncrement,
-					dblAnnualEvolutionIncrementSQRT, fcLIBOR, strForwardTenor, dblForwardDCF, llv);
+				org.drip.dynamics.lmm.PathwiseQMRealization pqmr = simulateLIBOR (dblEvolutionDate,
+					dblViewDate, dblAnnualEvolutionIncrement, dblAnnualEvolutionIncrementSQRT, fcLIBOR,
+						strForwardTenor, dblForwardDCF, llv);
 
-				if (null == td) return null;
+				if (null == pqmr) return null;
 
-				double[] adblSimulatedLIBOR = td.liborRates();
+				double[] adblSimulatedLIBOR = pqmr.realizedQM();
 
 				try {
 					fcLIBOR = new org.drip.state.curve.BasisSplineForwardRate (_lslForward, new
 						org.drip.spline.grid.OverlappingStretchSpan
 							(org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-						(strForwardLabel + "_QM_LIBOR", td.tenorDates(), adblSimulatedLIBOR, _aSCBCLIBOR, null,
-							bs, org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE)));
+						(strForwardLabel + "_QM_LIBOR", pqmr.targetDate(), adblSimulatedLIBOR, _aSCBCLIBOR,
+							null, bs, org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE)));
 				} catch (java.lang.Exception e) {
 					e.printStackTrace();
 
@@ -745,5 +723,93 @@ public class LognormalLIBORCurveEvolver implements org.drip.dynamics.evolution.C
 		}
 
 		return aadblTenorLIBOR;
+	}
+
+	/**
+	 * Construct an Array of Forward Curves that Result from the Simulation
+	 * 
+	 * @param dblEvolutionStartDate The Start Date of the Simulation
+	 * @param dblEvolutionFinishDate The Finish Date of the Simulation
+	 * @param dblEvolutionIncrement The Simulation Evolution Increment
+	 * @param dblViewDate The Forward View Date
+	 * @param lsqmStart The Initial/Starting LSQM State
+	 * @param iNumSimulation Number of Simulations
+	 * 
+	 * @return The Array of Forward Curves that Result from the Simulation
+	 */
+
+	public org.drip.analytics.rates.ForwardCurve[] simulateTerminalLatentState (
+		final double dblEvolutionStartDate,
+		final double dblEvolutionFinishDate,
+		final double dblEvolutionIncrement,
+		final double dblViewDate,
+		final org.drip.dynamics.evolution.LSQMCurveUpdate lsqmStart,
+		final int iNumSimulation)
+	{
+		if (!org.drip.quant.common.NumberUtil.IsValid (dblViewDate) ||
+			!org.drip.quant.common.NumberUtil.IsValid (dblEvolutionStartDate) || dblEvolutionStartDate >
+				dblViewDate || !org.drip.quant.common.NumberUtil.IsValid (dblEvolutionFinishDate) ||
+					dblEvolutionFinishDate <= dblEvolutionStartDate || dblEvolutionFinishDate > dblViewDate
+						|| !org.drip.quant.common.NumberUtil.IsValid (dblEvolutionIncrement) ||
+							dblEvolutionIncrement <= 0. || null == lsqmStart || !(lsqmStart instanceof
+								org.drip.dynamics.lmm.BGMCurveUpdate) || 1 >= iNumSimulation)
+			return null;
+
+		org.drip.dynamics.lmm.BGMCurveUpdate bgmMetrics = (org.drip.dynamics.lmm.BGMCurveUpdate) lsqmStart;
+
+		org.drip.dynamics.lmm.LognormalLIBORVolatility llv = bgmMetrics.lognormalLIBORVolatility();
+
+		java.lang.String strForwardLabel = _lslForward.fullyQualifiedName() + "_QM_LIBOR";
+
+		org.drip.analytics.rates.ForwardCurve fc = bgmMetrics.forwardCurve();
+
+		java.lang.String strForwardTenor = _lslForward.tenor();
+
+		org.drip.analytics.rates.ForwardCurve[] aFCLIBOR = new
+			org.drip.analytics.rates.ForwardCurve[iNumSimulation];
+		double dblAnnualEvolutionIncrement = dblEvolutionIncrement / 365.;
+		double dblForwardDCF = java.lang.Double.NaN;
+
+		double dblAnnualEvolutionIncrementSQRT = java.lang.Math.sqrt (dblAnnualEvolutionIncrement);
+
+		org.drip.spline.stretch.BoundarySettings bs =
+			org.drip.spline.stretch.BoundarySettings.NaturalStandard();
+
+		try {
+			dblForwardDCF = org.drip.analytics.support.AnalyticsHelper.TenorToYearFraction (strForwardTenor);
+		} catch (java.lang.Exception e) {
+			e.printStackTrace();
+
+			return null;
+		}
+
+		for (int iSimulationIndex = 0; iSimulationIndex < iNumSimulation; ++iSimulationIndex) {
+			org.drip.analytics.rates.ForwardCurve fcLIBOR = fc;
+
+			for (double dblEvolutionDate = dblEvolutionStartDate; dblEvolutionDate <= dblEvolutionFinishDate;
+				dblEvolutionDate += dblEvolutionIncrement) {
+				org.drip.dynamics.lmm.PathwiseQMRealization pqmr = simulateLIBOR (dblEvolutionDate,
+					dblViewDate, dblAnnualEvolutionIncrement, dblAnnualEvolutionIncrementSQRT, fcLIBOR,
+						strForwardTenor, dblForwardDCF, llv);
+
+				if (null == pqmr) return null;
+
+				try {
+					fcLIBOR = new org.drip.state.curve.BasisSplineForwardRate (_lslForward, new
+						org.drip.spline.grid.OverlappingStretchSpan
+							(org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
+						(strForwardLabel + "_QM_LIBOR", pqmr.targetDate(), pqmr.realizedQM(), _aSCBCLIBOR,
+							null, bs, org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE)));
+				} catch (java.lang.Exception e) {
+					e.printStackTrace();
+
+					return null;
+				}
+			}
+
+			aFCLIBOR[iSimulationIndex] = fcLIBOR;
+		}
+
+		return aFCLIBOR;
 	}
 }

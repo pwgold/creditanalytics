@@ -6,7 +6,6 @@ package org.drip.product.creator;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -34,7 +33,7 @@ package org.drip.product.creator;
 /**
  * CDSBuilder contains the suite of helper functions for creating the CreditDefaultSwap product from the
  * 	parameters/byte array streams. It also creates the standard EU, NA, ASIA contracts, CDS with amortization
- *  schedules, and custom CDS from product codes/tenors.
+ *  schedules, and CDS from product codes/tenors.
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -42,7 +41,7 @@ package org.drip.product.creator;
 public class CDSBuilder {
 
 	/**
-	 * Create the credit default swap from the effective/maturity dates, coupon, IR curve name, and
+	 * Creates the credit default swap from the effective/maturity dates, coupon, IR curve name, and
 	 * 	component credit valuation parameters.
 	 * 
 	 * @param dtEffective JulianDate effective
@@ -66,7 +65,7 @@ public class CDSBuilder {
 		final boolean bAdjustDates)
 	{
 		if (null == dtEffective || null == dtMaturity || null == strIR || strIR.isEmpty() || null ==
-			crValParams || !org.drip.quant.common.NumberUtil.IsValid (dblCoupon)) {
+			crValParams || !org.drip.math.common.NumberUtil.IsValid (dblCoupon)) {
 			System.out.println ("Invalid CDS ctr params!");
 
 			return null;
@@ -95,7 +94,7 @@ public class CDSBuilder {
 	}
 
 	/**
-	 * Create the credit default swap from the effective/maturity dates, coupon, IR curve name, and
+	 * Creates the credit default swap from the effective/maturity dates, coupon, IR curve name, and
 	 * 	credit curve.
 	 * 
 	 * @param dtEffective JulianDate effective
@@ -121,7 +120,7 @@ public class CDSBuilder {
 		final boolean bAdjustDates)
 	{
 		if (null == dtEffective || null == dtMaturity || null == strIR || strIR.isEmpty() || null == strCC ||
-			strCC.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid (dblCoupon)) {
+			strCC.isEmpty() || !org.drip.math.common.NumberUtil.IsValid (dblCoupon)) {
 			System.out.println ("Invalid CDS ctr params!");
 
 			return null;
@@ -140,7 +139,7 @@ public class CDSBuilder {
 	}
 
 	/**
-	 * Create an SNAC style CDS contract with full first stub
+	 * Creates an SNAC style CDS contract with full first stub
 	 * 
 	 * @param dtEffective CDS Effective date
 	 * @param strTenor CDS Tenor
@@ -160,7 +159,7 @@ public class CDSBuilder {
 	}
 
 	/**
-	 * Create an SNAC style CDS contract with full first stub
+	 * Creates an SNAC style CDS contract with full first stub
 	 * 
 	 * @param dtEffective CDS Effective date
 	 * @param strTenor CDS Tenor
@@ -195,7 +194,7 @@ public class CDSBuilder {
 	}
 
 	/**
-	 * Create an Standard EU CDS contract with full first stub
+	 * Creates an Standard EU CDS contract with full first stub
 	 * 
 	 * @param dtEffective CDS Effective date
 	 * @param strTenor CDS Tenor
@@ -226,7 +225,7 @@ public class CDSBuilder {
 	}
 
 	/**
-	 * Create an Standard Asia Pacific CDS contract with full first stub
+	 * Creates an Standard Asia Pacific CDS contract with full first stub
 	 * 
 	 * @param dtEffective CDS Effective date
 	 * @param strTenor CDS Tenor
@@ -257,7 +256,7 @@ public class CDSBuilder {
 	}
 
 	/**
-	 * Create an Standard Emerging Market CDS contract with full first stub
+	 * Creates an Standard Emerging Market CDS contract with full first stub
 	 * 
 	 * @param dtEffective CDS Effective date
 	 * @param strTenor CDS Tenor
@@ -289,8 +288,8 @@ public class CDSBuilder {
 	}
 
 	/**
-	 * Create the credit default swap from the effective date, tenor, coupon, IR curve name, and component
-	 * 	credit valuation parameters.
+	 * Creates the credit default swap from the effective date, tenor, coupon, IR curve name, and
+	 * 	component credit valuation parameters.
 	 * 
 	 * @param dtEffective JulianDate effective
 	 * @param strTenor String tenor
@@ -311,7 +310,7 @@ public class CDSBuilder {
 		final java.lang.String strCalendar)
 	{
 		if (null == dtEffective || null == strTenor || strTenor.isEmpty() || null == strIR || strIR.isEmpty()
-			|| null == crValParams || !org.drip.quant.common.NumberUtil.IsValid (dblCoupon)) {
+			|| null == crValParams || !org.drip.math.common.NumberUtil.IsValid (dblCoupon)) {
 			System.out.println ("Invalid CDS ctr params!");
 
 			return null;
@@ -334,8 +333,8 @@ public class CDSBuilder {
 	}
 
 	/**
-	 * Create the credit default swap from the effective/maturity dates, coupon, IR curve name, and credit
-	 * 	curve.
+	 * Creates the credit default swap from the effective/maturity dates, coupon, IR curve name, and
+	 * 	credit curve.
 	 * 
 	 * @param dtEffective JulianDate effective
 	 * @param strTenor String tenor
@@ -356,7 +355,7 @@ public class CDSBuilder {
 		final java.lang.String strCalendar)
 	{
 		if (null == dtEffective || null == strTenor || strTenor.isEmpty() || null == strIR || strIR.isEmpty()
-			|| null == strCC || strCC.isEmpty() || !org.drip.quant.common.NumberUtil.IsValid (dblCoupon)) {
+			|| null == strCC || strCC.isEmpty() || !org.drip.math.common.NumberUtil.IsValid (dblCoupon)) {
 			System.out.println ("Invalid CDS ctr params!");
 
 			return null;

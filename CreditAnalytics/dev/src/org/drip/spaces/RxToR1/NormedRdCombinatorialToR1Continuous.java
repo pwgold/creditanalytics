@@ -79,7 +79,7 @@ public class NormedRdCombinatorialToR1Continuous extends org.drip.spaces.RxToR1.
 			throw new java.lang.Exception
 				("NormedRdCombinatorialToR1Continuous::populationMetricNorm => No Multivariate Distribution/Function");
 
-		org.drip.spaces.tensor.RdCombinatorialIterator ciRd = rdCombinatorialInput.iterator();
+		org.drip.spaces.iterator.RdSpanningCombinatorialIterator ciRd = rdCombinatorialInput.iterator();
 
 		double[] adblVariate = ciRd.cursorVariates();
 

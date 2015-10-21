@@ -6,7 +6,6 @@ package org.drip.product.definition;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -55,7 +54,7 @@ public abstract class CalibratableComponent extends org.drip.product.definition.
 	public abstract java.lang.String getPrimaryCode();
 
 	/**
-	 * Set the component's primary code
+	 * Sets the component's primary code
 	 * 
 	 * @param strCode Primary Code
 	 */
@@ -64,7 +63,7 @@ public abstract class CalibratableComponent extends org.drip.product.definition.
 		final java.lang.String strCode);
 
 	/**
-	 * Get the component's secondary codes
+	 * Gets the component's secondary codes
 	 * 
 	 * @return Array of strings containing the secondary codes
 	 */
@@ -98,7 +97,7 @@ public abstract class CalibratableComponent extends org.drip.product.definition.
 	 * @return The micro-Jacobian
 	 */
 
-	public abstract org.drip.quant.calculus.WengertJacobian calcPVDFMicroJack (
+	public abstract org.drip.math.calculus.WengertJacobian calcPVDFMicroJack (
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.PricerParams pricerParams,
 		final org.drip.param.definition.ComponentMarketParams mktParams,
@@ -116,42 +115,10 @@ public abstract class CalibratableComponent extends org.drip.product.definition.
 	 * @return The micro-Jacobian
 	 */
 
-	public abstract org.drip.quant.calculus.WengertJacobian calcQuoteDFMicroJack (
+	public abstract org.drip.math.calculus.WengertJacobian calcQuoteDFMicroJack (
 		final java.lang.String strQuote,
 		final org.drip.param.valuation.ValuationParams valParams,
 		final org.drip.param.pricer.PricerParams pricerParams,
 		final org.drip.param.definition.ComponentMarketParams mktParams,
 		final org.drip.param.valuation.QuotingParams quotingParams);
-
-	/**
-	 * Generate the Calibratable Linearized Predictor/Response Constraints for the Component from the Market
-	 *  Inputs. The Constraints here typically correspond to Date/Cash Flow pairs and the corresponding PV.
-	 * 
-	 * @param valParams Valuation Parameters
-	 * @param pricerParams Pricer Parameters
-	 * @param mktParams Component Market Parameters
-	 * @param quotingParams Component Quoting Parameters
-	 * @param lsmm The Latent State Metric and the Component Measure
-	 * 
-	 * @return The Calibratable Linearized Predictor/Response Constraints (Date/Cash Flow pairs and the
-	 * 	corresponding PV)
-	 */
-
-	public abstract org.drip.state.estimator.PredictorResponseWeightConstraint generateCalibPRLC (
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.pricer.PricerParams pricerParams,
-		final org.drip.param.definition.ComponentMarketParams mktParams,
-		final org.drip.param.valuation.QuotingParams quotingParams,
-		final org.drip.state.representation.LatentStateMetricMeasure lsmm);
-
-	/**
-	 * Return the last Date that is relevant for the Calibration
-	 * 
-	 * @return The Terminal Date
-	 */
-
-	public org.drip.analytics.date.JulianDate terminalDate()
-	{
-		return getMaturityDate();
-	}
 }

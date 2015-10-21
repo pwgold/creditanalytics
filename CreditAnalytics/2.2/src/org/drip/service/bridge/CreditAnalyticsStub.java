@@ -6,7 +6,6 @@ package org.drip.service.bridge;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -108,7 +107,7 @@ public class CreditAnalyticsStub {
 
 		double dblAskPrice = 0.01 * qPrice.getQuote ("ASK");
 
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblAskPrice)) return null;
+		if (!org.drip.math.common.NumberUtil.IsValid (dblAskPrice)) return null;
 
 		org.drip.param.valuation.WorkoutInfo wi = bond.calcExerciseYieldFromPrice (valParams, cmp, null,
 			dblAskPrice);

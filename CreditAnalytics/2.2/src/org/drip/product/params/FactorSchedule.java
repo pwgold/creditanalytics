@@ -6,7 +6,6 @@ package org.drip.product.params;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -32,9 +31,7 @@ package org.drip.product.params;
  */
 
 /**
- * FactorSchedule the contains array of dates and factors. It provides methods to create/access different
- * 	varieties of factor schedule creation It exports serialization into and de-serialization out of byte
- *  arrays.
+ * FactorSchedule the contains array of dates and factors.
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -44,7 +41,7 @@ public class FactorSchedule extends org.drip.service.stream.Serializer {
 	private double _adblFactor[] = null;
 
 	/**
-	 * Create the factor schedule from a matched string array of dates and factors
+	 * Creates the factor schedule from a matched string array of dates and factors
 	 * 
 	 * @param strDates String array of dates
 	 * @param strFactors String array of Factors
@@ -60,9 +57,9 @@ public class FactorSchedule extends org.drip.service.stream.Serializer {
 			return null;
 
 		try {
-			return new FactorSchedule (org.drip.quant.common.StringUtil.MakeDoubleArrayFromStringTokenizer
+			return new FactorSchedule (org.drip.math.common.StringUtil.MakeDoubleArrayFromStringTokenizer
 				(new java.util.StringTokenizer (strDates, ";")),
-					org.drip.quant.common.StringUtil.MakeDoubleArrayFromStringTokenizer (new
+					org.drip.math.common.StringUtil.MakeDoubleArrayFromStringTokenizer (new
 						java.util.StringTokenizer (strFactors, ";")));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -72,7 +69,7 @@ public class FactorSchedule extends org.drip.service.stream.Serializer {
 	}
 
 	/**
-	 * Create the factor schedule from a matched array of dates and factors
+	 * Creates the factor schedule from a matched array of dates and factors
 	 * 
 	 * @param adblDate Array of dates
 	 * @param adblFactor Array of Factors
@@ -94,7 +91,7 @@ public class FactorSchedule extends org.drip.service.stream.Serializer {
 	}
 
 	/**
-	 * Create the factor schedule from a matched array of dates and factor deltas
+	 * Creates the factor schedule from a matched array of dates and factor deltas
 	 * 
 	 * @param adblDate Array of dates
 	 * @param adblFactorDelta Array of Factor Deltas
@@ -131,7 +128,7 @@ public class FactorSchedule extends org.drip.service.stream.Serializer {
 	}
 
 	/**
-	 * Create factor schedule of flat unit notional
+	 * Creates factor schedule of flat unit notional
 	 * 
 	 * @return FactorSchedule object
 	 */
@@ -197,7 +194,7 @@ public class FactorSchedule extends org.drip.service.stream.Serializer {
 		if (null == strSerializedFactorSchedule || strSerializedFactorSchedule.isEmpty())
 			throw new java.lang.Exception ("FactorSchedule de-serializer: Cannot locate state");
 
-		java.lang.String[] astrField = org.drip.quant.common.StringUtil.Split (strSerializedFactorSchedule,
+		java.lang.String[] astrField = org.drip.math.common.StringUtil.Split (strSerializedFactorSchedule,
 			getFieldDelimiter());
 
 		if (null == astrField || 2 > astrField.length)
@@ -213,7 +210,7 @@ public class FactorSchedule extends org.drip.service.stream.Serializer {
 
 		java.util.List<java.lang.Double> lsdblFactor = new java.util.ArrayList<java.lang.Double>();
 
-		if (!org.drip.quant.common.StringUtil.KeyValueListFromStringArray (lsdblDate, lsdblFactor,
+		if (!org.drip.math.common.StringUtil.KeyValueListFromStringArray (lsdblDate, lsdblFactor,
 			astrField[1], getCollectionRecordDelimiter(), getCollectionKeyValueDelimiter()))
 			throw new java.lang.Exception ("FactorSchedule de-serializer: Cannot decode hazard state");
 
@@ -232,7 +229,7 @@ public class FactorSchedule extends org.drip.service.stream.Serializer {
 	}
 
 	/**
-	 * Retrieve the notional factor for a given date
+	 * Retrieves the notional factor for a given date
 	 * 
 	 * @param dblDate Date
 	 * 
@@ -245,7 +242,7 @@ public class FactorSchedule extends org.drip.service.stream.Serializer {
 		final double dblDate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblDate))
+		if (!org.drip.math.common.NumberUtil.IsValid (dblDate))
 			throw new java.lang.Exception ("FactorSchedule::getFactor => Invalid Input");
 
 		if (dblDate <= _adblDate[0]) return _adblFactor[0];
@@ -258,7 +255,7 @@ public class FactorSchedule extends org.drip.service.stream.Serializer {
 	}
 
 	/**
-	 * Retrieve the index that corresponds to the given date
+	 * Retrieves the index that corresponds to the given date
 	 * 
 	 * @param dblDate Date
 	 * 
@@ -271,7 +268,7 @@ public class FactorSchedule extends org.drip.service.stream.Serializer {
 		final double dblDate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblDate))
+		if (!org.drip.math.common.NumberUtil.IsValid (dblDate))
 			throw new java.lang.Exception ("FactorSchedule::getIndex => Invalid Input/State");
 
 		if (dblDate <= _adblDate[0]) return 0;
@@ -284,7 +281,7 @@ public class FactorSchedule extends org.drip.service.stream.Serializer {
 	}
 
 	/**
-	 * Retrieve the time-weighted notional factor between 2 dates
+	 * Retrieves the time-weighted notional factor between 2 dates
 	 * 
 	 * @param dblStartDate Start Date
 	 * @param dblEndDate End Date
@@ -299,8 +296,8 @@ public class FactorSchedule extends org.drip.service.stream.Serializer {
 		final double dblEndDate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.quant.common.NumberUtil.IsValid (dblStartDate) ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblEndDate))
+		if (!org.drip.math.common.NumberUtil.IsValid (dblStartDate) ||
+			!org.drip.math.common.NumberUtil.IsValid (dblEndDate))
 			throw new java.lang.Exception ("FactorSchedule::getFactor => Invalid Inputs");
 
 		int iEndIndex = getIndex (dblEndDate);
@@ -319,7 +316,7 @@ public class FactorSchedule extends org.drip.service.stream.Serializer {
 	}
 
 	/**
-	 * Retrieve the array of dates
+	 * Retrieves the array of dates
 	 * 
 	 * @return Double array of JulianDate
 	 */
@@ -330,7 +327,7 @@ public class FactorSchedule extends org.drip.service.stream.Serializer {
 	}
 
 	/**
-	 * Retrieve the array of notional factors
+	 * Retrieves the array of notional factors
 	 * 
 	 * @return Double array of notional factors
 	 */

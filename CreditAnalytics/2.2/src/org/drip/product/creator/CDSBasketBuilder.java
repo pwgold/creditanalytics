@@ -6,7 +6,6 @@ package org.drip.product.creator;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -41,8 +40,8 @@ package org.drip.product.creator;
 public class CDSBasketBuilder {
 
 	/**
-	 * Create the named CDX from effective, maturity, coupon, IR curve name, credit curve name set, and their
-	 * 	weights.
+	 * Creates the named CDX from effective, maturity, coupon, IR curve name, credit curve name set, and
+	 * 		their weights.
 	 * 
 	 * @param dtEffective JulianDate Effective
 	 * @param dtMaturity JulianDate Maturity
@@ -64,7 +63,7 @@ public class CDSBasketBuilder {
 		final double[] adblWeight,
 		final java.lang.String strName)
 	{
-		if (null == dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblCoupon)
+		if (null == dtEffective || null == dtMaturity || !org.drip.math.common.NumberUtil.IsValid (dblCoupon)
 			|| null == strIR || strIR.isEmpty() || null == strName || strName.isEmpty() || null == astrCC ||
 				0 == astrCC.length || null == adblWeight || 0 == adblWeight.length || adblWeight.length !=
 					astrCC.length)
@@ -95,7 +94,7 @@ public class CDSBasketBuilder {
 	}
 
 	/**
-	 * Create the named CDX from effective, maturity, coupon, IR curve name, credit curve name set.
+	 * Creates the named CDX from effective, maturity, coupon, IR curve name, credit curve name set.
 	 * 
 	 * @param dtEffective JulianDate Effective
 	 * @param dtMaturity JulianDate Maturity
@@ -115,7 +114,7 @@ public class CDSBasketBuilder {
 		final java.lang.String[] astrCC,
 		final java.lang.String strName)
 	{
-		if (null == dtEffective || null == dtMaturity || !org.drip.quant.common.NumberUtil.IsValid (dblCoupon)
+		if (null == dtEffective || null == dtMaturity || !org.drip.math.common.NumberUtil.IsValid (dblCoupon)
 			|| null == strIR || strIR.isEmpty() || null == strName || strName.isEmpty() || null == astrCC ||
 				0 == astrCC.length)
 			return null;
@@ -150,7 +149,7 @@ public class CDSBasketBuilder {
 	}
 
 	/**
-	 * Create the basket default swap from effective, maturity, and an array of the credit components.
+	 * Creates the basket default swap from effective, maturity, and an array of the credit components.
 	 * 
 	 * @param dtEffective JulianDate Effective
 	 * @param dtMaturity JulianDate Maturity

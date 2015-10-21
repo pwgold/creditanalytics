@@ -6,7 +6,6 @@ package org.drip.service.env;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -44,7 +43,7 @@ public class RatesManager {
 	private static final boolean s_bLoadStaticCurves = false;
 
 	/**
-	 * Retrieve all the IR curves of the type for a given EOD
+	 * Retrieves all the IR curves of the type for a given EOD
 	 * 
 	 * @param stmt SQL Statement representing the executable query
 	 * @param dtEOD EOD Date
@@ -80,7 +79,7 @@ public class RatesManager {
 	}
 
 	/**
-	 * Retrieve all the IR curves of any type for a given EOD
+	 * Retrieves all the IR curves of any type for a given EOD
 	 * 
 	 * @param stmt SQL Statement representing the executable query
 	 * @param dtEOD EOD Date
@@ -113,7 +112,7 @@ public class RatesManager {
 	}
 
 	/**
-	 * Load the entire set of IR curves of every type for a given EOD onto the MPC
+	 * Loads the entire set of IR curves of every type for a given EOD onto the MPC
 	 * 
 	 * @param mpc org.drip.param.definition.MarketParams onto which the curves are to be loaded
 	 * @param stmt SQL Statement representing the executable query

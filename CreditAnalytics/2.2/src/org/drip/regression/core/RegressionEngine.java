@@ -6,7 +6,6 @@ package org.drip.regression.core;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
@@ -132,19 +131,28 @@ public class RegressionEngine {
 		return true;
 	}
 
+	/**
+	 * Initializes the Regression Engine
+	 * 
+	 * @param iNumRuns Number of runs to be initialized with
+	 * @param iRegressionDetail Detail of the regression run
+	 * 
+	 * @throws java.lang.Exception Thrown if inputs are invalid
+	 */
+
 	protected RegressionEngine (
 		final int iNumRuns,
 		final int iRegressionDetail)
 		throws java.lang.Exception
 	{
 		if (0 >= (_iNumRuns = iNumRuns))
-			throw new java.lang.Exception ("RegressionEngine ctr: Invalid inputs");
+			throw new java.lang.Exception ("Invalid inputs into the RegressionEngine constructor!");
 
 		_iRegressionDetail = iRegressionDetail;
 	}
 
 	/**
-	 * Add the regressor set to the framework
+	 * Adds the regressor set to the framework
 	 * 
 	 * @param rs Regressor Set
 	 * 
@@ -173,7 +181,7 @@ public class RegressionEngine {
 	}
 
 	/**
-	 * Launch the Regression Engine and execute the regression sets
+	 * Launches the Regression Engine and executed the regression sets
 	 * 
 	 * @return TRUE => Launch Successful
 	 */

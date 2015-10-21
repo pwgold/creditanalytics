@@ -6,7 +6,6 @@ package org.drip.analytics.output;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
@@ -166,7 +165,7 @@ public class BondRVMeasures extends org.drip.service.stream.Serializer {
 		if (null == strSerializedBondRVMeasures || strSerializedBondRVMeasures.isEmpty())
 			throw new java.lang.Exception ("BondRVMeasures de-serializer: Cannot locate state");
 
-		java.lang.String[] astrField = org.drip.quant.common.StringUtil.Split (strSerializedBondRVMeasures,
+		java.lang.String[] astrField = org.drip.math.common.StringUtil.Split (strSerializedBondRVMeasures,
 			getFieldDelimiter());
 
 		if (null == astrField || 17 > astrField.length)
@@ -321,7 +320,7 @@ public class BondRVMeasures extends org.drip.service.stream.Serializer {
 	}
 
 	/**
-	 * Return the state as a measure map
+	 * Returns the state as a measure map
 	 * 
 	 * @param strPrefix RV Measure name prefix
 	 * 
@@ -368,15 +367,15 @@ public class BondRVMeasures extends org.drip.service.stream.Serializer {
 
 		mapRVMeasures.put (strPrefix + "TSYSpread", _dblTSYSpread);
 
-		mapRVMeasures.put (strPrefix + "WorkoutDate", _wi.date());
+		mapRVMeasures.put (strPrefix + "WorkoutDate", _wi._dblDate);
 
-		mapRVMeasures.put (strPrefix + "WorkoutFactor", _wi.factor());
+		mapRVMeasures.put (strPrefix + "WorkoutFactor", _wi._dblExerciseFactor);
 
-		mapRVMeasures.put (strPrefix + "WorkoutType", (double) _wi.type());
+		mapRVMeasures.put (strPrefix + "WorkoutType", (double) _wi._iWOType);
 
-		mapRVMeasures.put (strPrefix + "WorkoutYield", _wi.yield());
+		mapRVMeasures.put (strPrefix + "WorkoutYield", _wi._dblYield);
 
-		mapRVMeasures.put (strPrefix + "Yield", _wi.yield());
+		mapRVMeasures.put (strPrefix + "Yield", _wi._dblYield);
 
 		mapRVMeasures.put (strPrefix + "Yield01", _dblYield01);
 

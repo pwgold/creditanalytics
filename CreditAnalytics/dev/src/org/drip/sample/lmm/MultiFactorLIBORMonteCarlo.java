@@ -614,7 +614,7 @@ public class MultiFactorLIBORMonteCarlo {
 	{
 		CreditAnalytics.Init ("");
 
-		String strTenor = "3M";
+		String strForwardTenor = "3M";
 		String strViewTenor = "1Y";
 		String strSimulationTenor = "1M";
 		String strCurrency = "USD";
@@ -670,7 +670,7 @@ public class MultiFactorLIBORMonteCarlo {
 
 		ForwardLabel forwardLabel = ForwardLabel.Create (
 			strCurrency,
-			strTenor
+			strForwardTenor
 		);
 
 		DiscountCurve dc = OTCInstrumentCurve (

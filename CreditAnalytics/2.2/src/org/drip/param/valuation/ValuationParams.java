@@ -6,7 +6,6 @@ package org.drip.param.valuation;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -40,13 +39,28 @@ package org.drip.param.valuation;
  */
 
 public class ValuationParams extends org.drip.service.stream.Serializer {
-	private java.lang.String _strCalendar = "";
-	private double _dblValue = java.lang.Double.NaN;
-	private double _dblCashPay = java.lang.Double.NaN;
 
 	/**
-	 * Create the valuation parameters object instance from the valuation date, the cash settle lag, and the
-	 * 	settle calendar.
+	 * Valuation Date
+	 */
+
+	public double _dblValue = java.lang.Double.NaN;
+
+	/**
+	 * Cash Pay Date
+	 */
+
+	public double _dblCashPay = java.lang.Double.NaN;
+
+	/**
+	 * Cash Pay Date Adjustment Calendar
+	 */
+
+	public java.lang.String _strCalendar = "";
+
+	/**
+	 * Creates the valuation parameters object instance from the valuation date, the cash settle lag, and the
+	 * 		settle calendar.
 	 * 
 	 * @param dtValue Valuation Date
 	 * @param iCashSettleLag Cash settle lag
@@ -138,7 +152,7 @@ public class ValuationParams extends org.drip.service.stream.Serializer {
 		if (null == strSerializedValuationParams || strSerializedValuationParams.isEmpty())
 			throw new java.lang.Exception ("ValuationParams de-serializer: Cannot locate state");
 
-		java.lang.String[] astrField = org.drip.quant.common.StringUtil.Split (strSerializedValuationParams,
+		java.lang.String[] astrField = org.drip.math.common.StringUtil.Split (strSerializedValuationParams,
 			getFieldDelimiter());
 
 		if (null == astrField || 4 > astrField.length)
@@ -168,7 +182,7 @@ public class ValuationParams extends org.drip.service.stream.Serializer {
 	}
 
 	/**
-	 * Construct ValuationParams from the Valuation Date and the Cash Pay Date parameters
+	 * Constructs ValuationParams from the Valuation Date and the Cash Pay Date parameters
 	 * 
 	 * @param dtValue Valuation Date
 	 * @param dtCashPay Cash Pay Date
@@ -191,39 +205,6 @@ public class ValuationParams extends org.drip.service.stream.Serializer {
 		_dblCashPay = dtCashPay.getJulian();
 
 		_strCalendar = strCalendar;
-	}
-
-	/**
-	 * Retrieve the Valuation Date
-	 * 
-	 * @return The Valuation Date
-	 */
-
-	public double valueDate()
-	{
-		return _dblValue;
-	}
-
-	/**
-	 * Retrieve the Cash Pay Date
-	 * 
-	 * @return The Cash Pay Date
-	 */
-
-	public double cashPayDate()
-	{
-		return _dblCashPay;
-	}
-
-	/**
-	 * Retrieve the Calendar
-	 * 
-	 * @return The Calendar
-	 */
-
-	public java.lang.String calendar()
-	{
-		return _strCalendar;
 	}
 
 	@Override public byte[] serialize()

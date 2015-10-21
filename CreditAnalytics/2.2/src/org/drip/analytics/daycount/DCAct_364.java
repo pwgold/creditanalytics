@@ -6,7 +6,6 @@ package org.drip.analytics.daycount;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
@@ -46,12 +45,12 @@ public class DCAct_364 implements org.drip.analytics.daycount.DCFCalculator {
 	{
 	}
 
-	@Override public java.lang.String baseCalculationType()
+	@Override public java.lang.String getBaseCalculationType()
 	{
 		return "DCAct_364";
 	}
 
-	@Override public java.lang.String[] alternateNames()
+	@Override public java.lang.String[] getAlternateNames()
 	{
 		return new java.lang.String[] {"Act/364", "DCAct_364"};
 	}
@@ -73,8 +72,8 @@ public class DCAct_364 implements org.drip.analytics.daycount.DCFCalculator {
 		return (org.drip.analytics.date.JulianDate.DaysRemaining (dblStart) /
 			(org.drip.analytics.date.JulianDate.IsLeapYear (dblStart) ? 366. : 364.)) +
 				(org.drip.analytics.date.JulianDate.DaysElapsed (dblEnd) /
-					(org.drip.analytics.date.JulianDate.IsLeapYear (dblEnd) ? 366. : 364.) + dm.posterior() -
-						dm.anterior()) + org.drip.analytics.date.JulianDate.Year (dblEnd) -
+					(org.drip.analytics.date.JulianDate.IsLeapYear (dblEnd) ? 366. : 364.) + dm._iD2Adj -
+						dm._iD1Adj) + org.drip.analytics.date.JulianDate.Year (dblEnd) -
 							org.drip.analytics.date.JulianDate.Year (dblStart) - 1;
 	}
 
@@ -99,7 +98,7 @@ public class DCAct_364 implements org.drip.analytics.daycount.DCFCalculator {
 				org.drip.analytics.date.JulianDate.RIGHT_INCLUDE) ? 364 : 366);
 
 		return (org.drip.analytics.date.JulianDate.DaysRemaining (dblStart) +
-			org.drip.analytics.date.JulianDate.DaysElapsed (dblEnd) + dm.posterior() - dm.anterior()) +
+			org.drip.analytics.date.JulianDate.DaysElapsed (dblEnd) + dm._iD2Adj - dm._iD1Adj) +
 				org.drip.analytics.date.JulianDate.Year (dblEnd) -
 					org.drip.analytics.date.JulianDate.Year (dblStart) - iDaysOC;
 	}

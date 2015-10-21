@@ -6,7 +6,6 @@ package org.drip.product.params;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -40,7 +39,7 @@ package org.drip.product.params;
 public interface Validatable {
 
 	/**
-	 * Validate the current object state
+	 * Validates the current object state
 	 * 
 	 * @return Validation successful (true) or failed (false)
 	 */

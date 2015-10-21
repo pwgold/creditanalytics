@@ -6,7 +6,6 @@ package org.drip.product.fx;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * Copyright (C) 2011 Lakshmi Krishnamurthy
@@ -33,9 +32,7 @@ package org.drip.product.fx;
 
 /**
  * FXForwardContract contains the FX forward product contract details - the effective date, the maturity
- *  date, the currency pair and the product code. It also exports a calibrator that computes the forward
- *  points from the discount curve. Finally additional functions serialize into and de-serialize out of byte
- *  arrays.
+ *  date, the currency pair and the product code.
  *  
  * @author Lakshmi Krishnamurthy
  */
@@ -49,7 +46,7 @@ public class FXForwardContract extends org.drip.product.definition.FXForward {
 	private org.drip.product.params.CurrencyPair _ccyPair = null;
 
 	/**
-	 * Create an FXForwardContract from the currency pair, the effective and the maturity dates
+	 * Create an FXForward Contract from the currency pair, the effective and the maturity dates
 	 * 
 	 * @param ccyPair Currency Pair
 	 * @param dtEffective Effective Date
@@ -66,7 +63,7 @@ public class FXForwardContract extends org.drip.product.definition.FXForward {
 	{
 		if (null == ccyPair || null == dtEffective || null == dtMaturity || dtEffective.getJulian() >=
 			dtMaturity.getJulian())
-			throw new java.lang.Exception ("FXForwardContract ctr: Invalid Inputs");
+			throw new java.lang.Exception ("Invalid params into FXForward ctr");
 
 		_ccyPair = ccyPair;
 
@@ -76,11 +73,11 @@ public class FXForwardContract extends org.drip.product.definition.FXForward {
 	}
 
 	/**
-	 * FXForwardContract de-serialization from input byte array
+	 * FXForward de-serialization from input byte array
 	 * 
 	 * @param ab Byte Array
 	 * 
-	 * @throws java.lang.Exception Thrown if FXForwardContract cannot be properly de-serialized
+	 * @throws java.lang.Exception Thrown if FXForward cannot be properly de-serialized
 	 */
 
 	public FXForwardContract (
@@ -88,49 +85,48 @@ public class FXForwardContract extends org.drip.product.definition.FXForward {
 		throws java.lang.Exception
 	{
 		if (null == ab || 0 == ab.length)
-			throw new java.lang.Exception ("FXForwardContract de-serializer: Invalid input Byte array");
+			throw new java.lang.Exception ("FXForward de-serializer: Invalid input Byte array");
 
 		java.lang.String strRawString = new java.lang.String (ab);
 
 		if (null == strRawString || strRawString.isEmpty())
-			throw new java.lang.Exception ("FXForwardContract de-serializer: Empty state");
+			throw new java.lang.Exception ("FXForward de-serializer: Empty state");
 
 		java.lang.String strSerializedFXForward = strRawString.substring (0, strRawString.indexOf
 			(getObjectTrailer()));
 
 		if (null == strSerializedFXForward || strSerializedFXForward.isEmpty())
-			throw new java.lang.Exception ("FXForwardContract de-serializer: Cannot locate state");
+			throw new java.lang.Exception ("FXForward de-serializer: Cannot locate state");
 
-		java.lang.String[] astrField = org.drip.quant.common.StringUtil.Split (strSerializedFXForward,
+		java.lang.String[] astrField = org.drip.math.common.StringUtil.Split (strSerializedFXForward,
 			getFieldDelimiter());
 
 		if (null == astrField || 5 > astrField.length)
-			throw new java.lang.Exception ("FXForwardContract de-serializer: Invalid reqd field set");
+			throw new java.lang.Exception ("FXForward de-serializer: Invalid reqd field set");
 
 		// double dblVersion = new java.lang.Double (astrField[0]);
 
 		if (null == astrField[1] || astrField[1].isEmpty() ||
 			org.drip.service.stream.Serializer.NULL_SER_STRING.equalsIgnoreCase (astrField[1]))
-			throw new java.lang.Exception
-				("FXForwardContract CurrencyPair de-serializer: Cannot locate FXForward Code");
+			throw new java.lang.Exception ("CurrencyPair de-serializer: Cannot locate FXForward Code");
 
 		_strCode = astrField[1];
 
 		if (null == astrField[2] || astrField[2].isEmpty() ||
 			org.drip.service.stream.Serializer.NULL_SER_STRING.equalsIgnoreCase (astrField[2]))
-			throw new java.lang.Exception ("FXForwardContract de-serializer: Cannot locate Effective Date");
+			throw new java.lang.Exception ("FXForward de-serializer: Cannot locate Effective Date");
 
 		_dblEffective = new java.lang.Double (astrField[2]);
 
 		if (null == astrField[3] || astrField[3].isEmpty() ||
 			org.drip.service.stream.Serializer.NULL_SER_STRING.equalsIgnoreCase (astrField[3]))
-			throw new java.lang.Exception ("FXForwardContract de-serializer: Cannot locate Maturity Date");
+			throw new java.lang.Exception ("FXForward de-serializer: Cannot locate Maturity Date");
 
 		_dblMaturity = new java.lang.Double (astrField[3]);
 
 		if (null == astrField[4] || astrField[4].isEmpty() ||
 			org.drip.service.stream.Serializer.NULL_SER_STRING.equalsIgnoreCase (astrField[4]))
-			throw new java.lang.Exception ("FXForwardContract de-serializer: Cannot locate Currency Pair");
+			throw new java.lang.Exception ("FXForward de-serializer: Cannot locate Currency Pair");
 
 		_ccyPair = new org.drip.product.params.CurrencyPair (astrField[4].getBytes());
 	}
@@ -192,18 +188,18 @@ public class FXForwardContract extends org.drip.product.definition.FXForward {
 
 	@Override public double implyFXForward (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.analytics.rates.DiscountCurve dcNum,
-		final org.drip.analytics.rates.DiscountCurve dcDenom,
+		final org.drip.analytics.definition.DiscountCurve dcNum,
+		final org.drip.analytics.definition.DiscountCurve dcDenom,
 		final double dblFXSpot,
 		final boolean bFwdAsPIP)
 		throws java.lang.Exception
 	{
-		if (null == valParams || null == dcNum || null == dcDenom ||
-			!org.drip.quant.common.NumberUtil.IsValid (dblFXSpot))
-			throw new java.lang.Exception ("FXForwardContract:: implyFXForward => Invalid params");
+		if (null == valParams || null == dcNum || null == dcDenom || !org.drip.math.common.NumberUtil.IsValid
+			(dblFXSpot))
+			throw new java.lang.Exception ("Invalid params into FXForward.implyFXForward");
 
-		double dblFXFwd = dblFXSpot * dcDenom.df (_dblMaturity) * dcNum.df (valParams.cashPayDate()) /
-			dcNum.df (_dblMaturity) / dcDenom.df (valParams.cashPayDate());
+		double dblFXFwd = dblFXSpot * dcDenom.getDF (_dblMaturity) * dcNum.getDF (valParams._dblCashPay) /
+			dcNum.getDF (_dblMaturity) / dcDenom.getDF (valParams._dblCashPay);
 
 		if (!bFwdAsPIP) return dblFXFwd;
 		
@@ -212,16 +208,16 @@ public class FXForwardContract extends org.drip.product.definition.FXForward {
 
 	@Override public double calcDCBasis (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.analytics.rates.DiscountCurve dcNum,
-		final org.drip.analytics.rates.DiscountCurve dcDenom,
+		final org.drip.analytics.definition.DiscountCurve dcNum,
+		final org.drip.analytics.definition.DiscountCurve dcDenom,
 		final double dblFXSpot,
 		final double dblMarketFXFwdPrice,
 		final boolean bBasisOnDenom)
 		throws java.lang.Exception
 	{
-		if (null == valParams || null == dcNum || null == dcDenom || !org.drip.quant.common.NumberUtil.IsValid
+		if (null == valParams || null == dcNum || null == dcDenom || !org.drip.math.common.NumberUtil.IsValid
 			(dblFXSpot))
-			throw new java.lang.Exception ("FXForwardContract::calcDCBasis => Invalid params");
+			throw new java.lang.Exception ("Invalid params into FXForward.calcDCBasis");
 
 		return new FXBasisCalibrator (this).calibrateDCBasisFromFwdPriceNR (valParams, dcNum, dcDenom,
 			dblFXSpot, dblMarketFXFwdPrice, bBasisOnDenom);
@@ -229,11 +225,11 @@ public class FXForwardContract extends org.drip.product.definition.FXForward {
 
 	@Override public org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> value (
 		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.analytics.rates.DiscountCurve dcNum,
-		final org.drip.analytics.rates.DiscountCurve dcDenom,
+		final org.drip.analytics.definition.DiscountCurve dcNum,
+		final org.drip.analytics.definition.DiscountCurve dcDenom,
 		final double dblFXSpot)
 	{
-		if (null == valParams || null == dcNum || null == dcDenom || !org.drip.quant.common.NumberUtil.IsValid
+		if (null == valParams || null == dcNum || null == dcDenom || !org.drip.math.common.NumberUtil.IsValid
 			(dblFXSpot))
 			return null;
 
@@ -274,22 +270,22 @@ public class FXForwardContract extends org.drip.product.definition.FXForward {
 
 		private final double calcFXFwd (
 			final org.drip.param.valuation.ValuationParams valParams,
-			final org.drip.analytics.rates.DiscountCurve dcNum,
-			final org.drip.analytics.rates.DiscountCurve dcDenom,
+			final org.drip.analytics.definition.DiscountCurve dcNum,
+			final org.drip.analytics.definition.DiscountCurve dcDenom,
 			final double dblFXSpot,
 			final double dblBump,
 			final boolean bBasisOnDenom)
 			throws java.lang.Exception {
 			if (bBasisOnDenom)
-				return _fxfwd.implyFXForward (valParams, dcNum, (org.drip.analytics.rates.DiscountCurve)
-					dcDenom.parallelShiftQuantificationMetric (dblBump), dblFXSpot, false);
+				return _fxfwd.implyFXForward (valParams, dcNum, (org.drip.analytics.definition.DiscountCurve)
+					dcDenom.createParallelShiftedCurve (dblBump), dblFXSpot, false);
 
-			return _fxfwd.implyFXForward (valParams, (org.drip.analytics.rates.DiscountCurve)
-				dcNum.parallelShiftQuantificationMetric (dblBump), dcDenom, dblFXSpot, false);
+			return _fxfwd.implyFXForward (valParams, (org.drip.analytics.definition.DiscountCurve)
+				dcNum.createParallelShiftedCurve (dblBump), dcDenom, dblFXSpot, false);
 		}
 
 		/**
-		 * Constructor: Construct the basis calibrator from the FXForward parent
+		 * Constructor: Constructs the basis calibrator from the FXForward parent
 		 * 
 		 * @param fxfwd FXForward parent
 		 * 
@@ -301,11 +297,11 @@ public class FXForwardContract extends org.drip.product.definition.FXForward {
 			throws java.lang.Exception
 		{
 			if (null == (_fxfwd = fxfwd))
-				throw new java.lang.Exception ("FXForwardContract::FXBasisCalibrator ctr: Invalid Inputs");
+				throw new java.lang.Exception ("null fxfwd into FXBasisCalibrator");
 		}
 
 		/**
-		 * Calibrate the discount curve basis from FXForward using Newton-Raphson methodology
+		 * Calibrates the discount curve basis from FXForward using Newton-Raphson methodology
 		 * 
 		 * @param valParams ValuationParams
 		 * @param dcNum Discount Curve for the Numerator
@@ -321,79 +317,67 @@ public class FXForwardContract extends org.drip.product.definition.FXForward {
 
 		public double calibrateDCBasisFromFwdPriceNR (
 			final org.drip.param.valuation.ValuationParams valParams,
-			final org.drip.analytics.rates.DiscountCurve dcNum,
-			final org.drip.analytics.rates.DiscountCurve dcDenom,
+			final org.drip.analytics.definition.DiscountCurve dcNum,
+			final org.drip.analytics.definition.DiscountCurve dcDenom,
 			final double dblFXSpot,
 			final double dblMarketFXFwdPrice,
 			final boolean bBasisOnDenom)
 			throws java.lang.Exception
 		{
 			if (null == valParams || null == dcNum || null == dcDenom ||
-				!org.drip.quant.common.NumberUtil.IsValid (dblMarketFXFwdPrice) ||
-					!org.drip.quant.common.NumberUtil.IsValid (dblFXSpot))
-				throw new java.lang.Exception
-					("FXForwardContract::calibrateDCBasisFromFwdPriceNR => bad inputs");
+				!org.drip.math.common.NumberUtil.IsValid (dblMarketFXFwdPrice) ||
+					!org.drip.math.common.NumberUtil.IsValid (dblFXSpot))
+				throw new java.lang.Exception ("calibrateDCBasisFromFwdPriceNR - bad inputs");
 
 			double dblFXFwdBase = _fxfwd.implyFXForward (valParams, dcNum, dcDenom, dblFXSpot, false);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblFXFwdBase))
-				throw new java.lang.Exception
-					("FXForwardContract::calibrateDCBasisFromFwdPriceNR => Cannot imply FX Fwd Base!");
+			if (!org.drip.math.common.NumberUtil.IsValid (dblFXFwdBase))
+				throw new java.lang.Exception ("Cannot imply FX Fwd Base!");
 
 			double dblFXFwdBumped = calcFXFwd (valParams, dcNum, dcDenom, dblFXSpot, _dblBasisIncr,
 				bBasisOnDenom);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblFXFwdBumped))
-				throw new java.lang.Exception
-					("FXForwardContract::calibrateDCBasisFromFwdPriceNR => Cannot imply FX Fwd for " +
-						_dblBasisIncr + " shift!");
+			if (!org.drip.math.common.NumberUtil.IsValid (dblFXFwdBumped))
+				throw new java.lang.Exception ("Cannot imply FX Fwd for " + _dblBasisIncr + " shift!");
 
 			double dblDBasisDFXFwd = _dblBasisIncr / (dblFXFwdBumped - dblFXFwdBase);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblDBasisDFXFwd))
-				throw new java.lang.Exception
-					("FXForwardContract::calibrateDCBasisFromFwdPriceNR => Cannot calculate Fwd/Basis Slope for 0 basis!");
+			if (!org.drip.math.common.NumberUtil.IsValid (dblDBasisDFXFwd))
+				throw new java.lang.Exception ("Cannot calculate Fwd/Basis Slope for 0 basis!");
 
 			double dblBasisPrev = 0.;
 			double dblBasis = dblDBasisDFXFwd * (dblMarketFXFwdPrice - dblFXFwdBase);
 
-			if (!org.drip.quant.common.NumberUtil.IsValid (dblBasis))
-				throw new java.lang.Exception ("FXForwardContract::calibrateDCBasisFromFwdPriceNR => Got " +
-					dblBasis + " for FlatSpread for " + _fxfwd.getPrimaryCode() + " and price " +
-						dblFXFwdBase);
+			if (!org.drip.math.common.NumberUtil.IsValid (dblBasis))
+				throw new java.lang.Exception ("Got " + dblBasis + " for FlatSpread for " +
+					_fxfwd.getPrimaryCode() + " and price " + dblFXFwdBase);
 
 			while (_dblBasisDiffTol < java.lang.Math.abs (dblBasis - dblBasisPrev)) {
 				if (0 == --_iNumIterations)
-					throw new java.lang.Exception
-						("FXForwardContract::calibrateDCBasisFromFwdPriceNR => Cannot calib Basis for " +
-							_fxfwd.getPrimaryCode() + " and price " + dblMarketFXFwdPrice + " within limit!");
+					throw new java.lang.Exception ("Cannot calib Basis for " + _fxfwd.getPrimaryCode() +
+						" and price " + dblMarketFXFwdPrice + " within limit!");
 
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblFXFwdBase = calcFXFwd (valParams, dcNum,
+				if (!org.drip.math.common.NumberUtil.IsValid (dblFXFwdBase = calcFXFwd (valParams, dcNum,
 					dcDenom, dblFXSpot, dblBasisPrev = dblBasis, bBasisOnDenom)))
-					throw new java.lang.Exception
-						("FXForwardContract::calibrateDCBasisFromFwdPriceNR => Cannot imply FX Fwd for " +
-							dblBasis + " shift!");
+					throw new java.lang.Exception ("Cannot imply FX Fwd for " + dblBasis + " shift!");
 
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblFXFwdBumped = calcFXFwd (valParams, dcNum,
+				if (!org.drip.math.common.NumberUtil.IsValid (dblFXFwdBumped = calcFXFwd (valParams, dcNum,
 					dcDenom, dblFXSpot, dblBasis + _dblBasisIncr, bBasisOnDenom)))
-					throw new java.lang.Exception
-						("FXForwardContract::calibrateDCBasisFromFwdPriceNR => Cannot imply FX Fwd for " +
-							(dblBasis + _dblBasisIncr) + " shift!");
+					throw new java.lang.Exception ("Cannot imply FX Fwd for " + (dblBasis + _dblBasisIncr) +
+						" shift!");
 
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblDBasisDFXFwd = _dblBasisIncr /
+				if (!org.drip.math.common.NumberUtil.IsValid (dblDBasisDFXFwd = _dblBasisIncr /
 					(dblFXFwdBumped - dblFXFwdBase)))
-					throw new java.lang.Exception
-						("FXForwardContract::calibrateDCBasisFromFwdPriceNR => Cannot calculate Fwd/Basis Slope for "
-							+ (dblBasis + _dblBasisIncr) + " basis!");
+					throw new java.lang.Exception ("Cannot calculate Fwd/Basis Slope for " + (dblBasis +
+						_dblBasisIncr) + " basis!");
 
 				if (s_bLog) System.out.println ("\tFXFwd[" + dblBasis + "]=" + dblFXFwdBase);
 
 				dblBasis = dblBasisPrev + dblDBasisDFXFwd * (dblMarketFXFwdPrice - dblFXFwdBase);
 
-				if (!org.drip.quant.common.NumberUtil.IsValid (dblBasis))
-					throw new java.lang.Exception
-						("FXForwardContract::calibrateDCBasisFromFwdPriceNR => Got " + dblBasis +
-							" for FlatSpread for " + _fxfwd.getPrimaryCode() + " and price " + dblFXFwdBase);
+				if (!org.drip.math.common.NumberUtil.IsValid (dblBasis))
+					throw new java.lang.Exception ("Got " + dblBasis + " for FlatSpread for " +
+						_fxfwd.getPrimaryCode() + " and price " + dblFXFwdBase);
 			}
 
 			return dblBasis;
@@ -412,8 +396,7 @@ public class FXForwardContract extends org.drip.product.definition.FXForward {
 	}
 
 	@Override public org.drip.service.stream.Serializer deserialize (
-		final byte[] ab)
-	{
+		final byte[] ab) {
 		try {
 			return new FXForwardContract (ab);
 		} catch (java.lang.Exception e) {

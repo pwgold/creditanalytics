@@ -266,7 +266,7 @@ public class CreditAnalyticsTestSuite {
 			}
 
 			bond = org.drip.product.creator.BondBuilder.CreateBondFromCF (strName, dtEffective, "USD", "",
-				"30/360", 2, adt, adblCouponAmount, adblPrincipalAmount, false);
+				"30/360", 1., 0.05, 2, adt, adblCouponAmount, adblPrincipalAmount, false);
 		}
 
 		if (bEOSOn) {

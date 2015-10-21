@@ -6,7 +6,6 @@ package org.drip.product.params;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
@@ -42,8 +41,6 @@ package org.drip.product.params;
  *  - Component Details => Original Count, Defaulted Count
  *  - Payoff Details => Knock-out on Default, Pay Accrued Amount, Recovery on Default
  *  - Other => Index Life Span, Index Factor
- *  
- *  It also exports serialization into and de-serialization out of byte arrays.
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -237,7 +234,7 @@ public class CDXRefDataParams {
 	public java.lang.String _strShortName = "";
 
 	/**
-	 * Create a CDXRefData instance from valid individual parameters (so no additional validation is
+	 * Creates a CDXRefData instance from valid individual parameters (so no additional validation is
 	 * 	performed).
 	 * 
 	 * @param strCurveID Index Curve ID
@@ -392,7 +389,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set the Index Curve ID
+	 * Sets the Index Curve ID
 	 * 
 	 * @param strCurveID Index Curve ID
 	 * 
@@ -408,7 +405,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set the Index SPN
+	 * Sets the Index SPN
 	 * 
 	 * @param strSPN Index SPN
 	 * 
@@ -424,7 +421,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set the Index Label
+	 * Sets the Index Label
 	 * 
 	 * @param strIndexLabel Index Label
 	 * 
@@ -440,7 +437,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set the Index Name
+	 * Sets the Index Name
 	 * 
 	 * @param strIndexName Index Name
 	 * 
@@ -456,7 +453,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set the Index Curve Name
+	 * Sets the Index Curve Name
 	 * 
 	 * @param strCurveName Index Curve Name
 	 * 
@@ -472,7 +469,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set the Index Issue Date
+	 * Sets the Index Issue Date
 	 * 
 	 * @param dtIssue Index Issue Date
 	 * 
@@ -488,7 +485,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set the Index Maturity Date
+	 * Sets the Index Maturity Date
 	 * 
 	 * @param dtMaturity Index Maturity Date
 	 * 
@@ -504,7 +501,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set the Index Coupon
+	 * Sets the Index Coupon
 	 * 
 	 * @param dblCoupon Index Coupon
 	 * 
@@ -514,11 +511,11 @@ public class CDXRefDataParams {
 	public boolean setCoupon (
 		final double dblCoupon)
 	{
-		return org.drip.quant.common.NumberUtil.IsValid (_dblCoupon = dblCoupon);
+		return org.drip.math.common.NumberUtil.IsValid (_dblCoupon = dblCoupon);
 	}
 
 	/**
-	 * Set the Index Currency
+	 * Sets the Index Currency
 	 * 
 	 * @param strCurrency Index Currency
 	 * 
@@ -534,7 +531,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set the Index Day Count
+	 * Sets the Index Day Count
 	 * 
 	 * @param strDayCount Index Day Count
 	 * 
@@ -550,7 +547,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set the flag indicating whether the Index has a Full First Stub
+	 * Sets the flag indicating whether the Index has a Full First Stub
 	 * 
 	 * @param bFullFirstStub Flag indicating whether the Index has a Full First Stub
 	 * 
@@ -565,7 +562,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set the Index Recovery
+	 * Sets the Index Recovery
 	 * 
 	 * @param dblRecovery Index Recovery
 	 * 
@@ -575,11 +572,11 @@ public class CDXRefDataParams {
 	public boolean setRecovery (
 		final double dblRecovery)
 	{
-		return org.drip.quant.common.NumberUtil.IsValid (_dblRecovery = dblRecovery);
+		return org.drip.math.common.NumberUtil.IsValid (_dblRecovery = dblRecovery);
 	}
 
 	/**
-	 * Set the Index Coupon Frequency
+	 * Sets the Index Coupon Frequency
 	 * 
 	 * @param iFrequency Index Coupon Frequency
 	 * 
@@ -594,7 +591,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set the Index Red ID
+	 * Sets the Index Red ID
 	 * 
 	 * @param strRedID Index Red ID
 	 * 
@@ -610,7 +607,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set the Index Class
+	 * Sets the Index Class
 	 * 
 	 * @param strIndexClass Index Class
 	 * 
@@ -626,7 +623,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set the Index Series
+	 * Sets the Index Series
 	 * 
 	 * @param iIndexSeries Index Series
 	 * 
@@ -641,7 +638,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set the Index Group Name
+	 * Sets the Index Group Name
 	 * 
 	 * @param strIndexGroupName Index Group Name
 	 * 
@@ -657,7 +654,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set the Index Short Name
+	 * Sets the Index Short Name
 	 * 
 	 * @param strIndexShortName Index Short Name
 	 * 
@@ -673,7 +670,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set the Index Short Group Name
+	 * Sets the Index Short Group Name
 	 * 
 	 * @param strIndexShortGroupName Index Short Group Name
 	 * 
@@ -690,7 +687,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set the Index Version
+	 * Sets the Index Version
 	 * 
 	 * @param iIndexVersion Index Version
 	 * 
@@ -705,7 +702,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set the Index Life Span
+	 * Sets the Index Life Span
 	 * 
 	 * @param iIndexLifeSpan Index Life Span
 	 * 
@@ -720,7 +717,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set the Index Composite Curve ID
+	 * Sets the Index Composite Curve ID
 	 * 
 	 * @param strCurvyCurveID Index Composite Curve ID
 	 * 
@@ -736,7 +733,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set the Index Factor
+	 * Sets the Index Factor
 	 * 
 	 * @param dblIndexFactor Index Factor
 	 * 
@@ -746,11 +743,11 @@ public class CDXRefDataParams {
 	public boolean setIndexFactor (
 		final double dblIndexFactor)
 	{
-		return org.drip.quant.common.NumberUtil.IsValid (_dblIndexFactor = dblIndexFactor);
+		return org.drip.math.common.NumberUtil.IsValid (_dblIndexFactor = dblIndexFactor);
 	}
 
 	/**
-	 * Set the Number of Original Components in the Index
+	 * Sets the Number of Original Components in the Index
 	 * 
 	 * @param iOriginalComponentCount Number of Original Components in the Index
 	 * 
@@ -765,7 +762,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set the Number of Defaulted Components in the Index
+	 * Sets the Number of Defaulted Components in the Index
 	 * 
 	 * @param iDefaultedComponentCount Number of Defaulted Components in the Index
 	 * 
@@ -780,7 +777,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set the Index Location
+	 * Sets the Index Location
 	 * 
 	 * @param strLocation Index Location
 	 * 
@@ -796,7 +793,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set if the Index pays accrued on termination
+	 * Sets if the Index pays accrued on termination
 	 * 
 	 * @param bPayAccrued Flag indicating if the Index pays accrued on termination
 	 * 
@@ -811,7 +808,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set if the Index knocks out on Default
+	 * Sets if the Index knocks out on Default
 	 * 
 	 * @param bKnockOutOnDefault Flag indicating if the Index knocks out on Default
 	 * 
@@ -826,7 +823,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set whether the quote is marked as a CDS
+	 * Sets whether the quote is marked as a CDS
 	 * 
 	 * @param bQuoteAsCDS Flag indicating whether the quote is marked as a CDS
 	 * 
@@ -857,7 +854,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Set the index short name
+	 * Sets the index short name
 	 * 
 	 * @param strShortName Index Short Name
 	 * 
@@ -873,7 +870,7 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Validate the CDXRefData instance
+	 * Validates the CDXRefData instance
 	 * 
 	 * @return TRUE if successful
 	 */
@@ -884,9 +881,9 @@ public class CDXRefDataParams {
 			_strIndexLabel || _strIndexLabel.isEmpty() || null == _strIndexName || _strIndexName.isEmpty() ||
 				null == _strCurveName || _strCurveName.isEmpty() || null == _dtIssue || null == _dtMaturity
 					|| _dtIssue.getJulian() >= _dtMaturity.getJulian() ||
-						!org.drip.quant.common.NumberUtil.IsValid (_dblCoupon) || null == _strCurrency ||
+						!org.drip.math.common.NumberUtil.IsValid (_dblCoupon) || null == _strCurrency ||
 							_strCurrency.isEmpty() || null == _strDayCount || _strDayCount.isEmpty() ||
-								!org.drip.quant.common.NumberUtil.IsValid (_dblRecovery) || null == _strRedID
+								!org.drip.math.common.NumberUtil.IsValid (_dblRecovery) || null == _strRedID
 									|| _strRedID.isEmpty() || null == _strIndexClass ||
 										_strIndexClass.isEmpty() || null == _strIndexGroupName ||
 											_strIndexGroupName.isEmpty())
@@ -896,8 +893,8 @@ public class CDXRefDataParams {
 	}
 
 	/**
-	 * Return the stringified set of parameters in a java call that can be statically used to re-construct
-	 *  the index.
+	 * Returns the stringified set of parameters in a java call that can be statically used to
+	 * 		re-construct the index.
 	 * 
 	 * @return Set of Stringified parameters as a java call. 
 	 */
@@ -909,18 +906,18 @@ public class CDXRefDataParams {
 		java.lang.String strCDXCode = _strIndexClass + "." + _strIndexGroupName + "." + _iIndexLifeSpan +
 			"Y." + _iIndexSeries + "." + _iIndexVersion;
 
-		sb.append ("\t\tUpdateCDXRefDataMap (" + org.drip.quant.common.StringUtil.MakeStringArg (strCDXCode) +
+		sb.append ("\t\tUpdateCDXRefDataMap (" + org.drip.math.common.StringUtil.MakeStringArg (strCDXCode) +
 			",\n\t\t\torg.drip.product.creator.CDXRefDataBuilder.CreateCDXRefDataBuilder (");
 
-		sb.append (org.drip.quant.common.StringUtil.MakeStringArg (_strCurveID) + ", ");
+		sb.append (org.drip.math.common.StringUtil.MakeStringArg (_strCurveID) + ", ");
 
-		sb.append (org.drip.quant.common.StringUtil.MakeStringArg (_strSPN) + ",\n\t\t\t\t");
+		sb.append (org.drip.math.common.StringUtil.MakeStringArg (_strSPN) + ",\n\t\t\t\t");
 
-		sb.append (org.drip.quant.common.StringUtil.MakeStringArg (_strIndexLabel) + ", ");
+		sb.append (org.drip.math.common.StringUtil.MakeStringArg (_strIndexLabel) + ", ");
 
-		sb.append (org.drip.quant.common.StringUtil.MakeStringArg (_strIndexName) + ",\n\t\t\t\t\t");
+		sb.append (org.drip.math.common.StringUtil.MakeStringArg (_strIndexName) + ",\n\t\t\t\t\t");
 
-		sb.append (org.drip.quant.common.StringUtil.MakeStringArg (_strCurveName) + ", ");
+		sb.append (org.drip.math.common.StringUtil.MakeStringArg (_strCurveName) + ", ");
 
 		sb.append (_dtIssue.getJulian() + ", ");
 
@@ -928,9 +925,9 @@ public class CDXRefDataParams {
 
 		sb.append (_dblCoupon + ", ");
 
-		sb.append (org.drip.quant.common.StringUtil.MakeStringArg (_strCurrency) + ",\n\t\t\t\t\t\t");
+		sb.append (org.drip.math.common.StringUtil.MakeStringArg (_strCurrency) + ",\n\t\t\t\t\t\t");
 
-		sb.append (org.drip.quant.common.StringUtil.MakeStringArg (_strDayCount) + ", ");
+		sb.append (org.drip.math.common.StringUtil.MakeStringArg (_strDayCount) + ", ");
 
 		sb.append (_bFullFirstStub + ", ");
 
@@ -938,23 +935,23 @@ public class CDXRefDataParams {
 
 		sb.append (_iFrequency + ", ");
 
-		sb.append (org.drip.quant.common.StringUtil.MakeStringArg (_strRedID) + ", ");
+		sb.append (org.drip.math.common.StringUtil.MakeStringArg (_strRedID) + ", ");
 
-		sb.append (org.drip.quant.common.StringUtil.MakeStringArg (_strIndexClass) + ", ");
+		sb.append (org.drip.math.common.StringUtil.MakeStringArg (_strIndexClass) + ", ");
 
 		sb.append (_iIndexSeries + ", ");
 
-		sb.append (org.drip.quant.common.StringUtil.MakeStringArg (_strIndexGroupName) + ", ");
+		sb.append (org.drip.math.common.StringUtil.MakeStringArg (_strIndexGroupName) + ", ");
 
-		sb.append (org.drip.quant.common.StringUtil.MakeStringArg (_strIndexShortName) + ", ");
+		sb.append (org.drip.math.common.StringUtil.MakeStringArg (_strIndexShortName) + ", ");
 
-		sb.append (org.drip.quant.common.StringUtil.MakeStringArg (_strIndexShortGroupName) + ", ");
+		sb.append (org.drip.math.common.StringUtil.MakeStringArg (_strIndexShortGroupName) + ", ");
 
 		sb.append (_iIndexVersion + ", ");
 
 		sb.append (_iIndexLifeSpan + ",\n\t\t\t\t\t\t\t");
 
-		sb.append (org.drip.quant.common.StringUtil.MakeStringArg (_strCurvyCurveID) + ", ");
+		sb.append (org.drip.math.common.StringUtil.MakeStringArg (_strCurvyCurveID) + ", ");
 
 		sb.append (_dblIndexFactor + ", ");
 
@@ -962,7 +959,7 @@ public class CDXRefDataParams {
 
 		sb.append (_iDefaultedComponentCount + ", ");
 
-		sb.append (org.drip.quant.common.StringUtil.MakeStringArg (_strLocation) + ", ");
+		sb.append (org.drip.math.common.StringUtil.MakeStringArg (_strLocation) + ", ");
 
 		sb.append (_bPayAccrued + ", ");
 
@@ -970,9 +967,9 @@ public class CDXRefDataParams {
 
 		sb.append (_bQuoteAsCDS + ", ");
 
-		sb.append (org.drip.quant.common.StringUtil.MakeStringArg (_strBBGTicker) + ", ");
+		sb.append (org.drip.math.common.StringUtil.MakeStringArg (_strBBGTicker) + ", ");
 
-		sb.append (org.drip.quant.common.StringUtil.MakeStringArg (_strShortName) + "));\n\n");
+		sb.append (org.drip.math.common.StringUtil.MakeStringArg (_strShortName) + "));\n\n");
 
 		return sb.toString();
 	}

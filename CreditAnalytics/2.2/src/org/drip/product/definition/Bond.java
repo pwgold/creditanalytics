@@ -6,7 +6,6 @@ package org.drip.product.definition;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * Copyright (C) 2012 Lakshmi Krishnamurthy
  * 
@@ -40,7 +39,7 @@ package org.drip.product.definition;
 public abstract class Bond extends CreditComponent {
 
 	/**
-	 * Retrieve the work-out information from price
+	 * Retrieves the work-out information from price
 	 * 
 	 * @param valParams Valuation Parameters
 	 * @param mktParams Bond Market Parameters
@@ -57,7 +56,7 @@ public abstract class Bond extends CreditComponent {
 		final double dblPrice);
 
 	/**
-	 * Retrieve the array of double for the bond's secondary treasury spreads from the Valuation
+	 * Retrieves the array of double for the bond's secondary treasury spreads from the Valuation
 	 * 	Parameters and the component market parameters
 	 * 
 	 * @param valParams ValuationParams
@@ -71,7 +70,7 @@ public abstract class Bond extends CreditComponent {
 		final org.drip.param.definition.ComponentMarketParams mktParams);
 
 	/**
-	 * Retrieve the effective treasury benchmark yield from the valuation, the component market parameters,
+	 * Retrieves the effective treasury benchmark yield from the valuation, the component market parameters,
 	 * 	and the market price
 	 * 
 	 * @param valParams ValuationParams
@@ -92,7 +91,7 @@ public abstract class Bond extends CreditComponent {
 		throws java.lang.Exception;
 
 	/**
-	 * Get the ISIN
+	 * Gets the ISIN
 	 * 
 	 * @return ISIN string
 	 */
@@ -100,7 +99,7 @@ public abstract class Bond extends CreditComponent {
 	public abstract java.lang.String getISIN();
 
 	/**
-	 * Get the CUSIP
+	 * Gets the CUSIP
 	 * 
 	 * @return CUSIP string
 	 */
@@ -108,7 +107,7 @@ public abstract class Bond extends CreditComponent {
 	public abstract java.lang.String getCUSIP();
 
 	/**
-	 * Get the bond's loss flow from price
+	 * Gets the bond's loss flow from price
 	 * 
 	 * @param valParams ValuationParams
 	 * @param pricerParams PricerParams
@@ -128,7 +127,7 @@ public abstract class Bond extends CreditComponent {
 			final double dblPrice);
 
 	/**
-	 * Return whether the bond is a floater
+	 * Returns whether the bond is a floater
 	 * 
 	 * @return True if the bond is a floater
 	 */
@@ -136,7 +135,7 @@ public abstract class Bond extends CreditComponent {
 	public abstract boolean isFloater();
 
 	/**
-	 * Return the rate index of the bond
+	 * Returns the rate index of the bond
 	 * 
 	 * @return Rate index
 	 */
@@ -144,7 +143,7 @@ public abstract class Bond extends CreditComponent {
 	public abstract java.lang.String getRateIndex();
 
 	/**
-	 * Return the current bond coupon
+	 * Returns the current bond coupon
 	 * 
 	 * @return Current coupon
 	 */
@@ -152,7 +151,7 @@ public abstract class Bond extends CreditComponent {
 	public abstract double getCurrentCoupon();
 
 	/**
-	 * Return the floating spread of the bond
+	 * Returns the floating spread of the bond
 	 * 
 	 * @return Floating spread
 	 */
@@ -160,7 +159,7 @@ public abstract class Bond extends CreditComponent {
 	public abstract double getFloatSpread();
 
 	/**
-	 * Return the bond ticker
+	 * Returns the bond ticker
 	 * 
 	 * @return Bond Ticker
 	 */
@@ -168,7 +167,7 @@ public abstract class Bond extends CreditComponent {
 	public abstract java.lang.String getTicker();
 
 	/**
-	 * Indicate if the bond is callable
+	 * Indicates if the bond is callable
 	 * 
 	 * @return True - callable
 	 */
@@ -176,7 +175,7 @@ public abstract class Bond extends CreditComponent {
 	public abstract boolean isCallable();
 
 	/**
-	 * Indicate if the bond is putable
+	 * Indicates if the bond is putable
 	 * 
 	 * @return True - putable
 	 */
@@ -184,7 +183,7 @@ public abstract class Bond extends CreditComponent {
 	public abstract boolean isPutable();
 
 	/**
-	 * Indicate if the bond is sinkable
+	 * Indicates if the bond is sinkable
 	 * 
 	 * @return True - sinkable
 	 */
@@ -192,7 +191,7 @@ public abstract class Bond extends CreditComponent {
 	public abstract boolean isSinkable();
 
 	/**
-	 * Indicate if the bond has variable coupon
+	 * Indicates if the bond has variable coupon
 	 * 
 	 * @return True - has variable coupon
 	 */
@@ -200,7 +199,7 @@ public abstract class Bond extends CreditComponent {
 	public abstract boolean hasVariableCoupon();
 
 	/**
-	 * Indicate if the bond has been exercised
+	 * Indicates if the bond has been exercised
 	 * 
 	 * @return True - Has been exercised
 	 */
@@ -208,7 +207,7 @@ public abstract class Bond extends CreditComponent {
 	public abstract boolean hasBeenExercised();
 
 	/**
-	 * Indicate if the bond has defaulted
+	 * Indicates if the bond has defaulted
 	 * 
 	 * @return True - Bond has defaulted
 	 */
@@ -216,7 +215,7 @@ public abstract class Bond extends CreditComponent {
 	public abstract boolean hasDefaulted();
 
 	/**
-	 * Indicate if the bond is perpetual
+	 * Indicates if the bond is perpetual
 	 * 
 	 * @return True - Bond is Perpetual
 	 */
@@ -224,7 +223,7 @@ public abstract class Bond extends CreditComponent {
 	public abstract boolean isPerpetual();
 
 	/**
-	 * Calculate if the bond is tradeable on the given date
+	 * Calculates if the bond is tradeable on the given date
 	 * 
 	 * @param valParams Valuation Parameters
 	 * 
@@ -334,7 +333,7 @@ public abstract class Bond extends CreditComponent {
 	public abstract java.lang.String getRedemptionCurrency();
 
 	/**
-	 * Indicate whether the given date is in the first coupon period
+	 * Indicates whether the given date is in the first coupon period
 	 * 
 	 * @param dblDate Valuation Date
 	 * 
@@ -348,7 +347,7 @@ public abstract class Bond extends CreditComponent {
 		throws java.lang.Exception;
 
 	/**
-	 * Indicate whether the given date is in the final coupon period
+	 * Indicates whether the given date is in the final coupon period
 	 * 
 	 * @param dblDate Valuation Date
 	 * 
@@ -389,7 +388,7 @@ public abstract class Bond extends CreditComponent {
 		final double dblValue);
 
 	/**
-	 * Return the coupon date for the period prior to the specified date
+	 * Returns the coupon date for the period prior to the specified date
 	 * 
 	 * @param dt Valuation Date
 	 * 
@@ -400,7 +399,7 @@ public abstract class Bond extends CreditComponent {
 		final org.drip.analytics.date.JulianDate dt);
 
 	/**
-	 * Return the coupon rate for the period prior to the specified date
+	 * Returns the coupon rate for the period prior to the specified date
 	 * 
 	 * @param dt Valuation Date
 	 * @param mktParams Component Market Params
@@ -416,7 +415,7 @@ public abstract class Bond extends CreditComponent {
 		throws java.lang.Exception;
 
 	/**
-	 * Return the coupon date for the period containing the specified date
+	 * Returns the coupon date for the period containing the specified date
 	 * 
 	 * @param dt Valuation Date
 	 * 
@@ -427,7 +426,7 @@ public abstract class Bond extends CreditComponent {
 		final org.drip.analytics.date.JulianDate dt);
 
 	/**
-	 * Return the coupon date for the period subsequent to the specified date
+	 * Returns the coupon date for the period subsequent to the specified date
 	 * 
 	 * @param dt Valuation Date
 	 * 
@@ -438,7 +437,7 @@ public abstract class Bond extends CreditComponent {
 		final org.drip.analytics.date.JulianDate dt);
 
 	/**
-	 * Return the next exercise info of the given exercise type (call/put) subsequent to the specified date
+	 * Returns the next exercise info of the given exercise type (call/put) subsequent to the specified date
 	 * 
 	 * @param dt Valuation Date
 	 * @param bGetPut TRUE => Gets the next put date
@@ -451,7 +450,7 @@ public abstract class Bond extends CreditComponent {
 		final boolean bGetPut);
 
 	/**
-	 * Return the next exercise info subsequent to the specified date
+	 * Returns the next exercise info subsequent to the specified date
 	 * 
 	 * @param dt Valuation Date
 	 * 
@@ -462,7 +461,7 @@ public abstract class Bond extends CreditComponent {
 		final org.drip.analytics.date.JulianDate dt);
 
 	/**
-	 * Return the coupon rate for the period corresponding to the specified date
+	 * Returns the coupon rate for the period corresponding to the specified date
 	 * 
 	 * @param dt Valuation Date
 	 * @param mktParams Component Market Params
@@ -478,7 +477,7 @@ public abstract class Bond extends CreditComponent {
 		throws java.lang.Exception;
 
 	/**
-	 * Return the coupon rate for the period subsequent to the specified date
+	 * Returns the coupon rate for the period subsequent to the specified date
 	 * 
 	 * @param dt Valuation Date
 	 * @param mktParams Component Market Params
@@ -14747,7 +14746,7 @@ public abstract class Bond extends CreditComponent {
 		final double dblPrice);
 
 	/**
-	 * Display all the coupon periods onto stdout
+	 * Displays all the coupon periods onto stdout
 	 * 
 	 * @throws java.lang.Exception Thrown if the coupon periods cannot be displayed onto stdout
 	 */

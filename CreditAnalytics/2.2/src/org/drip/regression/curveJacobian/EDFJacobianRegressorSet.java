@@ -6,7 +6,6 @@ package org.drip.regression.curveJacobian;
  */
 
 /*!
- * Copyright (C) 2014 Lakshmi Krishnamurthy
  * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
  * This file is part of CreditAnalytics, a free-software/open-source library for fixed income analysts and
@@ -43,20 +42,18 @@ public class EDFJacobianRegressorSet implements org.drip.regression.core.Regress
 	private java.util.List<org.drip.regression.core.UnitRegressor> _setRegressors = new
 		java.util.ArrayList<org.drip.regression.core.UnitRegressor>();
 
-	@Override public java.util.List<org.drip.regression.core.UnitRegressor> getRegressorSet()
-	{
+	@Override public java.util.List<org.drip.regression.core.UnitRegressor> getRegressorSet() {
 		return _setRegressors;
 	}
 
-	@Override public boolean setupRegressors()
-	{
+	@Override public boolean setupRegressors() {
 		try {
 			_setRegressors.add (new org.drip.regression.core.UnitRegressionExecutor ("EDFJacobian",
 				_strRegressionScenario) {
 				org.drip.analytics.date.JulianDate dtStart = null;
-				org.drip.analytics.rates.DiscountCurve dcEDF = null;
-				org.drip.quant.calculus.WengertJacobian wjPVDF = null;
-				org.drip.quant.calculus.WengertJacobian aWJComp[] = null;
+				org.drip.math.calculus.WengertJacobian wjPVDF = null;
+				org.drip.math.calculus.WengertJacobian aWJComp[] = null;
+				org.drip.analytics.definition.DiscountCurve dcEDF = null;
 				org.drip.product.definition.CalibratableComponent aCompCalib[] = null;
 
 				@Override public boolean preRegression()
@@ -65,7 +62,7 @@ public class EDFJacobianRegressorSet implements org.drip.regression.core.Regress
 					double adblDate[] = new double[NUM_DC_INSTR];
 					double adblRate[] = new double[NUM_DC_INSTR];
 					double adblCompCalibValue[] = new double[NUM_DC_INSTR];
-					aWJComp = new org.drip.quant.calculus.WengertJacobian[NUM_DC_INSTR];
+					aWJComp = new org.drip.math.calculus.WengertJacobian[NUM_DC_INSTR];
 					java.lang.String astrCalibMeasure[] = new java.lang.String[NUM_DC_INSTR];
 					aCompCalib = new org.drip.product.definition.CalibratableComponent[NUM_DC_INSTR];
 
@@ -93,8 +90,8 @@ public class EDFJacobianRegressorSet implements org.drip.regression.core.Regress
 					}
 
 					return null != (dcEDF =
-						org.drip.param.creator.RatesScenarioCurveBuilder.NonlinearBuild (dtStart, "USD",
-							org.drip.state.creator.DiscountCurveBuilder.BOOTSTRAP_MODE_CONSTANT_FORWARD,
+						org.drip.param.creator.RatesScenarioCurveBuilder.CreateDiscountCurve (dtStart, "USD",
+							org.drip.analytics.creator.DiscountCurveBuilder.BOOTSTRAP_MODE_CONSTANT_FORWARD,
 								aCompCalib, adblCompCalibValue, astrCalibMeasure, null));
 				}
 
@@ -114,7 +111,7 @@ public class EDFJacobianRegressorSet implements org.drip.regression.core.Regress
 						}
 					}
 
-					return null != (wjPVDF = dcEDF.compPVDFJack (dtStart));
+					return null != (wjPVDF = dcEDF.compPVDFJacobian (dtStart));
 				}
 
 				@Override public boolean postRegression (
